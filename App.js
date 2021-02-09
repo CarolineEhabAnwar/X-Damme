@@ -1,36 +1,62 @@
-import React from 'react';
-import { StyleSheet, Text, View, Image, FlatList, TouchableOpacity } from 'react-native';
-import {Icon} from 'native-base';
-import { createAppContainer } from "react-navigation";
-import { createDrawerNavigator } from 'react-navigation-drawer';
+//Imports
+import React from 'react'
+import { StyleSheet, Text, View, Image, FlatList, TouchableOpacity } from 'react-native'
+import {Icon} from 'native-base'
+import { createAppContainer } from "react-navigation"
+import { createDrawerNavigator } from 'react-navigation-drawer'
 import { createStackNavigator } from "react-navigation-stack"
-import LoginScreen from './src/screens/LoginScreen';
-import SignUpScreen from './src/screens/SignUpScreen';
-import HomeScreen from './src/screens/HomeScreen';
+
+//Import Screen
+import LoginScreen from './src/screens/LoginScreen'
+import SignUpScreen from './src/screens/SignUpScreen'
 import SM_SignUpScreen from './src/screens/SM_SignUpScreen'
-import ItemsScreen from "./src/screens/ItemsScreen";
-import MechanicHomeScreen from "./src/screens/MechanicHomeScreen";
-import MechanicDetailsScreen from "./src/screens/MechanicDetailsScreen";
-import MechanicScreen from "./src/screens/MechanicScreen";
-import ReserveServicScreen from "./src/screens/ReserveServiceScreen";
-import ServiceDetailsScreen from "./src/screens/ServiceDetailsScreen";
-import ShopOwnerRequestsScreen from "./src/screens/ShopOwnerRequestsScreen";
-import SOAddItemScreeen from "./src/screens/SOAddItemScreen";
-import SOEditItemScreen from "./src/screens/SOEditItemScreen";
-import SOHomeScreen from "./src/screens/SOHomeScreen";
-import SOItemListScreen from "./src/screens/SOItemListScreen";
-import SOViewItemScreen from "./src/screens/SOViewItemScreen";
-import TutorialsScreen from "./src/screens/TutorialsScreen";
-import ItemDetailsScreen from './src/screens/ItemDetailsScreen';
-import EmergencyScreen from './src/screens/EmergencyScreen';
-import EmergencyContactsScreen from './src/screens/EmergencyContactsScreen';
-import WinchNumbersScreen from './src/screens/WinchNumbersScreen'
+
+//User
+import HomeScreen from './src/screens/UserUI/HomeScreen'
+import ItemsScreen from "./src/screens/UserUI/ItemsScreen"
+import MechanicHomeScreen from "./src/screens/MechanicHomeScreen"
+import MechanicDetailsScreen from "./src/screens/UserUI/MechanicDetailsScreen"
+import MechanicScreen from "./src/screens/UserUI/MechanicScreen"
+import ServiceDetailsScreen from "./src/screens/UserUI/ServiceDetailsScreen"
+import TutorialsScreen from "./src/screens/UserUI/TutorialsScreen"
+import ItemDetailsScreen from './src/screens/UserUI/ItemDetailsScreen'
+import EmergencyScreen from './src/screens/UserUI/EmergencyScreen'
+import EmergencyContactsScreen from './src/screens/UserUI/EmergencyContactsScreen'
+import WinchNumbersScreen from './src/screens/UserUI/WinchNumbersScreen'
+import ProfileScreen from "./src/screens/UserUI/ProfileScreen"
+import ContactUsScreen from "./src/screens/UserUI/ContactUsScreen"
+
+
+//Shop Owner
+import SOContactUSScreen from "./src/screens/SO_UI/SOContactUsScreen"
+import SOProfileScreen from "./src/screens/SO_UI/SOProfileScreen"
+import SOViewRequestScreen from "./src/screens/SO_UI/SOViewRequestScreen"
+import SOAddOfferScreen from "./src/screens/SO_UI/SOAddOfferScreen"
+import SORequestScreen from "./src/screens/SO_UI/SORequestsScreen"
+import SOAddItemScreeen from "./src/screens/SO_UI/SOAddItemScreen"
+import SOEditItemScreen from "./src/screens/SO_UI/SOEditItemScreen"
+import SOHomeScreen from "./src/screens/SO_UI/SOHomeScreen"
+import SOItemListScreen from "./src/screens/SO_UI/SOItemListScreen"
+import SOViewItemScreen from "./src/screens/SO_UI/SOViewItemScreen"
+
+// Mechanic
+import MechHomeScreen from "./src/screens/Mech_UI/MechHomeScreen"
+import MechContactUsScreen from "./src/screens/Mech_UI/MechContactUsScreen"
+import MechEditServiceScreen from "./src/screens/Mech_UI/MechEditServiceScreen"
+import MechAddOfferScreen from "./src/screens/Mech_UI/MechAddOfferScreen"
+import MechAddServiceScreen from "./src/screens/Mech_UI/MechAddServiceScreen"
+import MechRequestsScreen from "./src/screens/Mech_UI/MechRequestsScreen"
+import MechServiceListScreen from "./src/screens/Mech_UI/MechServiceListScreen"
+import MechViewRequestScreen from "./src/screens/Mech_UI/MechViewRequestScreen"
+import MechViewServiceScreen from "./src/screens/Mech_UI/MechViewServiceScreen"
+import MechProfileScreen from "./src/screens/Mech_UI/MechProfileScreen"
+
 
 
  function Item({ item, navigate }) {
   return (
     <TouchableOpacity style={styles.listItem} onPress={()=>navigate(item.name)}>
-      <Icon name={item.icon} size={32} />
+      <Icon name={item.icon} style={{color:'darkred'}} size={30} />
       <Text style={styles.title}>{item.name}</Text>
     </TouchableOpacity>
   );
@@ -40,12 +66,12 @@ class Sidebar extends React.Component {
   state = {
       routes:[
           {
-              name:"Home",
-              icon:"ios-home"
+            name:"Home",
+            icon:"ios-home"
           },
           {
             name: "Items",
-            icon: "logo-steam"
+            icon: "ios-car"
           },
           {
             name: "Mechanics",
@@ -68,12 +94,12 @@ class Sidebar extends React.Component {
               icon:"person"
           },
           {
-              name:"Contact Us",
+              name:"ContactUs",
               icon:"call",
           },
           {
             name:"Logout",
-            icon:"person",
+            icon:"log-out",
         },
       ]
   }
@@ -210,12 +236,13 @@ const Drawer = createDrawerNavigator(
     ItemDetails: {screen: ItemDetailsScreen},
     MechanicDetails: {screen: MechanicDetailsScreen},
     Mechanics: {screen: MechanicScreen},
-    ReserveService: {screen: ReserveServicScreen},
     ServiceDetails: {screen: ServiceDetailsScreen},
     Tutorials: {screen: TutorialsScreen},
     Emergency: {screen: EmergencyScreen},
     EmergencyContacts:{screen:EmergencyContactsScreen},
-    WinchNumbers:{screen:WinchNumbersScreen}
+    WinchNumbers:{screen:WinchNumbersScreen},
+    Profile:{screen:ProfileScreen},
+    ContactUs:{screen:ContactUsScreen},
   },
   {
     initialRouteName: "Login",
@@ -235,12 +262,16 @@ const SODrawer = createDrawerNavigator(
     SM_SignUp: {screen: SM_SignUpScreen,
                navigationOptions: ({navigation}) => ({drawerLockMode: 'locked-closed'})
               },
-    SORequest: {screen: ShopOwnerRequestsScreen},
+    SORequests: {screen: SORequestScreen},
     SOAddItem: {screen: SOAddItemScreeen},
     SOEditItem: {screen: SOEditItemScreen},
     SOHome: {screen: SOHomeScreen},
     SOItemList: {screen: SOItemListScreen},
-    SOViewItem: {screen: SOViewItemScreen}
+    SOViewItem: {screen: SOViewItemScreen},
+    SOProfile: {screen:SOProfileScreen},
+    SOContactUS:{screen:SOContactUSScreen},
+    SOViewRequest:{screen:SOViewRequestScreen},
+    SOAddOffer:{screen:SOAddOfferScreen}
   },
   {
     initialRouteName: "Login",
@@ -329,7 +360,17 @@ const styles = StyleSheet.create({
   },
   title:{
       fontSize:18,
-      marginLeft:20
+      marginLeft:20,
+      marginTop:6,
+      color:'darkred',
+      fontWeight:'300'
+  },
+  SOtitle:{
+    fontSize:18,
+    marginLeft:20,
+    marginTop:6,
+    color:'darkred',
+    fontWeight:'300'
   },
   header:{
     width:"100%",
@@ -352,6 +393,5 @@ const styles = StyleSheet.create({
     backgroundColor:"white",
     marginTop:10,
   }
-
 }
 );
