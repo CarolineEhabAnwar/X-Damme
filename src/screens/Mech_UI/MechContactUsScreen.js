@@ -12,8 +12,8 @@ export default class MechContactUsScreen extends Component {
         return (
           <Container >
           {/* Text with navback */}
-          <View searchBar style={{flexDirection: 'row', paddingTop:25 , marginBottom: 12, paddingBottom: 6, alignContent:"center", backgroundColor: "darkblue", top: 0}}>
-              <Button transparent onPress={() => this.props.navigation.navigate('SOHome')} >
+          <View searchBar style={{flexDirection: 'row', paddingTop:25 , marginBottom: 12, paddingBottom: 6, alignContent:"center", backgroundColor: "darkgreen", top: 0}}>
+              <Button transparent onPress={() => this.props.navigation.navigate('MechHome')} >
                     <Ionicons
                       name='arrow-back-outline'
                       style={{ fontSize: 30, marginTop:4,marginRight:12,marginLeft:12 ,color: 'white'}}
@@ -37,7 +37,7 @@ export default class MechContactUsScreen extends Component {
                             <MaterialIcons name="email" size={20} style={{marginLeft:10,marginRight:-10}} color="white" />
                             <Text style={{color: 'white',fontWeight:'bold'}}>Email</Text>
                         </Button>
-                        <Button style={{flexDirection:'row',height:30,backgroundColor:'darkblue'}}>
+                        <Button style={{flexDirection:'row',height:30,backgroundColor:'darkgreen'}}>
                             <MaterialIcons name="call" size={20} style={{marginLeft:10,marginRight:-10}} color="white" />
                             <Text style={{color: 'white',fontWeight:'bold'}}>Call</Text>
                         </Button>
@@ -58,7 +58,7 @@ export default class MechContactUsScreen extends Component {
                             <MaterialIcons name="email" size={20} style={{marginLeft:10,marginRight:-10}} color="white" />
                             <Text style={{color: 'white',fontWeight:'bold'}}>Email</Text>
                         </Button>
-                        <Button style={{flexDirection:'row',height:30,backgroundColor:'darkblue'}}>
+                        <Button style={{flexDirection:'row',height:30,backgroundColor:'darkgreen'}}>
                             <MaterialIcons name="call" size={20} style={{marginLeft:10,marginRight:-10}} color="white" />
                             <Text style={{color: 'white',fontWeight:'bold'}}>Call</Text>
                         </Button>
@@ -68,19 +68,19 @@ export default class MechContactUsScreen extends Component {
               </List>
             </Content>
         {/* Footer */}
-        <View style={{flexDirection: 'row',alignContent:"center", backgroundColor: "darkblue"}}>
-          <FooterTab transparent style={{backgroundColor: "darkblue"}}>
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOHome')}>
+        <View style={{flexDirection: 'row',alignContent:"center", backgroundColor: "darkgreen"}}>
+          <FooterTab transparent style={{backgroundColor: "darkgreen"}}>
+            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('MechHome')}>
               <Icon style={{color:'white'}} name="home" />
               <Text style={{color:'white'}}> Home</Text>
             </Button>
 
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOProfile')}>
+            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('MechProfile')}>
               <Icon name="person" style={{color:'white'}}/>
               <Text style={{color:'white'}}>Profile</Text>
             </Button>
 
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOContactUs')}>
+            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('MechContactUs')}>
               <Icon style={{color:'white'}} name="call" />
               <Text style={{color:'white'}} >Contact Us</Text>
             </Button>
@@ -94,7 +94,7 @@ export default class MechContactUsScreen extends Component {
     
     const styles = StyleSheet.create({
         IconStyle:{
-          color:'darkblue',
+          color:'darkgreen',
           marginLeft:-30
         },
         textStyles:{

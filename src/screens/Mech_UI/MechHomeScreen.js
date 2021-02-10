@@ -7,7 +7,7 @@ import { Ionicons,FontAwesome5,FontAwesome } from '@expo/vector-icons';
 export default class MechHomeScreen extends Component {
 
     render() {
-        let name = "Shop Owner x";
+        let name = "Mechanic x";
         let home_notification = 5;
         let profile_notification = 5;
         let settings_notification = 5;
@@ -32,25 +32,25 @@ export default class MechHomeScreen extends Component {
                 <Text style={styles.title}>{name}</Text>
                 <View style={{ flexDirection: "row", justifyContent: "space-around", marginTop: 20 }}>
                     <Button rounded info style={{ backgroundColor: 'darkgreen', width: 150, justifyContent: "center", top: 40, marginHorizontal: 10 }}
-                        onPress={() => this.props.navigation.navigate('SOAddItem')}
+                        onPress={() => this.props.navigation.navigate('MechAddService')}
                     >
                         <Ionicons name="add-circle-outline" style={styles.IconsStyle} size={25} color="white" />
-                        <Text style={{fontWeight:'bold'}}> Add Item </Text>
+                        <Text style={{fontWeight:'bold'}}> Add Service </Text>
                     </Button>
                     <Button rounded style={{ backgroundColor: 'darkgreen', width: 150, justifyContent: "center", top: 40, marginHorizontal: 10 }}
-                        onPress={() => this.props.navigation.navigate('SOItemList')}>
-                        <FontAwesome5 name="list-alt" size={21} style={styles.IconsStyle} color="white" />
-                        <Text style={{fontWeight:'bold'}}> Items List </Text>
+                        onPress={() => this.props.navigation.navigate('MechServiceList')}>
+                        <FontAwesome5 name="list" size={17} style={styles.IconsStyle} color="white" />
+                        <Text style={{fontWeight:'bold'}}> Services List </Text>
                     </Button>
                 </View>
                 <View style={{ flexDirection: "row", justifyContent: "space-around", top: 20 }}>
                     <Button rounded info style={{ backgroundColor: 'darkgreen', width: 150, justifyContent: "center", top: 40, marginHorizontal: 10 }}
-                        onPress={() => this.props.navigation.navigate('SORequests')}>
+                        onPress={() => this.props.navigation.navigate('MechRequests')}>
                         <FontAwesome5  name="buffer" size={24} style={styles.IconsStyle} color="white" />
                         <Text style={{fontWeight:'bold'}}> Requests </Text>
                     </Button>
                     <Button rounded info style={{ backgroundColor: 'darkgreen', width: 150, justifyContent: "center", top: 40, marginHorizontal: 10 }}
-                     onPress={() => this.props.navigation.navigate('SOAddOffer')}
+                     onPress={() => this.props.navigation.navigate('MechAddOffer')}
                     >
                         <FontAwesome name="percent" size={22} style={styles.IconsStyle} color="white" />
                         <Text style={{fontWeight:'bold'}}> Add offer </Text>
@@ -62,17 +62,17 @@ export default class MechHomeScreen extends Component {
         {/* Footer */}
         <View style={{flexDirection: 'row',alignContent:"center", backgroundColor: "darkgreen"}}>
           <FooterTab transparent style={{backgroundColor: "darkgreen"}}>
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOHome')}>
+            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('MechHome')}>
               <Icon style={{color:'white'}} name="home" />
               <Text style={{color:'white'}}> Home</Text>
             </Button>
 
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOProfile')}>
+            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('MechProfile')}>
               <Icon name="person" style={{color:'white'}}/>
               <Text style={{color:'white'}}>Profile</Text>
             </Button>
 
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOContactUs')}>
+            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('MechContactUs')}>
               <Icon style={{color:'white'}} name="call" />
               <Text style={{color:'white'}} >Contact Us</Text>
             </Button>
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
         }
     },
     IconsStyle:{
-        marginLeft:5,
-        marginRight:-8
+        marginLeft:15,
+        marginRight:-15
     }
 });

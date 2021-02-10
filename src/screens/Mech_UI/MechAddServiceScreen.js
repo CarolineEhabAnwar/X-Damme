@@ -38,14 +38,14 @@ export default class MechAddServiceScreen extends Component {
     return (
       <Container >
         {/* Search bar with drawer */}
-        <View searchBar style={{flexDirection: 'row', paddingTop:26 , marginBottom: 12, paddingBottom: 6, alignContent:"center", backgroundColor: "darkblue", top: 0}}>
-        <Button transparent onPress={() => this.props.navigation.navigate('SOHome')} >
+        <View searchBar style={{flexDirection: 'row', paddingTop:26 , marginBottom: 12, paddingBottom: 6, alignContent:"center", backgroundColor: "darkgreen", top: 0}}>
+        <Button transparent onPress={() => this.props.navigation.navigate('MechHome')} >
               <Ionicons
                 name='arrow-back-outline'
                 style={{ fontSize: 30, marginTop:4,marginRight:12,marginLeft:12 ,color: 'white'}}
               />
             </Button>
-            <Text style={{color: "white",height:50,fontSize:20, textAlign:'center',paddingLeft:'22%',paddingTop:12, fontWeight:'bold'}}> Add Item</Text> 
+            <Text style={{color: "white",height:50,fontSize:20, textAlign:'center',paddingLeft:'21%',paddingTop:12, fontWeight:'bold'}}> Add Service</Text> 
         </View>
         {/* End Search bar with drawer */}
 
@@ -53,68 +53,20 @@ export default class MechAddServiceScreen extends Component {
 
         <Form>          
         <Item regular style={styles.InputStyle}>
-            <Input placeholder='Item Name' />
+            <Input placeholder='Service Name' />
         </Item>
 
         <Item regular style={styles.InputStyle}>
-            <Input keyboardType="numeric" placeholder='Item Price' />
+            <Input keyboardType="numeric" placeholder='Service Price' />
          </Item>
         
          <Item regular style={styles.InputStyle}>
-            <Input placeholder='Made In' />
+            <Input placeholder='Service Duration' />
          </Item>
-
-        {/* Car Model */}
-         <Item regular style={ {marginBottom:10,
-        borderWidth:3,
-        borderColor:'darkblue',
-        borderRadius:6,
-        alignSelf:'flex-start'}}>
-        
-        <Picker
-              mode="dialog"
-              
-              iosIcon={<Icon name="arrow-down" style={{marginLeft:-5}}/>}
-              placeholder="Car Brand"
-              placeholderStyle={{ color: "darkblue" }}
-              selectedValue={this.state.selected}
-              onValueChange={this.onValueChange.bind(this)}
-            >
-              <Picker.Item label="Nissan" value="key0" />
-              <Picker.Item label="Kia" value="key1" />
-              <Picker.Item label="BMW" value="key2" />
-        </Picker>
-        </Item>
-
-        {/* Car Brand */}
-        <Item regular style={ {marginBottom:10,
-        borderWidth:3,
-        borderColor:'darkblue',
-        borderRadius:6,
-        alignSelf:'flex-start'}}>
-        
-        <Picker
-              mode="dialog"
-              
-              iosIcon={<Icon name="arrow-down" style={{marginLeft:-5}}/>}
-              placeholder="Car Model"
-              placeholderStyle={{ color: "darkblue" }}
-              selectedValue={this.state.selected}
-              onValueChange={this.onValueChange.bind(this)}
-            >
-              <Picker.Item label="C300" value="key0" />
-              <Picker.Item label="Sunny" value="key1" />
-              <Picker.Item label="Cerato" value="key2" />
-        </Picker>
-        </Item>
-
-        <Item regular style={styles.InputStyle}>
-          <Input placeholder='Car Year' />
-        </Item>
       
         <Item regular style={ {marginBottom:10,
         borderWidth:3,
-        borderColor:'darkblue',
+        borderColor:'darkgreen',
         borderRadius:6,
         alignSelf:'flex-start',
         height:50}}>
@@ -127,8 +79,8 @@ export default class MechAddServiceScreen extends Component {
             modalTransparent={false}
             animationType={"fade"}
             androidMode={"default"}
-            placeHolderText="Manufacture Date :"
-            placeHolderTextStyle={{ color: "darkblue" }}
+            placeHolderText="Availability: "
+            placeHolderTextStyle={{ color: "darkgreen" }}
             onDateChange={this.setDate}
             disabled={false}
             />
@@ -139,7 +91,7 @@ export default class MechAddServiceScreen extends Component {
 
         <Item regular style={ {marginBottom:10,
         borderWidth:3,
-        borderColor:'darkblue',
+        borderColor:'darkgreen',
         borderRadius:6,
         alignSelf:'flex-start'}}>
         
@@ -147,45 +99,38 @@ export default class MechAddServiceScreen extends Component {
               mode="dialog"
               
               iosIcon={<Icon name="arrow-down" style={{marginLeft:-5}}/>}
-              placeholder="Item Quality"
-              placeholderStyle={{ color: "darkblue" }}
+              placeholder="Service Type"
+              placeholderStyle={{ color: "darkgreen" }}
               selectedValue={this.state.selected}
               onValueChange={this.onValueChange.bind(this)}
             >
-              <Picker.Item label="Low" value="key0" />
-              <Picker.Item label="Medium" value="key1" />
-              <Picker.Item label="High" value="key2" />
+              <Picker.Item label="Wench" value="key0" />
+              <Picker.Item label="Fix Motor" value="key1" />
+              <Picker.Item label="Electrican" value="key2" />
         </Picker>
         </Item>
 
-        <Item regular style={styles.InputStyle}>
-            <Text style={{marginLeft:4,color:'darkblue'}}> Item's Image: </Text>
-            <Button style={{height:45,position:'relative',backgroundColor:'darkblue',margin:2}} >
-             <Text> Upload Photo</Text> 
-            </Button>
-         </Item>
-
-        <Button  style={{backgroundColor:'darkblue', marginVertical:20, alignSelf:'center'}}>
-            <Text>Add Item</Text>
+        <Button  style={{backgroundColor:'darkgreen', marginVertical:20, alignSelf:'center'}}>
+            <Text>Add Service</Text>
         </Button>
 
         </Form>
 
     </Content>
         {/* Footer */}
-        <View style={{flexDirection: 'row',alignContent:"center", backgroundColor: "darkblue"}}>
-          <FooterTab transparent style={{backgroundColor: "darkblue"}}>
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOHome')}>
+        <View style={{flexDirection: 'row',alignContent:"center", backgroundColor: "darkgreen"}}>
+          <FooterTab transparent style={{backgroundColor: "darkgreen"}}>
+            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('MechHome')}>
               <Icon style={{color:'white'}} name="home" />
               <Text style={{color:'white'}}> Home</Text>
             </Button>
 
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOProfile')}>
+            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('MechProfile')}>
               <Icon name="person" style={{color:'white'}}/>
               <Text style={{color:'white'}}>Profile</Text>
             </Button>
 
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOContactUs')}>
+            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('MechContactUs')}>
               <Icon style={{color:'white'}} name="call" />
               <Text style={{color:'white'}} >Contact Us</Text>
             </Button>
@@ -201,7 +146,7 @@ export default class MechAddServiceScreen extends Component {
 const styles = StyleSheet.create({
     InputStyle:{
         marginBottom:10,
-        borderColor:'darkblue',
+        borderColor:'darkgreen',
         borderRadius:6,
         justifyContent:'space-between'
     },

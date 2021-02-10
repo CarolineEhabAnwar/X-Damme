@@ -14,7 +14,6 @@ import SM_SignUpScreen from './src/screens/SM_SignUpScreen'
 //User
 import HomeScreen from './src/screens/UserUI/HomeScreen'
 import ItemsScreen from "./src/screens/UserUI/ItemsScreen"
-import MechanicHomeScreen from "./src/screens/MechanicHomeScreen"
 import MechanicDetailsScreen from "./src/screens/UserUI/MechanicDetailsScreen"
 import MechanicScreen from "./src/screens/UserUI/MechanicScreen"
 import ServiceDetailsScreen from "./src/screens/UserUI/ServiceDetailsScreen"
@@ -290,7 +289,16 @@ const MDrawer = createDrawerNavigator(
     SM_SignUp: {screen: SM_SignUpScreen,
                navigationOptions: ({navigation}) => ({drawerLockMode: 'locked-closed'})
               },
-    MechanicHome: { screen: MechanicHomeScreen}
+    MechHome :{screen:MechHomeScreen},
+    MechAddOffer:{screen:MechAddOfferScreen},
+    MechAddService:{screen:MechAddServiceScreen},
+    MechContactUs:{screen:MechContactUsScreen},
+    MechEditService:{screen:MechEditServiceScreen},
+    MechProfile:{screen:MechProfileScreen},
+    MechRequests:{screen:MechRequestsScreen},
+    MechServiceList:{screen:MechServiceListScreen},
+    MechViewRequest:{screen:MechViewRequestScreen},
+    MechViewService:{screen:MechViewServiceScreen}        
   },
   {
     initialRouteName: "Login",

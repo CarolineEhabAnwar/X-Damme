@@ -12,39 +12,34 @@ export default class MechViewServiceScreen extends Component {
     return (
       <Container>
         {/* Search bar with drawer */}
-        <View searchBar style={{flexDirection: 'row', paddingTop:26 , marginBottom: 12, paddingBottom: 6, alignContent:"center", backgroundColor: "darkblue", top: 0}}>
-        <Button transparent onPress={() => this.props.navigation.navigate('SOItemList')} >
+        <View searchBar style={{flexDirection: 'row', paddingTop:26 , marginBottom: 12, paddingBottom: 6, alignContent:"center", backgroundColor: "darkgreen", top: 0}}>
+        <Button transparent onPress={() => this.props.navigation.navigate('MechServiceList')} >
               <Ionicons
                 name='arrow-back-outline'
                 style={{ fontSize: 30, marginTop:4,marginRight:12,marginLeft:12 ,color: 'white'}}
               />
             </Button>
-            <Text style={{color: "white",height:50,fontSize:20, textAlign:'center',paddingLeft:'22%',paddingTop:12, fontWeight:'bold'}}> View Item</Text> 
+            <Text style={{color: "white",height:50,fontSize:20, textAlign:'center',paddingLeft:'19%',paddingTop:12, fontWeight:'bold'}}> View Service</Text> 
         </View>
         {/* End Search bar with drawer */}        
       
         <Content>
           <Card style={{flex: 0}}>
-            <Image source={require("../../../assets/mirror.jpg")} style={{marginBottom:20,height: 200, width: null}}/>
-              <CardItem style={{marginHorizontal:1,borderWidth:3,borderColor:'darkblue'}}>
+              <CardItem style={{marginHorizontal:1,borderWidth:3,borderColor:'darkgreen'}}>
                 <Body>
-                  <Text style={styles.textStyles}>Item ID: -</Text>
+                  <Text style={styles.textStyles}>Service ID: -</Text>
                   <Text style={styles.textStyles}>Name: -</Text>
                   <Text style={styles.textStyles}>Price: -</Text>
-                  <Text style={styles.textStyles}>Quality: -</Text>
-                  <Text style={styles.textStyles}>Manufacture Date: -</Text>
-                  <Text style={styles.textStyles}>Made In: -</Text>
-                  <Text style={styles.textStyles}>Car Model: -</Text>
-                  <Text style={styles.textStyles}>Car Brand: -</Text>
-                  <Text style={styles.textStyles}>Car Year: -</Text>
+                  <Text style={styles.textStyles}>Duration: -</Text>
+                  <Text style={styles.textStyles}>Availability: -</Text>
                   
                   <View style={{flexDirection:'row',justifyContent:'center',marginTop:17, marginLeft:'15%'}}>
-                    {/* Accept */}
-                    <Button style={{marginLeft:28,backgroundColor:'blue'}} onPress={() => this.props.navigation.navigate('SOEditItem')}>
+                    {/* Edit */}
+                    <Button style={{marginLeft:28,backgroundColor:'blue'}} onPress={() => this.props.navigation.navigate('MechEditItem')}>
                       <Text style={styles.buttonTextStyle}>Edit</Text>
                     </Button>
 
-                    {/* Decline */}
+                    {/* Delete */}
                     <Button style={{marginLeft:30,backgroundColor:'#eb1c1c'}}>
                       <Text style={styles.buttonTextStyle}>Delete</Text>
                     </Button>
@@ -55,19 +50,19 @@ export default class MechViewServiceScreen extends Component {
         </Content>
 
         {/* Footer */}
-        <View style={{flexDirection: 'row',alignContent:"center", backgroundColor: "darkblue"}}>
-          <FooterTab transparent style={{backgroundColor: "darkblue"}}>
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOHome')}>
+        <View style={{flexDirection: 'row',alignContent:"center", backgroundColor: "darkgreen"}}>
+          <FooterTab transparent style={{backgroundColor: "darkgreen"}}>
+            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('MechHome')}>
               <Icon style={{color:'white'}} name="home" />
               <Text style={{color:'white'}}> Home</Text>
             </Button>
 
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOProfile')}>
+            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('MechProfile')}>
               <Icon name="person" style={{color:'white'}}/>
               <Text style={{color:'white'}}>Profile</Text>
             </Button>
 
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOContactUs')}>
+            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('MechContactUs')}>
               <Icon style={{color:'white'}} name="call" />
               <Text style={{color:'white'}} >Contact Us</Text>
             </Button>
@@ -86,7 +81,7 @@ const styles = StyleSheet.create({
     marginBottom:4,
     fontWeight:'bold',
     color:'black',
-    textShadowColor: 'darkblue',
+    textShadowColor: 'darkgreen',
     textShadowRadius: 1,
      textShadowOffset: { 
         width: 0,
@@ -99,7 +94,7 @@ const styles = StyleSheet.create({
   buttonStyle:{
     marginTop:7,
     marginLeft:'auto',
-    backgroundColor:'darkblue',
+    backgroundColor:'darkgreen',
   },
 
   buttonTextStyle:{

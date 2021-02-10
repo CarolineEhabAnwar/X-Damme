@@ -34,8 +34,8 @@ export default class MechAddOffer extends Component {
     return (
       <Container>
       {/* Search bar with drawer */}
-      <View searchBar style={{flexDirection: 'row', paddingTop:26 , marginBottom: 12, paddingBottom: 6, alignContent:"center", backgroundColor: "darkblue", top: 0}}>
-        <Button transparent onPress={() => this.props.navigation.navigate('SOHome')} >
+      <View searchBar style={{flexDirection: 'row', paddingTop:26 , marginBottom: 12, paddingBottom: 6, alignContent:"center", backgroundColor: "darkgreen", top: 0}}>
+        <Button transparent onPress={() => this.props.navigation.navigate('MechHome')} >
               <Ionicons
                 name='arrow-back-outline'
                 style={{ fontSize: 30, marginTop:4,marginRight:12,marginLeft:12 ,color: 'white'}}
@@ -47,7 +47,7 @@ export default class MechAddOffer extends Component {
         <Content style={{marginHorizontal:15,paddingVertical:10}}>
         
         <View style={{flexDirection:'row'}}>
-          <AntDesign name="edit" style={{marginRight:10,marginTop:1.5}} size={22} color="darkblue" />
+          <AntDesign name="edit" style={{marginRight:10,marginTop:1.5}} size={22} color="darkgreen" />
           <Text style={styles.textStyle}>Please enter offer details</Text>
         </View>
         <Form>          
@@ -56,13 +56,13 @@ export default class MechAddOffer extends Component {
         </Item>
 
         <Item regular style={styles.InputStyle}>
-            <Input placeholder='Item ID' />
+            <Input placeholder='Service Name' />
          </Item>
         
         
         <Item regular style={ {marginBottom:10,
         borderWidth:3,
-        borderColor:'darkblue',
+        borderColor:'darkgreen',
         borderRadius:6,
         alignSelf:'flex-start',
         height:50}}>
@@ -76,7 +76,7 @@ export default class MechAddOffer extends Component {
             animationType={"fade"}
             androidMode={"default"}
             placeHolderText="Offer Start :"
-            placeHolderTextStyle={{ color: "darkblue" }}
+            placeHolderTextStyle={{ color: "darkgreen" }}
             onDateChange={this.setDate}
             disabled={false}
             />
@@ -87,7 +87,7 @@ export default class MechAddOffer extends Component {
 
         <Item regular style={ {marginBottom:10,
         borderWidth:3,
-        borderColor:'darkblue',
+        borderColor:'darkgreen',
         borderRadius:6,
         alignSelf:'flex-start',
         height:50}}>
@@ -101,7 +101,7 @@ export default class MechAddOffer extends Component {
             animationType={"fade"}
             androidMode={"default"}
             placeHolderText="Offer End :"
-            placeHolderTextStyle={{ color: "darkblue" }}
+            placeHolderTextStyle={{ color: "darkgreen" }}
             onDateChange={this.setDate}
             disabled={false}
             />
@@ -111,40 +111,40 @@ export default class MechAddOffer extends Component {
         </Item>
 
         <Item regular style={styles.InputStyle}>
-            <Text style={{marginLeft:4,color:'darkblue'}}>Advertisment Image: </Text>
-            <Button style={{height:45,position:'relative',backgroundColor:'darkblue',margin:2}} >
+            <Text style={{marginLeft:4,color:'darkgreen'}}>Advertisment Image: </Text>
+            <Button style={{height:45,position:'relative',backgroundColor:'darkgreen',margin:2}} >
              <Text> Upload Photo</Text> 
             </Button>
          </Item>
 
         <View style={{flexDirection:'row',justifyContent:'center'}}>
-          <Button style={{backgroundColor:'darkblue', marginVertical:20, marginRight:40,alignSelf:'center'}}>
+          <Button style={{backgroundColor:'darkgreen', marginVertical:20, marginRight:40,alignSelf:'center'}}>
               <Text>Confirm</Text>
           </Button>
 
-          <Button bordered  style={{borderColor:'darkblue',marginVertical:20, alignSelf:'center'}}
-                onPress={() => this.props.navigation.navigate('SOHome')}
+          <Button bordered  style={{borderColor:'darkgreen',marginVertical:20, alignSelf:'center'}}
+                onPress={() => this.props.navigation.navigate('MechHome')}
             >
-              <Text style={{color:'darkblue'}}>Cancel</Text>
+              <Text style={{color:'darkgreen'}}>Cancel</Text>
           </Button>
         </View>
         </Form>
       </Content>
 
         {/* Footer */}
-        <View style={{flexDirection: 'row',alignContent:"center", backgroundColor: "darkblue"}}>
-          <FooterTab transparent style={{backgroundColor: "darkblue"}}>
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOHome')}>
+        <View style={{flexDirection: 'row',alignContent:"center", backgroundColor: "darkgreen"}}>
+          <FooterTab transparent style={{backgroundColor: "darkgreen"}}>
+            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('MechHome')}>
               <Icon style={{color:'white'}} name="home" />
               <Text style={{color:'white'}}> Home</Text>
             </Button>
 
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOProfile')}>
+            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('MechProfile')}>
               <Icon name="person" style={{color:'white'}}/>
               <Text style={{color:'white'}}>Profile</Text>
             </Button>
 
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOContactUs')}>
+            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('MechContactUs')}>
               <Icon style={{color:'white'}} name="call" />
               <Text style={{color:'white'}} >Contact Us</Text>
             </Button>
@@ -160,7 +160,7 @@ export default class MechAddOffer extends Component {
 const styles = StyleSheet.create({
     InputStyle:{
         marginBottom:10,
-        borderColor:'darkblue',
+        borderColor:'darkgreen',
         borderRadius:6,
         justifyContent:'space-between'
     },
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
   },
     textStyle:{
         marginBottom:12,
-        color:'darkblue',
+        color:'darkgreen',
         fontSize:19,
         fontWeight:'600',
         alignSelf:'center'

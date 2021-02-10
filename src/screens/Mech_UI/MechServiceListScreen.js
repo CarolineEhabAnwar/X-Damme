@@ -13,16 +13,16 @@ export default class MechServiceListScreen extends Component {
     return (
       <Container >
         {/* Search bar with drawer */}
-        <View searchBar style={{flexDirection: 'row', paddingTop:26 , paddingBottom: 6, alignContent:"center", backgroundColor: "darkblue", top: 0}}>
-        <Button transparent onPress={() => this.props.navigation.navigate('SOHome')} >
+        <View searchBar style={{flexDirection: 'row', paddingTop:26 , paddingBottom: 6, alignContent:"center", backgroundColor: "darkgreen", top: 0}}>
+        <Button transparent onPress={() => this.props.navigation.navigate('MechHome')} >
               <Ionicons
                 name='arrow-back-outline'
                 style={{ fontSize: 30, marginTop:4,marginRight:12,marginLeft:12 ,color: 'white'}}
               />
             </Button>
         <InputGroup rounded style={{flex:1,backgroundColor:'white',height:35,marginTop:7, paddingLeft:10, paddingRight:10}}>
-          <Icon name="ios-search" style={{color: "darkblue"}} />
-          <Input style={{height:30,marginTop:-5, color: "white"}} place placeholder="Search Item" />
+          <Icon name="ios-search" style={{color: "darkgreen"}} />
+          <Input style={{height:30,marginTop:-5, color: "white"}} place placeholder="Search Service" />
         </InputGroup>
         <Button transparent style={{height:50}} onPress={() => null}>
           <Text style={{color: "white",fontWeight:'bold'}}>Search</Text> 
@@ -32,20 +32,20 @@ export default class MechServiceListScreen extends Component {
         
         <Content>
           <List>
-            {/* Item 1 */}
+            {/* Service 1 */}
             <ListItem>
               <Body>
                 <View style={{flexDirection:'row'}}>
-                    <Text style={{fontWeight:'500',marginLeft:2, marginRight:50}}>Verna door</Text>
+                    <Text style={{fontWeight:'500',marginLeft:2, marginRight:50}}>Fix Motor</Text>
                 </View>
               </Body>
               <Right>
                 <View style={{flexDirection:'row', justifyContent: "flex-start"}}>
-                    <Button transparent onPress={() => this.props.navigation.navigate('SOViewItem')}>
+                    <Button transparent onPress={() => this.props.navigation.navigate('MechViewService')}>
                       <Text style={{color: 'blue'}}>View</Text>
                     </Button>
 
-                    <Button transparent onPress={() => this.props.navigation.navigate('SOEditItem')}>
+                    <Button transparent onPress={() => this.props.navigation.navigate('MechEditService')}>
                       <Text style={{color: 'green'}}>Edit</Text>
                     </Button>
 
@@ -56,20 +56,44 @@ export default class MechServiceListScreen extends Component {
               </Right>
             </ListItem>
 
-            {/* Item 2 */}
+            {/* Service 2 */}
             <ListItem>
               <Body>
                 <View style={{flexDirection:'row'}}>
-                    <Text style={{fontWeight:'500',marginLeft:2,marginRight:50}}>Logan Mirror</Text>
+                    <Text style={{fontWeight:'500',marginLeft:2,marginRight:50}}>Fix Electricity</Text>
                 </View>
               </Body>
               <Right>
                 <View style={{flexDirection:'row'}}>
-                    <Button transparent onPress={() => this.props.navigation.navigate('SOViewItem')}>
+                    <Button transparent onPress={() => this.props.navigation.navigate('MechViewService')}>
                       <Text style={{color: 'blue'}}>View</Text>
                     </Button>
 
-                    <Button transparent onPress={() => this.props.navigation.navigate('SOEditItem')}>
+                    <Button transparent onPress={() => this.props.navigation.navigate('MechEditService')}>
+                      <Text style={{color: 'green'}}>Edit</Text>
+                    </Button>
+
+                    <Button transparent>
+                      <Text style={{color: 'red', width: 80}}>Delete</Text>
+                    </Button>
+                </View>
+              </Right>
+            </ListItem>
+
+            {/* Service 3 */}
+            <ListItem>
+              <Body>
+                <View style={{flexDirection:'row'}}>
+                    <Text style={{fontWeight:'500',marginLeft:2,marginRight:50}}>Wench</Text>
+                </View>
+              </Body>
+              <Right>
+                <View style={{flexDirection:'row'}}>
+                    <Button transparent onPress={() => this.props.navigation.navigate('MechViewService')}>
+                      <Text style={{color: 'blue'}}>View</Text>
+                    </Button>
+
+                    <Button transparent onPress={() => this.props.navigation.navigate('MechEditService')}>
                       <Text style={{color: 'green'}}>Edit</Text>
                     </Button>
 
@@ -83,19 +107,19 @@ export default class MechServiceListScreen extends Component {
         </Content>
 
         {/* Footer */}
-        <View style={{flexDirection: 'row',alignContent:"center", backgroundColor: "darkblue"}}>
-          <FooterTab transparent style={{backgroundColor: "darkblue"}}>
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOHome')}>
+        <View style={{flexDirection: 'row',alignContent:"center", backgroundColor: "darkgreen"}}>
+          <FooterTab transparent style={{backgroundColor: "darkgreen"}}>
+            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('MechHome')}>
               <Icon style={{color:'white'}} name="home" />
               <Text style={{color:'white'}}> Home</Text>
             </Button>
 
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOProfile')}>
+            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('MechProfile')}>
               <Icon name="person" style={{color:'white'}}/>
               <Text style={{color:'white'}}>Profile</Text>
             </Button>
 
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOContactUs')}>
+            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('MechContactUs')}>
               <Icon style={{color:'white'}} name="call" />
               <Text style={{color:'white'}} >Contact Us</Text>
             </Button>
@@ -109,7 +133,7 @@ export default class MechServiceListScreen extends Component {
 
 const styles = StyleSheet.create({
     IconStyle:{
-      color:'darkblue',
+      color:'darkgreen',
       marginLeft:-30
     },
     textStyles:{
