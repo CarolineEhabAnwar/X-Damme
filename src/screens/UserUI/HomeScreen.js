@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Container, InputGroup, Header, Item, Icon, Input, Content, Left, Right, Title, Body, Footer, FooterTab, Button, Text, Badge } from 'native-base';
 import { StyleSheet, View, Image, FlatList, TouchableOpacity } from 'react-native';
 import { DrawerActions } from 'react-navigation-drawer';
-import ItemComponent from "./components/ItemComponent";
+import ItemComponent from "../components/ItemComponent";
 import { ScrollView } from 'react-native-gesture-handler';
 import { AntDesign } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
@@ -51,7 +51,7 @@ export default class HomeScreen extends React.Component {
             {/* Car Items Bubble */}
             <View style={{height:100,width:100}}>
               <Button transparent onPress={() => this.props.navigation.navigate('Items')} style={{height:100,width:100}}>
-                <Image source={require("../../assets/parts.png")} style={styles.profileImg} />
+                <Image source={require("../../../assets/parts.png")} style={styles.profileImg} />
               </Button>
               <Text style={styles.textStyle}>Car Parts</Text>
             </View>
@@ -59,7 +59,7 @@ export default class HomeScreen extends React.Component {
             {/* Mechanics Bubble */}
             <View style={{height:100,width:100}}>
             <Button transparent onPress={() => this.props.navigation.navigate('Mechanics')} style={{height:100,width:100}}>
-              <Image source={require("../../assets/mechanic.png")} style={styles.profileImg} />
+              <Image source={require("../../../assets/mechanic.png")} style={styles.profileImg} />
             </Button>
             <Text style={styles.textStyle}>Mechanics</Text>
             </View>
@@ -67,7 +67,7 @@ export default class HomeScreen extends React.Component {
             {/* Emergency Bubble */}
             <View style={{flexDirection:'column'}}>
               <Button transparent onPress={() => this.props.navigation.navigate('Emergency')} style={{height:100,width:100}}>
-                <Image source={require("../../assets/emergency.jpg")} style={styles.profileImg} />
+                <Image source={require("../../../assets/emergency.jpg")} style={styles.profileImg} />
               </Button>
               <Text style={styles.textStyle}>Emergency</Text>
             </View>
@@ -77,8 +77,8 @@ export default class HomeScreen extends React.Component {
             
             {/* Tutorials Bubble */}
             <View>
-            <Button transparent style={{alignSelf:'center',height:100,width:100}}>
-                <Image source={require("../../assets/tutorials.jpg")} style={styles.profileImg} />
+            <Button transparent  onPress={() => this.props.navigation.navigate('Tutorials')} style={{alignSelf:'center',height:100,width:100}}>
+                <Image source={require("../../../assets/tutorials.jpg")} style={styles.profileImg} />
               </Button>
               <Text style={styles.textStyle}>Tutorials</Text>
             </View>            
@@ -86,7 +86,7 @@ export default class HomeScreen extends React.Component {
             {/* Recommendations Bubble */}
             <View >
               <Button transparent style={{alignSelf:'center',height:100,width:100}}>
-                <Image source={require("../../assets/recommendation.png")} style={styles.profileImg} />
+                <Image source={require("../../../assets/recommendation.png")} style={styles.profileImg} />
               </Button>
               <Text style={styles.textStyle}>Recommendations</Text>
             </View>
@@ -106,46 +106,43 @@ export default class HomeScreen extends React.Component {
               title="Motor1"
               price= {20000}
               quality= "High"
-              imageSource={require('../../assets/motor.png')}
+              imageSource={require('../../../assets/motor.png')}
           />
           <ItemComponent 
               title="Motor2"
               price= {10000}
               quality= "High"
-              imageSource={require('../../assets/motor.png')}
+              imageSource={require('../../../assets/motor.png')}
           />
           <ItemComponent 
               title="Motor3"
               price= {2000}
               quality= "Poor"
-              imageSource={require('../../assets/motor.png')}
+              imageSource={require('../../../assets/motor.png')}
           />
           <ItemComponent 
               title="Motor4"
               price= {5000}
               quality= "Medium"
-              imageSource={require('../../assets/motor.png')}
+              imageSource={require('../../../assets/motor.png')}
           />
             </ScrollView>
           </View>
         </Content>
         {/* Footer */}
-        <View style={{flexDirection: 'row', alignContent:"center", backgroundColor: "darkred"}}>
+        <View style={{flexDirection: 'row',alignContent:"center", backgroundColor: "darkred"}}>
           <FooterTab transparent style={{backgroundColor: "darkred"}}>
-            <Button badge style={{marginTop:5}}>
-              {home_notification == null ? null : <Badge><Text>5</Text></Badge>}
+            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('Home')}>
               <Icon style={{color:'white'}} name="home" />
               <Text style={{color:'white'}}> Home</Text>
             </Button>
 
-            <Button badge style={{marginTop:5}}>
-              {profile_notification == null ? null : <Badge><Text>5</Text></Badge>}
+            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('Profile')}>
               <Icon name="person" style={{color:'white'}}/>
               <Text style={{color:'white'}}>Profile</Text>
             </Button>
 
-            <Button badge style={{marginTop:5}}>
-              {settings_notification == null ? null : <Badge><Text>5</Text></Badge>}
+            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('ContactUs')}>
               <Icon style={{color:'white'}} name="call" />
               <Text style={{color:'white'}} >Contact Us</Text>
             </Button>
@@ -172,7 +169,6 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     borderWidth: 3,
     borderColor:'darkred',
-    borderStyle:'solid',
     
   },
   textStyle:{

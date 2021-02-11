@@ -43,12 +43,11 @@ export default class ItemsScreen extends Component {
                 <Body style={{marginBottom:8}}>
                   <Text style={{fontWeight:'bold',fontSize:18}}>Mirror</Text>
                   <Text  style={{fontWeight:'bold'}} note>Hyundai Accent 2009</Text>
-                  <Text  style={{fontWeight:'bold'}} note>Rate</Text>
                 </Body>
               </Left>
             </CardItem>
             <CardItem cardBody>
-              <Image source={require("../../assets/mirror.jpg")} style={{height: 200, width: null, flex: 1}}/>
+              <Image source={require("../../../assets/mirror.jpg")} style={{height: 200, width: null, flex: 1}}/>
             </CardItem>
             <CardItem>
               <Left>
@@ -83,22 +82,19 @@ export default class ItemsScreen extends Component {
           </Card>
         </Content>
         {/* Footer */}
-        <View style={{flexDirection: 'row', alignContent:"center", backgroundColor: "darkred"}}>
+        <View style={{flexDirection: 'row',alignContent:"center", backgroundColor: "darkred"}}>
           <FooterTab transparent style={{backgroundColor: "darkred"}}>
-            <Button badge style={{marginTop:5}}>
-              {home_notification == null ? null : <Badge><Text>5</Text></Badge>}
+            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('Home')}>
               <Icon style={{color:'white'}} name="home" />
               <Text style={{color:'white'}}> Home</Text>
             </Button>
 
-            <Button badge style={{marginTop:5}}>
-              {profile_notification == null ? null : <Badge><Text>5</Text></Badge>}
+            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('Profile')}>
               <Icon name="person" style={{color:'white'}}/>
               <Text style={{color:'white'}}>Profile</Text>
             </Button>
 
-            <Button badge style={{marginTop:5}}>
-              {settings_notification == null ? null : <Badge><Text>5</Text></Badge>}
+            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('ContactUs')}>
               <Icon style={{color:'white'}} name="call" />
               <Text style={{color:'white'}} >Contact Us</Text>
             </Button>

@@ -18,34 +18,28 @@ export default class SignUpScreen extends Component {
     //     this.setState({ chosenDate: new Date(Date.UTC(2019, 2, 18)) });
     // }
 
-    constructor(props) {
-        super(props);
-        this.state = {
-          selected: undefined,
-          chosenDate: new Date()
-        };
-      }
-
-      onValueChange(value: string) {
-        this.setState({
-          selected: value
-        });
-    }
-
-    setDate(newDate) {
-        this.setState({ chosenDate: new Date(Date.GMT(2019, 2, 18)) });
-    }
-  
     
     render() {
     return (
       <Container >
-        <Content style={{marginHorizontal:15,paddingVertical:10}}>
+      {/* Title */}
+        <View searchBar style={{flexDirection: 'row', paddingTop:25 , marginBottom: 12, paddingBottom: 6, alignContent:"center", backgroundColor: "darkred", top: 0}}>
+          <Button transparent onPress={() => this.props.navigation.navigate('Login')} >
+              <Ionicons
+                name='arrow-back-outline'
+                style={{ fontSize: 30, marginTop:4,marginRight:12,marginLeft:12 ,color: 'white'}}
+              />
+          </Button>
+          <Text style={{color: "white",height:50,fontSize:20, textAlign:'center',paddingLeft:'26%',paddingTop:12, fontWeight:'bold'}}>Sign Up</Text> 
+        </View>
+      {/* End Title */}   
+      
+        <Content style={{marginHorizontal:15}}>
         
         <View style={styles.ViewStyle}>
-          <Text style={{color:'darkred',fontSize:15.5, alignSelf: "center"}}> Are you a Shop Owner or Mechanic?</Text>
+          <Text style={{color:'darkblue',fontSize:15.2, alignSelf: "center"}}> Are you a Shop Owner or Mechanic?</Text>
           <TouchableOpacity onPress={() => this.props.navigation.navigate('SM_SignUp')}>
-            <Text> Press Here</Text>
+            <Text style={{fontWeight:'bold',color:'darkblue'}}> Press Here</Text>
           </TouchableOpacity>
         </View>
         
@@ -89,57 +83,10 @@ export default class SignUpScreen extends Component {
             <AntDesign name="phone" style={styles.IconsStyle} size={22} color="darkred" />
             <Input keyboardType="numeric" placeholder='Phone' />
         </Item>
-
-        <Item regular style={ {marginBottom:10,
-        borderWidth:3,
-        borderColor:'darkred',
-        borderRadius:6,
-        height:50,
-        alignSelf:'flex-start'}}>
-         <MaterialIcons name="date-range" style={{marginLeft:5,marginRight:-5}} size={23} color="darkred"/>
-         <DatePicker
-            defaultDate={new Date(2018, 4, 4)}
-            minimumDate={new Date(2018, 1, 1)}
-            maximumDate={new Date(2018, 12, 31)}
-            locale={"en"}
-            timeZoneOffsetInMinutes={undefined}
-            modalTransparent={false}
-            animationType={"fade"}
-            androidMode={"default"}
-            placeHolderText="Select Birth Date :"
-            textStyle={{ color: "green" }}
-            placeHolderTextStyle={{ color: "darkred" }}
-            onDateChange={this.setDate}
-            disabled={false}
-            />
-            <Text>
-            {this.state.chosenDate.toString().substr(4, 12)}
-            </Text>
-        </Item>
         
-        <Item regular style={ {marginBottom:10,
-        borderWidth:3,
-        borderColor:'darkred',
-        borderRadius:6,
-        alignSelf:'flex-start'}}>
-        <Foundation name="male-female" style={{marginLeft:6,marginRight:-5}} size={25} color="darkred"/>
-        <Picker
-              mode="dialog"
-              
-              iosIcon={<Icon name="arrow-down" style={{marginLeft:-10}} />}
-              placeholder="Gender"
-              placeholderStyle={{ color: "darkred" }}
-              selectedValue={this.state.selected}
-              onValueChange={this.onValueChange.bind(this)}
-            >
-              <Picker.Item label="Male" value="key0" />
-              <Picker.Item label="Female" value="key1" />
-        </Picker>
-        </Item>
-
         <Button  style={{backgroundColor:'darkred', marginVertical:20, alignSelf:'center'}}
                  onPress={() => this.props.navigation.navigate('Home')}>
-            <Text>Submit</Text>
+            <Text style={{fontWeight:'bold'}}>Submit</Text>
         </Button>
 
         </Form>
@@ -159,8 +106,8 @@ const styles = StyleSheet.create({
     },
 
     ViewStyle:{
-      marginBottom:10,
-      marginTop:20,
+      marginVertical:19,
+      marginTop:2,
       flexDirection:'row',
       alignSelf: "center"
   },

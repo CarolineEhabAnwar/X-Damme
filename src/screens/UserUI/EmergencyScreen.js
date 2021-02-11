@@ -53,28 +53,25 @@ export default class EmergencyScreen extends Component {
           </Col>
         </Grid>
         {/* Footer */}
-        <View style={{flexDirection: 'row', alignContent:"center", backgroundColor: "darkred"}}>
+        <View style={{flexDirection: 'row',alignContent:"center", backgroundColor: "darkred"}}>
           <FooterTab transparent style={{backgroundColor: "darkred"}}>
-            <Button badge style={{marginTop:5}}>
-              {home_notification == null ? null : <Badge><Text>5</Text></Badge>}
+            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('Home')}>
               <Icon style={{color:'white'}} name="home" />
               <Text style={{color:'white'}}> Home</Text>
             </Button>
 
-            <Button badge style={{marginTop:5}}>
-              {profile_notification == null ? null : <Badge><Text>5</Text></Badge>}
+            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('Profile')}>
               <Icon name="person" style={{color:'white'}}/>
               <Text style={{color:'white'}}>Profile</Text>
             </Button>
 
-            <Button badge style={{marginTop:5}}>
-              {settings_notification == null ? null : <Badge><Text>5</Text></Badge>}
+            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('ContactUs')}>
               <Icon style={{color:'white'}} name="call" />
               <Text style={{color:'white'}} >Contact Us</Text>
             </Button>
           </FooterTab>
         </View>
-        {/* End Footer */}        
+        {/* End Footer */}    
       </Container>
     );
   }
