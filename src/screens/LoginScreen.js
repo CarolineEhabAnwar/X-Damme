@@ -26,7 +26,7 @@ export default class LoginScreen extends Component {
             </Item>
           
           <Button style={{marginHorizontal:138,marginTop:40,backgroundColor:'darkred'}}
-                  onPress={() => this.props.navigation.navigate('MechHome')} >
+                  onPress={() => this.props.navigation.navigate('Home')} >
             <Text style={{fontWeight:'bold'}}> Login </Text>
           </Button>
           <Button style={{marginHorizontal:98,marginTop:30,backgroundColor:'darkred'}}

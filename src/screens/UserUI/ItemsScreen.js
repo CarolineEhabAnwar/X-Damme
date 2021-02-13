@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Image,StyleSheet,View } from 'react-native';
+import React, { Component,useState } from 'react';
+import {  Alert, Modal, StyleSheet, Pressable, View, Image} from 'react-native';
 import { Container, InputGroup,FooterTab,Footer,Badge, Header,Item,Input, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
 import { FontAwesome5,Ionicons } from '@expo/vector-icons'; 
 import StarRating from 'react-native-star-rating';
@@ -7,10 +7,9 @@ import { DrawerActions } from 'react-navigation-drawer';
 import { NavigationActions } from 'react-navigation';
 
 export default class ItemsScreen extends Component {
+
   render() {
-    let home_notification = 5;
-    let profile_notification = 5;
-    let settings_notification = 5;
+
     return (
       <Container>
         {/* Item Card */}
@@ -31,12 +30,14 @@ export default class ItemsScreen extends Component {
       </Button>
       </View>
       {/* End Search bar with nav back */}
-      {/* Filter Button */}
+
       <Content>
-      <Button rounded style={{marginLeft:5,marginBottom:5,backgroundColor:'darkred'}}>
-        <Icon name='filter' /> 
-        <Text style={{marginLeft:-27}}> Filter </Text>
-      </Button>
+      {/* Filter Button */}
+        <Button rounded style={{marginLeft:5,marginBottom:5,backgroundColor:'darkred'}}>
+          <Icon name='filter' /> 
+          <Text style={{marginLeft:-27}}> Filter </Text>
+        </Button>
+      {/* End filter button */}
           <Card style={{borderRadius:3}}>
             <CardItem>
               <Left>

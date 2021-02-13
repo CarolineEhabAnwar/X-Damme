@@ -24,12 +24,15 @@ export default class MechanicDetailsScreen extends Component {
       {/* End Text with navback */}     
         <Content>
           <Card style={{flex: 0}}>
-            <Image source={require("../../../assets/mechanic.png")} style={{marginBottom:20,height: 200, width: null}}/>
+            <Image source={require("../../../assets/mechanic.png")} style={{marginBottom:20,height: 196, width: null}}/>
               <CardItem style={{marginHorizontal:1,borderWidth:3,borderColor:'darkred'}}>
                 <Body>
                   <Text style={styles.textStyles}>Name: -</Text>
                   <Text style={styles.textStyles}>Location: -</Text>
                   <Text style={styles.textStyles}>Rate: -</Text>
+                  <Text style={styles.textStyles}>Open Time: -</Text>
+                  <Text style={styles.textStyles}>Close Time: -</Text>
+                  <Text style={styles.textStyles}>Working Days: -</Text>
                   <Button style={styles.buttonStyle} onPress={() => this.props.navigation.navigate('ServiceDetails')}>
                     <Icon style={{marginRight:-6}} name="build-outline"></Icon>
                     <Text style={styles.buttonTextStyle}>Services</Text>

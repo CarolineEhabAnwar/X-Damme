@@ -96,35 +96,23 @@ export default class HomeScreen extends React.Component {
           </View>
 
 
-          {/* Most Frequent Items */}
+          {/* ads*/}
           <View >
-            <Text style={{fontSize: 32,marginLeft:5, marginTop: 30}}>Most Frequent Items</Text>
+            <Text style={{fontSize: 32,color:'darkred',fontWeight:'bold',marginLeft:5, marginTop: 30}}>Advertisements</Text>
           </View>
-          <View scrollEnabled style={{flexDirection: "row"}}>
+          <View scrollEnabled style={{textcolor:'darkred',flexDirection: "row"}}>
             <ScrollView showsHorizontalScrollIndicator={false} horizontal= {true}>
             <ItemComponent 
-              title="Motor1"
-              price= {20000}
-              quality= "High"
-              imageSource={require('../../../assets/motor.png')}
+              imageSource={require('../../../assets/spring.png')}
           />
           <ItemComponent 
-              title="Motor2"
-              price= {10000}
-              quality= "High"
-              imageSource={require('../../../assets/motor.png')}
+              imageSource={require('../../../assets/spring.png')}
           />
           <ItemComponent 
-              title="Motor3"
-              price= {2000}
-              quality= "Poor"
-              imageSource={require('../../../assets/motor.png')}
+              imageSource={require('../../../assets/spring.png')}
           />
           <ItemComponent 
-              title="Motor4"
-              price= {5000}
-              quality= "Medium"
-              imageSource={require('../../../assets/motor.png')}
+              imageSource={require('../../../assets/spring.png')}
           />
             </ScrollView>
           </View>

@@ -24,6 +24,13 @@ import EmergencyContactsScreen from './src/screens/UserUI/EmergencyContactsScree
 import WinchNumbersScreen from './src/screens/UserUI/WinchNumbersScreen'
 import ProfileScreen from "./src/screens/UserUI/ProfileScreen"
 import ContactUsScreen from "./src/screens/UserUI/ContactUsScreen"
+import SettingsScreen from "./src/screens/UserUI/SettingsScreen"
+import MyCarsScreen from "./src/screens/UserUI/MyCarsScreen"
+import MyCarsDetailsScreen from "./src/screens/UserUI/MyCarsDetailsScreen"
+import AddCarScreen from "./src/screens/UserUI/AddCarScreen"
+import EditKMScreen from "./src/screens/UserUI/EditKMScreen"
+import MyRequestsScreen from "./src/screens/UserUI/MyRequestsScreen"
+import MyRequestsDetailsScreen from "./src/screens/UserUI/MyRequestsDetailsScreen"
 
 
 //Shop Owner
@@ -242,6 +249,13 @@ const Drawer = createDrawerNavigator(
     WinchNumbers:{screen:WinchNumbersScreen},
     Profile:{screen:ProfileScreen},
     ContactUs:{screen:ContactUsScreen},
+    Settings:{screen:SettingsScreen},
+    MyCars:{screen:MyCarsScreen},
+    MyCarsDetails:{screen:MyCarsDetailsScreen},
+    AddCar:{screen:AddCarScreen},
+    EditKM:{screen:EditKMScreen},
+    MyRequests:{screen:MyRequestsScreen},
+    MyRequestsDetails:{screen:MyRequestsDetailsScreen}
   },
   {
     initialRouteName: "Login",
