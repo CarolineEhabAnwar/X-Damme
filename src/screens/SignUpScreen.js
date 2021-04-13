@@ -1,118 +1,131 @@
-import React, { Component } from 'react';
-import {StyleSheet,View} from 'react-native';
-import { Container, Header, Content, Item, Input, Icon,DatePicker,Text,Radio,Picker,Form, Button,Image } from 'native-base';
-import { TouchableOpacity } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
-import { Feather } from '@expo/vector-icons';
-import { Foundation } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
+import React, {useContext, useState} from 'react';
+import {View, Text, TouchableOpacity, Platform, StyleSheet} from 'react-native';
+import FormInput from '../screens/components/FormInput';
+import FormButton from '../screens/components/FormButton';
+import SocialButton from '../screens/components/SocialButton';
+import {AuthContext} from '../navigation/AuthProvider';
 
-export default class SignUpScreen extends Component {
-    // constructor(props) {
-    //     super(props);
-    //     this.state = { chosenDate: new Date() };
-    //     this.setDate = this.setDate.bind(this);
-    //   }
-    //   setDate(newDate) {
-    //     this.setState({ chosenDate: new Date(Date.UTC(2019, 2, 18)) });
-    // }
+const SignupScreen = ({navigation}) => {
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [confirmPassword, setConfirmPassword] = useState();
 
+  const {register} = useContext(AuthContext);
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.text}>Create an account</Text>
+
+      <FormInput
+        labelValue={email}
+        onChangeText={(userEmail) => setEmail(userEmail)}
+        placeholderText="Email"
+        iconType="user"
+        keyboardType="email-address"
+        autoCapitalize="none"
+        autoCorrect={false}
+      />
+
+      <FormInput
+        labelValue={password}
+        onChangeText={(userPassword) => setPassword(userPassword)}
+        placeholderText="Password"
+        iconType="lock"
+        secureTextEntry={true}
+      />
+
+      <FormInput
+        labelValue={confirmPassword}
+        onChangeText={(userPassword) => setConfirmPassword(userPassword)}
+        placeholderText="Confirm Password"
+        iconType="lock"
+        secureTextEntry={true}
+      />
+
+      <FormButton
+        buttonTitle="Sign Up"
+        onPress={() => register(email, password)}
+      />
+
+      <View style={styles.textPrivate}>
+        <Text style={styles.color_textPrivate}>
+          By registering, you confirm that you accept our{' '}
+        </Text>
+        <TouchableOpacity onPress={() => alert('Terms Clicked!')}>
+          <Text style={[styles.color_textPrivate, {color: '#e88832'}]}>
+            Terms of service
+          </Text>
+        </TouchableOpacity>
+        <Text style={styles.color_textPrivate}> and </Text>
+        <Text style={[styles.color_textPrivate, {color: '#e88832'}]}>
+          Privacy Policy
+        </Text>
+      </View>
+
+      {Platform.OS === 'android' ? (
+        <View>
+          <SocialButton
+            buttonTitle="Sign Up with Facebook"
+            btnType="facebook"
+            color="#4867aa"
+            backgroundColor="#e6eaf4"
+            onPress={() => {}}
+          />
     
-    render() {
-    return (
-      <Container >
-      {/* Title */}
-        <View searchBar style={{flexDirection: 'row', paddingTop:25 , marginBottom: 12, paddingBottom: 6, alignContent:"center", backgroundColor: "darkred", top: 0}}>
-          <Button transparent onPress={() => this.props.navigation.navigate('Login')} >
-              <Ionicons
-                name='arrow-back-outline'
-                style={{ fontSize: 30, marginTop:4,marginRight:12,marginLeft:12 ,color: 'white'}}
-              />
-          </Button>
-          <Text style={{color: "white",height:50,fontSize:20, textAlign:'center',paddingLeft:'26%',paddingTop:12, fontWeight:'bold'}}>Sign Up</Text> 
+          <SocialButton
+            buttonTitle="Sign Up with Google"
+            btnType="google"
+            color="#de4d41"
+            backgroundColor="#f5e7ea"
+            onPress={() => {}}
+          />
         </View>
-      {/* End Title */}   
-      
-        <Content style={{marginHorizontal:15}}>
-        
-        <View style={styles.ViewStyle}>
-          <Text style={{color:'darkblue',fontSize:15.2, alignSelf: "center"}}> Are you a Shop Owner or Mechanic?</Text>
-          <TouchableOpacity onPress={() => this.props.navigation.navigate('SM_SignUp')}>
-            <Text style={{fontWeight:'bold',color:'darkblue'}}> Press Here</Text>
-          </TouchableOpacity>
-        </View>
-        
-        <Form>          
-        <Item regular style={styles.InputStyle}>
-          <MaterialIcons name="drive-file-rename-outline" style={styles.IconsStyle} size={23} color="darkred" />
-          <Input style={{borderRightWidth:1,borderRightColor:'darkred'}} placeholder='First Name' />
-          <MaterialIcons name="drive-file-rename-outline" style={styles.IconsStyle} size={23} color="darkred" />
-          <Input placeholder='Last Name' />
-        </Item>
-        
-        <Item regular style={styles.InputStyle}>
-            <AntDesign name="user" size={24} style={styles.IconsStyle}color="darkred" />
-            <Input placeholder='Username' />
-         </Item>
-        
-         <Item regular style={styles.InputStyle}>
-            <MaterialIcons name="email" style={styles.IconsStyle}  size={24} color="darkred"  />
-            <Input placeholder='Email Address' />
-         </Item>
+      ) : null}
 
-        <Item regular style={styles.InputStyle}>
-            <Ionicons name="ios-key-outline" style={styles.IconsStyle} size={23} color="darkred" />
-            <Input secureTextEntry={true} placeholder='Password' />
-        </Item>
+      <TouchableOpacity
+        style={styles.navButton}
+        onPress={() => navigation.navigate('Login')}>
+        <Text style={styles.navButtonText}>Have an account? Sign In</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
 
-        <Item regular style={styles.InputStyle}>
-          <Ionicons name="ios-key-outline" style={styles.IconsStyle} size={23} color="darkred" />
-          <Input secureTextEntry={true} placeholder='Confirm Password' />
-        </Item>
-        
-        <Item regular style={styles.InputStyle}>
-            <Feather name="map-pin" style={styles.IconsStyle} size={22} color="darkred" />
-            <Input style={{borderRightWidth:1,borderRightColor:'darkred'}} placeholder='Address' />
-
-            <MaterialIcons name="location-city" style={styles.IconsStyle} size={27} color="darkred" />
-            <Input placeholder='City' />
-        </Item>
-
-        <Item regular style={styles.InputStyle}>
-            <AntDesign name="phone" style={styles.IconsStyle} size={22} color="darkred" />
-            <Input keyboardType="numeric" placeholder='Phone' />
-        </Item>
-        
-        <Button  style={{backgroundColor:'darkred', marginVertical:20, alignSelf:'center'}}
-                 onPress={() => this.props.navigation.navigate('Home')}>
-            <Text style={{fontWeight:'bold'}}>Submit</Text>
-        </Button>
-
-        </Form>
-
-    </Content>
-    </Container>
-    );
-
-  }
-}
+export default SignupScreen;
 
 const styles = StyleSheet.create({
-    InputStyle:{
-        marginBottom:10,
-        borderColor:'darkred',
-        borderRadius:6,
-    },
-
-    ViewStyle:{
-      marginVertical:19,
-      marginTop:2,
-      flexDirection:'row',
-      alignSelf: "center"
+  container: {
+    backgroundColor: '#f9fafd',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
   },
-  IconsStyle:{
-    marginLeft:5,
-    marginTop:2
-  }
-})
+  text: {
+    fontFamily: 'Kufam-SemiBoldItalic',
+    fontSize: 28,
+    marginBottom: 10,
+    color: '#051d5f',
+  },
+  navButton: {
+    marginTop: 15,
+  },
+  navButtonText: {
+    fontSize: 18,
+    fontWeight: '500',
+    color: '#2e64e5',
+    fontFamily: 'Lato-Regular',
+  },
+  textPrivate: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginVertical: 35,
+    justifyContent: 'center',
+  },
+  color_textPrivate: {
+    fontSize: 13,
+    fontWeight: '400',
+    fontFamily: 'Lato-Regular',
+    color: 'grey',
+  },
+});
