@@ -1,54 +1,119 @@
-import React, { Component } from 'react';
-import {Image,StyleSheet,View} from 'react-native';
-import { Container, Header, Content, Form, Item, Input, Label, Button, Text } from 'native-base';
-import { Entypo,MaterialIcons,Ionicons } from '@expo/vector-icons';
+import React, {useContext, useState} from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  Platform,
+  StyleSheet,
+  ScrollView
+} from 'react-native';
+import FormInput from '../screens/components/FormInput';
+import FormButton from '../screens/components/FormButton';
+import SocialButton from '../screens/components/SocialButton';
+import {AuthContext} from '../navigation/AuthProvider';
 
-export default class LoginScreen extends Component {
+const LoginScreen = ({navigation}) => {
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
 
-  render() {
-    return (
-      <Container>
-        {/* Title */}
-        <View searchBar style={{flexDirection: 'row', paddingTop:25 , marginBottom: 12, paddingBottom: 6, alignContent:"center", backgroundColor: "darkred", top: 0}}>
-          <Text style={{color: "white",height:50,fontSize:20, textAlign:'center',paddingLeft:'38%',paddingTop:12, fontWeight:'bold'}}>X-Damme</Text> 
+  const {login, googleLogin, fbLogin} = useContext(AuthContext);
+
+  return (
+    <ScrollView contentContainerStyle={styles.container}>
+      <Image
+        source={require('../../assets/logo.png')}
+        style={styles.logo}
+      />
+
+      <FormInput
+        labelValue={email}
+        onChangeText={(userEmail) => setEmail(userEmail)}
+        placeholderText="Email"
+        iconType="user"
+        keyboardType="email-address"
+        autoCapitalize="none"
+        autoCorrect={false}
+      />
+
+      <FormInput
+        labelValue={password}
+        onChangeText={(userPassword) => setPassword(userPassword)}
+        placeholderText="Password"
+        iconType="lock"
+        secureTextEntry={true}
+      />
+
+      <FormButton
+        buttonTitle="Sign In"
+        onPress={() => login(email, password)}
+      />
+
+      <TouchableOpacity style={styles.forgotButton} onPress={() => {}}>
+        <Text style={styles.navButtonText}>Forgot Password?</Text>
+      </TouchableOpacity>
+
+      {Platform.OS === 'android' ? (
+        <View>
+          <SocialButton
+            buttonTitle="Sign In with Facebook"
+            btnType="facebook"
+            color="#4867aa"
+            backgroundColor="#e6eaf4"
+            onPress={() => fbLogin()}
+          />
+
+          <SocialButton
+            buttonTitle="Sign In with Google"
+            btnType="google"
+            color="#de4d41"
+            backgroundColor="#f5e7ea"
+            onPress={() => googleLogin()}
+          />
         </View>
-        {/* End Title */}   
-        <Content  >
-          <Image source={require("../../assets/logo2.png")} style={styles.logoStyle}/>  
-          <Form>
-            <Item floatingLabel>
-              <Label style={{color:'darkred'}}>Username</Label>
-              <Input />
-            </Item>
-            <Item floatingLabel>
-              <Label style={{color:'darkred'}}>Password</Label>
-              <Input secureTextEntry={true} />
-            </Item>
-          
-          <Button style={{marginHorizontal:138,marginTop:40,backgroundColor:'darkred'}}
-                  onPress={() => this.props.navigation.navigate('Home')} >
-            <Text style={{fontWeight:'bold'}}> Login </Text>
-          </Button>
-          <Button style={{marginHorizontal:98,marginTop:30,backgroundColor:'darkred'}}
-                  onPress={() => this.props.navigation.navigate('SignUp')} >
-            <Text style={{fontWeight:'bold'}}> Create Account </Text>
-          </Button>
+      ) : null}
 
-          </Form>
-        </Content>
-      </Container>
-      
-    );
-  }
-}
+      <TouchableOpacity
+        style={styles.forgotButton}
+        onPress={() => navigation.navigate('Signup')}>
+        <Text style={styles.navButtonText}>
+          Don't have an acount? Create here
+        </Text>
+      </TouchableOpacity>
+    </ScrollView>
+  );
+};
 
-    
+export default LoginScreen;
+
 const styles = StyleSheet.create({
-  logoStyle:{
-    marginHorizontal:62,
-    marginVertical:20,
-    width:260,
-    height:210
-
-  }
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    paddingTop: 50
+  },
+  logo: {
+    height: 180,
+    width: 270,
+    resizeMode: 'cover',
+  },
+  text: {
+    fontFamily: 'Kufam-SemiBoldItalic',
+    fontSize: 28,
+    marginBottom: 10,
+    color: '#051d5f',
+  },
+  navButton: {
+    marginTop: 15,
+  },
+  forgotButton: {
+    marginVertical: 35,
+  },
+  navButtonText: {
+    fontSize: 18,
+    fontWeight: '500',
+    color: '#2e64e5',
+    fontFamily: 'Lato-Regular',
+  },
 });

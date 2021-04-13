@@ -1,17 +1,21 @@
 import { FooterTab,Content,Container,Button,Icon } from 'native-base';
-import React, { Component } from 'react';
+import React, { useContext,Component } from 'react';
 import {StyleSheet,Text,View,Image} from 'react-native';
 import { FontAwesome5,Ionicons,AntDesign,MaterialIcons,Feather,Foundation,MaterialCommunityIcons  } from '@expo/vector-icons'; 
+import {AuthContext} from '../../navigation/AuthProvider';
 
-export default class ProfileScreen extends Component {
 
-  render() {
+const ProfileScreen = ({navigation}) => {
+
+  const {logout} = useContext(AuthContext);
+
     return (
+      
       <Container>
       
       {/* Text with drawer */}
         <View searchBar style={{flexDirection: 'row', paddingTop:25 , marginBottom: 0, paddingBottom: 6, alignContent:"center", backgroundColor: "darkred", top: 0}}>
-        <Button transparent onPress={() => this.props.navigation.navigate('Home')} >
+        <Button transparent onPress={() => navigation.navigate('Home')} >
               <Ionicons
                 name='arrow-back-outline'
                 style={{ fontSize: 30, marginTop:4,marginRight:12,marginLeft:12 ,color: 'white'}}
@@ -35,12 +39,12 @@ export default class ProfileScreen extends Component {
               <View style={styles.body}>
                 <View style={styles.bodyContent}>
 
-                  <Button style={styles.menuBox} onPress={() => this.props.navigation.navigate('MyCars')}>
+                  <Button style={styles.menuBox} onPress={() => navigation.navigate('MyCars')}>
                     <FontAwesome5 name="car-side" size={35} color="white" />
                     <Text style={styles.info}>My Cars</Text>
                   </Button>
 
-                  <Button style={styles.menuBox} onPress={() => this.props.navigation.navigate('MyRequests')}>
+                  <Button style={styles.menuBox} onPress={() => navigation.navigate('MyRequests')}>
                     <MaterialIcons name="history" size={40} color="white" />
                     <Text style={styles.info}>Requests</Text>
                   </Button>
@@ -50,12 +54,12 @@ export default class ProfileScreen extends Component {
                     <Text style={styles.info}>Reviews</Text>
                   </Button>
 
-                  <Button style={styles.menuBox} onPress={() => this.props.navigation.navigate('Settings')}>
+                  <Button style={styles.menuBox} onPress={() => navigation.navigate('Settings')}>
                     <MaterialIcons name="settings" size={40} color="white" />
                     <Text style={styles.info}>Settings</Text>
                   </Button>
 
-                  <Button style={styles.menuBox} onPress={() => this.props.navigation.navigate('Login')}>
+                  <Button style={styles.menuBox} onPress={() => logout()}>
                     <MaterialIcons name="logout" size={40} color="white" />
                     <Text style={styles.info}>Logout</Text>
                   </Button>
@@ -66,17 +70,17 @@ export default class ProfileScreen extends Component {
         {/* Footer */}
         <View style={{flexDirection: 'row',alignContent:"center", backgroundColor: "darkred"}}>
           <FooterTab transparent style={{backgroundColor: "darkred"}}>
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('Home')}>
+            <Button style={{marginTop:5}} onPress={() => navigation.navigate('Home')}>
               <Icon style={{color:'white'}} name="home" />
               <Text style={{color:'white'}}> Home</Text>
             </Button>
 
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('Profile')}>
+            <Button style={{marginTop:5}} onPress={() => navigation.navigate('Profile')}>
               <Icon name="person" style={{color:'white'}}/>
               <Text style={{color:'white'}}>Profile</Text>
             </Button>
 
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('ContactUs')}>
+            <Button style={{marginTop:5}} onPress={() => navigation.navigate('ContactUs')}>
               <Icon style={{color:'white'}} name="call" />
               <Text style={{color:'white'}} >Contact Us</Text>
             </Button>
@@ -85,8 +89,9 @@ export default class ProfileScreen extends Component {
         {/* End Footer */}        
       </Container>
     );
-  }
 }
+
+export default ProfileScreen;
 
 const styles = StyleSheet.create({
   header:{
