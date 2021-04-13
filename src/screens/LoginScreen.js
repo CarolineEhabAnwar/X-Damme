@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import {Image,StyleSheet,View} from 'react-native';
+import {Image,StyleSheet,View,Dimensions} from 'react-native';
 import { Container, Header, Content, Form, Item, Input, Label, Button, Text } from 'native-base';
 import { Entypo,MaterialIcons,Ionicons } from '@expo/vector-icons';
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 export default class LoginScreen extends Component {
 
@@ -9,9 +12,9 @@ export default class LoginScreen extends Component {
     return (
       <Container>
         {/* Title */}
-        <View searchBar style={{flexDirection: 'row', paddingTop:25 , marginBottom: 12, paddingBottom: 6, alignContent:"center", backgroundColor: "darkred", top: 0}}>
+        {/* <View searchBar style={{flexDirection: 'row', paddingTop:25 , marginBottom: 12, paddingBottom: 6, alignContent:"center", backgroundColor: "darkred", top: 0}}>
           <Text style={{color: "white",height:50,fontSize:20, textAlign:'center',paddingLeft:'38%',paddingTop:12, fontWeight:'bold'}}>X-Damme</Text> 
-        </View>
+        </View> */}
         {/* End Title */}   
         <Content  >
           <Image source={require("../../assets/logo2.png")} style={styles.logoStyle}/>  
@@ -25,13 +28,17 @@ export default class LoginScreen extends Component {
               <Input secureTextEntry={true} />
             </Item>
           
-          <Button style={{marginHorizontal:138,marginTop:40,backgroundColor:'darkred'}}
+          <Button style={{marginHorizontal:135,marginTop:40,backgroundColor:'darkred'}}
                   onPress={() => this.props.navigation.navigate('Home')} >
             <Text style={{fontWeight:'bold'}}> Login </Text>
           </Button>
           <Button style={{marginHorizontal:98,marginTop:30,backgroundColor:'darkred'}}
                   onPress={() => this.props.navigation.navigate('SignUp')} >
             <Text style={{fontWeight:'bold'}}> Create Account </Text>
+          </Button>
+
+          <Button style={{marginHorizontal:98,marginTop:30,backgroundColor:'darkred'}} >
+            <Text style={{fontWeight:'bold'}}> FB Login </Text>
           </Button>
 
           </Form>
