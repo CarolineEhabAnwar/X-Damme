@@ -23,7 +23,7 @@ export default class ItemsScreen extends Component {
             </Button>
         <InputGroup rounded style={{flex:1,backgroundColor:'#fff',height:35,marginTop:7, paddingLeft:10, paddingRight:10}}>
           <Icon name="ios-search" style={{color: "darkred"}} />
-          <Input style={{height:30,marginTop:-5, color: "darkred"}} place placeholder="Search" />
+          <Input style={{height:40,marginTop:5, color: "darkred"}} placeholder="Search" />
         </InputGroup>
         <Button transparent style={{height:50}} onPress={() => null}>
         <Text style={{color: "white",fontWeight:'bold'}}>Search</Text> 
