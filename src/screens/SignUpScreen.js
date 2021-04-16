@@ -23,7 +23,6 @@ const SignupScreen = ({navigation}) => {
         onChangeText={(FirstName) => setFname(FirstName)}
         placeholderText="First Name"
         iconType="user"
-        autoCapitalize="true"
         autoCorrect={false}
       />
 
@@ -32,7 +31,6 @@ const SignupScreen = ({navigation}) => {
         onChangeText={(LastName) => setLname(LastName)}
         placeholderText="Last Name"
         iconType="user"
-        autoCapitalize="true"
         autoCorrect={false}
       />
       
@@ -41,7 +39,6 @@ const SignupScreen = ({navigation}) => {
         onChangeText={(Address) => setAddress(Address)}
         placeholderText="Address"
         iconType="user"
-        autoCapitalize="none"
         autoCorrect={false}
       />
     
@@ -51,7 +48,6 @@ const SignupScreen = ({navigation}) => {
         placeholderText="Email"
         iconType="user"
         keyboardType="email-address"
-        autoCapitalize="none"
         autoCorrect={false}
       />
 
@@ -76,7 +72,7 @@ const SignupScreen = ({navigation}) => {
         onPress={() => register(fname, lname, address, email, password)}
       />
 
-      <View style={styles.textPrivate}>
+      {/* <View style={styles.textPrivate}>
         <Text style={styles.color_textPrivate}>
           By registering, you confirm that you accept our{' '}
         </Text>
@@ -89,7 +85,7 @@ const SignupScreen = ({navigation}) => {
         <Text style={[styles.color_textPrivate, {color: '#e88832'}]}>
           Privacy Policy
         </Text>
-      </View>
+      </View> */}
 
       
       <TouchableOpacity
@@ -106,24 +102,24 @@ export default SignupScreen;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#f9fafd',
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    padding: 22,
   },
   text: {
-    fontFamily: 'Kufam-SemiBoldItalic',
     fontSize: 28,
-    marginBottom: 10,
-    color: '#051d5f',
+    marginBottom: 40,
+    color: '#ab0000',
+    fontWeight:'bold'
   },
   navButton: {
-    marginTop: 15,
+    marginTop: 10,
   },
   navButtonText: {
     fontSize: 18,
-    fontWeight: '500',
-    color: '#2e64e5',
+    marginTop:20,
+    fontWeight: 'bold',
+    color: '#ab0000',
     fontFamily: 'Lato-Regular',
   },
   textPrivate: {
@@ -131,11 +127,5 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     marginVertical: 35,
     justifyContent: 'center',
-  },
-  color_textPrivate: {
-    fontSize: 13,
-    fontWeight: '400',
-    fontFamily: 'Lato-Regular',
-    color: 'grey',
   },
 });

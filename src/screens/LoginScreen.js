@@ -22,7 +22,7 @@ const LoginScreen = ({navigation}) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Image
-        source={require('../../assets/logo.png')}
+        source={require('../../assets/logo2.png')}
         style={styles.logo}
       />
 
@@ -32,7 +32,6 @@ const LoginScreen = ({navigation}) => {
         placeholderText="Email"
         iconType="user"
         keyboardType="email-address"
-        autoCapitalize="none"
         autoCorrect={false}
       />
 
@@ -77,7 +76,7 @@ const LoginScreen = ({navigation}) => {
         style={styles.forgotButton}
         onPress={() => navigation.navigate('Signup')}>
         <Text style={styles.navButtonText}>
-          Don't have an acount? Create here
+          Don't have an account? Create here!
         </Text>
       </TouchableOpacity>
     </ScrollView>
@@ -91,12 +90,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    paddingTop: 50
+    paddingTop: 0
   },
   logo: {
-    height: 180,
+    height: 230,
     width: 270,
-    resizeMode: 'cover',
+    marginLeft:20,
+    resizeMode: 'cover'
   },
   text: {
     fontFamily: 'Kufam-SemiBoldItalic',
@@ -112,8 +112,7 @@ const styles = StyleSheet.create({
   },
   navButtonText: {
     fontSize: 18,
-    fontWeight: '500',
-    color: '#2e64e5',
-    fontFamily: 'Lato-Regular',
+    fontWeight: 'bold',
+    color: '#ab0000',
   },
 });

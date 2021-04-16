@@ -26,6 +26,7 @@ import AddCarScreen from "../screens/UserUI/AddCarScreen"
 import EditKMScreen from "../screens/UserUI/EditKMScreen"
 import MyRequestsScreen from "../screens/UserUI/MyRequestsScreen"
 import MyRequestsDetailsScreen from "../screens/UserUI/MyRequestsDetailsScreen"
+import AreYouScreen from "../screens/AreYouScreen"
 
 
 const Stack = createStackNavigator();
@@ -126,6 +127,11 @@ const FeedStack = ({navigation}) => (
     <Stack.Screen
       name="MyRequestsDetails"
       component={MyRequestsDetailsScreen}
+      options={{header: () => null}}
+    />
+    <Stack.Screen
+      name="AreYou"
+      component={AreYouScreen}
       options={{header: () => null}}
     />
   </Stack.Navigator>
