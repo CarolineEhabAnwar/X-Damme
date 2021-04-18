@@ -1,9 +1,38 @@
 import React, {useContext, useState} from 'react';
-import {View, Text, TouchableOpacity, Platform, StyleSheet} from 'react-native';
+import {FlatList, SafeAreaView, StatusBar,View, Text, TouchableOpacity, Platform, StyleSheet} from 'react-native';
+import {Button} from 'native-base';
 import FormInput from '../screens/components/FormInput';
 import FormButton from '../screens/components/FormButton';
-import SocialButton from '../screens/components/SocialButton';
 import {AuthContext} from '../navigation/AuthProvider';
+import DropDownPicker from 'react-native-dropdown-picker';
+import Icon from 'react-native-vector-icons/Feather';
+import { FontAwesome5,Ionicons,AntDesign,MaterialIcons,Feather,Foundation,MaterialCommunityIcons  } from '@expo/vector-icons';
+import { color } from 'react-native-reanimated';
+import { ScrollView } from 'react-native-gesture-handler';
+
+
+const DATA = [
+  {
+    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
+    title: "User",
+  },
+  {
+    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
+    title: "Shop Owner",
+  },
+  {
+    id: "58694a0f-3da1-471f-bd96-145571e29d72",
+    title: "Mechanic",
+  },
+];
+
+const Item = ({ item, onPress, backgroundColor, textColor }) => (
+  <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
+    <Text style={[styles.title, textColor]}>{item.title}</Text>
+  </TouchableOpacity>
+);
+
+
 
 const SignupScreen = ({navigation}) => {
   const [email, setEmail] = useState();
@@ -13,9 +42,47 @@ const SignupScreen = ({navigation}) => {
   const [lname, setLname] = useState();
   const [address, setAddress] = useState();
   const {register} = useContext(AuthContext);
+  const [selectedId, setSelectedId] = useState(null);
+
+  const renderItem = ({ item }) => {
+    const backgroundColor = item.id === selectedId ? "#ab0000" : "white";
+    const color = item.id === selectedId ? 'white' : '#ab0000';
+
+    return (
+      <Item
+        item={item}
+        onPress={() => setSelectedId(item.id)}
+        backgroundColor={{ backgroundColor }}
+        textColor={{ color }}
+      />
+    );
+  };
+  
+
+  
 
   return (
-    <View style={styles.container}>
+    
+    <ScrollView contentContainerStyle={styles.container}>
+{/* 
+    <DropDownPicker
+        items={[
+            {label: 'USA', value: 'usa', icon: () => <Icon name="flag" size={18} color="#900" />, hidden: true},
+            {label: 'UK', value: 'uk', icon: () => <Icon name="flag" size={18} color="#900" />},
+            {label: 'France', value: 'france', icon: () => <Icon name="flag" size={18} color="#900" />},
+        ]}
+        // defaultValue={this.state.country}
+        containerStyle={{height: 40}}
+        style={{backgroundColor: '#fafafa'}}
+        itemStyle={{
+            justifyContent: 'flex-start'
+        }}
+        dropDownStyle={{backgroundColor: '#fafafa'}}
+        // onChangeItem={item => this.setState({
+        //     country: item.value
+        // })}
+    /> */}
+
       <Text style={styles.text}>Create an account</Text>
     
       <FormInput
@@ -25,6 +92,7 @@ const SignupScreen = ({navigation}) => {
         iconType="user"
         autoCorrect={false}
       />
+      
 
       <FormInput
         labelValue={lname}
@@ -38,15 +106,15 @@ const SignupScreen = ({navigation}) => {
         labelValue={address}
         onChangeText={(Address) => setAddress(Address)}
         placeholderText="Address"
-        iconType="user"
+        iconType="city"
         autoCorrect={false}
       />
     
       <FormInput
         labelValue={email}
         onChangeText={(userEmail) => setEmail(userEmail)}
-        placeholderText="Email"
-        iconType="user"
+        placeholderText="Email Address"
+        iconType="mail"
         keyboardType="email-address"
         autoCorrect={false}
       />
@@ -67,33 +135,28 @@ const SignupScreen = ({navigation}) => {
         secureTextEntry={true}
       />
 
+      <View style={{flexDirection:'row'}}>
+      <SafeAreaView style={{flexDirection:'row'}}>
+      <FlatList
+        data={DATA}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+        extraData={selectedId}
+      />
+      </SafeAreaView>
+      </View>
+
       <FormButton
         buttonTitle="Sign Up"
         onPress={() => register(fname, lname, address, email, password)}
       />
-
-      {/* <View style={styles.textPrivate}>
-        <Text style={styles.color_textPrivate}>
-          By registering, you confirm that you accept our{' '}
-        </Text>
-        <TouchableOpacity onPress={() => alert('Terms Clicked!')}>
-          <Text style={[styles.color_textPrivate, {color: '#e88832'}]}>
-            Terms of service
-          </Text>
-        </TouchableOpacity>
-        <Text style={styles.color_textPrivate}> and </Text>
-        <Text style={[styles.color_textPrivate, {color: '#e88832'}]}>
-          Privacy Policy
-        </Text>
-      </View> */}
-
       
       <TouchableOpacity
         style={styles.navButton}
         onPress={() => navigation.navigate('Login')}>
         <Text style={styles.navButtonText}>Have an account? Sign In</Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -102,7 +165,6 @@ export default SignupScreen;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#f9fafd',
-    justifyContent: 'center',
     alignItems: 'center',
     padding: 22,
   },
@@ -122,10 +184,41 @@ const styles = StyleSheet.create({
     color: '#ab0000',
     fontFamily: 'Lato-Regular',
   },
-  textPrivate: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginVertical: 35,
+  menuBox:{
+    backgroundColor: "#ab0000",
     justifyContent: 'center',
+    width:80,
+    height:80,
+    margin:15,
+    shadowColor: 'black',
+    shadowOpacity: .2,
+    shadowOffset: {
+      height:2,
+      width:-2
+    },
+    borderRadius:13,
+    elevation:4,
+    flexDirection:'column'
+  },
+  icon: {
+    width:60,
+    height:60,
+  },
+  info:{
+    fontSize:13,
+    fontWeight:'bold',
+    marginTop:10,
+    color: "white",
+  },
+  item: {
+    padding: 10,
+    marginVertical: 8,
+    marginHorizontal: 8,
+    borderRadius:5,
+    borderWidth:2,
+    borderColor:'#ab0000'
+  },
+  title: {
+    fontSize: 20,
   },
 });
