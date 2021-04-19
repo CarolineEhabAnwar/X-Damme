@@ -5,32 +5,32 @@ import { TouchableOpacity } from 'react-native';
 import { Fontisto,Ionicons } from '@expo/vector-icons';
 import ImagePicker from "react-native-image-picker"
 
-export default class AddCarScreen extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-          selected: undefined,
-          chosenDate: new Date()
-        };
-      }
+const AddCarScreen = () => {
+  
+    // constructor(props) {
+    //     super(props);
+    //     this.state = {
+    //       selected: undefined,
+    //       chosenDate: new Date()
+    //     };
+    //   }
 
-      onValueChange(value: string) {
-        this.setState({
-          selected: value
-        });
-    }
+    //   onValueChange(value: string) {
+    //     this.setState({
+    //       selected: value
+    //     });
+    // }
 
-    setDate(newDate) {
-        this.setState({ chosenDate: new Date(Date.GMT(2019, 2, 18)) });
-    }
+    // setDate(newDate) {
+    //     this.setState({ chosenDate: new Date(Date.GMT(2019, 2, 18)) });
+    // }
 
 
-    handleChoosePhoto = () =>  {
-      const options = {};
-      ImagePicker.launchImageLibrary(options,response => {console.log("response",response);})
-    }
+    // handleChoosePhoto = () =>  {
+    //   const options = {};
+    //   ImagePicker.launchImageLibrary(options,response => {console.log("response",response);})
+    // }
 
-    render() {
     let home_notification = 5;
     let profile_notification = 5;
     let settings_notification = 5;
@@ -108,31 +108,10 @@ export default class AddCarScreen extends Component {
         </Form>
 
     </Content>
-        {/* Footer */}
-        <View style={{flexDirection: 'row',alignContent:"center", backgroundColor: "darkred"}}>
-          <FooterTab transparent style={{backgroundColor: "darkred"}}>
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('Home')}>
-              <Icon style={{color:'white'}} name="home" />
-              <Text style={{color:'white'}}> Home</Text>
-            </Button>
-
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('Profile')}>
-              <Icon name="person" style={{color:'white'}}/>
-              <Text style={{color:'white'}}>Profile</Text>
-            </Button>
-
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('ContactUs')}>
-              <Icon style={{color:'white'}} name="call" />
-              <Text style={{color:'white'}} >Contact Us</Text>
-            </Button>
-          </FooterTab>
-        </View>
-        {/* End Footer */}
     </Container>
     );
 
   }
-}
 
 const styles = StyleSheet.create({
     InputStyle:{
@@ -147,3 +126,5 @@ const styles = StyleSheet.create({
       flexDirection:'row',
   }
 })
+
+export default AddCarScreen;

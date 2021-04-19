@@ -5,8 +5,8 @@ import { Col, Row, Grid } from 'react-native-easy-grid';
 import { Fontisto } from '@expo/vector-icons';
 import { FontAwesome5,AntDesign,Ionicons,FontAwesome } from '@expo/vector-icons';
 
-export default class TutorialsScreen extends Component {
-  render() {
+const TutorialsScreen = () => {
+  
     let home_notification = 5;
     let profile_notification = 5;
     let settings_notification = 5;
@@ -57,30 +57,11 @@ export default class TutorialsScreen extends Component {
           </Button>
           </Col>
         </Grid>
-        {/* Footer */}
-        <View style={{flexDirection: 'row',alignContent:"center", backgroundColor: "darkred"}}>
-          <FooterTab transparent style={{backgroundColor: "darkred"}}>
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('Home')}>
-              <Icon style={{color:'white'}} name="home" />
-              <Text style={{color:'white'}}> Home</Text>
-            </Button>
-
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('Profile')}>
-              <Icon name="person" style={{color:'white'}}/>
-              <Text style={{color:'white'}}>Profile</Text>
-            </Button>
-
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('ContactUs')}>
-              <Icon style={{color:'white'}} name="call" />
-              <Text style={{color:'white'}} >Contact Us</Text>
-            </Button>
-          </FooterTab>
-        </View>
-        {/* End Footer */}
+        
       </Container>
     );
   }
-}
+
 const styles = StyleSheet.create({
   buttonStyle:{
     width: "100%",
@@ -101,3 +82,4 @@ const styles = StyleSheet.create({
   }
 })
 
+export default TutorialsScreen;

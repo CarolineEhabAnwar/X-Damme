@@ -6,9 +6,7 @@ import StarRating from 'react-native-star-rating';
 import { DrawerActions } from 'react-navigation-drawer';
 import { NavigationActions } from 'react-navigation';
 
-export default class ItemsScreen extends Component {
-
-  render() {
+const ItemsScreen = () => {
 
     return (
       <Container>
@@ -82,30 +80,9 @@ export default class ItemsScreen extends Component {
             </CardItem>
           </Card>
         </Content>
-        {/* Footer */}
-        <View style={{flexDirection: 'row',alignContent:"center", backgroundColor: "darkred"}}>
-          <FooterTab transparent style={{backgroundColor: "darkred"}}>
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('Home')}>
-              <Icon style={{color:'white'}} name="home" />
-              <Text style={{color:'white'}}> Home</Text>
-            </Button>
-
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('Profile')}>
-              <Icon name="person" style={{color:'white'}}/>
-              <Text style={{color:'white'}}>Profile</Text>
-            </Button>
-
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('ContactUs')}>
-              <Icon style={{color:'white'}} name="call" />
-              <Text style={{color:'white'}} >Contact Us</Text>
-            </Button>
-          </FooterTab>
-        </View>
-        {/* End Footer */}
       </Container>
     );
   }
-}
 
 const styles = StyleSheet.create({
   textStyle:{
@@ -130,4 +107,6 @@ const styles = StyleSheet.create({
     fontWeight:'bold',
     color:'black'
   }
-})
+});
+
+export default ItemsScreen;

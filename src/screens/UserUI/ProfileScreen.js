@@ -66,27 +66,7 @@ const ProfileScreen = ({navigation}) => {
                 </View>
             </View>
           </View>
-        </Content>
-        {/* Footer */}
-        <View style={{flexDirection: 'row',alignContent:"center", backgroundColor: "darkred"}}>
-          <FooterTab transparent style={{backgroundColor: "darkred"}}>
-            <Button style={{marginTop:5}} onPress={() => navigation.navigate('Home')}>
-              <Icon style={{color:'white'}} name="home" />
-              <Text style={{color:'white'}}> Home</Text>
-            </Button>
-
-            <Button style={{marginTop:5}} onPress={() => navigation.navigate('Profile')}>
-              <Icon name="person" style={{color:'white'}}/>
-              <Text style={{color:'white'}}>Profile</Text>
-            </Button>
-
-            <Button style={{marginTop:5}} onPress={() => navigation.navigate('ContactUs')}>
-              <Icon style={{color:'white'}} name="call" />
-              <Text style={{color:'white'}} >Contact Us</Text>
-            </Button>
-          </FooterTab>
-        </View>
-        {/* End Footer */}        
+        </Content>        
       </Container>
     );
 }

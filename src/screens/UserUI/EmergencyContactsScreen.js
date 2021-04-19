@@ -4,8 +4,8 @@ import { Container, FooterTab,Badge, InputGroup, Header, Content, List,Item,Inpu
 import { Entypo,MaterialIcons,Ionicons} from '@expo/vector-icons';
 import { DrawerActions } from 'react-navigation-drawer';
 
-export default class EmergencyContactsScreen extends Component {
-    render() {
+const EmergencyContactsScreen = () => {
+
       let home_notification = 5;
       let profile_notification = 5;
       let settings_notification = 5;
@@ -59,30 +59,9 @@ export default class EmergencyContactsScreen extends Component {
                 </ListItem>
               </List>
             </Content>
-        {/* Footer */}
-        <View style={{flexDirection: 'row',alignContent:"center", backgroundColor: "darkred"}}>
-          <FooterTab transparent style={{backgroundColor: "darkred"}}>
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('Home')}>
-              <Icon style={{color:'white'}} name="home" />
-              <Text style={{color:'white'}}> Home</Text>
-            </Button>
-
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('Profile')}>
-              <Icon name="person" style={{color:'white'}}/>
-              <Text style={{color:'white'}}>Profile</Text>
-            </Button>
-
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('ContactUs')}>
-              <Icon style={{color:'white'}} name="call" />
-              <Text style={{color:'white'}} >Contact Us</Text>
-            </Button>
-          </FooterTab>
-        </View>
-        {/* End Footer */} 
           </Container>
         );
       }
-    }
     
     const styles = StyleSheet.create({
         IconStyle:{
@@ -92,5 +71,6 @@ export default class EmergencyContactsScreen extends Component {
         textStyles:{
             fontWeight:'500'
         }
-    })
+    });
       
+ export default EmergencyContactsScreen;

@@ -5,8 +5,8 @@ import { DrawerActions } from 'react-navigation-drawer';
 import { FontAwesome5,Ionicons } from '@expo/vector-icons'; 
 import Modal from 'react-native-modal';
 
-export default class ItemDetailsScreen extends Component {
-  render() {
+const ItemDetailsScreen = () => {
+
     let home_notification = 5;
     let profile_notification = 5;
     let settings_notification = 5;
@@ -51,30 +51,10 @@ export default class ItemDetailsScreen extends Component {
               </CardItem>
           </Card>
         </Content>
-        {/* Footer */}
-        <View style={{flexDirection: 'row',alignContent:"center", backgroundColor: "darkred"}}>
-          <FooterTab transparent style={{backgroundColor: "darkred"}}>
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('Home')}>
-              <Icon style={{color:'white'}} name="home" />
-              <Text style={{color:'white'}}> Home</Text>
-            </Button>
-
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('Profile')}>
-              <Icon name="person" style={{color:'white'}}/>
-              <Text style={{color:'white'}}>Profile</Text>
-            </Button>
-
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('ContactUs')}>
-              <Icon style={{color:'white'}} name="call" />
-              <Text style={{color:'white'}} >Contact Us</Text>
-            </Button>
-          </FooterTab>
-        </View>
-        {/* End Footer */}
       </Container>
     );
   }
-}
+
 
 const styles = StyleSheet.create({
   textStyles:{
@@ -102,3 +82,5 @@ const styles = StyleSheet.create({
     fontWeight:'bold'
   }
 })
+
+export default ItemDetailsScreen;

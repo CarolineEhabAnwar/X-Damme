@@ -11,15 +11,8 @@ import { Foundation } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 
 
-export default class HomeScreen extends React.Component {
+const HomeScreen = ({navigation}) => {
 
-  constructor(props) {
-    super(props)
-    this.state = {
-    }
-  }
-
-  render() {
     let home_notification = 5;
     let profile_notification = 5;
     let settings_notification = 5;
@@ -50,7 +43,7 @@ export default class HomeScreen extends React.Component {
             
             {/* Car Items Bubble */}
             <View style={{height:100,width:100}}>
-              <Button transparent onPress={() => this.props.navigation.navigate('Items')} style={{height:100,width:100}}>
+              <Button transparent onPress={() => navigation.navigate('Items')} style={{height:100,width:100}}>
                 <Image source={require("../../../assets/parts.png")} style={styles.profileImg} />
               </Button>
               <Text style={styles.textStyle}>Car Parts</Text>
@@ -117,31 +110,10 @@ export default class HomeScreen extends React.Component {
             </ScrollView>
           </View>
         </Content>
-        {/* Footer */}
-        <View style={{flexDirection: 'row',alignContent:"center", backgroundColor: "darkred"}}>
-          <FooterTab transparent style={{backgroundColor: "darkred"}}>
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('Home')}>
-              <Icon style={{color:'white'}} name="home" />
-              <Text style={{color:'white'}}> Home</Text>
-            </Button>
-
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('Profile')}>
-              <Icon name="person" style={{color:'white'}}/>
-              <Text style={{color:'white'}}>Profile</Text>
-            </Button>
-
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('ContactUs')}>
-              <Icon style={{color:'white'}} name="call" />
-              <Text style={{color:'white'}} >Contact Us</Text>
-            </Button>
-          </FooterTab>
-        </View>
-        {/* End Footer */}
 
       </Container>
     );
   }
-}
 
 const styles = StyleSheet.create({
   container: {
@@ -181,3 +153,5 @@ const styles = StyleSheet.create({
       }
   }
 });
+
+export default HomeScreen;

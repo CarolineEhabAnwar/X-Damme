@@ -6,8 +6,8 @@ import { Entypo, FontAwesome, MaterialIcons,FontAwesome5,MaterialCommunityIcons 
 import { Fontisto,Ionicons } from '@expo/vector-icons';
 import { DrawerActions } from 'react-navigation-drawer';
 
-export default class EmergencyScreen extends Component {
-  render() {
+const EmergencyScreen = () =>  {
+
     let home_notification = 5;
     let profile_notification = 5;
     let settings_notification = 5;
@@ -51,31 +51,11 @@ export default class EmergencyScreen extends Component {
             <Text style={styles.textStyle}>Winch Numbers</Text>
           </Button>
           </Col>
-        </Grid>
-        {/* Footer */}
-        <View style={{flexDirection: 'row',alignContent:"center", backgroundColor: "darkred"}}>
-          <FooterTab transparent style={{backgroundColor: "darkred"}}>
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('Home')}>
-              <Icon style={{color:'white'}} name="home" />
-              <Text style={{color:'white'}}> Home</Text>
-            </Button>
-
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('Profile')}>
-              <Icon name="person" style={{color:'white'}}/>
-              <Text style={{color:'white'}}>Profile</Text>
-            </Button>
-
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('ContactUs')}>
-              <Icon style={{color:'white'}} name="call" />
-              <Text style={{color:'white'}} >Contact Us</Text>
-            </Button>
-          </FooterTab>
-        </View>
-        {/* End Footer */}    
+        </Grid>    
       </Container>
     );
   }
-}
+
 const styles = StyleSheet.create({
   buttonStyle:{
     width: "100%",
@@ -95,5 +75,6 @@ const styles = StyleSheet.create({
    color: 'white',
    marginBottom:10
   }
-})
+});
 
+export default EmergencyScreen;
