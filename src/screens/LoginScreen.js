@@ -14,10 +14,10 @@ import SocialButton from '../screens/components/SocialButton';
 import {AuthContext} from '../navigation/AuthProvider';
 
 const LoginScreen = ({navigation}) => {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const {login, googleLogin, fbLogin} = useContext(AuthContext);
+  const {login, googleLogin, fbLogin, forget} = useContext(AuthContext);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -45,10 +45,21 @@ const LoginScreen = ({navigation}) => {
 
       <FormButton
         buttonTitle="Sign In"
-        onPress={() => login(email, password)}
+        onPress={() => {
+          if(email === "" || password === "")
+            alert("Please fill all the slots");
+          else{
+            login(email, password);            
+          }
+        }}
       />
 
-      <TouchableOpacity style={styles.forgotButton} onPress={() => {}}>
+      <TouchableOpacity style={styles.forgotButton} onPress={() => {
+        if(email === "")
+         alert("Please write the email.");
+        else
+          forget(email);
+      }}>
         <Text style={styles.navButtonText}>Forgot Password?</Text>
       </TouchableOpacity>
 
@@ -108,7 +119,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   forgotButton: {
-    marginVertical: 35,
+    marginVertical: 15,
   },
   navButtonText: {
     fontSize: 18,

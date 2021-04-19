@@ -5,8 +5,9 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import AsyncStorage from '@react-native-community/async-storage';
 
-//Importing Screens
+//Importing User Screens
 import HomeScreen from '../screens/UserUI/HomeScreen'
 import ItemsScreen from "../screens/UserUI/ItemsScreen"
 import MechanicDetailsScreen from "../screens/UserUI/MechanicDetailsScreen"
@@ -28,11 +29,33 @@ import MyRequestsScreen from "../screens/UserUI/MyRequestsScreen"
 import MyRequestsDetailsScreen from "../screens/UserUI/MyRequestsDetailsScreen"
 import AreYouScreen from "../screens/AreYouScreen"
 
+//Importing Mechanic Screens
+import MechAddOfferScreen from "../screens/Mech_UI/MechAddOfferScreen"
+import MechAddServiceScreen from "../screens/Mech_UI/MechAddServiceScreen"
+import MechContactUsScreen from "../screens/Mech_UI/MechContactUsScreen"
+import MechEditServiceScreen from "../screens/Mech_UI/MechEditServiceScreen"
+import MechHomeScreen from "../screens/Mech_UI/MechHomeScreen"
+import MechProfileScreen from "../screens/Mech_UI/MechProfileScreen"
+import MechRequestsScreen from "../screens/Mech_UI/MechRequestsScreen"
+import MechServiceListScreen from "../screens/Mech_UI/MechServiceListScreen"
+import MechViewRequestScreen from "../screens/Mech_UI/MechViewRequestScreen"
+import MechViewServiceScreen from "../screens/Mech_UI/MechViewServiceScreen"
+
+//Importing Shop Owner Screens
+import SOAddItemScreen from "../screens/SO_UI/SOAddItemScreen"
+import SOAddOfferScreen from "../screens/SO_UI/SOAddOfferScreen"
+import SOContactUsScreen from "../screens/SO_UI/SOContactUsScreen"
+import SOEditItemScreen from "../screens/SO_UI/SOEditItemScreen"
+import SOHomeScreen from "../screens/SO_UI/SOHomeScreen"
+import SOItemListScreen from "../screens/SO_UI/SOItemListScreen"
+import SOProfileScreen from "../screens/SO_UI/SOProfileScreen"
+import SORequestsScreen from "../screens/SO_UI/SORequestsScreen"
+import SOViewRequestScreen from "../screens/SO_UI/SOViewRequestScreen"
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const FeedStack = ({navigation}) => (
+const UserStack = ({navigation}) => (
   <Stack.Navigator>
     <Stack.Screen
       name="Home"
@@ -137,17 +160,147 @@ const FeedStack = ({navigation}) => (
   </Stack.Navigator>
 );
 
-const AppStack = () => {
-  return (
-    <Stack.Navigator>
+const MechanicStack = ({navigation}) => (
+  <Stack.Navigator>
     <Stack.Screen
-      name="Home"
-      component={FeedStack}
+      name="MechHome"
+      component={MechHomeScreen}
+      options={{header: () => null}}
+    />
+    <Stack.Screen
+      name="MechAddOffer"
+      component={MechAddOfferScreen}
+      options={{header: () => null}}
+    />
+    <Stack.Screen
+      name="MechAddService"
+      component={MechAddServiceScreen}
+      options={{header: () => null}}
+    />
+    <Stack.Screen
+      name="MechContactUs"
+      component={MechContactUsScreen}
+      options={{header: () => null}}
+    />
+    <Stack.Screen
+      name="MechEditService"
+      component={MechEditServiceScreen}
+      options={{header: () => null}}
+    />
+    <Stack.Screen
+      name="MechProfile"
+      component={MechProfileScreen}
+      options={{header: () => null}}
+    />
+    <Stack.Screen
+      name="MechRequests"
+      component={MechRequestsScreen}
+      options={{header: () => null}}
+    />
+    <Stack.Screen
+      name="MechServiceList"
+      component={MechServiceListScreen}
+      options={{header: () => null}}
+    />
+    <Stack.Screen
+      name="MechViewRequest"
+      component={MechViewRequestScreen}
+      options={{header: () => null}}
+    />
+    <Stack.Screen
+      name="MechViewService"
+      component={MechViewServiceScreen}
+      options={{header: () => null}}
+    />
+  </Stack.Navigator>
+);
+
+const ShopOwnerStack = ({navigation}) => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name="SOHome"
+      component={SOHomeScreen}
+      options={{header: () => null}}
+    />
+    <Stack.Screen
+      name="SOAddItem"
+      component={SOAddItemScreen}
+      options={{header: () => null}}
+    />
+    <Stack.Screen
+      name="SOAddOffer"
+      component={SOAddOfferScreen}
+      options={{header: () => null}}
+    />
+    <Stack.Screen
+      name="SOContactUs"
+      component={SOContactUsScreen}
+      options={{header: () => null}}
+    />
+    <Stack.Screen
+      name="SOEditItem"
+      component={SOEditItemScreen}
+      options={{header: () => null}}
+    />
+    <Stack.Screen
+      name="SOItemList"
+      component={SOItemListScreen}
+      options={{header: () => null}}
+    />
+    <Stack.Screen
+      name="SOProfile"
+      component={SOProfileScreen}
+      options={{header: () => null}}
+    />
+    <Stack.Screen
+      name="SORequests"
+      component={SORequestsScreen}
+      options={{header: () => null}}
+    />
+    <Stack.Screen
+      name="SOViewRequest"
+      component={SOViewRequestScreen}
       options={{header: () => null}}
     />
     
   </Stack.Navigator>
-  );
+);
+
+const AppStack = (typeUsed) => {
+  if(typeUsed != "Default")
+    AsyncStorage.setItem('TypeUsed', typeUsed);
+  if(typeUsed == "User"){  
+  return (
+    <Stack.Navigator>
+    <Stack.Screen
+      name="Home"
+      component={UserStack}
+      options={{header: () => null}}
+    />
+  </Stack.Navigator>
+  );}
+  else if(typeUsed == "Mechanic"){
+    return (
+      <Stack.Navigator>
+        <Stack.Screen
+          name="MechHome"
+          component={MechanicStack}
+          options={{header: () => null}}
+        />
+      </Stack.Navigator>
+    );
+  }
+  else if(typeUsed == "Shop Owner"){
+    return (
+      <Stack.Navigator>
+        <Stack.Screen
+          name="ShopOwnerHome"
+          component={ShopOwnerStack}
+          options={{header: () => null}}
+        />
+      </Stack.Navigator>
+    );
+  }  
 };
 
 export default AppStack;

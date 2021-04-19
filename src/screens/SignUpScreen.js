@@ -1,13 +1,8 @@
 import React, {useContext, useState} from 'react';
 import {FlatList, SafeAreaView, StatusBar,View, Text, TouchableOpacity, Platform, StyleSheet} from 'react-native';
-import {Button} from 'native-base';
 import FormInput from '../screens/components/FormInput';
 import FormButton from '../screens/components/FormButton';
 import {AuthContext} from '../navigation/AuthProvider';
-import DropDownPicker from 'react-native-dropdown-picker';
-import Icon from 'react-native-vector-icons/Feather';
-import { FontAwesome5,Ionicons,AntDesign,MaterialIcons,Feather,Foundation,MaterialCommunityIcons  } from '@expo/vector-icons';
-import { color } from 'react-native-reanimated';
 import { ScrollView } from 'react-native-gesture-handler';
 
 
@@ -43,6 +38,7 @@ const SignupScreen = ({navigation}) => {
   const [address, setAddress] = useState();
   const {register} = useContext(AuthContext);
   const [selectedId, setSelectedId] = useState(null);
+  const [type, setType] = useState("");
 
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? "#ab0000" : "white";
@@ -51,7 +47,10 @@ const SignupScreen = ({navigation}) => {
     return (
       <Item
         item={item}
-        onPress={() => setSelectedId(item.id)}
+        onPress={() => {
+          setSelectedId(item.id);
+          setType(item.title);
+        }}
         backgroundColor={{ backgroundColor }}
         textColor={{ color }}
       />
@@ -148,7 +147,25 @@ const SignupScreen = ({navigation}) => {
 
       <FormButton
         buttonTitle="Sign Up"
-        onPress={() => register(fname, lname, address, email, password)}
+        onPress={() => {
+          if(fname === "")
+            alert("Please insert your first name.");
+          else if(lname === "")
+            alert("Please insert your last name.");
+          else if(address === "")
+            alert("Please insert your address.");
+          else if(email === "")
+            alert("Please insert an email.");
+          else if(email === "")
+            alert("Please insert a password.");
+          else if(password !== confirmPassword)
+            alert("Password mismatch with the confirm password.");
+          else if(type === "")
+            alert("Please select a type.");
+          else{
+            register(fname, lname, address, email, password, type);
+          }
+        }}
       />
       
       <TouchableOpacity
