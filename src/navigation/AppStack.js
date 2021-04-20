@@ -27,7 +27,7 @@ import AddCarScreen from "../screens/UserUI/AddCarScreen"
 import EditKMScreen from "../screens/UserUI/EditKMScreen"
 import MyRequestsScreen from "../screens/UserUI/MyRequestsScreen"
 import MyRequestsDetailsScreen from "../screens/UserUI/MyRequestsDetailsScreen"
-import AreYouScreen from "../screens/AreYouScreen"
+import LoadingScreen from "../screens/LoadingScreen"
 
 //Importing Mechanic Screens
 import MechAddOfferScreen from "../screens/Mech_UI/MechAddOfferScreen"
@@ -153,8 +153,8 @@ const UserStack = ({navigation}) => (
       options={{header: () => null}}
     />
     <Stack.Screen
-      name="AreYou"
-      component={AreYouScreen}
+      name="Loading"
+      component={LoadingScreen}
       options={{header: () => null}}
     />
   </Stack.Navigator>
