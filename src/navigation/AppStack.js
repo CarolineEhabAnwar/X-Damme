@@ -7,6 +7,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import AsyncStorage from '@react-native-community/async-storage';
 
+//Importing Waiting Screen
+import WaitingScreen from '../screens/WaitingScreen'
+
 //Importing User Screens
 import HomeScreen from '../screens/UserUI/HomeScreen'
 import ItemsScreen from "../screens/UserUI/ItemsScreen"
@@ -267,7 +270,7 @@ const ShopOwnerStack = ({navigation}) => (
 );
 
 const AppStack = (typeUsed) => {
-  if(typeUsed != "Default")
+  if(typeUsed != "Default" && typeUsed != "Waiting")
     AsyncStorage.setItem('TypeUsed', typeUsed);
   if(typeUsed == "User"){  
   return (
@@ -300,7 +303,18 @@ const AppStack = (typeUsed) => {
         />
       </Stack.Navigator>
     );
-  }  
+  } 
+  else if(typeUsed == "Waiting"){
+    return (
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Waiting"
+          component={WaitingScreen}
+          options={{header: () => null}}
+        />
+      </Stack.Navigator>
+    );
+  }    
 };
 
 export default AppStack;

@@ -45,7 +45,11 @@ const Routes = () => {
         }
         })
     }
-    return null //waiting for everything to load
+    return (
+      <NavigationContainer>
+        {AppStack("Waiting")}
+      </NavigationContainer>
+    ); //waiting for everything to load
   }
   else{
     return (
