@@ -30,10 +30,10 @@ import AddCarScreen from "../screens/UserUI/AddCarScreen"
 import EditKMScreen from "../screens/UserUI/EditKMScreen"
 import MyRequestsScreen from "../screens/UserUI/MyRequestsScreen"
 import MyRequestsDetailsScreen from "../screens/UserUI/MyRequestsDetailsScreen"
-import LoadingScreen from "../screens/LoadingScreen"
 
 //Importing Mechanic Screens
 import MechAddOfferScreen from "../screens/Mech_UI/MechAddOfferScreen"
+import MechSettingsScreen from "../screens/Mech_UI/MechSettingsScreen"
 import MechAddServiceScreen from "../screens/Mech_UI/MechAddServiceScreen"
 import MechContactUsScreen from "../screens/Mech_UI/MechContactUsScreen"
 import MechEditServiceScreen from "../screens/Mech_UI/MechEditServiceScreen"
@@ -54,6 +54,7 @@ import SOItemListScreen from "../screens/SO_UI/SOItemListScreen"
 import SOProfileScreen from "../screens/SO_UI/SOProfileScreen"
 import SORequestsScreen from "../screens/SO_UI/SORequestsScreen"
 import SOViewRequestScreen from "../screens/SO_UI/SOViewRequestScreen"
+import SOSettingsScreen from "../screens/SO_UI/SOSettingsScreen"
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -155,11 +156,6 @@ const UserStack = ({navigation}) => (
       component={MyRequestsDetailsScreen}
       options={{header: () => null}}
     />
-    <Stack.Screen
-      name="Loading"
-      component={LoadingScreen}
-      options={{header: () => null}}
-    />
   </Stack.Navigator>
 );
 
@@ -215,6 +211,11 @@ const MechanicStack = ({navigation}) => (
       component={MechViewServiceScreen}
       options={{header: () => null}}
     />
+    <Stack.Screen
+      name="MechSettings"
+      component={MechSettingsScreen}
+      options={{header: () => null}}
+    />  
   </Stack.Navigator>
 );
 
@@ -265,6 +266,14 @@ const ShopOwnerStack = ({navigation}) => (
       component={SOViewRequestScreen}
       options={{header: () => null}}
     />
+
+    <Stack.Screen
+      name="SOSettings"
+      component={SOSettingsScreen}
+      options={{header: () => null}}
+    />
+
+    
     
   </Stack.Navigator>
 );

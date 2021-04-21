@@ -135,13 +135,15 @@ const SignupScreen = ({navigation}) => {
       />
 
       <View style={{flexDirection:'row'}}>
-      <SafeAreaView style={{flexDirection:'row'}}>
-      <FlatList
-        data={DATA}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        extraData={selectedId}
-      />
+        <SafeAreaView style={{flexDirection:'row'}}>
+        <FlatList
+          data={DATA}
+          scrollEnabled={false}
+          horizontal
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          extraData={selectedId}
+        />
       </SafeAreaView>
       </View>
 

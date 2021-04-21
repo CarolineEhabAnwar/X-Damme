@@ -43,7 +43,7 @@ export default class MechHomeScreen extends Component {
                         <Text style={{fontWeight:'bold'}}> Services List </Text>
                     </Button>
                 </View>
-                <View style={{ flexDirection: "row", justifyContent: "space-around", top: 20 }}>
+                <View style={{ flexDirection: "row", justifyContent: "space-around",marginBottom:60,marginTop:35 }}>
                     <Button rounded info style={{ backgroundColor: 'darkgreen', width: 150, justifyContent: "center", top: 40, marginHorizontal: 10 }}
                         onPress={() => this.props.navigation.navigate('MechRequests')}>
                         <FontAwesome5  name="buffer" size={24} style={styles.IconsStyle} color="white" />
