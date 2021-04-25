@@ -21,7 +21,11 @@ export const AuthProvider = ({children}) => {
         setFrom_SignUp,
         login: async (email, password) => {
           try {
-            await auth().signInWithEmailAndPassword(email, password);
+            setType("Waiting");
+            await auth().signInWithEmailAndPassword(email, password).then(async ()=>{
+              const TypeReturned = await firestore().collection('users').doc(auth().currentUser.uid).get();
+              setType(TypeReturned.data().type);
+            })
           } catch (err){
             if(err == "Error: [auth/invalid-email] The email address is badly formatted.")
               alert("The email address is badly formatted.");
@@ -32,7 +36,7 @@ export const AuthProvider = ({children}) => {
               alert("Invalid password.");
             }
             else
-              alert("Something went wrong.");
+              alert(err);
           }
         },
         googleLogin: async () => {
@@ -138,6 +142,15 @@ export const AuthProvider = ({children}) => {
               alert("Email not found.");
             else
               alert("Something went wrong.");
+          }
+        },
+        getType: async () =>{
+          try{
+            var TypeReturned = firestore().collection('users').doc(auth().currentUser.uid).get('type').catch(error => {
+              alert('Something went wrong with added user to firestore: ', error)});
+            setType(TypeReturned);
+          } catch (err){
+            alert(err);
           }
         },
       }}>
