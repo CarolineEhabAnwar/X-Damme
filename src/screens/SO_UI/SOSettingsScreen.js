@@ -4,14 +4,14 @@ import { Container,FooterTab, Content, Icon,Text, Button,List, ListItem } from '
 import { DrawerActions } from 'react-navigation-drawer';
 import { FontAwesome5,Ionicons,Foundation,MaterialCommunityIcons,Entypo  } from '@expo/vector-icons'; 
 
-export default class SOSettingsScreen extends Component {
-  render() {
+const SOSettingsScreen = ({navigation}) => {
+  
     return (
       <Container>
         
         {/* Text with drawer */}
         <View searchBar style={{flexDirection: 'row', paddingTop:25 , marginBottom: 0, paddingBottom: 6, alignContent:"center", backgroundColor: "darkblue", top: 0}}>
-        <Button transparent onPress={() => this.props.navigation.navigate('SOProfile')} >
+        <Button transparent onPress={() => navigation.navigate('SOProfile')} >
               <Ionicons
                 name='arrow-back-outline'
                 style={{ fontSize: 30, marginTop:4,marginRight:12,marginLeft:12 ,color: 'white'}}
@@ -61,17 +61,17 @@ export default class SOSettingsScreen extends Component {
         {/* Footer */}
         <View style={{flexDirection: 'row',alignContent:"center", backgroundColor: "darkblue"}}>
           <FooterTab transparent style={{backgroundColor: "darkblue"}}>
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOHome')}>
+            <Button style={{marginTop:5}} onPress={() => navigation.navigate('SOHome')}>
               <Icon style={{color:'white'}} name="home" />
               <Text style={{color:'white'}}> Home</Text>
             </Button>
 
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOProfile')}>
+            <Button style={{marginTop:5}} onPress={() => navigation.navigate('SOProfile')}>
               <Icon name="person" style={{color:'white'}}/>
               <Text style={{color:'white'}}>Profile</Text>
             </Button>
 
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOContactUs')}>
+            <Button style={{marginTop:5}} onPress={() => navigation.navigate('SOContactUs')}>
               <Icon style={{color:'white'}} name="call" />
               <Text style={{color:'white'}} >Contact Us</Text>
             </Button>
@@ -81,7 +81,6 @@ export default class SOSettingsScreen extends Component {
       </Container>
     );
   }
-}
 
 const styles = StyleSheet.create({
   textStyles:{
@@ -109,3 +108,5 @@ const styles = StyleSheet.create({
     fontWeight:'bold'
   }
 })
+
+export default SOSettingsScreen

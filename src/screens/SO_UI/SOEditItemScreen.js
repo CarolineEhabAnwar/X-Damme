@@ -5,27 +5,24 @@ import { TouchableOpacity } from 'react-native';
 import { AntDesign,Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 
-export default class SOEditItemScreen extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-          selected: undefined,
-          chosenDate: new Date()
-        };
-      }
+const SOEditItemScreen = ({navigation}) =>  {
+    // constructor(props) {
+    //     super(props);
+    //     this.state = {
+    //       selected: undefined,
+    //       chosenDate: new Date()
+    //     };
+    //   }
 
-      onValueChange(value: string) {
-        this.setState({
-          selected: value
-        });
-    }
+    //   onValueChange(value: string) {
+    //     this.setState({
+    //       selected: value
+    //     });
+    // }
 
-    setDate(newDate) {
-        this.setState({ chosenDate: new Date(Date.GMT(2019, 2, 18)) });
-    }
-  
-    
-    render() {
+    // setDate(newDate) {
+    //     this.setState({ chosenDate: new Date(Date.GMT(2019, 2, 18)) });
+    // }
 
     let home_notification = 5;
     let profile_notification = 5;
@@ -35,7 +32,7 @@ export default class SOEditItemScreen extends Component {
       <Container>
       {/* Search bar with drawer */}
       <View searchBar style={{flexDirection: 'row', paddingTop:26 , marginBottom: 12, paddingBottom: 6, alignContent:"center", backgroundColor: "darkblue", top: 0}}>
-        <Button transparent onPress={() => this.props.navigation.navigate('SOItemList')} >
+        <Button transparent onPress={() => navigation.navigate('SOItemList')} >
               <Ionicons
                 name='arrow-back-outline'
                 style={{ fontSize: 30, marginTop:4,marginRight:12,marginLeft:12 ,color: 'white'}}
@@ -140,17 +137,17 @@ export default class SOEditItemScreen extends Component {
         {/* Footer */}
         <View style={{flexDirection: 'row',alignContent:"center", backgroundColor: "darkblue"}}>
           <FooterTab transparent style={{backgroundColor: "darkblue"}}>
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOHome')}>
+            <Button style={{marginTop:5}} onPress={() => navigation.navigate('SOHome')}>
               <Icon style={{color:'white'}} name="home" />
               <Text style={{color:'white'}}> Home</Text>
             </Button>
 
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOProfile')}>
+            <Button style={{marginTop:5}} onPress={() => navigation.navigate('SOProfile')}>
               <Icon name="person" style={{color:'white'}}/>
               <Text style={{color:'white'}}>Profile</Text>
             </Button>
 
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOContactUs')}>
+            <Button style={{marginTop:5}} onPress={() => navigation.navigate('SOContactUs')}>
               <Icon style={{color:'white'}} name="call" />
               <Text style={{color:'white'}} >Contact Us</Text>
             </Button>
@@ -161,7 +158,6 @@ export default class SOEditItemScreen extends Component {
     );
 
   }
-}
 
 const styles = StyleSheet.create({
     InputStyle:{
@@ -183,3 +179,5 @@ const styles = StyleSheet.create({
         alignSelf:'center'
     }
 })
+
+export default SOEditItemScreen;

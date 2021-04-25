@@ -4,8 +4,8 @@ import { Entypo,Ionicons } from '@expo/vector-icons';
 import { Container,FooterTab,Badge, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right, View } from 'native-base';
 
 
-export default class SOViewRequestScreen extends Component {
-  render() {
+const SOViewRequestScreen = ({navigation}) => {
+ 
     let home_notification = 5;
     let profile_notification = 5;
     let settings_notification = 5;
@@ -13,7 +13,7 @@ export default class SOViewRequestScreen extends Component {
       <Container>
         {/* Search bar with drawer */}
         <View searchBar style={{flexDirection: 'row', paddingTop:26 , marginBottom: 12, paddingBottom: 6, alignContent:"center", backgroundColor: "darkblue", top: 0}}>
-        <Button transparent onPress={() => this.props.navigation.navigate('SORequests')} >
+        <Button transparent onPress={() => navigation.navigate('SORequests')} >
               <Ionicons
                 name='arrow-back-outline'
                 style={{ fontSize: 30, marginTop:4,marginRight:12,marginLeft:12 ,color: 'white'}}
@@ -54,17 +54,17 @@ export default class SOViewRequestScreen extends Component {
         {/* Footer */}
         <View style={{flexDirection: 'row',alignContent:"center", backgroundColor: "darkblue"}}>
           <FooterTab transparent style={{backgroundColor: "darkblue"}}>
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOHome')}>
+            <Button style={{marginTop:5}} onPress={() => navigation.navigate('SOHome')}>
               <Icon style={{color:'white'}} name="home" />
               <Text style={{color:'white'}}> Home</Text>
             </Button>
 
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOProfile')}>
+            <Button style={{marginTop:5}} onPress={() => navigation.navigate('SOProfile')}>
               <Icon name="person" style={{color:'white'}}/>
               <Text style={{color:'white'}}>Profile</Text>
             </Button>
 
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOContactUs')}>
+            <Button style={{marginTop:5}} onPress={() => navigation.navigate('SOContactUs')}>
               <Icon style={{color:'white'}} name="call" />
               <Text style={{color:'white'}} >Contact Us</Text>
             </Button>
@@ -75,7 +75,6 @@ export default class SOViewRequestScreen extends Component {
       </Container>
     );
   }
-}
 
 const styles = StyleSheet.create({
   textStyles:{
@@ -103,3 +102,5 @@ const styles = StyleSheet.create({
     fontWeight:'bold'
   }
 })
+
+export default SOViewRequestScreen;
