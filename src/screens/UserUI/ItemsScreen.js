@@ -1,16 +1,38 @@
-import React, { Component,useState } from 'react';
-import {  Alert, Modal, StyleSheet, Pressable, View, Image} from 'react-native';
+import React, { Component,useState,useEffect } from 'react';
+import { ActivityIndicator, StyleSheet, Pressable, View, Image,FlatList} from 'react-native';
 import { Container, InputGroup,FooterTab,Footer,Badge, Header,Item,Input, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
-import { FontAwesome5,Ionicons } from '@expo/vector-icons'; 
-import StarRating from 'react-native-star-rating';
-import { DrawerActions } from 'react-navigation-drawer';
-import { NavigationActions } from 'react-navigation';
+import {Ionicons} from '@expo/vector-icons'; 
+import firestore from "@react-native-firebase/firestore";
+import ItemComponent from '../components/ItemComponent'
 
-export default class ItemsScreen extends Component {
+const ItemsScreen = () => {
 
-  render() {
+  const [loading, setLoading] = useState(true); // Set loading to true on component mount
+  const [items, setItems] = useState([]); // Initial empty array of users
 
-    return (
+  useEffect(() => {
+    const subscriber = firestore()
+      .collection('CarStuff')
+      .onSnapshot(querySnapshot => {
+        const items = [];
+  
+        querySnapshot.forEach(documentSnapshot => {
+          items.push({
+            ...documentSnapshot.data(),
+            key: documentSnapshot.id,
+          });
+        });
+  
+        setItems(items);
+        setLoading(false);
+      });
+  
+    // Unsubscribe from events when no longer in use
+    return () => subscriber();
+  }, []);
+  // console.log(items[0].fname)
+
+  return (
       <Container>
         {/* Item Card */}
         {/* Search bar with nav back */}
@@ -30,59 +52,34 @@ export default class ItemsScreen extends Component {
       </Button>
       </View>
       {/* End Search bar with nav back */}
-
       <Content>
       {/* Filter Button */}
-        <Button rounded style={{marginLeft:5,marginBottom:5,backgroundColor:'darkred'}}>
+        <Button rounded style={{marginLeft:5,marginBottom:5,backgroundColor:'darkred'}} >
           <Icon name='filter' /> 
           <Text style={{marginLeft:-27}}> Filter </Text>
         </Button>
       {/* End filter button */}
-          <Card style={{borderRadius:3}}>
-            <CardItem>
-              <Left>
-                <Body style={{marginBottom:8}}>
-                  <Text style={{fontWeight:'bold',fontSize:18}}>Mirror</Text>
-                  <Text  style={{fontWeight:'bold'}} note>Hyundai Accent 2009</Text>
-                </Body>
-              </Left>
-            </CardItem>
-            <CardItem cardBody>
-              <Image source={require("../../../assets/mirror.jpg")} style={{height: 200, width: null, flex: 1}}/>
-            </CardItem>
-            <CardItem>
-              <Left>
-                <Button transparent>
-                  <Icon active style={{ color:"darkred"}} name="person" />
-                  <Text style={{marginLeft:-10,fontWeight:'bold',marginTop:5,color:'darkred',fontSize:15}}>Seller X</Text>
-                </Button>
-              </Left>
-              <Body>
-                <View style={{flexDirection:'row'}}>
-                <FontAwesome5 name="coins" size={20} color="black" style={{marginTop:14,marginLeft:17}}/>
-                <Text style={styles.textStyle}>2000 EGP</Text>
-                </View>
-              </Body>
-              <Right>
-              <Button style={styles.cartItemStyle} large style={{height:30,marginRight:3}} transparent>
-                <FontAwesome5 name="shopping-cart" style={{ color:"darkred",marginRight:3,marginTop:3}} size={20} color="black" />
-                </Button>
-              </Right>
-            </CardItem>
-            <CardItem style={{marginLeft:'auto'}}>
-              <Left>
-                <Text style={styles.rateStyle}> Rate </Text>
-              </Left>
-              <Right>
-              <Button style={styles.cartItemStyle} transparent onPress={() => this.props.navigation.navigate('ItemDetails')}>
-                  <Text style={{fontSize: 16,fontWeight:'bold',marginRight:-15,color:'darkred'}}> See Item Details </Text>
-                  <Icon active style={{fontSize: 25, color: 'darkred'}} name="arrow-forward" />
-                </Button>
-              </Right>
-            </CardItem>
-          </Card>
-        </Content>
-        {/* Footer */}
+
+
+    <FlatList
+      data={items}
+      renderItem={({ item }) => {
+         return(    
+         <ItemComponent 
+          itemName ={item.Name}
+          carBrand={item.Car_Brand}
+          carModel={item.Car_Model}
+          price={item.Price}
+          itemImg={require(item.Image_Path)}
+          />);
+      }}
+    />
+
+
+      
+        
+      </Content>
+      {/* Footer */}
         <View style={{flexDirection: 'row',alignContent:"center", backgroundColor: "darkred"}}>
           <FooterTab transparent style={{backgroundColor: "darkred"}}>
             <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('Home')}>
@@ -104,7 +101,6 @@ export default class ItemsScreen extends Component {
         {/* End Footer */}
       </Container>
     );
-  }
 }
 
 const styles = StyleSheet.create({
@@ -131,3 +127,5 @@ const styles = StyleSheet.create({
     color:'black'
   }
 })
+
+export default ItemsScreen;
