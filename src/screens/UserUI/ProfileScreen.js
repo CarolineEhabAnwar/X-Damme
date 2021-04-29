@@ -36,9 +36,8 @@ const ProfileScreen = ({navigation}) => {
                 </View>
               </View>
 
-              <View style={styles.body}>
+              <View>
                 <View style={styles.bodyContent}>
-
                   <Button style={styles.menuBox} onPress={() => navigation.navigate('MyCars')}>
                     <FontAwesome5 name="car-side" size={35} color="white" />
                     <Text style={styles.info}>My Cars</Text>
@@ -115,9 +114,8 @@ const styles = StyleSheet.create({
     fontWeight:'800',
   },
   bodyContent: {
-    flex: 1,
-    alignItems: 'center',
     padding:30,
+    alignSelf:'center'
   },
   textInfo:{
     fontSize:18,

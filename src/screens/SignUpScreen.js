@@ -39,6 +39,8 @@ const SignupScreen = ({navigation}) => {
   const {register} = useContext(AuthContext);
   const [selectedId, setSelectedId] = useState(null);
   const [type, setType] = useState("");
+  const [cart,setCart] = useState([]);
+ 
 
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? "#ab0000" : "white";
@@ -50,6 +52,7 @@ const SignupScreen = ({navigation}) => {
         onPress={() => {
           setSelectedId(item.id);
           setType(item.title);
+          setCart([]);
         }}
         backgroundColor={{ backgroundColor }}
         textColor={{ color }}
@@ -58,29 +61,10 @@ const SignupScreen = ({navigation}) => {
   };
   
 
-  
 
   return (
     
     <ScrollView contentContainerStyle={styles.container}>
-{/* 
-    <DropDownPicker
-        items={[
-            {label: 'USA', value: 'usa', icon: () => <Icon name="flag" size={18} color="#900" />, hidden: true},
-            {label: 'UK', value: 'uk', icon: () => <Icon name="flag" size={18} color="#900" />},
-            {label: 'France', value: 'france', icon: () => <Icon name="flag" size={18} color="#900" />},
-        ]}
-        // defaultValue={this.state.country}
-        containerStyle={{height: 40}}
-        style={{backgroundColor: '#fafafa'}}
-        itemStyle={{
-            justifyContent: 'flex-start'
-        }}
-        dropDownStyle={{backgroundColor: '#fafafa'}}
-        // onChangeItem={item => this.setState({
-        //     country: item.value
-        // })}
-    /> */}
 
       <Text style={styles.text}>Create an account</Text>
     
@@ -165,7 +149,7 @@ const SignupScreen = ({navigation}) => {
           else if(type === "")
             alert("Please select a type.");
           else{
-            register(fname, lname, address, email, password, type);
+            register(fname, lname, address, email, password, type,cart);
           }
         }}
       />
