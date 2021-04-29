@@ -12,25 +12,30 @@ const ItemsScreen = ({ navigation }) => {
   const [items, setItems] = useState([]); // Initial empty array of users
 
   useEffect(() => {
-    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
-    const subscriber = firestore()
-      .collection('CarStuff')
-      .onSnapshot(querySnapshot => {
-        const items = [];
-
-        querySnapshot.forEach(documentSnapshot => {
-          items.push({
-            ...documentSnapshot.data(),
-            key: documentSnapshot.id,
+    try{
+      LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+      const subscriber = firestore()
+        .collection('CarStuff')
+        .onSnapshot(querySnapshot => {
+          const items = [];
+  
+          querySnapshot.forEach(documentSnapshot => {
+            items.push({
+              ...documentSnapshot.data(),
+              key: documentSnapshot.id,
+            });
           });
+  
+          setItems(items);
+          setLoading(false);
         });
+  
+      // Unsubscribe from events when no longer in use
+      return () => subscriber();
+    }catch(error){
+      alert(error);
+    }
 
-        setItems(items);
-        setLoading(false);
-      });
-
-    // Unsubscribe from events when no longer in use
-    return () => subscriber();
   }, []);
   // console.log(items[0].fname)
 
@@ -71,6 +76,10 @@ const ItemsScreen = ({ navigation }) => {
                 carBrand={item.Car_Brand}
                 carModel={item.Car_Model}
                 price={item.Price}
+                madeIn={item.Made_In}
+                manufacture_Date={item.Manufacture_Date}
+                quality={item.Quality}
+                shop_owner_id={item.Shop_Owner_ID}
                 itemImg={require("../../../assets/mirror.jpg")}
               />);
           }}

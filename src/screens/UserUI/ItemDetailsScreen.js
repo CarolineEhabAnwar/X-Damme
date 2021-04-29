@@ -1,11 +1,14 @@
-import React, { Component,useState } from 'react';
+import React from 'react';
 import { Image,StyleSheet,View } from 'react-native';
 import { Container,FooterTab,Footer,Badge,InputGroup,Input, Header, Content, Card, Icon, CardItem,Thumbnail, Text, Button, Left, Body, Right } from 'native-base';
 import { DrawerActions } from 'react-navigation-drawer';
 import { FontAwesome5,Ionicons } from '@expo/vector-icons'; 
 import Modal from 'react-native-modal';
 
-const ItemDetailsScreen = ({navigation}) => {
+
+const ItemDetailsScreen = ({navigation, route}) => {
+
+  console.log(route.params)
 
     return (
       <Container>
@@ -26,14 +29,14 @@ const ItemDetailsScreen = ({navigation}) => {
             <Image source={require("../../../assets/mirror.jpg")} style={{marginBottom:20,height: 200, width: null}}/>
               <CardItem style={{marginHorizontal:1,borderWidth:3,borderColor:'darkred'}}>
                 <Body>
-                  <Text style={styles.textStyles}>Name: -</Text>
-                  <Text style={styles.textStyles}>Price: -</Text>
-                  <Text style={styles.textStyles}>Car Brand: -</Text>
-                  <Text style={styles.textStyles}>Car Model: -</Text>
-                  <Text style={styles.textStyles}>Quality: -</Text>
-                  <Text style={styles.textStyles}>Made In: -</Text>
-                  <Text style={styles.textStyles}>Manufacture Date: -</Text>
-                  <Text style={styles.textStyles}>Sold By: -</Text>
+                  <Text style={styles.textStyles}>Name: {route.params.ItemName}</Text>
+                  <Text style={styles.textStyles}>Price: {route.params.Price}</Text>
+                  <Text style={styles.textStyles}>Car Brand: {route.params.CarBrand}</Text>
+                  <Text style={styles.textStyles}>Car Model: {route.params.CarModel}</Text>
+                  <Text style={styles.textStyles}>Quality: {route.params.Quality}</Text>
+                  <Text style={styles.textStyles}>Made In: {route.params.MadeIn}</Text>
+                  <Text style={styles.textStyles}>Manufacture Date: {route.params.Manufacture_Date}</Text>
+                  <Text style={styles.textStyles}>Shop Owner: {route.params.Shop_Owner}</Text>
                   <View style={{flexDirection:'row',alignSelf:'center'}}>
                     <Button style={styles.buttonStyle}>
                       <Icon style={{marginRight:-6}} name="pencil-outline"></Icon>

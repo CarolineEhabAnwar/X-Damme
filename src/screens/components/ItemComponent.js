@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Component,useState , useEffect } from 'react';
+import firestore from '@react-native-firebase/firestore';
 import { StyleSheet, View, Image } from 'react-native';
 import { Card, CardItem, Text, Button, Icon, Left, Body, Right } from 'native-base';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -8,6 +9,20 @@ import { useNavigation } from '@react-navigation/native';
 const ItemComponent = (props) => {
   const navigation = useNavigation();
   
+  const[shop_Owner_Name,setShop_Owner_name] = useState("");
+
+  useEffect(() => {
+    try{
+
+      firestore().collection('users').doc(props.shop_owner_id).get().then((data) =>{
+        setShop_Owner_name(data.data().fname+" "+data.data().lname)
+      });
+
+    }catch(error){
+      alert(error);
+    }
+  });
+
   return (
     <Card style={{ borderRadius: 3 }}>
       <CardItem>
@@ -25,7 +40,7 @@ const ItemComponent = (props) => {
         <Left>
           <Button transparent>
             <Icon active style={{ color: "darkred" }} name="person" />
-            <Text style={{ marginLeft: -10, fontWeight: 'bold', marginTop: 5, color: 'darkred', fontSize: 15 }}>{props.seller}</Text>
+            <Text style={{ marginLeft: -7, fontWeight: 'bold', marginTop: 5, color: 'darkred', fontSize: 15 }}>{shop_Owner_Name}</Text>
           </Button>
         </Left>
         <Body>
@@ -45,7 +60,17 @@ const ItemComponent = (props) => {
           <Text style={styles.rateStyle}> {props.rate} </Text>
         </Left>
         <Right>
-          <Button style={styles.cartItemStyle} transparent onPress={() => navigation.navigate('ItemDetails')}>
+          <Button style={styles.cartItemStyle} transparent onPress={() => navigation.navigate('ItemDetails',{
+          ItemName: props.itemName,
+          CarBrand: props.carBrand,
+          CarModel: props.carModel,
+          Price: props.price,
+          MadeIn: props.madeIn,
+          Manufacture_Date: props.manufacture_Date,
+          Quality: props.quality,
+          Shop_Owner: shop_Owner_Name,
+          ItemIMG: props.itemImg
+          })}>
             <Text style={{ fontSize: 16, fontWeight: 'bold', marginRight: -15, color: 'darkred' }}> See Item Details </Text>
             <Icon active style={{ fontSize: 25, color: 'darkred' }} name="arrow-forward" />
           </Button>

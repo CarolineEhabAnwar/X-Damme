@@ -25,6 +25,7 @@ const Routes = () => {
   if (initializing) return null;
 
   if(user){
+    console.log(user.uid);
     if(typeUsed != "Default")
     {
       return (
