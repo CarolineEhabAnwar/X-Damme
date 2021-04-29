@@ -44,7 +44,7 @@ const ItemDetailsScreen = ({navigation, route}) => {
                     </Button>
                     <Button style={styles.buttonStyle}>
                       <Icon style={{marginRight:-6}} name="cart"></Icon>
-                      <Text style={styles.buttonTextStyle}>Buy Now</Text>
+                      <Text style={styles.buttonTextStyle}>Add to Cart</Text>
                     </Button>
                   </View>
                 </Body>

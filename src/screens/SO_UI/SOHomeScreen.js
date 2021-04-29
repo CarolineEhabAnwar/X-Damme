@@ -31,7 +31,7 @@ const SOHomeScreen = ({ navigation }) => {
         <Container style={{}}>
             {/* Search bar with drawer */}
             <View searchBar style={{ flexDirection: 'row', paddingTop: 26, marginBottom: 12, paddingBottom: 6, alignContent: "center", backgroundColor: "darkblue", top: 0 }}>
-                <Button transparent onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())} >
+                <Button transparent onPress={() => navigation.dispatch(DrawerActions.openDrawer())} >
                     <Icon
                         name='home'
                         ios='ios-menu' android="md-menu" style={{ fontSize: 28, color: 'white' }}
@@ -48,25 +48,25 @@ const SOHomeScreen = ({ navigation }) => {
                         <Text style={styles.title}>{name}</Text>
                         <View style={{ flexDirection: "row", justifyContent: "space-around", marginTop: 20 }}>
                             <Button rounded info style={{ backgroundColor: 'darkblue', width: 150, justifyContent: "center", top: 40, marginHorizontal: 10 }}
-                                onPress={() => this.props.navigation.navigate('SOAddItem')}
+                                onPress={() => navigation.navigate('SOAddItem')}
                             >
                                 <Ionicons name="add-circle-outline" style={styles.IconsStyle} size={25} color="white" />
                                 <Text style={{ fontWeight: 'bold' }}> Add Item </Text>
                             </Button>
                             <Button rounded style={{ backgroundColor: 'darkblue', width: 150, justifyContent: "center", top: 40, marginHorizontal: 10 }}
-                                onPress={() => this.props.navigation.navigate('SOItemList')}>
+                                onPress={() => navigation.navigate('SOItemList')}>
                                 <FontAwesome5 name="list-alt" size={21} style={styles.IconsStyle} color="white" />
                                 <Text style={{ fontWeight: 'bold' }}> Items List </Text>
                             </Button>
                         </View>
                         <View style={{ flexDirection: "row", justifyContent: "space-around", marginBottom: 50, marginTop: 30 }}>
                             <Button rounded info style={{ backgroundColor: 'darkblue', width: 150, justifyContent: "center", top: 40, marginHorizontal: 10 }}
-                                onPress={() => this.props.navigation.navigate('SORequests')}>
+                                onPress={() => navigation.navigate('SORequests')}>
                                 <FontAwesome5 name="buffer" size={24} style={styles.IconsStyle} color="white" />
                                 <Text style={{ fontWeight: 'bold' }}> Requests </Text>
                             </Button>
                             <Button rounded info style={{ backgroundColor: 'darkblue', width: 150, justifyContent: "center", top: 40, marginHorizontal: 10 }}
-                                onPress={() => this.props.navigation.navigate('SOAddOffer')}
+                                onPress={() => navigation.navigate('SOAddOffer')}
                             >
                                 <FontAwesome name="percent" size={22} style={styles.IconsStyle} color="white" />
                                 <Text style={{ fontWeight: 'bold' }}> Add offer </Text>
@@ -78,17 +78,17 @@ const SOHomeScreen = ({ navigation }) => {
             {/* Footer */}
             <View style={{ flexDirection: 'row', alignContent: "center", backgroundColor: "darkblue" }}>
                 <FooterTab transparent style={{ backgroundColor: "darkblue" }}>
-                    <Button style={{ marginTop: 5 }} onPress={() => this.props.navigation.navigate('SOHome')}>
+                    <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('SOHome')}>
                         <Icon style={{ color: 'white' }} name="home" />
                         <Text style={{ color: 'white' }}> Home</Text>
                     </Button>
 
-                    <Button style={{ marginTop: 5 }} onPress={() => this.props.navigation.navigate('SOProfile')}>
+                    <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('SOProfile')}>
                         <Icon name="person" style={{ color: 'white' }} />
                         <Text style={{ color: 'white' }}>Profile</Text>
                     </Button>
 
-                    <Button style={{ marginTop: 5 }} onPress={() => this.props.navigation.navigate('SOContactUs')}>
+                    <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('SOContactUs')}>
                         <Icon style={{ color: 'white' }} name="call" />
                         <Text style={{ color: 'white' }} >Contact Us</Text>
                     </Button>
