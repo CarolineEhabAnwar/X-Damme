@@ -16,7 +16,6 @@ import {AuthContext} from '../../navigation/AuthProvider';
 async function addItems(x_name, x_price, x_made_in, x_manufacture_date, x_car_model,
   x_car_brand, x_item_quality, x_image_path, user) {
   try {
-    console.log(user.uid);
     const Added_Item = await firestore().collection("CarStuff").add({
       Name: x_name,
       Price: x_price,

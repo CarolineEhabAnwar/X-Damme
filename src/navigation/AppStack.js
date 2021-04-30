@@ -32,6 +32,7 @@ import EditKMScreen from "../screens/UserUI/EditKMScreen"
 import MyRequestsScreen from "../screens/UserUI/MyRequestsScreen"
 import MyRequestsDetailsScreen from "../screens/UserUI/MyRequestsDetailsScreen"
 import CartScreen from "../screens/UserUI/CartScreen"
+import CartViewItemScreen from "../screens/UserUI/CartViewItemScreen"
 
 //Importing Mechanic Screens
 import MechAddOfferScreen from "../screens/Mech_UI/MechAddOfferScreen"
@@ -166,6 +167,11 @@ const UserStack = ({navigation}) => (
     <Stack.Screen
       name="Cart"
       component={CartScreen}
+      options={{header: () => null}}
+    />
+    <Stack.Screen
+      name="CartViewItem"
+      component={CartViewItemScreen}
       options={{header: () => null}}
     />
   </Stack.Navigator>

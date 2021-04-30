@@ -7,11 +7,11 @@ import ItemComponent from '../components/ItemComponent'
 
 const ItemsScreen = ({ navigation }) => {
 
-  const [items, setItems] = useState([]); // Initial empty array of users
+  LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+  const [items, setItems] = useState([]); // Initial empty array of Items
 
   useEffect(() => {
     try{
-      LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
       const subscriber = firestore()
         .collection('CarStuff')
         .onSnapshot(querySnapshot => {

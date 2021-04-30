@@ -8,38 +8,72 @@ import firestore from "@react-native-firebase/firestore";
 
 const CartScreen = ({ navigation, route }) => {
 
-    // const { user } = useContext(AuthContext);
+    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
-     const [items, setItems] = useState([]); // Initial empty array of users
+    const { user } = useContext(AuthContext);
+    const [items, setItems] = useState([]);
+    const [items_ID, setItems_ID] = useState([]);
 
-    // useEffect(() => {
-    //     try {
-    //         console.log("Da array el items: ");
-    //         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
-    //         const subscriber = () =>{ 
-    //             firestore().collection('users').doc(user.uid).get().then((User_Data) => {
-    //             let temp_items = [];      
-    //             User_Data.data().cart.array.forEach(element => {
-    //                 temp_items.push(element)
-    //             });
-    //             // temp_items.array.forEach(element => {
-    //             //     firestore().collection('CarStuff').doc(element).get().then((Car_Staff_Data)=> temp_item_names.push(Car_Staff_Data.data().Name));
-    //             // });
-    //             setItems(temp_items);
-    //             console.log("Da array el items: " + items);
-    //             console.log("Da array el tempitems: " + temp_items);
-    //             console.log("W da array el UserData.carts: " + User_Data.data().cart[0]);
-    //         });}
-    //         // Unsubscribe from events when no longer in use
-    //         return () => subscriber();
-    //     } catch (error) {
-    //         alert(error);
-    //     }
 
-    // }, []);
+    function Get_Item_ID() {
+        useEffect(() => {
+            try {
+                if (user.uid != null) {
+                    const subscriber = firestore()
+                        .collection('users')
+                        .doc(user.uid)
+                        .onSnapshot(documentSnapshot => {
+                            if (documentSnapshot.exists) {
+                                let temp_arr = [];
+                                documentSnapshot.data().cart.forEach(element => {
+                                    temp_arr.push(element);
+                                });
+                                setItems_ID(temp_arr);
+                            }
+                        });
+                    // Stop listening for updates when no longer required
+                    return () => subscriber();
+                }
+            } catch (error) {
+                alert(error);
+            }
+        }, []);
+    }
+
+    function Get_Item_Name(items_ID) {
+        useEffect(() => {
+            try {
+                if (items_ID.length != 0) {
+                    let temp_arr = [];
+                    let Counter = 0;
+                    items_ID.forEach(element => {
+                        const subscriber = firestore()
+                            .collection('CarStuff')
+                            .doc(element)
+                            .onSnapshot(documentSnapshot => {
+                                if (documentSnapshot.exists) {      
+                                    let temp_temp_arr = [];
+                                    temp_temp_arr.push(element,documentSnapshot.data(),Counter.toString());
+                                    Counter=Counter+1;
+                                    temp_arr.push(temp_temp_arr);
+                                    setItems(temp_arr);
+                                }
+                            });
+                        // Stop listening for updates when no longer required
+                        return () => subscriber();
+                    });
+                }
+            } catch (error) {
+                alert(error);
+            }
+        }, [items_ID]);
+    }
+
+    Get_Item_ID();
+    Get_Item_Name(items_ID);
 
     return (
-        <Container >
+        <Container>
 
             {/* Text with drawer */}
             <View searchBar style={{ flexDirection: 'row', paddingTop: 25, marginBottom: 0, paddingBottom: 6, alignContent: "center", backgroundColor: "darkred", top: 0 }}>
@@ -55,21 +89,52 @@ const CartScreen = ({ navigation, route }) => {
 
             <Content>
                 <FlatList
+                    style={{}}
                     data={items}
+                    keyExtractor={item => item[2]}
                     renderItem={({ item }) => {
                         return (
                             <ListItem>
                                 <Body>
                                     <View style={{ flexDirection: 'row' }}>
-                                        <Text style={{ fontWeight: '500', marginLeft: 2, marginRight: 50 }}>Mirror</Text>
+                                        <Text style={{ fontWeight: '500', marginLeft: 2, marginRight: 50 }}>{item[1].Name}</Text>
                                     </View>
                                 </Body>
                                 <Right>
                                     <View style={{ flexDirection: 'row', justifyContent: "flex-start" }}>
-                                        <Button transparent onPress={() => navigation.navigate('ItemDetails')}>
+                                        <Button transparent onPress={() => navigation.navigate('CartViewItem', {
+                                            ItemName: item[1].Name,
+                                            CarBrand: item[1].Car_Brand,
+                                            CarModel: item[1].Car_Model,
+                                            Price: item[1].Price,
+                                            MadeIn: item[1].Made_In,
+                                            Manufacture_Date: item[1].Manufacture_Date,
+                                            Quality: item[1].Quality,
+                                            Shop_Owner_ID: item[1].Shop_Owner_ID,
+                                            ItemIMG: item[1].Image_Path,
+                                            Item_ID: item[0]
+                                        })}>
                                             <Text style={{ color: 'blue', fontWeight: 'bold' }}>View</Text>
                                         </Button>
-                                        <Button transparent>
+                                        <Button transparent onPress={async () => {
+                                            try {
+                                                await firestore().collection('users').doc(user.uid).get().then((User_Data) => {
+                                                    let temp_cart = [];
+                                                    temp_cart = User_Data.data().cart;
+                                                    var index = temp_cart.indexOf(item[0]);
+                                                    temp_cart.splice(index, 1);
+                                                    firestore().collection('users').doc(user.uid).update({
+                                                        cart: temp_cart
+                                                    }).then(() => {
+                                                        alert("Removed from Cart.");
+                                                    });
+                                                });
+                                            }
+                                            catch (error) {
+                                                alert(error);
+                                            }
+                                        }}
+                                        >
                                             <Text style={{ color: 'darkred', fontWeight: 'bold', width: 90 }}>Remove</Text>
                                         </Button>
                                     </View>
@@ -79,7 +144,7 @@ const CartScreen = ({ navigation, route }) => {
                     }}
                 />
             </Content>
-
+            
             {/* Footer */}
             <View style={{ flexDirection: 'row', alignContent: "center" }}>
                 <FooterTab transparent style={{ backgroundColor: "darkred" }}>

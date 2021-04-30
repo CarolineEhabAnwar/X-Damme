@@ -13,18 +13,28 @@ const ItemComponent = (props) => {
   
   const[shop_Owner_Name,setShop_Owner_name] = useState("");
 
-  useEffect(() => {
-    async ()=>{
-      try{
-        await firestore().collection('users').doc(props.shop_owner_id).get().then((User_daa) =>{
-          setShop_Owner_name(User_daa.data().fname+" "+User_daa.data().lname)
-        });
-  
-      }catch(error){
+  function Get_Shop_Owner_Name() {
+    useEffect(() => {
+      try {
+        if (props.shop_owner_id != null) {
+          const subscriber = firestore()
+            .collection('users')
+            .doc(props.shop_owner_id)
+            .onSnapshot(documentSnapshot => {
+              if (documentSnapshot.exists)
+              setShop_Owner_name(documentSnapshot.data().fname+" "+documentSnapshot.data().lname);
+            });
+          // Stop listening for updates when no longer required
+          return () => subscriber();
+        }
+      } catch (error) {
         alert(error);
       }
-    }
-  });
+    }, []);
+  }
+
+
+  Get_Shop_Owner_Name();
 
   return (
     <Card style={{ borderRadius: 3 }}>
