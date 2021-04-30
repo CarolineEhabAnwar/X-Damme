@@ -2,7 +2,7 @@ import React, { useContext, Component } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import { Container, FooterTab, Badge, Header, Content, Item, Input, Icon, Text, Radio, Picker, Form, Button, Image } from 'native-base';
 import { TouchableOpacity } from 'react-native';
-import { Fontisto, Ionicons } from '@expo/vector-icons';
+import { Feather, Ionicons } from '@expo/vector-icons';
 import ImagePicker from "react-native-image-crop-picker"
 import SOProfileScreen from './SOProfileScreen';
 import firestore from "@react-native-firebase/firestore";
@@ -138,13 +138,14 @@ const SOAddItemScreen = ({ navigation }) => {
           </Item>
 
           <Item regular style={styles.InputStyle}>
-            <Button
-              style={{ height: 45, position: 'relative', backgroundColor: 'darkblue', margin: 2 }}
+            <Button transparent
+              style={{ height: 45,fontSize:50, color: 'darkblue', margin: 2 }}
               onPress={async () => {
                 choosePhotoFromLibrary();
               }}>
               <Text> Choose Photo</Text>
             </Button>
+            {uploading ? <Feather name="loader" size={24} color="darkblue" /> : null}
             <Button
               style={{ height: 45, position: 'relative', backgroundColor: 'darkblue', margin: 2 }}
               onPress={async () => {
@@ -153,6 +154,7 @@ const SOAddItemScreen = ({ navigation }) => {
               }}>
               <Text> Upload Photo</Text>
             </Button>
+            
           </Item>
 
 
@@ -211,7 +213,7 @@ const SOAddItemScreen = ({ navigation }) => {
             alignSelf: 'flex-start',
             height: 50
           }}>
-            <Text style={{ marginLeft: 10, marginRight: 5 }}>
+            <Text style={{ marginLeft: 10, marginRight: 5,color:'darkblue' }}>
               Manufacture Date:
             </Text>
             <DatePicker
@@ -262,7 +264,7 @@ const SOAddItemScreen = ({ navigation }) => {
             </Picker>
           </Item>
 
-          {uploading ? <Text>Uploading...</Text> : null}
+          
 
           <Button
             onPress={async () => {

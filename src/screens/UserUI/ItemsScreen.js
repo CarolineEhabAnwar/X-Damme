@@ -64,7 +64,7 @@ const ItemsScreen = ({ navigation }) => {
           <Text style={{ marginLeft: -27 }}> Filter </Text>
         </Button>
         {/* End filter button */}
-        {loading? <Text> Loading... </Text> :
+        {loading? <Text style={styles.loadingStyle}> Loading Items... </Text> :
         <FlatList
           data={items}
           renderItem={({ item }) => {
@@ -133,6 +133,14 @@ const styles = StyleSheet.create({
     marginLeft: 0,
     fontWeight: 'bold',
     color: 'black'
+  },
+  loadingStyle:{
+    color:'darkred',
+    alignSelf:'center',
+    fontSize:22,
+    textAlignVertical:'center',
+    fontWeight:'bold',
+    marginTop:180
   }
 })
 

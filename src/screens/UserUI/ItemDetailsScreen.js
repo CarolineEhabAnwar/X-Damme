@@ -31,15 +31,31 @@ const ItemDetailsScreen = ({navigation, route}) => {
             <Image source={{uri: route.params.ItemIMG}} style={{marginBottom:20,height: 200, width: null}}/>
               <CardItem style={{marginHorizontal:1,borderWidth:3,borderColor:'darkred'}}>
                 <Body>
-                  <Text style={styles.textStyles}>Name: {route.params.ItemName}</Text>
-                  <Text style={styles.textStyles}>Price: {route.params.Price}</Text>
-                  <Text style={styles.textStyles}>Car Brand: {route.params.CarBrand}</Text>
-                  <Text style={styles.textStyles}>Car Model: {route.params.CarModel}</Text>
-                  <Text style={styles.textStyles}>Quality: {route.params.Quality}</Text>
-                  <Text style={styles.textStyles}>Made In: {route.params.MadeIn}</Text>
-                  <Text style={styles.textStyles}>Manufacture Date: {route.params.Manufacture_Date}</Text>
-                  <Text style={styles.textStyles}>Shop Owner: {route.params.Shop_Owner}</Text>
-                  <View style={{flexDirection:'row',alignSelf:'center'}}>
+                  <Text style={styles.textStyles}>Name: </Text>
+                  <Text style={styles.itemsTextStyle}>{route.params.ItemName}</Text>
+
+                  <Text style={styles.textStyles}>Price: </Text>
+                  <Text style={styles.itemsTextStyle}>{route.params.Price}</Text>
+
+                  <Text style={styles.textStyles}>Car Brand: </Text>
+                  <Text style={styles.itemsTextStyle}>{route.params.CarBrand}</Text>
+
+                  <Text style={styles.textStyles}>Car Model:</Text>
+                  <Text style={styles.itemsTextStyle}>{route.params.CarModel}</Text>
+
+                  <Text style={styles.textStyles}>Quality:</Text>
+                  <Text style={styles.itemsTextStyle}>{route.params.Quality}</Text>
+
+                  <Text style={styles.textStyles}>Made In:</Text>
+                  <Text style={styles.itemsTextStyle}>{route.params.MadeIn}</Text>
+
+                  <Text style={styles.textStyles}>Manufacture Date:</Text>
+                  <Text style={styles.itemsTextStyle}>{route.params.Manufacture_Date}</Text>
+
+                  <Text style={styles.textStyles}>Shop Owner:</Text>
+                  <Text style={styles.itemsTextStyle}>{route.params.Shop_Owner}</Text>
+                  
+                  <View style={{flexDirection:'row',justifyContent:'center',alignSelf:'center'}}>
                     <Button style={styles.buttonStyle}>
                       <Icon style={{marginRight:-6}} name="pencil-outline"></Icon>
                       <Text style={styles.buttonTextStyle}>Review</Text>
@@ -98,17 +114,20 @@ export default ItemDetailsScreen;
 const styles = StyleSheet.create({
   textStyles:{
     fontSize:20,
-    marginBottom:4,
     fontWeight:'bold',
     color:'black',
-    textShadowColor: 'darkred',
+    textShadowColor: 'red',
     textShadowRadius: 1.5,
      textShadowOffset: { 
         width: 0.5,
         height: 0.5
       },
-    marginBottom:10
-    
+  },
+
+  itemsTextStyle:{
+    fontSize:19,
+    marginBottom:10,
+    fontWeight:'bold',
   },
 
   buttonStyle:{

@@ -22,9 +22,9 @@ const CartViewItemScreen = ({ navigation, route }) => {
                         .collection('users')
                         .doc(route.params.Shop_Owner_ID)
                         .onSnapshot(documentSnapshot => {
-                            if (documentSnapshot.exists){
+                            if (documentSnapshot.exists) {
                                 setShop_Owner_name(documentSnapshot.data().fname + " " + documentSnapshot.data().lname);
-                            }        
+                            }
                         });
                     // Stop listening for updates when no longer required
                     return () => subscriber();
@@ -42,7 +42,7 @@ const CartViewItemScreen = ({ navigation, route }) => {
         <Container>
 
             {/* Text with drawer */}
-            <View searchBar style={{ flexDirection: 'row', paddingTop: 25, marginBottom: 12, paddingBottom: 6, alignContent: "center", backgroundColor: "darkred", top: 0 }}>
+            <View  style={{ flexDirection: 'row', paddingTop: 25, marginBottom: 12, paddingBottom: 6, alignContent: "center", backgroundColor: "darkred", top: 0 }}>
                 <Button transparent onPress={() => navigation.goBack()} >
                     <Ionicons
                         name='arrow-back-outline'
@@ -50,21 +50,38 @@ const CartViewItemScreen = ({ navigation, route }) => {
                     />
                 </Button>
                 <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '24%', paddingTop: 12, fontWeight: 'bold' }}>View Item</Text>
+                
             </View>
             {/* End Text with drawer */}
             <Content>
                 <Card style={{ marginTop: 0, flex: 0 }}>
-                    <Image source={{uri: route.params.ItemIMG}} style={{ marginBottom: 20, height: 200, width: null }} />
+                    <Image source={{ uri: route.params.ItemIMG }} style={{ marginBottom: 20, height: 200, width: null }} />
                     <CardItem style={{ marginHorizontal: 1, borderWidth: 3, borderColor: 'darkred' }}>
                         <Body>
-                            <Text style={styles.textStyles}>Name: {route.params.ItemName}</Text>
-                            <Text style={styles.textStyles}>Price: {route.params.Price}</Text>
-                            <Text style={styles.textStyles}>Car Brand: {route.params.CarBrand}</Text>
-                            <Text style={styles.textStyles}>Car Model: {route.params.CarModel}</Text>
-                            <Text style={styles.textStyles}>Quality: {route.params.Quality}</Text>
-                            <Text style={styles.textStyles}>Made In: {route.params.MadeIn}</Text>
-                            <Text style={styles.textStyles}>Manufacture Date: {route.params.Manufacture_Date}</Text>
-                            <Text style={styles.textStyles}>Shop Owner: {shop_Owner_Name}</Text>
+                            <Text style={styles.textStyles}>Name: </Text>
+                            <Text style={styles.itemsTextStyle}>{route.params.ItemName}</Text>
+
+                            <Text style={styles.textStyles}>Price: </Text>
+                            <Text style={styles.itemsTextStyle}>{route.params.Price}</Text>
+
+                            <Text style={styles.textStyles}>Car Brand: </Text>
+                            <Text style={styles.itemsTextStyle}>{route.params.CarBrand}</Text>
+
+                            <Text style={styles.textStyles}>Car Model:</Text>
+                            <Text style={styles.itemsTextStyle}>{route.params.CarModel}</Text>
+
+                            <Text style={styles.textStyles}>Quality:</Text>
+                            <Text style={styles.itemsTextStyle}>{route.params.Quality}</Text>
+
+                            <Text style={styles.textStyles}>Made In:</Text>
+                            <Text style={styles.itemsTextStyle}>{route.params.MadeIn}</Text>
+
+                            <Text style={styles.textStyles}>Manufacture Date:</Text>
+                            <Text style={styles.itemsTextStyle}>{route.params.Manufacture_Date}</Text>
+
+                            <Text style={styles.textStyles}>Shop Owner:</Text>
+                            <Text style={styles.itemsTextStyle}>{shop_Owner_Name}</Text>
+
                             <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
                             </View>
                         </Body>
@@ -118,6 +135,11 @@ const styles = StyleSheet.create({
         backgroundColor: 'darkred',
         marginRight: 10
     },
+    itemsTextStyle:{
+        fontSize:19,
+        marginBottom:10,
+        fontWeight:'bold',
+      },
 
     buttonTextStyle: {
         fontWeight: 'bold'

@@ -51,10 +51,10 @@ const CartScreen = ({ navigation, route }) => {
                             .collection('CarStuff')
                             .doc(element)
                             .onSnapshot(documentSnapshot => {
-                                if (documentSnapshot.exists) {      
+                                if (documentSnapshot.exists) {
                                     let temp_temp_arr = [];
-                                    temp_temp_arr.push(element,documentSnapshot.data(),Counter.toString());
-                                    Counter=Counter+1;
+                                    temp_temp_arr.push(element, documentSnapshot.data(), Counter.toString());
+                                    Counter = Counter + 1;
                                     temp_arr.push(temp_temp_arr);
                                     setItems(temp_arr);
                                 }
@@ -76,14 +76,18 @@ const CartScreen = ({ navigation, route }) => {
         <Container>
 
             {/* Text with drawer */}
-            <View searchBar style={{ flexDirection: 'row', paddingTop: 25, marginBottom: 0, paddingBottom: 6, alignContent: "center", backgroundColor: "darkred", top: 0 }}>
+            <View style={{ flexDirection: 'row', paddingTop: 25, justifyContent:'space-between', paddingBottom: 6, alignContent: "center", backgroundColor: "darkred", top: 0 }}>
                 <Button transparent onPress={() => navigation.goBack()}>
                     <Ionicons
                         name='arrow-back-outline'
                         style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
                     />
                 </Button>
-                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '27%', paddingTop: 12, fontWeight: 'bold' }}>My Cart</Text>
+                {/* <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '27%', paddingTop: 12, fontWeight: 'bold' }}>My Cart</Text> */}
+                <Button transparent style={{ height: 50 }}>
+                    <Icon name='cash' style={{ fontSize: 24, marginRight: -6, color: 'white' }}></Icon>
+                    <Text style={{ color: "white", fontSize: 16, fontWeight: 'bold' }}>Check Out</Text>
+                </Button>
             </View>
             {/* End Text with drawer */}
 
@@ -144,7 +148,7 @@ const CartScreen = ({ navigation, route }) => {
                     }}
                 />
             </Content>
-            
+
             {/* Footer */}
             <View style={{ flexDirection: 'row', alignContent: "center" }}>
                 <FooterTab transparent style={{ backgroundColor: "darkred" }}>
