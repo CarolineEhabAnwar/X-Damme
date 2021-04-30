@@ -49,12 +49,12 @@ const CartViewItemScreen = ({ navigation, route }) => {
                         style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
                     />
                 </Button>
-                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '21%', paddingTop: 12, fontWeight: 'bold' }}>Item Details</Text>
+                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '24%', paddingTop: 12, fontWeight: 'bold' }}>View Item</Text>
             </View>
             {/* End Text with drawer */}
             <Content>
                 <Card style={{ marginTop: 0, flex: 0 }}>
-                    <Image source={require("../../../assets/mirror.jpg")} style={{ marginBottom: 20, height: 200, width: null }} />
+                    <Image source={{uri: route.params.ItemIMG}} style={{ marginBottom: 20, height: 200, width: null }} />
                     <CardItem style={{ marginHorizontal: 1, borderWidth: 3, borderColor: 'darkred' }}>
                         <Body>
                             <Text style={styles.textStyles}>Name: {route.params.ItemName}</Text>

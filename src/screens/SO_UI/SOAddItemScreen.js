@@ -1,17 +1,24 @@
 import React, { useContext, Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import { Container, FooterTab, Badge, Header, Content, Item, Input, Icon, Text, Radio, Picker, Form, Button, Image } from 'native-base';
 import { TouchableOpacity } from 'react-native';
 import { Fontisto, Ionicons } from '@expo/vector-icons';
-import ImagePicker from "react-native-image-picker"
+import ImagePicker from "react-native-image-crop-picker"
 import SOProfileScreen from './SOProfileScreen';
 import firestore from "@react-native-firebase/firestore";
 import { useState } from "react";
 import DatePicker from 'react-native-datepicker';
 import { useNavigation } from '@react-navigation/native';
-import {AuthContext} from '../../navigation/AuthProvider';
+import { AuthContext } from '../../navigation/AuthProvider';
+import storage from '@react-native-firebase/storage';
 
-
+//npm install react-native-image-crop-picker
+//npm outdated
+//npm install @react-native-firebase/analytics@"^11.2.0"
+//npm update @react-native-firebase/analytics
+//npm update @react-native-firebase/app@"11.4.1"
+//npm install npm install react-native-firebase/storage
+//npm install --legacy-peer-deps --save  @react-native-firebase/analytics@11.4.1 @react-native-firebase/app@11.4.1
 
 async function addItems(x_name, x_price, x_made_in, x_manufacture_date, x_car_model,
   x_car_brand, x_item_quality, x_image_path, user) {
@@ -38,16 +45,69 @@ async function addItems(x_name, x_price, x_made_in, x_manufacture_date, x_car_mo
 
 const SOAddItemScreen = ({ navigation }) => {
 
-  const {user} = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
-  const [name, setName] = useState('Null');
-  const [price, setPrice] = useState('0');
-  const [made_in, setMade_in] = useState('Null');
+  const [name, setName] = useState('');
+  const [price, setPrice] = useState('');
+  const [made_in, setMade_in] = useState('');
   const [manufacture_date, setManufacture_date] = useState("2016-05-15");
   const [car_model, setCar_Model] = useState('Sunny');
   const [car_brand, setCar_Brand] = useState('Kia');
   const [item_quality, setItem_quality] = useState('Low');
-  const [image_path, setImage_path] = useState('Null');
+  const [image_path, setImage_path] = useState('');
+  const [image, setImage] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [uploadedOnce, setuploadedOnce] = useState(false);
+
+
+
+  const takePhotoFromCamera = () => {
+    ImagePicker.openCamera({
+      width: 1200,
+      height: 780,
+      cropping: true,
+    }).then((image) => {
+      const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
+      setImage(imageUri);
+    });
+  };
+
+  const choosePhotoFromLibrary = async () => {
+    ImagePicker.openPicker({
+      width: 1200,
+      height: 780,
+      cropping: true,
+    }).then((image) => {
+      const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
+      setImage(imageUri);
+    });
+  };
+
+  const Upload_The_Image = async () => {
+    const uploadUri = image;
+    let filename = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
+
+    const extension = filename.split('.').pop();
+    const name = filename.split('.').slice(0, -1).join('.');
+    filename = name + Date.now() + '.' + extension;
+
+    const storageRef = storage().ref(`photos/${filename}`)
+
+    try {
+      setUploading(true);
+      await storage().ref(`photos/${filename}`).putFile(uploadUri);
+
+      const url = await storageRef.getDownloadURL();
+      alert("Uploaded Successfully.")
+      //alert("Image Uploaded Successfullt.")
+      setUploading(false);
+      setuploadedOnce(true);
+      return url;
+    } catch (error) {
+      alert(error);
+      return null;
+    }
+  };
 
   return (
     <Container >
@@ -78,9 +138,19 @@ const SOAddItemScreen = ({ navigation }) => {
           </Item>
 
           <Item regular style={styles.InputStyle}>
-            <Input placeholder='Image Path' onChangeText={image_path => setImage_path(image_path)} />
             <Button
-              style={{ height: 45, position: 'relative', backgroundColor: 'darkblue', margin: 2 }} >
+              style={{ height: 45, position: 'relative', backgroundColor: 'darkblue', margin: 2 }}
+              onPress={async () => {
+                choosePhotoFromLibrary();
+              }}>
+              <Text> Choose Photo</Text>
+            </Button>
+            <Button
+              style={{ height: 45, position: 'relative', backgroundColor: 'darkblue', margin: 2 }}
+              onPress={async () => {
+                const imageUrl = await Upload_The_Image();
+                setImage_path(imageUrl);
+              }}>
               <Text> Upload Photo</Text>
             </Button>
           </Item>
@@ -141,31 +211,31 @@ const SOAddItemScreen = ({ navigation }) => {
             alignSelf: 'flex-start',
             height: 50
           }}>
-            <Text style={{ marginLeft: 10 ,marginRight: 5}}>
+            <Text style={{ marginLeft: 10, marginRight: 5 }}>
               Manufacture Date:
             </Text>
             <DatePicker
-                  style={{width: 200}}
-                  date={manufacture_date}
-                  mode="date"
-                  placeholder="select date"
-                  format="YYYY-MM-DD"
-                  minDate="1990-01-01"
-                  maxDate="2025-01-01"
-                  confirmBtnText="Confirm"
-                  cancelBtnText="Cancel"
-                  customStyles={{
-                    dateIcon: {
-                      position: 'absolute',
-                      left: 0,
-                      top: 4,
-                      marginLeft: 0
-                    },
-                    dateInput: {
-                      marginLeft: 36
-                    }
-                  }}              
-                  onDateChange={(manufacture_date) => setManufacture_date(manufacture_date)}
+              style={{ width: 200 }}
+              date={manufacture_date}
+              mode="date"
+              placeholder="select date"
+              format="YYYY-MM-DD"
+              minDate="1990-01-01"
+              maxDate="2025-01-01"
+              confirmBtnText="Confirm"
+              cancelBtnText="Cancel"
+              customStyles={{
+                dateIcon: {
+                  position: 'absolute',
+                  left: 0,
+                  top: 4,
+                  marginLeft: 0
+                },
+                dateInput: {
+                  marginLeft: 36
+                }
+              }}
+              onDateChange={(manufacture_date) => setManufacture_date(manufacture_date)}
             />
           </Item>
 
@@ -192,13 +262,30 @@ const SOAddItemScreen = ({ navigation }) => {
             </Picker>
           </Item>
 
+          {uploading ? <Text>Uploading...</Text> : null}
 
           <Button
-            onPress={() =>{
-              addItems(name, price, made_in, manufacture_date, car_model,car_brand, item_quality, image_path,user )}
-              // Please handle all of the errors.
-            }
-              
+            onPress={async () => {
+              if(uploading){
+                alert("Please Wait untill the uploads finshs.");
+              }
+              else if(!uploadedOnce){
+                alert("Please choose and upload an Image.");
+              }
+              else if(name == ''){
+                alert("Please insert Item Name.");
+              }
+              else if(price == ''){
+                alert("Please insert Price.");
+              }
+              else if(made_in == ''){
+                alert("Please insert Manufacture Country.");
+              }
+              else{
+                addItems(name, price, made_in, manufacture_date, car_model, car_brand, item_quality, image_path, user);            
+              }    
+            }}  // Please handle all of the errors.
+
             style={{ backgroundColor: 'darkblue', marginVertical: 20, alignSelf: 'center' }}>
             <Text>Add Item</Text>
           </Button>

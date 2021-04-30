@@ -9,7 +9,7 @@ const ItemsScreen = ({ navigation }) => {
 
   LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
   const [items, setItems] = useState([]); // Initial empty array of Items
-
+  const [loading, setloading] = useState(true);
   useEffect(() => {
     try{
       const subscriber = firestore()
@@ -24,6 +24,8 @@ const ItemsScreen = ({ navigation }) => {
             });
           });
           setItems(temp_items);
+          if(loading)
+            setloading(false);
         });
   
       // Unsubscribe from events when no longer in use
@@ -62,7 +64,7 @@ const ItemsScreen = ({ navigation }) => {
           <Text style={{ marginLeft: -27 }}> Filter </Text>
         </Button>
         {/* End filter button */}
-
+        {loading? <Text> Loading... </Text> :
         <FlatList
           data={items}
           renderItem={({ item }) => {
@@ -76,12 +78,13 @@ const ItemsScreen = ({ navigation }) => {
                 manufacture_Date={item.Manufacture_Date}
                 quality={item.Quality}
                 shop_owner_id={item.Shop_Owner_ID}
-                itemImg={require("../../../assets/mirror.jpg")}
+                itemImg={item.Image_Path}
                 cart = {item.cart}
                 itemID = {item.key}
               />);
           }}
         />
+      }
 
       </Content>
       {/* Footer */}

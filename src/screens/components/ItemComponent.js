@@ -47,7 +47,7 @@ const ItemComponent = (props) => {
         </Left>
       </CardItem>
       <CardItem cardBody>
-        <Image source={props.itemImg} style={{ height: 210, width: null, flex: 1 }} />
+        <Image source={{uri: props.itemImg}} style={{ height: 210, width: null, flex: 1 }} />
       </CardItem>
       <CardItem>
         <Left>

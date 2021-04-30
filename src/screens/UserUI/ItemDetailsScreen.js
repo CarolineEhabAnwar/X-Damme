@@ -28,7 +28,7 @@ const ItemDetailsScreen = ({navigation, route}) => {
       {/* End Text with drawer */}
       <Content>
           <Card style={{marginTop:0,flex: 0}}>
-            <Image source={require("../../../assets/mirror.jpg")} style={{marginBottom:20,height: 200, width: null}}/>
+            <Image source={{uri: route.params.ItemIMG}} style={{marginBottom:20,height: 200, width: null}}/>
               <CardItem style={{marginHorizontal:1,borderWidth:3,borderColor:'darkred'}}>
                 <Body>
                   <Text style={styles.textStyles}>Name: {route.params.ItemName}</Text>
