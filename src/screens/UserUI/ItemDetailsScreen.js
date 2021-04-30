@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {useContext} from 'react';
+import firestore from '@react-native-firebase/firestore';
+import { AuthContext } from '../../navigation/AuthProvider';
 import { Image,StyleSheet,View } from 'react-native';
 import { Container,FooterTab,Footer,Badge,InputGroup,Input, Header, Content, Card, Icon, CardItem,Thumbnail, Text, Button, Left, Body, Right } from 'native-base';
 import { DrawerActions } from 'react-navigation-drawer';
@@ -8,7 +10,7 @@ import Modal from 'react-native-modal';
 
 const ItemDetailsScreen = ({navigation, route}) => {
 
-  console.log(route.params)
+  const { user } = useContext(AuthContext);
 
     return (
       <Container>
@@ -42,7 +44,23 @@ const ItemDetailsScreen = ({navigation, route}) => {
                       <Icon style={{marginRight:-6}} name="pencil-outline"></Icon>
                       <Text style={styles.buttonTextStyle}>Review</Text>
                     </Button>
-                    <Button style={styles.buttonStyle}>
+                    <Button style={styles.buttonStyle} onPress={async () => {
+                      try{
+                        await firestore().collection('users').doc(user.uid).get().then((User_Data) =>{
+                          let temp_cart = [];
+                          temp_cart = User_Data.data().cart;      
+                          temp_cart.push(route.params.ItemID);
+                          firestore().collection('users').doc(user.uid).update({
+                            cart: temp_cart
+                          }).then(()=>{
+                            alert("Added To Cart.");
+                          });
+                        }); 
+                      }
+                      catch (error){
+                        alert(error);
+                      }
+                    }}>
                       <Icon style={{marginRight:-6}} name="cart"></Icon>
                       <Text style={styles.buttonTextStyle}>Add to Cart</Text>
                     </Button>

@@ -52,7 +52,6 @@ const SignupScreen = ({navigation}) => {
         onPress={() => {
           setSelectedId(item.id);
           setType(item.title);
-          setCart([]);
         }}
         backgroundColor={{ backgroundColor }}
         textColor={{ color }}

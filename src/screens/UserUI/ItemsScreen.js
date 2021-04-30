@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, FlatList, SafeAreaView } from 'react-native';
+import { StyleSheet, View, FlatList, SafeAreaView , LogBox} from 'react-native';
 import { Container, InputGroup, FooterTab, Input, Content, Text, Button, Icon } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import firestore from "@react-native-firebase/firestore";
 import ItemComponent from '../components/ItemComponent'
-import { LogBox } from 'react-native';
 
 const ItemsScreen = ({ navigation }) => {
 
-  const [loading, setLoading] = useState(true); // Set loading to true on component mount
   const [items, setItems] = useState([]); // Initial empty array of users
 
   useEffect(() => {
@@ -17,17 +15,15 @@ const ItemsScreen = ({ navigation }) => {
       const subscriber = firestore()
         .collection('CarStuff')
         .onSnapshot(querySnapshot => {
-          const items = [];
+          const temp_items = [];
   
           querySnapshot.forEach(documentSnapshot => {
-            items.push({
+            temp_items.push({
               ...documentSnapshot.data(),
               key: documentSnapshot.id,
             });
           });
-  
-          setItems(items);
-          setLoading(false);
+          setItems(temp_items);
         });
   
       // Unsubscribe from events when no longer in use
@@ -67,7 +63,7 @@ const ItemsScreen = ({ navigation }) => {
         </Button>
         {/* End filter button */}
 
-        <FlatList style={{}}
+        <FlatList
           data={items}
           renderItem={({ item }) => {
             return (
@@ -81,6 +77,8 @@ const ItemsScreen = ({ navigation }) => {
                 quality={item.Quality}
                 shop_owner_id={item.Shop_Owner_ID}
                 itemImg={require("../../../assets/mirror.jpg")}
+                cart = {item.cart}
+                itemID = {item.key}
               />);
           }}
         />

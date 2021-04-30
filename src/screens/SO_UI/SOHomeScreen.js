@@ -15,8 +15,8 @@ const SOHomeScreen = ({ navigation }) => {
     useEffect(() => {
         try {
 
-            firestore().collection('users').doc(user.uid).get().then((data) => {
-                setShop_Owner_name(data.data().fname + " " + data.data().lname)
+            firestore().collection('users').doc(user.uid).get().then((User_data) => {
+                setShop_Owner_name(User_data.data().fname + " " + User_data.data().lname)
             });
 
         } catch (error) {

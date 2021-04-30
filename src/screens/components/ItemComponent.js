@@ -1,25 +1,28 @@
-import React, { Component,useState , useEffect } from 'react';
+import React, { Component,useState , useEffect, useContext } from 'react';
 import firestore from '@react-native-firebase/firestore';
 import { StyleSheet, View, Image } from 'react-native';
 import { Card, CardItem, Text, Button, Icon, Left, Body, Right } from 'native-base';
 import { FontAwesome5 } from '@expo/vector-icons';
-import {AuthContext} from '../../navigation/AuthProvider';
+import { AuthContext } from '../../navigation/AuthProvider';
 import { useNavigation } from '@react-navigation/native';
 
 const ItemComponent = (props) => {
   const navigation = useNavigation();
+
+  const { user } = useContext(AuthContext);
   
   const[shop_Owner_Name,setShop_Owner_name] = useState("");
 
   useEffect(() => {
-    try{
-
-      firestore().collection('users').doc(props.shop_owner_id).get().then((data) =>{
-        setShop_Owner_name(data.data().fname+" "+data.data().lname)
-      });
-
-    }catch(error){
-      alert(error);
+    async ()=>{
+      try{
+        await firestore().collection('users').doc(props.shop_owner_id).get().then((User_daa) =>{
+          setShop_Owner_name(User_daa.data().fname+" "+User_daa.data().lname)
+        });
+  
+      }catch(error){
+        alert(error);
+      }
     }
   });
 
@@ -50,7 +53,24 @@ const ItemComponent = (props) => {
           </View>
         </Body>
         <Right>
-          <Button style={styles.cartItemStyle} large style={{ height: 30, marginRight: 3 }} transparent>
+          <Button style={styles.cartItemStyle} large style={{ height: 30, marginRight: 3 }} transparent onPress={async ()=>{
+            try{
+              await firestore().collection('users').doc(user.uid).get().then((User_Data) =>{
+                let temp_cart = [];
+                temp_cart = User_Data.data().cart;
+                temp_cart.push(props.itemID);
+                firestore().collection('users').doc(user.uid).update({
+                  cart: temp_cart
+                }).then(()=>{
+                  alert("Added To Cart.");
+                });
+              }); 
+            }
+            catch (error){
+              alert(error);
+            }
+            
+          }}>
             <FontAwesome5 name="shopping-cart" style={{ color: "darkred", marginRight: 3, marginTop: 3 }} size={20} color="black" />
           </Button>
         </Right>
@@ -69,7 +89,8 @@ const ItemComponent = (props) => {
           Manufacture_Date: props.manufacture_Date,
           Quality: props.quality,
           Shop_Owner: shop_Owner_Name,
-          ItemIMG: props.itemImg
+          ItemIMG: props.itemImg,
+          ItemID: props.itemID
           })}>
             <Text style={{ fontSize: 16, fontWeight: 'bold', marginRight: -15, color: 'darkred' }}> See Item Details </Text>
             <Icon active style={{ fontSize: 25, color: 'darkred' }} name="arrow-forward" />

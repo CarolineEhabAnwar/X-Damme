@@ -1,9 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component,useContext,useState,useEffect } from 'react';
 import { Container, InputGroup, Header, Item, Icon, Input, Content, Left, Right, Title, Body, Footer, FooterTab, Button, Text, Badge } from 'native-base';
 import { StyleSheet, View, Image, FlatList, TouchableOpacity } from 'react-native';
 import { DrawerActions } from 'react-navigation-drawer';
 import ItemComponent from "../components/ItemComponent";
 import { ScrollView } from 'react-native-gesture-handler';
+import { AuthContext } from '../../navigation/AuthProvider';
+import firestore from "@react-native-firebase/firestore";
 
 
 const HomeScreen = ({navigation}) => {
