@@ -19,6 +19,8 @@ import storage from '@react-native-firebase/storage';
 //npm update @react-native-firebase/app@"11.4.1"
 //npm install npm install react-native-firebase/storage
 //npm install --legacy-peer-deps --save  @react-native-firebase/analytics@11.4.1 @react-native-firebase/app@11.4.1
+//npm update react-native-datepicker
+//npm install @react-native-community/datetimepicker
 
 async function addItems(x_name, x_price, x_made_in, x_manufacture_date, x_car_model,
   x_car_brand, x_item_quality, x_image_path, user) {

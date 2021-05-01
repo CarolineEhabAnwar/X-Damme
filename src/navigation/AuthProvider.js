@@ -86,7 +86,7 @@ export const AuthProvider = ({children}) => {
             alert({error});
           }
         },
-        register: async (fname, lname, address, email, password, type,cart) => {
+        register: async (fname, lname, address, email, password, type,cart, requests) => {
           try {
             await auth().createUserWithEmailAndPassword(email, password)
             .then(() => {             
@@ -102,7 +102,8 @@ export const AuthProvider = ({children}) => {
                   type: type,
                   createdAt: firestore.Timestamp.fromDate(new Date()),
                   userImg: null,
-                  cart: cart
+                  cart: cart,
+                  requests:requests
               })
               //ensure we catch any errors at this stage to advise us if something does go wrong
               .catch(error => {
