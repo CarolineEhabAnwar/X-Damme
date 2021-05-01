@@ -8,18 +8,79 @@ import ItemComponent from '../components/ItemComponent'
 const ItemsScreen = ({ navigation }) => {
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [car_brand, setCar_Brand] = useState('Kia');
-  const [car_model, setCar_Model] = useState('Sunny');
+  const [car_brand, setCar_Brand] = useState('Select Brand');
+  const [car_model, setCar_Model] = useState('Select Model');
   const [price_min, set_price_min] = useState(0);
   const [price_max, set_price_max] = useState('50000');
-  const [item_type, set_item_type] = useState('Motor');
-  const [quality, set_quality] = useState('Low');
+  const [item_type, set_item_type] = useState('Select Type');
+  const [quality, set_quality] = useState('Select Quality');
   const [search_item, set_search_item] = useState('');
 
 
   LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
   const [items, setItems] = useState([]); // Initial empty array of Items
+  const [show_Items, setShow_Items] = useState([]);
   const [loading, setloading] = useState(true);
+
+  function Filter() {
+    setModalVisible(!modalVisible);
+
+    let temp_filter_items_Type = [];
+    if (item_type != "Select Type") {
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].Name.toUpperCase().includes(item_type.toUpperCase())) {
+          temp_filter_items_Type.push(items[i]);
+        }
+      }
+    }
+    else {
+      temp_filter_items_Type = items;
+    }
+
+    let temp_filter_items_Brand = [];
+    if (car_brand != "Select Brand") {
+      for (let i = 0; i < temp_filter_items_Type.length; i++) {
+        if (temp_filter_items_Type[i].Car_Brand == car_brand) {
+          temp_filter_items_Brand.push(temp_filter_items_Type[i]);
+        }
+      }
+    }
+    else {
+      temp_filter_items_Brand = temp_filter_items_Type;
+    }
+
+    let temp_filter_items_Model = [];
+    if (car_model != "Select Model") {
+      for (let i = 0; i < temp_filter_items_Brand.length; i++) {
+        if (temp_filter_items_Brand[i].Car_Model == car_model) {
+          temp_filter_items_Model.push(temp_filter_items_Brand[i]);
+        }
+      }
+    }
+    else {
+      temp_filter_items_Model = temp_filter_items_Brand;
+    }
+
+    let temp_filter_items_Quality = [];
+    if (quality != "Select Quality") {
+      for (let i = 0; i < temp_filter_items_Model.length; i++) {
+        if (temp_filter_items_Model[i].Quality == quality) {
+          temp_filter_items_Quality.push(temp_filter_items_Model[i]);
+        }
+      }
+    }
+    else {
+      temp_filter_items_Quality = temp_filter_items_Model;
+    }
+
+    if (temp_filter_items_Quality == 0) {
+      setShow_Items(null);
+      return;
+    }
+
+    setShow_Items(temp_filter_items_Quality);
+  }
+
   useEffect(() => {
     try {
       const subscriber = firestore()
@@ -34,6 +95,7 @@ const ItemsScreen = ({ navigation }) => {
             });
           });
           setItems(temp_items);
+          setShow_Items(temp_items);
           if (loading)
             setloading(false);
         });
@@ -80,6 +142,7 @@ const ItemsScreen = ({ navigation }) => {
                   selectedValue={item_type}
                   onValueChange={(item_type) => set_item_type(item_type)}
                 >
+                  <Picker.Item label="Select Type" value="Select Type" />
                   <Picker.Item label="Mirror" value="Mirror" />
                   <Picker.Item label="Motor" value="Motor" />
                   <Picker.Item label="Radiator" value="Radiator" />
@@ -98,11 +161,12 @@ const ItemsScreen = ({ navigation }) => {
                 <Picker
                   mode="dialog"
                   iosIcon={<Icon name="arrow-down" style={{ marginLeft: -5 }} />}
-                  placeholder="Car Brand"
+                  placeholder="select Brand"
                   placeholderStyle={{ color: "darkred" }}
                   selectedValue={car_brand}
                   onValueChange={(Car_Brand) => setCar_Brand(Car_Brand)}
                 >
+                  <Picker.Item label='Select Brand' value='Select Brand' />
                   <Picker.Item label="Nissan" value="Nissan" />
                   <Picker.Item label="Kia" value="Kia" />
                   <Picker.Item label="BMW" value="BMW" />
@@ -126,6 +190,7 @@ const ItemsScreen = ({ navigation }) => {
                   selectedValue={car_model}
                   onValueChange={(CarModel) => setCar_Model(CarModel)}
                 >
+                  <Picker.Item label="Select Model" value="Select Model" />
                   <Picker.Item label="C300" value="C300" />
                   <Picker.Item label="Sunny" value="Sunny" />
                   <Picker.Item label="Cerato" value="Cerato" />
@@ -149,6 +214,7 @@ const ItemsScreen = ({ navigation }) => {
                   selectedValue={quality}
                   onValueChange={(quality) => set_quality(quality)}
                 >
+                  <Picker.Item label="Select Quality" value="Select Quality" />
                   <Picker.Item label="Low" value="Low" />
                   <Picker.Item label="Medium" value="Medium" />
                   <Picker.Item label="High" value="High" />
@@ -167,34 +233,29 @@ const ItemsScreen = ({ navigation }) => {
                 <Input keyboardType="numeric" placeholder='To' onChangeText={price_max => set_price_max(price_max)} />
               </Item>
 
-              <Button
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => {
-                  const filtered_items = [];
-                  firestore().collection('CarStuff').
-                    //where('Price', '>=', price_min).
-                    where('Item_Type', '==', item_type).
-                    where('Car_Brand', '==', car_brand).
-                    where('Car_Model', '==', car_model).
-                    where('Quality', '==', quality).
-                    get().
-                    then(querySnapshot => {
-                      querySnapshot.forEach(documentSnapshot => {
-                        filtered_items.push({
-                          ...documentSnapshot.data(), key: documentSnapshot.id
-                        });
-                        setItems(filtered_items)
-                      })
-                      if (!filtered_items.length) {
-                        setItems(null)
-                        return (<Text>Not Found!</Text>)
-                      }
-                    })
-                  setModalVisible(!modalVisible)
-                }}
-              >
-                <Text style={styles.textStyle}>OK</Text>
-              </Button>
+              <View style={{ flexDirection: 'row' }}>
+                <Button
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => {
+                    setCar_Brand('Select Brand');
+                    setCar_Model('Select Model');
+                    set_quality('Select Quality');
+                    set_item_type('Select Type');
+                  }}
+                >
+                  <Text style={styles.textStyle}>Remove Filter</Text>
+                </Button >
+
+
+                <Button
+                  style={[styles.button, styles.buttonClose ]}
+                  onPress={() => {
+                    Filter();
+                  }}
+                >
+                  <Text style={styles.textStyle}>OK</Text>
+                </Button>
+              </View>
             </Form>
           </View>
         </View>
@@ -216,22 +277,17 @@ const ItemsScreen = ({ navigation }) => {
         </InputGroup>
         <Button transparent style={{ height: 50 }}
           onPress={() => {
-            const items_in_search = [];
-            const search_sub = firestore().collection('CarStuff').
-              where('Name', '==',search_item).
-              get().
-              then(querySnapshot => {
-                querySnapshot.forEach(documentSnapshot => {
-                  items_in_search.push({
-                    ...documentSnapshot.data(), key: documentSnapshot.id
-                  });
-                  setItems(items_in_search)
-                })
-                if (!items_in_search.length) {
-                  setItems(null)
-                  return (<Text>Not Found!</Text>)
-                }
-              })
+            if (search_item == '') {
+              setShow_Items(items);
+              return;
+            }
+            let items_to_show = [];
+            for (let i = 0; i < items.length; i++) {
+              if (items[i].Name.toUpperCase().includes(search_item.toUpperCase())) {
+                items_to_show.push(items[i]);
+              }
+            }
+            setShow_Items(items_to_show);
           }}
         >
           <Text style={{ color: "white", fontWeight: 'bold' }}>Search</Text>
@@ -251,7 +307,7 @@ const ItemsScreen = ({ navigation }) => {
 
         {loading ? <Text style={styles.loadingStyle}> Loading Items... </Text> :
           <FlatList
-            data={items}
+            data={show_Items}
             renderItem={({ item }) => {
               return (
                 <ItemComponent
