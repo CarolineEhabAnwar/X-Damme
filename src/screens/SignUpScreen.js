@@ -40,6 +40,8 @@ const SignupScreen = ({navigation}) => {
   const [selectedId, setSelectedId] = useState(null);
   const [type, setType] = useState("");
   const [cart,setCart] = useState([]);
+  const [requests,setRequests] = useState([]);
+
  
 
   const renderItem = ({ item }) => {
@@ -148,7 +150,7 @@ const SignupScreen = ({navigation}) => {
           else if(type === "")
             alert("Please select a type.");
           else{
-            register(fname, lname, address, email, password, type,cart);
+            register(fname, lname, address, email, password, type,cart,requests);
           }
         }}
       />
