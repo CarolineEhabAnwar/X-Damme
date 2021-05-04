@@ -22,7 +22,10 @@ const ItemComponent = (props) => {
             .doc(props.shop_owner_id)
             .onSnapshot(documentSnapshot => {
               if (documentSnapshot.exists)
-              setShop_Owner_name(documentSnapshot.data().fname+" "+documentSnapshot.data().lname);
+              {
+                setShop_Owner_name(documentSnapshot.data().fname+" "+documentSnapshot.data().lname);
+
+              }
             });
           // Stop listening for updates when no longer required
           return () => subscriber();
@@ -78,8 +81,7 @@ const ItemComponent = (props) => {
             }
             catch (error){
               alert(error);
-            }
-            
+            }          
           }}>
             <FontAwesome5 name="shopping-cart" style={{ color: "darkred", marginRight: 3, marginTop: 3 }} size={20} color="black" />
           </Button>
@@ -100,7 +102,8 @@ const ItemComponent = (props) => {
           Quality: props.quality,
           Shop_Owner: shop_Owner_Name,
           ItemIMG: props.itemImg,
-          ItemID: props.itemID
+          ItemID: props.itemID,
+          ShopOwnerID: props.shop_owner_id
           })}>
             <Text style={{ fontSize: 16, fontWeight: 'bold', marginRight: -15, color: 'darkred' }}> See Item Details </Text>
             <Icon active style={{ fontSize: 25, color: 'darkred' }} name="arrow-forward" />

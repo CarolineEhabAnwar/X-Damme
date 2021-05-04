@@ -33,6 +33,9 @@ import MyRequestsScreen from "../screens/UserUI/MyRequestsScreen"
 import MyRequestsDetailsScreen from "../screens/UserUI/MyRequestsDetailsScreen"
 import CartScreen from "../screens/UserUI/CartScreen"
 import CartViewItemScreen from "../screens/UserUI/CartViewItemScreen"
+import ReviewScreen from "../screens/UserUI/ReviewScreen"
+import CustomersReviewsScreen from "../screens/UserUI/CustomersReviewsScreen"
+import MyReviewsScreen from "../screens/UserUI/MyReviewsScreen"
 
 //Importing Mechanic Screens
 import MechAddOfferScreen from "../screens/Mech_UI/MechAddOfferScreen"
@@ -173,6 +176,21 @@ const UserStack = ({navigation}) => (
       name="CartViewItem"
       component={CartViewItemScreen}
       options={{header: () => null}}
+    />
+    <Stack.Screen
+      name="Review"
+      component={ReviewScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="CustomersReviews"
+      component={CustomersReviewsScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="MyReviews"
+      component={MyReviewsScreen}
+      options={{ header: () => null }}
     />
   </Stack.Navigator>
 );

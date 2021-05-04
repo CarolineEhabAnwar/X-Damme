@@ -48,7 +48,7 @@ const ProfileScreen = ({navigation}) => {
                     <Text style={styles.info}>Requests</Text>
                   </Button>
                   
-                  <Button style={styles.menuBox}>
+                  <Button style={styles.menuBox} onPress={() => navigation.navigate('MyReviews')}>
                     <MaterialIcons name="rate-review" size={40} color="white" />
                     <Text style={styles.info}>Reviews</Text>
                   </Button>
