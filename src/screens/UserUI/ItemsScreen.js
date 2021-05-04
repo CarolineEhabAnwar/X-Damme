@@ -7,15 +7,90 @@ import ItemComponent from '../components/ItemComponent'
 
 const ItemsScreen = ({ navigation }) => {
 
+  //Setting the Model Visible
   const [modalVisible, setModalVisible] = useState(false);
-  const [car_brand, setCar_Brand] = useState('Select Brand');
-  const [car_model, setCar_Model] = useState('Select Model');
-  const [price_min, set_price_min] = useState(0);
-  const [price_max, set_price_max] = useState('50000');
-  const [item_type, set_item_type] = useState('Select Type');
-  const [quality, set_quality] = useState('Select Quality');
+
+  //Search bar Value
   const [search_item, set_search_item] = useState('');
 
+  //Picker Selected Values 
+  const [filterType, setFilterType] = useState(0);
+  const [filterBrand, setFilterBrand] = useState(0);
+  const [filterModel, setFilterModel] = useState(0);
+  const [filterQuality, setFilterQuality] = useState(0);
+
+  //Picker Data States
+  const [types, setTypes] = useState([]);
+  const [brands, setBrands] = useState([]);
+  const [all_models, set_all_models] = useState([]);
+  const [models, setModel] = useState([]);
+  const [qualities, setQualities] = useState([]);
+
+  async function Set_Pickers_Data() {
+
+    //The name of the collection holding the data "Car Brands and Models"
+
+    //Getting Types
+    let temp_Types = [];
+    await firestore()
+      .collection('App Details').doc("ioaEG86eslG2pL74Riq1")
+      .get().then(doc => {
+        if(doc.exists){
+          doc.data().Types.forEach(element => {
+            temp_Types.push(element);
+          });
+        }
+      });
+    setTypes(temp_Types);
+
+    //Getting Brands and Models
+    let temp_brands = [];
+    let temp_models = [];
+    temp_brands.push("Select Brand");
+    temp_models.push(["Select Model"]);
+    await firestore()
+      .collection('Car Brands and Models')
+      .get().then(doc => {
+        doc.forEach(element => {
+          temp_brands.push(element.data().Brand);
+          let temp_models_per_brand = [];
+          element.data().Models.forEach(Model => {
+            temp_models_per_brand.push(Model);
+          });
+          temp_models.push(temp_models_per_brand);
+        });
+      });
+
+
+    setBrands(temp_brands);
+    set_all_models(temp_models)
+    setModel(temp_models[0]);
+
+
+    let temp_Qualities = [];
+    await firestore()
+      .collection('App Details').doc("RUltl1MjeBbhjEmJ6G8Y")
+      .get().then(doc => {
+        if(doc.exists){
+          doc.data().Qualities.forEach(element => {
+            temp_Qualities.push(element);
+          });
+        }
+      });
+    setQualities(temp_Qualities);
+  }
+
+
+  useEffect(() => {
+      if(all_models[filterBrand] != null){
+        setModel(all_models[filterBrand]);
+      } 
+  }, [filterBrand]);
+
+
+  //Price Range Values for filtering
+  const [price_min, set_price_min] = useState(0);
+  const [price_max, set_price_max] = useState(1000000000);
 
   LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
   const [items, setItems] = useState([]); // Initial empty array of Items
@@ -25,10 +100,9 @@ const ItemsScreen = ({ navigation }) => {
   function Filter() {
     setModalVisible(!modalVisible);
 
-    let temp_filter_items_Type = [];
-    if (item_type != "Select Type") {
+    if (types[filterType] != "Select Type" && types[filterType] != null) {
       for (let i = 0; i < items.length; i++) {
-        if (items[i].Name.toUpperCase().includes(item_type.toUpperCase())) {
+        if (items[i].Name.toUpperCase().includes(types[filterType].toUpperCase())) {
           temp_filter_items_Type.push(items[i]);
         }
       }
@@ -38,9 +112,9 @@ const ItemsScreen = ({ navigation }) => {
     }
 
     let temp_filter_items_Brand = [];
-    if (car_brand != "Select Brand") {
+    if (brands[filterBrand] != "Select Brand" && brands[filterBrand] != null) {
       for (let i = 0; i < temp_filter_items_Type.length; i++) {
-        if (temp_filter_items_Type[i].Car_Brand == car_brand) {
+        if (temp_filter_items_Type[i].Car_Brand == brands[filterBrand]) {
           temp_filter_items_Brand.push(temp_filter_items_Type[i]);
         }
       }
@@ -50,9 +124,9 @@ const ItemsScreen = ({ navigation }) => {
     }
 
     let temp_filter_items_Model = [];
-    if (car_model != "Select Model") {
+    if (models[filterModel] != "Select Model" && models[filterModel] != null) {
       for (let i = 0; i < temp_filter_items_Brand.length; i++) {
-        if (temp_filter_items_Brand[i].Car_Model == car_model) {
+        if (temp_filter_items_Brand[i].Car_Model == models[filterModel]) {
           temp_filter_items_Model.push(temp_filter_items_Brand[i]);
         }
       }
@@ -62,9 +136,9 @@ const ItemsScreen = ({ navigation }) => {
     }
 
     let temp_filter_items_Quality = [];
-    if (quality != "Select Quality") {
+    if (qualities[filterQuality] != "Select Quality" && qualities[filterQuality] != null) {
       for (let i = 0; i < temp_filter_items_Model.length; i++) {
-        if (temp_filter_items_Model[i].Quality == quality) {
+        if (temp_filter_items_Model[i].Quality == qualities[filterQuality]) {
           temp_filter_items_Quality.push(temp_filter_items_Model[i]);
         }
       }
@@ -73,16 +147,46 @@ const ItemsScreen = ({ navigation }) => {
       temp_filter_items_Quality = temp_filter_items_Model;
     }
 
-    if (temp_filter_items_Quality == 0) {
+    let temp_filter_prices = [];
+    if(price_max != 1000000000 && price_min != 0){
+      for (let i = 0; i < temp_filter_items_Quality.length; i++) {
+        if (temp_filter_items_Quality[i].Price < price_max && temp_filter_items_Quality[i].Price > price_min) {
+          temp_filter_prices.push(temp_filter_items_Quality[i]);
+        }
+      }
+    }
+    else if(price_max != 1000000000){
+      for (let i = 0; i < temp_filter_items_Quality.length; i++) {
+        if (temp_filter_items_Quality[i].Price < price_max) {
+          temp_filter_prices.push(temp_filter_items_Quality[i]);
+        }
+      }
+    }
+    else if(price_min != 0){
+      for (let i = 0; i < temp_filter_items_Quality.length; i++) {
+        if (temp_filter_items_Quality[i].Price > price_min) {
+          temp_filter_prices.push(temp_filter_items_Quality[i]);
+        }
+      }
+    }
+    else{
+      temp_filter_prices = temp_filter_items_Quality;
+    }
+
+
+    if (temp_filter_prices == 0) {
       setShow_Items(null);
       return;
     }
 
-    setShow_Items(temp_filter_items_Quality);
+    setShow_Items(temp_filter_prices);
   }
+
+
 
   useEffect(() => {
     try {
+      Set_Pickers_Data();
       const subscriber = firestore()
         .collection('CarStuff')
         .onSnapshot(querySnapshot => {
@@ -137,15 +241,13 @@ const ItemsScreen = ({ navigation }) => {
                 <Picker
                   mode="dialog"
                   iosIcon={<Icon name="arrow-down" style={{ marginLeft: -5 }} />}
-                  placeholder="Item Type"
                   placeholderStyle={{ color: "darkred" }}
-                  selectedValue={item_type}
-                  onValueChange={(item_type) => set_item_type(item_type)}
+                  selectedValue={filterType}
+                  onValueChange={(Selected_Type) => setFilterType(Selected_Type)}
                 >
-                  <Picker.Item label="Select Type" value="Select Type" />
-                  <Picker.Item label="Mirror" value="Mirror" />
-                  <Picker.Item label="Motor" value="Motor" />
-                  <Picker.Item label="Radiator" value="Radiator" />
+                  {types.map((item, index) => {
+                    return (<Picker.Item label={item} value={index} key={index} />)
+                  })}
                 </Picker>
               </Item>
 
@@ -161,15 +263,13 @@ const ItemsScreen = ({ navigation }) => {
                 <Picker
                   mode="dialog"
                   iosIcon={<Icon name="arrow-down" style={{ marginLeft: -5 }} />}
-                  placeholder="select Brand"
                   placeholderStyle={{ color: "darkred" }}
-                  selectedValue={car_brand}
-                  onValueChange={(Car_Brand) => setCar_Brand(Car_Brand)}
+                  selectedValue={filterBrand}
+                  onValueChange={(Selected_Brand) => setFilterBrand(Selected_Brand)}
                 >
-                  <Picker.Item label='Select Brand' value='Select Brand' />
-                  <Picker.Item label="Nissan" value="Nissan" />
-                  <Picker.Item label="Kia" value="Kia" />
-                  <Picker.Item label="BMW" value="BMW" />
+                  {brands.map((item, index) => {
+                    return (<Picker.Item label={item} value={index} key={index} />)
+                  })}
                 </Picker>
               </Item>
 
@@ -182,18 +282,17 @@ const ItemsScreen = ({ navigation }) => {
                 alignSelf: 'flex-start'
               }}>
 
+
                 <Picker
                   mode="dialog"
                   iosIcon={<Icon name="arrow-down" style={{ marginLeft: -5 }} />}
-                  placeholder="Car Model"
-                  placeholderStyle={{ color: "darkblue" }}
-                  selectedValue={car_model}
-                  onValueChange={(CarModel) => setCar_Model(CarModel)}
+                  placeholderStyle={{ color: "darkred" }}
+                  selectedValue={filterModel}
+                  onValueChange={(Selected_Model) => setFilterModel(Selected_Model)}
                 >
-                  <Picker.Item label="Select Model" value="Select Model" />
-                  <Picker.Item label="C300" value="C300" />
-                  <Picker.Item label="Sunny" value="Sunny" />
-                  <Picker.Item label="Cerato" value="Cerato" />
+                  {models.map((item, index) => {
+                    return (<Picker.Item label={item} value={index} key={index} />)
+                  })}
                 </Picker>
               </Item>
 
@@ -209,15 +308,13 @@ const ItemsScreen = ({ navigation }) => {
                 <Picker
                   mode="dialog"
                   iosIcon={<Icon name="arrow-down" style={{ marginLeft: -5 }} />}
-                  placeholder="Quality"
                   placeholderStyle={{ color: "darkred" }}
-                  selectedValue={quality}
-                  onValueChange={(quality) => set_quality(quality)}
+                  selectedValue={filterQuality}
+                  onValueChange={(Selected_Quality) => setFilterQuality(Selected_Quality)}
                 >
-                  <Picker.Item label="Select Quality" value="Select Quality" />
-                  <Picker.Item label="Low" value="Low" />
-                  <Picker.Item label="Medium" value="Medium" />
-                  <Picker.Item label="High" value="High" />
+                  {qualities.map((item, index) => {
+                    return (<Picker.Item label={item} value={index} key={index} />)
+                  })}
                 </Picker>
               </Item>
 
@@ -226,21 +323,23 @@ const ItemsScreen = ({ navigation }) => {
 
 
               <Item regular style={styles.InputStyle}>
-                <Input keyboardType="numeric" placeholder='From' onChangeText={price_min => set_price_min(price_min)} />
+                <Input value={price_min==0? null: price_min} keyboardType="numeric" placeholder='From' onChangeText={price_min => set_price_min(price_min)} />
               </Item>
 
               <Item regular style={styles.InputStyle}>
-                <Input keyboardType="numeric" placeholder='To' onChangeText={price_max => set_price_max(price_max)} />
+                <Input value={price_max==1000000000? null: price_max} keyboardType="numeric" placeholder='To' onChangeText={price_max => set_price_max(price_max)} />
               </Item>
 
               <View style={{ flexDirection: 'row' }}>
                 <Button
                   style={[styles.button, styles.buttonClose]}
                   onPress={() => {
-                    setCar_Brand('Select Brand');
-                    setCar_Model('Select Model');
-                    set_quality('Select Quality');
-                    set_item_type('Select Type');
+                    setFilterType(0);
+                    setFilterBrand(0);
+                    setFilterModel(0);
+                    setFilterQuality(0);
+                    set_price_max(1000000000);
+                    set_price_min(0);
                   }}
                 >
                   <Text style={styles.textStyle}>Remove Filter</Text>
@@ -248,8 +347,10 @@ const ItemsScreen = ({ navigation }) => {
 
 
                 <Button
-                  style={[styles.button, styles.buttonClose ]}
+                  style={[styles.button, styles.buttonClose]}
                   onPress={() => {
+                    if(price_min>price_max)
+                      return alert("Please make sure the Min Price is less than the Max Price.");
                     Filter();
                   }}
                 >

@@ -184,7 +184,11 @@ const CartScreen = ({ navigation, route }) => {
             }
             //Setting The need variables
             setTotalPrice(total_Price);
-            setItems(temp_Unique_List);
+            if( temp_Unique_List.length == 0){
+                setItems([]);
+            }
+            else
+                setItems(temp_Unique_List);
 
         } catch (error) {
             alert(error);
