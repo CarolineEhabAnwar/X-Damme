@@ -1,83 +1,34 @@
 import React, { Component, useState, useEffect, useContext } from 'react';
 import firestore from '@react-native-firebase/firestore';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View, Image , FlatList , LogBox } from 'react-native';
 import { Card, CardItem, Text, Button, Icon, Left, Body, Right } from 'native-base';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { AuthContext } from '../../navigation/AuthProvider';
-import { useNavigation } from '@react-navigation/native';
-import { Rating } from 'react-native-ratings';
-import Moment from 'moment';
 
-
-
-const ReviewComponent = (props) => {
-
-    const navigation = useNavigation();
-
-    const [Reviewer_Name, setReviewer_name] = useState("");
-
-    var date = new Date(props.dateofreview.seconds * 1000 + props.dateofreview.nanoseconds/1000000)
-
-    function Get_Reviewer_Name() {
-        useEffect(() => {
-            try {
-
-                if (props.reviewer != null) {
-                    const subscriber = firestore()
-                        .collection('users')
-                        .doc(props.reviewer)
-                        .onSnapshot(documentSnapshot => {
-                            if (documentSnapshot.exists) {
-                                setReviewer_name(documentSnapshot.data().fname + " " + documentSnapshot.data().lname);
-
-                            }
-                        });
-                    // Stop listening for updates when no longer required
-                    return () => subscriber();
-                }
-            } catch (error) {
-                alert(error);
-            }
-        }, []);
-    }
-
-
-    Get_Reviewer_Name();
+const RequestCardComponent = (props) => {
+    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+    LogBox.ignoreLogs(['VirtualizedList: missing keys for items']);
 
     return (
         <View style={{ borderColor: "darkred", borderWidth: 2, marginVertical: 5 }}>
-            <Text style={styles.title}>Review By:  </Text>
-            <Text style={styles.writing}> {Reviewer_Name} </Text>
-            <Text style={styles.title}>Reviewed On:  </Text>
-            <Text style={styles.writing}> {date.toDateString()} </Text>
-            <Text style={styles.title}>Item Rating: </Text>
-            <Rating
-                showRating fractions={1}
-                startingValue={props.itemrating}
-                readonly
-                style={{ paddingVertical: 10 }}
+            <Text style={styles.title}> Shop Owner:  </Text>
+            <Text style={styles.writing}> {props.ShopOwner_Name} </Text>
+            <Text style={styles.title}> Items:  </Text>
+            <FlatList
+                data={props.Items}
+                renderItem={({ item }) => {
+                    return (
+                        <Text style={styles.writing}> Name: {item[0]} ,Quantity: {item[1]} ,Price: {item[2]} </Text>
+                    )
+                }}
             />
-            
-            <Text style={styles.title}>Shop Owner Rating: </Text>
-            <Rating
-                showRating fractions={1}
-                startingValue={props.shoprating}
-                readonly
-                style={{ paddingVertical: 10 }}
-            />
-
-            <Text style={styles.title}>Review: </Text>
-            <Text
-                multiline
-                textAlignVertical={'top'}
-                style={styles.writing}
-            >
-                {props.writtenreview}
-            </Text>
-
+            <Text style={styles.title}> Total Price: </Text>
+            <Text style={styles.writing}> {props.Total_Price} </Text>
         </View>
     );
 }
+
+export default RequestCardComponent;
 
 const styles = StyleSheet.create({
     textStyle: {
@@ -229,4 +180,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default ReviewComponent;
+

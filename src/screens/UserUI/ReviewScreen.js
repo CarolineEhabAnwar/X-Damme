@@ -97,7 +97,6 @@ const ReviewScreen = ({ navigation, route }) => {
                                             Review: review,
                                             UserID: user.uid,
                                             ReviewDate: firestore.Timestamp.fromDate(new Date()),
-
                                         })
 
                                         alert("Review has been saved successfully.");

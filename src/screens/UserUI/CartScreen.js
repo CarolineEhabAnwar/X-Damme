@@ -33,8 +33,8 @@ const CartScreen = ({ navigation, route }) => {
             }
         }
         //Getting all of the items of that shop owner
-        let Same_Shop_Owner_Item_list = [];
         for (let i = 0; i < Shop_Owners_list.length; i++) {
+            let Same_Shop_Owner_Item_list = [];
             let Request_to_Send = [];
             for (let j = 0; j < items.length; j++) {
                 if (items[j][1][1].Shop_Owner_ID == Shop_Owners_list[i]) {
@@ -43,19 +43,27 @@ const CartScreen = ({ navigation, route }) => {
                     Same_Shop_Owner_Item_list.push(temp__item);
                 }
             }
+            //Handling request formate for shop owner
             let Request_In_String = user.uid+"*";
             
             for(let i = 0; i < Same_Shop_Owner_Item_list.length; i++){
                 Request_In_String+=Same_Shop_Owner_Item_list[i][0]+","+Same_Shop_Owner_Item_list[i][1]+"/";
             }
-                
-            Request_to_Send.push(Shop_Owners_list[i],Request_In_String);
+            //Handling request formate for user
+            let Request_for_user_history = Shop_Owners_list[i]+"*";
+            for(let i = 0; i < Same_Shop_Owner_Item_list.length; i++){
+                Request_for_user_history+=Same_Shop_Owner_Item_list[i][0]+","+Same_Shop_Owner_Item_list[i][1]+"/";
+            }
+
+            //console.log("Shop Owner with ID: "+ Shop_Owners_list[i]+" items is : "+Same_Shop_Owner_Item_list);
+            Request_to_Send.push(Shop_Owners_list[i],Request_In_String,Request_for_user_history);
             Requests.push(Request_to_Send);
         }
         return Requests;
     }
 
     async function Send_Request(Request){
+        //Sending the request for each shop owner
         await firestore().collection('users').doc(Request[0]).get().then((Shop_ID_Requests) => {
             if(Shop_ID_Requests.exists){
                 let temp_Shop_Requests = [];
@@ -63,6 +71,19 @@ const CartScreen = ({ navigation, route }) => {
                 temp_Shop_Requests.push(Request[1]);
                 firestore().collection('users').doc(Request[0]).update({
                     requests: temp_Shop_Requests
+                })
+            }
+        });
+        //Sending the request for the user
+        await firestore().collection('users').doc(user.uid).get().then((User_Data) => {
+            if(User_Data.exists){
+                let temp_User_Requests = [];
+                temp_User_Requests = User_Data.data().requestHistory;
+                console.log(user.uid)
+                console.log(temp_User_Requests);
+                temp_User_Requests.push(Request[2]);
+                firestore().collection('users').doc(user.uid).update({
+                    requestHistory: temp_User_Requests
                 })
             }
         });

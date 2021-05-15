@@ -88,6 +88,7 @@ export const AuthProvider = ({children}) => {
         },
         register: async (fname, lname, address, email, password, type,cart, requests) => {
           try {
+            let empty_arr = [];
             await auth().createUserWithEmailAndPassword(email, password)
             .then(() => {             
               //Once the user creation has happened successfully, we can add the currentUser into firestore
@@ -103,7 +104,8 @@ export const AuthProvider = ({children}) => {
                   createdAt: firestore.Timestamp.fromDate(new Date()),
                   userImg: null,
                   cart: cart,
-                  requests:requests
+                  requests:requests,
+                  requestHistory:empty_arr
               })
               //ensure we catch any errors at this stage to advise us if something does go wrong
               .catch(error => {
