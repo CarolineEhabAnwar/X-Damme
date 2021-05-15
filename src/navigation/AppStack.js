@@ -1,7 +1,7 @@
 import React from 'react';
-import {View, TouchableOpacity, Text} from 'react-native';
-import {createStackNavigator} from '@react-navigation/stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { View, TouchableOpacity, Text } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -61,121 +61,122 @@ import SOProfileScreen from "../screens/SO_UI/SOProfileScreen"
 import SORequestsScreen from "../screens/SO_UI/SORequestsScreen"
 import SOViewRequestScreen from "../screens/SO_UI/SOViewRequestScreen"
 import SOSettingsScreen from "../screens/SO_UI/SOSettingsScreen"
+import SOViewItemScreen from "../screens/SO_UI/SOViewItemScreen"
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const UserStack = ({navigation}) => (
+const UserStack = ({ navigation }) => (
   <Stack.Navigator>
     <Stack.Screen
       name="Home"
       component={HomeScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="Items"
       component={ItemsScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="MechanicDetails"
       component={MechanicDetailsScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="Mechanics"
       component={MechanicScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="ServiceDetails"
       component={ServiceDetailsScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="Tutorials"
       component={TutorialsScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="ItemDetails"
       component={ItemDetailsScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="Emergency"
       component={EmergencyScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="EmergencyContacts"
       component={EmergencyContactsScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="WinchNumbers"
       component={WinchNumbersScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="Profile"
       component={ProfileScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="ContactUs"
       component={ContactUsScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="Settings"
       component={SettingsScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="MyCars"
       component={MyCarsScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="MyCarsDetails"
       component={MyCarsDetailsScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="AddCar"
       component={AddCarScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="EditKM"
       component={EditKMScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="MyRequests"
       component={MyRequestsScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="MyRequestsDetails"
       component={MyRequestsDetailsScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="ItemComponent"
       component={ItemComponent}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="Cart"
       component={CartScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="CartViewItem"
       component={CartViewItemScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="Review"
@@ -195,171 +196,176 @@ const UserStack = ({navigation}) => (
   </Stack.Navigator>
 );
 
-const MechanicStack = ({navigation}) => (
+const MechanicStack = ({ navigation }) => (
   <Stack.Navigator>
     <Stack.Screen
       name="MechHome"
       component={MechHomeScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="MechAddOffer"
       component={MechAddOfferScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="MechAddService"
       component={MechAddServiceScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="MechContactUs"
       component={MechContactUsScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="MechEditService"
       component={MechEditServiceScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="MechProfile"
       component={MechProfileScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="MechRequests"
       component={MechRequestsScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="MechServiceList"
       component={MechServiceListScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="MechViewRequest"
       component={MechViewRequestScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="MechViewService"
       component={MechViewServiceScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="MechSettings"
       component={MechSettingsScreen}
-      options={{header: () => null}}
-    />  
+      options={{ header: () => null }}
+    />
   </Stack.Navigator>
 );
 
-const ShopOwnerStack = ({navigation}) => (
+const ShopOwnerStack = ({ navigation }) => (
   <Stack.Navigator>
     <Stack.Screen
       name="SOHome"
       component={SOHomeScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="SOAddItem"
       component={SOAddItemScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="SOAddOffer"
       component={SOAddOfferScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="SOContactUs"
       component={SOContactUsScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="SOEditItem"
       component={SOEditItemScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="SOItemList"
       component={SOItemListScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="SOProfile"
       component={SOProfileScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="SORequests"
       component={SORequestsScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
     <Stack.Screen
       name="SOViewRequest"
       component={SOViewRequestScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
 
     <Stack.Screen
       name="SOSettings"
       component={SOSettingsScreen}
-      options={{header: () => null}}
+      options={{ header: () => null }}
     />
 
-    
-    
+    <Stack.Screen
+      name="SOViewItem"
+      component={SOViewItemScreen}
+      options={{ header: () => null }}
+    />
+
   </Stack.Navigator>
 );
 
 const AppStack = (typeUsed) => {
-  if(typeUsed != "Default" && typeUsed != "Waiting")
+  if (typeUsed != "Default" && typeUsed != "Waiting")
     AsyncStorage.setItem('TypeUsed', typeUsed);
-  if(typeUsed == "User"){  
-  return (
-    <Stack.Navigator>
-    <Stack.Screen
-      name="Home"
-      component={UserStack}
-      options={{header: () => null}}
-    />
-  </Stack.Navigator>
-  );}
-  else if(typeUsed == "Mechanic"){
+  if (typeUsed == "User") {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Home"
+          component={UserStack}
+          options={{ header: () => null }}
+        />
+      </Stack.Navigator>
+    );
+  }
+  else if (typeUsed == "Mechanic") {
     return (
       <Stack.Navigator>
         <Stack.Screen
           name="MechHome"
           component={MechanicStack}
-          options={{header: () => null}}
+          options={{ header: () => null }}
         />
       </Stack.Navigator>
     );
   }
-  else if(typeUsed == "Shop Owner"){
+  else if (typeUsed == "Shop Owner") {
     return (
       <Stack.Navigator>
         <Stack.Screen
           name="ShopOwnerHome"
           component={ShopOwnerStack}
-          options={{header: () => null}}
+          options={{ header: () => null }}
         />
       </Stack.Navigator>
     );
-  } 
-  else if(typeUsed == "Waiting"){
+  }
+  else if (typeUsed == "Waiting") {
     return (
       <Stack.Navigator>
         <Stack.Screen
           name="Waiting"
           component={WaitingScreen}
-          options={{header: () => null}}
+          options={{ header: () => null }}
         />
       </Stack.Navigator>
     );
-  }    
+  }
 };
 
 export default AppStack;

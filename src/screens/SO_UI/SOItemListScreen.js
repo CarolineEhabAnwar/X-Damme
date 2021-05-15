@@ -1,100 +1,46 @@
-import React, { Component, useState, useEffect, useRef } from 'react';
-import { Image, StyleSheet } from 'react-native';
-import { Container, FooterTab, FlatList, Badge, InputGroup, Header, Content, List, Item, Input, ListItem, Thumbnail, Text, Left, Body, Right, Button, Icon, View } from 'native-base';
-import { Entypo, Ionicons } from '@expo/vector-icons';
-import { DrawerActions } from 'react-navigation-drawer';
-import SOItemListComponent from "../components/SOItemListComponent.js"
-import db from '../../../android/app/google-services.json';
+import React, { Component, useState, useEffect, useRef, useContext } from 'react';
+import { Image, StyleSheet, FlatList, LogBox } from 'react-native';
+import { Container, FooterTab, Badge, InputGroup, Header, Content, List, Item, Input, ListItem, Thumbnail, Text, Left, Body, Right, Button, Icon, View } from 'native-base';
+import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import { AuthContext } from '../../navigation/AuthProvider';
 import firestore from '@react-native-firebase/firestore';
 
-const useConstructor = (callBack = () => { }) => {
-  const hasBeenCalled = useRef(false);
-  if (hasBeenCalled.current) return;
-  callBack();
-  hasBeenCalled.current = true;
-  console.log(hasBeenCalled.current);
-}
+const SOItemListScreen = () => {
+  LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+  const navigation = useNavigation();
+  const { user } = useContext(AuthContext);
+  const [SOItems, setSOItems] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-const SOItemListScreen = ({ navigation }) => {
+  useEffect(() => {
+    const subscriber = firestore()
+      .collection('CarStuff')
+      .where('Shop_Owner_ID', '==', (user.uid))
+      .onSnapshot(querySnapshot => {
+        const temp_SOItems = [];
 
-  let itemComponent;
-  const [Items_List, setItems_List] = useState([]);
-  const Temp_List = [];
+        querySnapshot.forEach(documentSnapshot => {
+          temp_SOItems.push({
+            ...documentSnapshot.data(),
+            key: documentSnapshot.id,
+          });
+        });
 
+        setSOItems(temp_SOItems);
+        setLoading(false);
+      });
 
-  useConstructor(async () => {
-    let home_notification = 5;
-    let profile_notification = 5;
-    let settings_notification = 5;
-
-    const Items = await firestore().collection('CarStuff').get();
-    Items.forEach((doc) => {
-      // setItems_List(doc.data());
-      Items_List.push(doc.data())
-    });
-
-    console.log(Items_List);
-    isFinished = true;
-    console.log(isFinished);
-    setItems_List([...Temp_List]);
-    console.log(Items_List[0].Name);
-    if (isFinished)
-      itemComponent = 
-    <FlatList
-      data={Items_List}
-      // keyExtractor={item => item.id}
-      renderItem={(item) => {
-        return (<SOItemListComponent title={item.Name} />);
-      }} />
-    else
-      itemComponent = <Text>No Items Available</Text>
-  });
-
-
-
-
-  // const Temp_List = [];
-  // const Items_List = items;
-  // let isFinished = false;
-
-  // // const Items_List = [];
-  // const [Items_List, setItems_List] = useState([]);
-
-
-  // const Get_Items = async () => {
-  //   const Items = await firestore().collection('CarStuff').get();
-  //   Items.forEach((doc) => {
-  //     // setItems_List(doc.data());
-  //     Items_List.push(doc.data())
-  //   });
-
-  //   console.log(Items_List);
-  //   isFinished = true;
-  //   console.log(isFinished);
-  //   setItems_List([...Temp_List]);
-  //   console.log(Items_List[0].Name);
-  //   if (isFinished)
-  //   itemComponent = <Text>Items Available</Text>
-  //   // <FlatList
-  //   //   data={Items_List}
-  //   //   keyExtractor={item => item.id}
-  //   //   renderItem={(item) => {
-  //   //     return (<SOItemListComponent title={item.Name} />);
-  //   //   }} />
-  // else
-  //   itemComponent = <Text>No Items Available</Text>
-  // }
-
-  // useEffect(() => {
-  //   Get_Items();
-  // }, []);
-
+    // Unsubscribe from events when no longer in use
+    return () => subscriber();
+  }, []);
 
   return (
+
     <Container >
       {/* Search bar with drawer */}
       <View searchBar style={{ flexDirection: 'row', paddingTop: 26, paddingBottom: 6, alignContent: "center", backgroundColor: "darkblue", top: 0 }}>
-        <Button transparent onPress={() => navigation.navigate('SOHome')} >
+        <Button transparent onPress={() => navigation.goBack()} >
           <Ionicons
             name='arrow-back-outline'
             style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
@@ -102,7 +48,7 @@ const SOItemListScreen = ({ navigation }) => {
         </Button>
         <InputGroup rounded style={{ flex: 1, backgroundColor: 'white', height: 35, marginTop: 7, paddingLeft: 10, paddingRight: 10 }}>
           <Icon name="ios-search" style={{ color: "darkblue" }} />
-          <Input style={{ height: 30, marginTop: -5, color: "white" }} place placeholder="Search Item" />
+          <Input style={{ height: 45, marginTop: 0, fontSize: 16, color: "white" }} placeholder="Search Item" />
         </InputGroup>
         <Button transparent style={{ height: 50 }} onPress={() => null}>
           <Text style={{ color: "white", fontWeight: 'bold' }}>Search</Text>
@@ -111,58 +57,65 @@ const SOItemListScreen = ({ navigation }) => {
       {/* End Search bar with drawer */}
 
       <Content>
-        {itemComponent}
+
+        {loading ? <Text style={styles.loadingStyle}> Loading Items... </Text> :
+          <FlatList
+            data={SOItems}
+            renderItem={({ item }) => {
+              return (
+                <ListItem>
+                  <Body>
+                    <View style={{ flexDirection: 'row' }}>
+                      <Text style={{ fontWeight: '500', marginLeft: 2, marginRight: 50 }}>{item.Name}</Text>
+                    </View>
+                  </Body>
+                  <Right>
+                    <View style={{ flexDirection: 'row', justifyContent: "flex-start" }}>
+
+                      {/* View Item Button */}
+                      <Button transparent onPress={() => navigation.navigate('SOViewItem',
+                        {
+                          imagePath: item.Image_Path,
+                          name: item.Name,
+                          price: item.Price,
+                          quality: item.Quality,
+                          manf_date: item.Manufacture_Date,
+                          made_in: item.Made_In,
+                          car_model: item.Car_Model,
+                          car_brand: item.Car_Brand,
+                          itemID: item.key
+                        }
+                      )}>
+                        <Text style={{ color: 'green' }}>View</Text>
+                      </Button>
+                      {/* End View Item Button */}
+
+                      <Button transparent onPress={() => navigation.navigate('SOEditItem', {
+                        imagePath: item.Image_Path,
+                        name: item.Name,
+                        price: item.Price,
+                        quality: item.Quality,
+                        manf_date: item.Manufacture_Date,
+                        made_in: item.Made_In,
+                        car_model: item.Car_Model,
+                        car_brand: item.Car_Brand,
+                        itemID: item.key
+                      })}>
+                        <Text style={{ color: 'blue' }}>Edit</Text>
+                      </Button>
+
+                      <Button transparent>
+                        <Text style={{ color: 'red', width: 85 }}>Delete</Text>
+                      </Button>
+                    </View>
+                  </Right>
+                </ListItem>
+              );
+            }}
+          />
+        }
+
       </Content>
-
-      {/* Item 1
-            <ListItem>
-              <Body>
-                <View style={{flexDirection:'row'}}>
-                    <Text style={{fontWeight:'500',marginLeft:2, marginRight:50}}>Verna door</Text>
-                </View>
-              </Body>
-              <Right>
-                <View style={{flexDirection:'row', justifyContent: "flex-start"}}>
-                    <Button transparent onPress={() => this.props.navigation.navigate('SOViewItem')}>
-                      <Text style={{color: 'blue'}}>View</Text>
-                    </Button>
-
-                    <Button transparent onPress={() => this.props.navigation.navigate('SOEditItem')}>
-                      <Text style={{color: 'green'}}>Edit</Text>
-                    </Button>
-
-                    <Button transparent>
-                      <Text style={{color: 'red', width: 80}}>Delete</Text>
-                    </Button>
-                </View>
-              </Right>
-            </ListItem> */}
-
-      {/* Item 2 */}
-      {/* <ListItem>
-              <Body>
-                <View style={{flexDirection:'row'}}>
-                    <Text style={{fontWeight:'500',marginLeft:2,marginRight:50}}>Logan Mirror</Text>
-                </View>
-              </Body>
-              <Right>
-                <View style={{flexDirection:'row'}}>
-                    <Button transparent onPress={() => this.props.navigation.navigate('SOViewItem')}>
-                      <Text style={{color: 'blue'}}>View</Text>
-                    </Button>
-
-                    <Button transparent onPress={() => this.props.navigation.navigate('SOEditItem')}>
-                      <Text style={{color: 'green'}}>Edit</Text>
-                    </Button>
-
-                    <Button transparent>
-                      <Text style={{color: 'red', width: 80}}>Delete</Text>
-                    </Button>
-                </View>
-              </Right>
-            </ListItem>
-          </List> 
-        </Content>  */}
 
       {/* Footer */}
       <View style={{ flexDirection: 'row', alignContent: "center", backgroundColor: "darkblue" }}>
@@ -195,6 +148,14 @@ const styles = StyleSheet.create({
   },
   textStyles: {
     fontWeight: '500'
+  },
+  loadingStyle: {
+    color: 'darkblue',
+    alignSelf: 'center',
+    fontSize: 22,
+    textAlignVertical: 'center',
+    fontWeight: 'bold',
+    marginTop: 180
   }
 });
 
