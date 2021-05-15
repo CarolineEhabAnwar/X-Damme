@@ -8,45 +8,28 @@ import DatePicker from 'react-native-datepicker';
 import { AuthContext } from '../../navigation/AuthProvider';
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
+import FooterComponent from '../components/FooterComponent'
 
-// async function editItem(x_name, x_price, x_made_in, x_manufacture_date, x_car_brand,
-//   x_car_model, x_item_quality, x_image_path,ItemID) {
-//   try {
-//     await firestore().collection("CarStuff").doc({ItemID}).update({
-//       Name: x_name,
-//       Price: x_price,
-//       Made_In: x_made_in,
-//       Manufacture_Date: x_manufacture_date,
-//       Car_Brand: x_car_brand,
-//       Car_Model: x_car_model,     
-//       Quality: x_item_quality,
-//       Image_Path: x_image_path
-//     });
-//     alert("Item has been Edited successfully.");
-//   }
-//   catch (error) {
-//     alert(error);
-//   }
-
-// };
-
+async function Set_Pickers_Data() {
+}
+//********************************************************************* */
 const SOEditItemScreen = ({ navigation, route }) => {
 
   const { user } = useContext(AuthContext);
   const price_string = String(route.params.price);
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
-  const [made_in, setMade_in] = useState('');
-  const [manufacture_date, setManufacture_date] = useState("2016-05-15");
-  const [car_model, setCar_Model] = useState('Sunny');
-  const [car_brand, setCar_Brand] = useState('Kia');
-  const [item_quality, setItem_quality] = useState('Low');
-  const [image_path, setImage_path] = useState('');
+  const [name, setName] = useState(route.params.name);
+  const [price, setPrice] = useState(route.params.price);
+  const [made_in, setMade_in] = useState(route.params.made_in);
+  const [manufacture_date, setManufacture_date] = useState(route.params.manf_date);
+  const [car_model, setCar_Model] = useState(route.params.car_model);
+  const [car_brand, setCar_Brand] = useState(route.params.car_brand);
+  const [item_quality, setItem_quality] = useState(route.params.quality);
+  const [image_path, setImage_path] = useState(route.params.imagePath);
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [uploadedOnce, setuploadedOnce] = useState(false);
-
-
+  const [qualities, setQualities] = useState([]);
+  
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
       width: 1200,
@@ -85,7 +68,6 @@ const SOEditItemScreen = ({ navigation, route }) => {
 
       const url = await storageRef.getDownloadURL();
       alert("Uploaded Successfully.")
-      //alert("Image Uploaded Successfullt.")
       setUploading(false);
       setuploadedOnce(true);
       return url;
@@ -123,7 +105,9 @@ const SOEditItemScreen = ({ navigation, route }) => {
             <Input placeholder={route.params.made_in} onChangeText={made_in => setMade_in(made_in)} />
           </Item>
 
-          {/* <Item regular style={styles.InputStyle}>
+
+          {/* Photo Upload  */}
+          <Item regular style={styles.InputStyle}>
             <Button transparent
               style={{ height: 45,fontSize:50, color: 'darkblue', margin: 2 }}
               onPress={async () => {
@@ -137,13 +121,14 @@ const SOEditItemScreen = ({ navigation, route }) => {
               onPress={async () => {
                 const imageUrl = await Upload_The_Image();
                 setImage_path(imageUrl);
+                console.log(image_path)
               }}>
               <Text> Upload Photo</Text>
-            </Button>
-            
-          </Item> */}
+            </Button>            
+          </Item>
 
-
+          {/* -------------------------------------------------------- */}
+          {/* Da mn awl l el car brand wel model picker */}
           {/* Car Model */}
           <Item regular style={{
             marginBottom: 10,
@@ -175,6 +160,8 @@ const SOEditItemScreen = ({ navigation, route }) => {
             borderRadius: 6,
             alignSelf: 'flex-start'
           }}>
+          {/* End l el car brand wel model picker */}
+          {/* -------------------------------------------------------- */}
 
             <Picker
               mode="dialog"
@@ -222,10 +209,11 @@ const SOEditItemScreen = ({ navigation, route }) => {
                   marginLeft: 36
                 }
               }}
-              onDateChange={(manufacture_date) => setManufacture_date(manufacture_date)}
+              onDateChange={(new_date) => setManufacture_date(new_date)}
             />
           </Item>
-
+          
+          
           <Item regular style={{
             marginBottom: 10,
             borderWidth: 3,
@@ -239,9 +227,9 @@ const SOEditItemScreen = ({ navigation, route }) => {
 
               iosIcon={<Icon name="arrow-down" style={{ marginLeft: -5 }} />}
               placeholder="Item Quality"
+              selectedValue={item_quality}
               placeholderStyle={{ color: "darkblue" }}
-              selectedValue={route.params.quality}
-              onValueChange={(ItemQuality) => setItem_quality(ItemQuality)}
+              onValueChange={(quality_value) => setItem_quality(quality_value)}
             >
               <Picker.Item label="Low" value="Low" />
               <Picker.Item label="Medium" value="Medium" />
@@ -252,27 +240,25 @@ const SOEditItemScreen = ({ navigation, route }) => {
           <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
 
             <Button
-              onPress={async () => {
-                // if(uploading){
-                //   alert("Please Wait untill the uploads finshes.");
-                // }
-                // else if(!uploadedOnce){
-                //   alert("Please choose and upload an Image.");
-                // }
-                if (name==null) {
-                   console.log(name)
-                   console.log(route.params.name)
-                }
-                if (price == '') {
-                  setPrice(route.params.price)
-                }
-                if (made_in == '') {
-                  setMade_in(route.params.made_in)
-                }
-                //editItem(name, price, made_in, manufacture_date, car_model, car_brand, item_quality, image_path,(route.params.itemID));
+              onPress={() => {
+                try{
                 firestore().collection("CarStuff").doc(route.params.itemID).update({
-                 Name: name
+                 Name: name,
+                 Price: price,
+                 Quality: item_quality,
+                 Manufacture_Date: manufacture_date,
+                 Made_In:made_in,
+                 Car_Model: car_model,
+                 Car_Brand: car_brand,
+                 Image_Path: image_path
                 });
+                alert('Item has been edited successfully!!')
+                console.log(image_path)
+                navigation.goBack()
+              }   
+              catch (error) {
+                alert(error);
+              }
               }}
 
               style={{ backgroundColor: 'darkblue', marginVertical: 20, alignSelf: 'center', marginRight: 40 }}>
@@ -289,26 +275,9 @@ const SOEditItemScreen = ({ navigation, route }) => {
         </Form>
 
       </Content>
-      {/* Footer */}
-      <View style={{ flexDirection: 'row', alignContent: "center", backgroundColor: "darkblue" }}>
-        <FooterTab transparent style={{ backgroundColor: "darkblue" }}>
-          <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('SOHome')}>
-            <Icon style={{ color: 'white' }} name="home" />
-            <Text style={{ color: 'white' }}> Home</Text>
-          </Button>
 
-          <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('SOProfile')}>
-            <Icon name="person" style={{ color: 'white' }} />
-            <Text style={{ color: 'white' }}>Profile</Text>
-          </Button>
+      <FooterComponent home="SOHome" profile="SOProfile" contactus="SOContactUs" bkcolor="darkblue"/>
 
-          <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('SOContactUs')}>
-            <Icon style={{ color: 'white' }} name="call" />
-            <Text style={{ color: 'white' }} >Contact Us</Text>
-          </Button>
-        </FooterTab>
-      </View>
-      {/* End Footer */}
     </Container>
   );
 

@@ -297,26 +297,9 @@ const SOAddItemScreen = ({ navigation }) => {
         </Form>
 
       </Content>
-      {/* Footer */}
-      <View style={{ flexDirection: 'row', alignContent: "center", backgroundColor: "darkblue" }}>
-        <FooterTab transparent style={{ backgroundColor: "darkblue" }}>
-          <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('SOHome')}>
-            <Icon style={{ color: 'white' }} name="home" />
-            <Text style={{ color: 'white' }}> Home</Text>
-          </Button>
 
-          <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('SOProfile')}>
-            <Icon name="person" style={{ color: 'white' }} />
-            <Text style={{ color: 'white' }}>Profile</Text>
-          </Button>
+      <FooterComponent home="SOHome" profile="SOProfile" contactus="SOContactUs" bkcolor="darkblue"/>
 
-          <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('SOContactUs')}>
-            <Icon style={{ color: 'white' }} name="call" />
-            <Text style={{ color: 'white' }} >Contact Us</Text>
-          </Button>
-        </FooterTab>
-      </View>
-      {/* End Footer */}
     </Container>
   );
 

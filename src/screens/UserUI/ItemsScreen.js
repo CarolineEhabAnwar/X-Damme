@@ -99,7 +99,9 @@ const ItemsScreen = ({ navigation }) => {
 
   function Filter() {
     setModalVisible(!modalVisible);
-
+    
+    let temp_filter_items_Type = [];
+    
     if (types[filterType] != "Select Type" && types[filterType] != null) {
       for (let i = 0; i < items.length; i++) {
         if (items[i].Name.toUpperCase().includes(types[filterType].toUpperCase())) {
