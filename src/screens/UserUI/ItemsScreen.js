@@ -35,7 +35,7 @@ const ItemsScreen = ({ navigation }) => {
     await firestore()
       .collection('App Details').doc("ioaEG86eslG2pL74Riq1")
       .get().then(doc => {
-        if(doc.exists){
+        if (doc.exists) {
           doc.data().Types.forEach(element => {
             temp_Types.push(element);
           });
@@ -71,7 +71,7 @@ const ItemsScreen = ({ navigation }) => {
     await firestore()
       .collection('App Details').doc("RUltl1MjeBbhjEmJ6G8Y")
       .get().then(doc => {
-        if(doc.exists){
+        if (doc.exists) {
           doc.data().Qualities.forEach(element => {
             temp_Qualities.push(element);
           });
@@ -82,9 +82,9 @@ const ItemsScreen = ({ navigation }) => {
 
 
   useEffect(() => {
-      if(all_models[filterBrand] != null){
-        setModel(all_models[filterBrand]);
-      } 
+    if (all_models[filterBrand] != null) {
+      setModel(all_models[filterBrand]);
+    }
   }, [filterBrand]);
 
 
@@ -100,6 +100,7 @@ const ItemsScreen = ({ navigation }) => {
   function Filter() {
     setModalVisible(!modalVisible);
 
+    let temp_filter_items_Type = [];
     if (types[filterType] != "Select Type" && types[filterType] != null) {
       for (let i = 0; i < items.length; i++) {
         if (items[i].Name.toUpperCase().includes(types[filterType].toUpperCase())) {
@@ -148,28 +149,28 @@ const ItemsScreen = ({ navigation }) => {
     }
 
     let temp_filter_prices = [];
-    if(price_max != 1000000000 && price_min != 0){
+    if (price_max != 1000000000 && price_min != 0) {
       for (let i = 0; i < temp_filter_items_Quality.length; i++) {
         if (temp_filter_items_Quality[i].Price < price_max && temp_filter_items_Quality[i].Price > price_min) {
           temp_filter_prices.push(temp_filter_items_Quality[i]);
         }
       }
     }
-    else if(price_max != 1000000000){
+    else if (price_max != 1000000000) {
       for (let i = 0; i < temp_filter_items_Quality.length; i++) {
         if (temp_filter_items_Quality[i].Price < price_max) {
           temp_filter_prices.push(temp_filter_items_Quality[i]);
         }
       }
     }
-    else if(price_min != 0){
+    else if (price_min != 0) {
       for (let i = 0; i < temp_filter_items_Quality.length; i++) {
         if (temp_filter_items_Quality[i].Price > price_min) {
           temp_filter_prices.push(temp_filter_items_Quality[i]);
         }
       }
     }
-    else{
+    else {
       temp_filter_prices = temp_filter_items_Quality;
     }
 
@@ -323,11 +324,11 @@ const ItemsScreen = ({ navigation }) => {
 
 
               <Item regular style={styles.InputStyle}>
-                <Input value={price_min==0? null: price_min} keyboardType="numeric" placeholder='From' onChangeText={price_min => set_price_min(price_min)} />
+                <Input value={price_min == 0 ? null : price_min} keyboardType="numeric" placeholder='From' onChangeText={price_min => set_price_min(price_min)} />
               </Item>
 
               <Item regular style={styles.InputStyle}>
-                <Input value={price_max==1000000000? null: price_max} keyboardType="numeric" placeholder='To' onChangeText={price_max => set_price_max(price_max)} />
+                <Input value={price_max == 1000000000 ? null : price_max} keyboardType="numeric" placeholder='To' onChangeText={price_max => set_price_max(price_max)} />
               </Item>
 
               <View style={{ flexDirection: 'row' }}>
@@ -349,7 +350,7 @@ const ItemsScreen = ({ navigation }) => {
                 <Button
                   style={[styles.button, styles.buttonClose]}
                   onPress={() => {
-                    if(price_min>price_max)
+                    if (price_min > price_max)
                       return alert("Please make sure the Min Price is less than the Max Price.");
                     Filter();
                   }}

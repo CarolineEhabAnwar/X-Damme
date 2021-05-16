@@ -24,7 +24,7 @@ const SOViewItemScreen = ({ route }) => {
 
       <Content>
         <Card style={{ flex: 0 }}>
-          <Image  source={{ uri: route.params.imagePath }} style={{ marginBottom: 20, height: 200, width: null }} />
+          <Image source={{ uri: route.params.imagePath }} style={{ marginBottom: 20, height: 200, width: null }} />
           <CardItem style={{ marginHorizontal: 1, borderWidth: 3, borderColor: 'darkblue' }}>
             <Body>
 
@@ -54,7 +54,19 @@ const SOViewItemScreen = ({ route }) => {
 
               <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 17, marginLeft: '15%' }}>
                 {/* Accept */}
-                <Button style={{ marginLeft: 28, backgroundColor: 'blue' }} onPress={() => this.props.navigation.navigate('SOEditItem')}>
+                <Button style={{ marginLeft: 30, backgroundColor: '#eb1c1c' }}
+                  onPress={() => navigation.navigate('SOEditItem', {
+                  imagePath: route.params.imagePath,
+                  name: route.params.name,
+                  price: route.params.price,
+                  quality: route.params.quality,
+                  manf_date: route.params.manf_date,
+                  made_in: route.params.made_in,
+                  car_model: route.params.car_model,
+                  car_brand: route.params.car_brand,
+                  type: route.params.type,
+                  itemID: route.params.itemID
+                })}>
                   <Text style={styles.buttonTextStyle}>Edit</Text>
                 </Button>
 

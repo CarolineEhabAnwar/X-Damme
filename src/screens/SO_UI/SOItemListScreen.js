@@ -83,6 +83,7 @@ const SOItemListScreen = () => {
                           made_in: item.Made_In,
                           car_model: item.Car_Model,
                           car_brand: item.Car_Brand,
+                          type: item.Type,
                           itemID: item.key
                         }
                       )}>
@@ -99,6 +100,7 @@ const SOItemListScreen = () => {
                         made_in: item.Made_In,
                         car_model: item.Car_Model,
                         car_brand: item.Car_Brand,
+                        type: item.Type,
                         itemID: item.key
                       })}>
                         <Text style={{ color: 'blue' }}>Edit</Text>

@@ -1,51 +1,202 @@
-import React, { useContext } from 'react';
-import { Platform, StyleSheet, View } from 'react-native';
+import React, { useContext, Component, useEffect } from 'react';
+import { Platform, StyleSheet, View, LogBox, ToastAndroid } from 'react-native';
 import { Container, FooterTab, Badge, Header, Content, Item, Input, Icon, Text, Radio, Picker, Form, Button, Image } from 'native-base';
+import { TouchableOpacity } from 'react-native';
 import { Feather, Ionicons } from '@expo/vector-icons';
 import ImagePicker from "react-native-image-crop-picker"
+import SOProfileScreen from './SOProfileScreen';
+import firestore from "@react-native-firebase/firestore";
 import { useState } from "react";
 import DatePicker from 'react-native-datepicker';
+import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../../navigation/AuthProvider';
 import storage from '@react-native-firebase/storage';
-import firestore from '@react-native-firebase/firestore';
+import { roundToNearestPixel } from 'react-native/Libraries/Utilities/PixelRatio';
+import warnOnce from 'react-native/Libraries/Utilities/warnOnce';
 
-// async function editItem(x_name, x_price, x_made_in, x_manufacture_date, x_car_brand,
-//   x_car_model, x_item_quality, x_image_path,ItemID) {
-//   try {
-//     await firestore().collection("CarStuff").doc({ItemID}).update({
-//       Name: x_name,
-//       Price: x_price,
-//       Made_In: x_made_in,
-//       Manufacture_Date: x_manufacture_date,
-//       Car_Brand: x_car_brand,
-//       Car_Model: x_car_model,     
-//       Quality: x_item_quality,
-//       Image_Path: x_image_path
-//     });
-//     alert("Item has been Edited successfully.");
-//   }
-//   catch (error) {
-//     alert(error);
-//   }
+//npm install react-native-image-crop-picker
+//npm outdated
+//npm install @react-native-firebase/analytics@"^11.2.0"
+//npm update @react-native-firebase/analytics
+//npm update @react-native-firebase/app@"11.4.1"
+//npm install npm install react-native-firebase/storage
+//npm install --legacy-peer-deps --save  @react-native-firebase/analytics@11.4.1 @react-native-firebase/app@11.4.1
+//npm update react-native-datepicker
+//npm install @react-native-community/datetimepicker
 
-// };
+async function UpdateItem(x_name, x_price, x_made_in, x_manufacture_date, x_car_model,
+  x_car_brand, x_item_quality, x_image_path, x_type, user, item_id) {
+  try {
+    const Added_Item = await firestore().collection("CarStuff").doc(item_id).update({
+      Name: x_name,
+      Price: x_price,
+      Made_In: x_made_in,
+      Type: x_type,
+      Manufacture_Date: x_manufacture_date,
+      Car_Model: x_car_model,
+      Car_Brand: x_car_brand,
+      Quality: x_item_quality,
+      Image_Path: x_image_path,
+      Shop_Owner_ID: user.uid
+    });
+    ToastAndroid.show(
+      'Item has been eddited Succenfully.',
+      ToastAndroid.SHORT
+    );
+
+  }
+  catch (error) {
+    alert(error);
+  }
+
+};
+
+
+
 
 const SOEditItemScreen = ({ navigation, route }) => {
 
-  const { user } = useContext(AuthContext);
-  const price_string = String(route.params.price);
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
-  const [made_in, setMade_in] = useState('');
-  const [manufacture_date, setManufacture_date] = useState("2016-05-15");
-  const [car_model, setCar_Model] = useState('Sunny');
-  const [car_brand, setCar_Brand] = useState('Kia');
-  const [item_quality, setItem_quality] = useState('Low');
-  const [image_path, setImage_path] = useState('');
-  const [image, setImage] = useState(null);
-  const [uploading, setUploading] = useState(false);
-  const [uploadedOnce, setuploadedOnce] = useState(false);
+  LogBox.ignoreLogs(['Warning: componentWillReceiveProps has been renamed']);
 
+
+  const { user } = useContext(AuthContext);
+
+  const [name, setName] = useState(route.params.name);
+  const [price, setPrice] = useState(route.params.price);
+  const [made_in, setMade_in] = useState(route.params.made_in);
+  const [manufacture_date, setManufacture_date] = useState(route.params.manf_date);
+  const [image_path, setImage_path] = useState(route.params.imagePath);
+  const [image, setImage] = useState(null);
+
+  const [is_image_choosen, setis_image_choosen] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [is_image_uploaded, setis_image_uploaded] = useState(false);
+  const [uploadedOnce, setuploadedOnce] = useState(false);
+  const [loadingScreen, setloadingScreen] = useState(true);
+  const [finsihedLoadingScreen, setFinishedLoadingScreen] = useState(false);
+
+
+  const [Type, setSelectedType] = useState(0);
+  const [Brand, setSelectedBrand] = useState(0);
+  const [Model, setSelectedModel] = useState(0);
+  const [Quality, setSelectedQuality] = useState(0);
+
+  //Lists for Pickers
+  const [types, setTypes] = useState([]);
+  const [brands, setBrands] = useState([]);
+  const [all_models, set_all_models] = useState([]);
+  const [models, setModel] = useState([]);
+  const [qualities, setQualities] = useState([]);
+
+  function Set_Old_Pickers_Data() {
+
+    let brand_index = 0;
+    for (let i = 0; i < brands.length; i++) {
+      if (route.params.car_brand == brands[i]) {
+        setSelectedBrand(i);
+        brand_index = i;
+      }
+    }
+
+    for (let i = 0; i < types.length; i++) {
+      if (route.params.type == types[i]) {
+        setSelectedType(i);
+      }
+    }
+
+    let temp = all_models[brand_index];
+    for (let i = 0; i < temp.length; i++) {
+      if (route.params.car_model == temp[i]) {
+        setSelectedModel(i);
+      }
+    }
+
+    for (let i = 0; i < qualities.length; i++) {
+      if (route.params.quality == qualities[i]) {
+        setSelectedQuality(i);
+      }
+    }
+
+    setFinishedLoadingScreen(true);
+
+  }
+
+  async function Set_Pickers_Data() {
+
+    //The name of the collection holding the data "Car Brands and Models"
+
+    //Getting Types
+    let temp_Types = [];
+    await firestore()
+      .collection('App Details').doc("ioaEG86eslG2pL74Riq1")
+      .get().then(doc => {
+        if (doc.exists) {
+          doc.data().Types.forEach(element => {
+            temp_Types.push(element);
+          });
+        }
+      });
+    setTypes(temp_Types);
+
+    //Getting Brands and Models
+    let temp_brands = [];
+    let temp_models = [];
+    temp_brands.push("Select Brand");
+    temp_models.push(["Select Model"]);
+    await firestore()
+      .collection('Car Brands and Models')
+      .get().then(doc => {
+        doc.forEach(element => {
+          temp_brands.push(element.data().Brand);
+          let temp_models_per_brand = [];
+          element.data().Models.forEach(Model => {
+            temp_models_per_brand.push(Model);
+          });
+          temp_models.push(temp_models_per_brand);
+        });
+      });
+
+
+    setBrands(temp_brands);
+    set_all_models(temp_models)
+    setModel(temp_models[0]);
+
+
+    let temp_Qualities = [];
+    await firestore()
+      .collection('App Details').doc("RUltl1MjeBbhjEmJ6G8Y")
+      .get().then(doc => {
+        if (doc.exists) {
+          doc.data().Qualities.forEach(element => {
+            temp_Qualities.push(element);
+          });
+        }
+      });
+    setQualities(temp_Qualities);
+    setloadingScreen(false);
+  }
+
+  useEffect(() => {
+    if (all_models[Brand] != null) {
+      setModel(all_models[Brand]);
+    }
+  }, [Brand]);
+
+  useEffect(() => {
+    try {
+      setloadingScreen(true);
+      Set_Pickers_Data();
+    } catch (error) {
+      alert(error);
+    }
+
+  }, []);
+
+  useEffect(() => {
+    if (loadingScreen == false) {
+      Set_Old_Pickers_Data();
+    }
+  }, [loadingScreen]);
 
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
@@ -59,14 +210,20 @@ const SOEditItemScreen = ({ navigation, route }) => {
   };
 
   const choosePhotoFromLibrary = async () => {
-    ImagePicker.openPicker({
-      width: 1200,
-      height: 780,
-      cropping: true,
-    }).then((image) => {
-      const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
-      setImage(imageUri);
-    });
+    try {
+      ImagePicker.openPicker({
+        width: 1200,
+        height: 780,
+        cropping: true,
+      }).then((image) => {
+        setis_image_uploaded(false);
+        const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
+        setImage(imageUri);
+        setis_image_choosen(true);
+      });
+    } catch (error) {
+      setis_image_choosen(false);
+    }
   };
 
   const Upload_The_Image = async () => {
@@ -81,11 +238,14 @@ const SOEditItemScreen = ({ navigation, route }) => {
 
     try {
       setUploading(true);
+      setis_image_choosen(false);
       await storage().ref(`photos/${filename}`).putFile(uploadUri);
 
       const url = await storageRef.getDownloadURL();
-      alert("Uploaded Successfully.")
-      //alert("Image Uploaded Successfullt.")
+      ToastAndroid.show(
+        'Uploaded Successfully.',
+        ToastAndroid.SHORT
+      );
       setUploading(false);
       setuploadedOnce(true);
       return url;
@@ -94,6 +254,26 @@ const SOEditItemScreen = ({ navigation, route }) => {
       return null;
     }
   };
+
+  const removeAll = () => {
+    setName('');
+    setPrice('');
+    setMade_in('');
+    setManufacture_date("2016-05-15");
+    setImage_path('');
+    setImage(null);
+
+    setis_image_choosen(false);
+    setUploading(false);
+    setis_image_uploaded(false);
+
+    setuploadedOnce(false);
+    setSelectedType(0);
+    setSelectedBrand(0);
+    setSelectedModel(0);
+    setSelectedQuality(0);
+
+  }
 
   return (
     <Container >
@@ -105,190 +285,234 @@ const SOEditItemScreen = ({ navigation, route }) => {
             style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
           />
         </Button>
-        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '25%', paddingTop: 12, fontWeight: 'bold' }}> Edit Item</Text>
+        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '22%', paddingTop: 12, fontWeight: 'bold' }}> Edit Item</Text>
       </View>
       {/* End Search bar with drawer */}
 
-      <Content style={{ marginHorizontal: 15, paddingVertical: 10 }}>
+      {!finsihedLoadingScreen ? <Content><Text style={styles.loadingStyle}> Loading Item Details... </Text></Content> :
 
-        <Form>
-          <Item regular style={styles.InputStyle}>
-            <Input placeholder={route.params.name} onChangeText={name => setName(name)} />
-          </Item>
+        <Content style={{ marginHorizontal: 15, paddingVertical: 10 }}>
 
-          <Item regular style={styles.InputStyle}>
-            <Input placeholder={price_string} keyboardType="numeric" onChangeText={price => setPrice(price)} />
-          </Item>
-          <Item regular style={styles.InputStyle}>
-            <Input placeholder={route.params.made_in} onChangeText={made_in => setMade_in(made_in)} />
-          </Item>
+          <Form>
+            <Item regular style={styles.InputStyle}>
+              <Input value={name} placeholder='Item Name' onChangeText={name => setName(name)} />
+            </Item>
 
-          {/* <Item regular style={styles.InputStyle}>
-            <Button transparent
-              style={{ height: 45,fontSize:50, color: 'darkblue', margin: 2 }}
-              onPress={async () => {
-                choosePhotoFromLibrary();
-              }}>
-              <Text> Choose Photo</Text>
-            </Button>
-            {uploading ? <Feather name="loader" size={24} color="darkblue" /> : null}
-            <Button
-              style={{ height: 45, position: 'relative', backgroundColor: 'darkblue', margin: 2 }}
-              onPress={async () => {
-                const imageUrl = await Upload_The_Image();
-                setImage_path(imageUrl);
-              }}>
-              <Text> Upload Photo</Text>
-            </Button>
-            
-          </Item> */}
+            <Item regular style={styles.InputStyle}>
+              <Input value={price} keyboardType="numeric" placeholder='Item Price' onChangeText={price => setPrice(price)} />
+            </Item>
+            <Item regular style={styles.InputStyle}>
+              <Input value={made_in} placeholder='Made In' onChangeText={made_in => setMade_in(made_in)} />
+            </Item>
+
+            <Item regular style={{
+              marginBottom: 10,
+              borderWidth: 3,
+              borderColor: 'darkblue',
+              borderRadius: 6,
+              alignSelf: 'flex-start'
+            }}>
+              <Picker
+                mode="dialog"
+                iosIcon={<Icon name="arrow-down" style={{ marginLeft: -5 }} />}
+                placeholderStyle={{ color: "darkred" }}
+                selectedValue={Type}
+                onValueChange={(Selected_Type) => setSelectedType(Selected_Type)}
+              >
+                {types.map((item, index) => {
+                  return (<Picker.Item label={item} value={index} key={index} />)
+                })}
+              </Picker>
+            </Item>
+
+            <Item regular style={styles.InputStyle}>
+              <Button transparent
+                style={{ height: 45, fontSize: 50, color: 'darkblue', margin: 2 }}
+                onPress={async () => {
+                  choosePhotoFromLibrary();
+                }}>
+                <Text> Choose Photo</Text>
+              </Button>
+              {is_image_choosen ? <Ionicons name="checkmark-outline" size={24} color="black" /> : null}
+              {uploading ? <Feather name="loader" size={24} color="black" /> : null}
+              {is_image_uploaded ? <Ionicons name="checkmark-done-outline" size={24} color="black" /> : null}
+              <Button
+                style={{ height: 45, position: 'relative', backgroundColor: 'darkblue', margin: 2 }}
+                onPress={async () => {
+                  try {
+                    const imageUrl = await Upload_The_Image();
+                    setImage_path(imageUrl);
+                    setis_image_choosen(false);
+                    setis_image_uploaded(true);
+                  } catch (error) {
+                    alert("There has been some error in uploading the image");
+                  }
+                }}>
+                <Text> Upload Photo</Text>
+              </Button>
+
+            </Item>
 
 
-          {/* Car Model */}
-          <Item regular style={{
-            marginBottom: 10,
-            borderWidth: 3,
-            borderColor: 'darkblue',
-            borderRadius: 6,
-            alignSelf: 'flex-start'
-          }}>
+            {/* Car Model */}
+            <Item regular style={{
+              marginBottom: 10,
+              borderWidth: 3,
+              borderColor: 'darkblue',
+              borderRadius: 6,
+              alignSelf: 'flex-start'
+            }}>
 
-            <Picker
-              mode="dialog"
-              iosIcon={<Icon name="arrow-down" style={{ marginLeft: -5 }} />}
-              placeholder="Car Brand"
-              placeholderStyle={{ color: "darkblue" }}
-              selectedValue={route.params.car_brand}
-              onValueChange={(Car_Brand) => setCar_Brand(Car_Brand)}
-            >
-              <Picker.Item label="Nissan" value="Nissan" />
-              <Picker.Item label="Kia" value="Kia" />
-              <Picker.Item label="BMW" value="BMW" />
-            </Picker>
-          </Item>
-          {/*
+              <Picker
+                mode="dialog"
+                iosIcon={<Icon name="arrow-down" style={{ marginLeft: -5 }} />}
+                placeholderStyle={{ color: "darkred" }}
+                selectedValue={Brand}
+                onValueChange={(Selected_Brand) => {
+                  if (Selected_Brand != Brand) {
+                    setSelectedBrand(Selected_Brand)
+                    setSelectedModel(0);
+                  }
+
+                }}
+              >
+                {brands.map((item, index) => {
+                  return (<Picker.Item label={item} value={index} key={index} />)
+                })}
+              </Picker>
+            </Item>
+            {/*
           {/* Car Brand */}
-          <Item regular style={{
-            marginBottom: 10,
-            borderWidth: 3,
-            borderColor: 'darkblue',
-            borderRadius: 6,
-            alignSelf: 'flex-start'
-          }}>
+            <Item regular style={{
+              marginBottom: 10,
+              borderWidth: 3,
+              borderColor: 'darkblue',
+              borderRadius: 6,
+              alignSelf: 'flex-start'
+            }}>
 
-            <Picker
-              mode="dialog"
-              iosIcon={<Icon name="arrow-down" style={{ marginLeft: -5 }} />}
-              placeholder="Car Model"
-              placeholderStyle={{ color: "darkblue" }}
-              selectedValue={route.params.car_model}
-              onValueChange={(CarModel) => setCar_Model(CarModel)}
-            >
-              <Picker.Item label="C300" value="C300" />
-              <Picker.Item label="Sunny" value="Sunny" />
-              <Picker.Item label="Cerato" value="Cerato" />
-            </Picker>
-          </Item>
+              <Picker
+                mode="dialog"
+                iosIcon={<Icon name="arrow-down" style={{ marginLeft: -5 }} />}
+                placeholderStyle={{ color: "darkred" }}
+                selectedValue={Model}
+                onValueChange={(Selected_Model) => setSelectedModel(Selected_Model)}
+              >
+                {models.map((item, index) => {
+                  return (<Picker.Item label={item} value={index} key={index} />)
+                })}
+              </Picker>
+            </Item>
 
-          <Item regular style={{
-            marginBottom: 10,
-            borderWidth: 3,
-            borderColor: 'darkblue',
-            borderRadius: 6,
-            alignSelf: 'flex-start',
-            height: 50
-          }}>
-            <Text style={{ marginLeft: 10, marginRight: 5, color: 'darkblue' }}>
-              Manufacture Date:
-            </Text>
-            <DatePicker
-              style={{ width: 200 }}
-              date={manufacture_date}
-              mode="date"
-              placeholder="select date"
-              format="YYYY-MM-DD"
-              minDate="1990-01-01"
-              maxDate="2025-01-01"
-              confirmBtnText="Confirm"
-              cancelBtnText="Cancel"
-              customStyles={{
-                dateIcon: {
-                  position: 'absolute',
-                  left: 0,
-                  top: 4,
-                  marginLeft: 0
-                },
-                dateInput: {
-                  marginLeft: 36
-                }
-              }}
-              onDateChange={(manufacture_date) => setManufacture_date(manufacture_date)}
-            />
-          </Item>
+            <Item regular style={{
+              marginBottom: 10,
+              borderWidth: 3,
+              borderColor: 'darkblue',
+              borderRadius: 6,
+              alignSelf: 'flex-start',
+              height: 50
+            }}>
+              <Text style={{ marginLeft: 10, marginRight: 5, color: 'darkblue' }}>
+                Manufacture Date:
+              </Text>
+              <DatePicker
+                style={{ width: 200 }}
+                date={manufacture_date}
+                mode="date"
+                placeholder="select date"
+                format="YYYY-MM-DD"
+                minDate="1990-01-01"
+                maxDate="2025-01-01"
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                customStyles={{
+                  dateIcon: {
+                    position: 'absolute',
+                    left: 0,
+                    top: 4,
+                    marginLeft: 0
+                  },
+                  dateInput: {
+                    marginLeft: 36
+                  }
+                }}
+                onDateChange={(manufacture_date) => setManufacture_date(manufacture_date)}
+              />
+            </Item>
 
-          <Item regular style={{
-            marginBottom: 10,
-            borderWidth: 3,
-            borderColor: 'darkblue',
-            borderRadius: 6,
-            alignSelf: 'flex-start'
-          }}>
+            <Item regular style={{
+              marginBottom: 10,
+              borderWidth: 3,
+              borderColor: 'darkblue',
+              borderRadius: 6,
+              alignSelf: 'flex-start'
+            }}>
 
-            <Picker
-              mode="dialog"
+              <Picker
+                mode="dialog"
+                iosIcon={<Icon name="arrow-down" style={{ marginLeft: -5 }} />}
+                placeholderStyle={{ color: "darkred" }}
+                selectedValue={Quality}
+                onValueChange={(Selected_Quality) => setSelectedQuality(Selected_Quality)}
+              >
+                {qualities.map((item, index) => {
+                  return (<Picker.Item label={item} value={index} key={index} />)
+                })}
+              </Picker>
+            </Item>
 
-              iosIcon={<Icon name="arrow-down" style={{ marginLeft: -5 }} />}
-              placeholder="Item Quality"
-              placeholderStyle={{ color: "darkblue" }}
-              selectedValue={route.params.quality}
-              onValueChange={(ItemQuality) => setItem_quality(ItemQuality)}
-            >
-              <Picker.Item label="Low" value="Low" />
-              <Picker.Item label="Medium" value="Medium" />
-              <Picker.Item label="High" value="High" />
-            </Picker>
-          </Item>
 
-          <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+            <Item regular style={styles.ButtonStyle}>
+              <Button
+                onPress={async () => {
+                  if (uploading) {
+                    alert("Please Wait untill the uploads finshs.");
+                  }
+                  else if (name == '') {
+                    alert("Please insert Item Name.");
+                  }
+                  else if (price == '') {
+                    alert("Please insert Price.");
+                  }
+                  else if (made_in == '') {
+                    alert("Please insert Manufacture Country.");
+                  }
+                  else if (types[Type] == 'Select Type') {
+                    alert("Please select a type.")
+                  }
+                  else if (brands[Brand] == 'Select Brand') {
+                    alert("Please select a brand.")
+                  }
+                  else if (models[Model] == 'Select Model') {
+                    alert("Please select a model.")
+                  }
+                  else if (qualities[Quality] == 'Select Quality') {
+                    alert("Please select a quality.")
+                  }
+                  else {
+                    UpdateItem(name, price, made_in, manufacture_date, models[Model], brands[Brand], qualities[Quality], image_path, types[Type], user, route.params.itemID);
+                    navigation.goBack();
+                  }
+                }}  // Please handle all of the errors.
 
-            <Button
-              onPress={async () => {
-                // if(uploading){
-                //   alert("Please Wait untill the uploads finshes.");
-                // }
-                // else if(!uploadedOnce){
-                //   alert("Please choose and upload an Image.");
-                // }
-                if (name==null) {
-                   console.log(name)
-                   console.log(route.params.name)
-                }
-                if (price == '') {
-                  setPrice(route.params.price)
-                }
-                if (made_in == '') {
-                  setMade_in(route.params.made_in)
-                }
-                //editItem(name, price, made_in, manufacture_date, car_model, car_brand, item_quality, image_path,(route.params.itemID));
-                firestore().collection("CarStuff").doc(route.params.itemID).update({
-                 Name: name
-                });
-              }}
+                style={{ backgroundColor: 'darkblue', marginVertical: 20, alignSelf: 'center' }}>
+                <Text>Edit</Text>
+              </Button>
 
-              style={{ backgroundColor: 'darkblue', marginVertical: 20, alignSelf: 'center', marginRight: 40 }}>
-              <Text>Confirm</Text>
-            </Button>
+              <Button
+                onPress={async () => {
+                  navigation.goBack();
+                }}
 
-            <Button
-              onPress={() => navigation.goBack()}
-              style={{ backgroundColor: 'white', borderWidth: 1, marginVertical: 20 }}>
-              <Text style={{ color: 'darkblue' }}>Cancel</Text>
-            </Button>
-          </View>
+                style={{ backgroundColor: 'darkblue', marginVertical: 20, alignSelf: 'center' }}>
+                <Text>Cancel</Text>
+              </Button>
+            </Item>
 
-        </Form>
+          </Form>
 
-      </Content>
+        </Content>
+      }
       {/* Footer */}
       <View style={{ flexDirection: 'row', alignContent: "center", backgroundColor: "darkblue" }}>
         <FooterTab transparent style={{ backgroundColor: "darkblue" }}>
@@ -322,9 +546,21 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
 
+  ButtonStyle: {
+    justifyContent: 'space-between'
+  },
+
   ViewStyle: {
     marginBottom: 10,
     flexDirection: 'row',
+  },
+  loadingStyle: {
+    color: 'darkblue',
+    alignSelf: 'center',
+    fontSize: 22,
+    textAlignVertical: 'center',
+    fontWeight: 'bold',
+    marginTop: 180
   }
 })
 
