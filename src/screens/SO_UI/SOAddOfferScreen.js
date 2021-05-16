@@ -4,6 +4,7 @@ import { Container, Header,FooterTab,Badge, Content, Item, Input, Icon,DatePicke
 import { TouchableOpacity } from 'react-native';
 import { AntDesign,Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
+import FooterComponent from '../components/FooterComponent'
 
 export default class SOAddOfferScreen extends Component {
     constructor(props) {

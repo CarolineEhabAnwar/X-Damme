@@ -13,7 +13,25 @@ const SOItemListScreen = () => {
   const navigation = useNavigation();
   const { user } = useContext(AuthContext);
   const [SOItems, setSOItems] = useState([]);
+  const [ShowItems,SetShowItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [search,setSearch] = useState('');
+
+  
+  const Search = () =>{
+    if(search==""){
+      SetShowItems(SOItems);
+    }
+    else{
+      let temp = [];
+      for(let i = 0;i<SOItems.length;i++){
+        if(SOItems[i].Name.toUpperCase().includes(search.toUpperCase())){
+          temp.push(SOItems[i]);
+        }
+      }
+      SetShowItems(temp);
+    }
+  }
 
   useEffect(() => {
     const subscriber = firestore()
@@ -30,6 +48,7 @@ const SOItemListScreen = () => {
         });
 
         setSOItems(temp_SOItems);
+        SetShowItems(temp_SOItems);
         setLoading(false);
       });
 
@@ -50,9 +69,9 @@ const SOItemListScreen = () => {
         </Button>
         <InputGroup rounded style={{ flex: 1, backgroundColor: 'white', height: 35, marginTop: 7, paddingLeft: 10, paddingRight: 10 }}>
           <Icon name="ios-search" style={{ color: "darkblue" }} />
-          <Input style={{ height: 45, marginTop: 0, fontSize: 16, color: "white" }} placeholder="Search Item" />
+          <Input style={{ height: 40, marginTop: 5, color: "darkblue" }} placeholder="Search" onChangeText={(SearchText)=>{setSearch(SearchText)}}/>
         </InputGroup>
-        <Button transparent style={{ height: 50 }} onPress={() => null}>
+        <Button transparent style={{ height: 50 }} onPress={() => Search()}>
           <Text style={{ color: "white", fontWeight: 'bold' }}>Search</Text>
         </Button>
       </View>
@@ -62,7 +81,7 @@ const SOItemListScreen = () => {
 
         {loading ? <Text style={styles.loadingStyle}> Loading Items... </Text> :
           <FlatList
-            data={SOItems}
+            data={ShowItems}
             renderItem={({ item }) => {
               return (
                 <ListItem>
@@ -147,6 +166,7 @@ const SOItemListScreen = () => {
     </Container>
   );
 }
+
 
 const styles = StyleSheet.create({
   IconStyle: {
