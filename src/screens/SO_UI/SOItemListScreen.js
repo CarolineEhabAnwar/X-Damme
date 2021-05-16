@@ -1,10 +1,12 @@
 import React, { Component, useState, useEffect, useRef, useContext } from 'react';
-import { Image, StyleSheet, FlatList, LogBox } from 'react-native';
+import { Image, StyleSheet, FlatList, LogBox, Alert } from 'react-native';
 import { Container, FooterTab, Badge, InputGroup, Header, Content, List, Item, Input, ListItem, Thumbnail, Text, Left, Body, Right, Button, Icon, View } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../../navigation/AuthProvider';
 import firestore from '@react-native-firebase/firestore';
+import FooterComponent from '../components/FooterComponent'
+
 
 const SOItemListScreen = () => {
   LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
@@ -106,7 +108,28 @@ const SOItemListScreen = () => {
                         <Text style={{ color: 'blue' }}>Edit</Text>
                       </Button>
 
-                      <Button transparent>
+                      <Button transparent onPress={() =>
+                        Alert.alert(
+                          "Warning",
+                          "Are you sure you want to delete this item?",
+                          [
+                            {
+                              text: "No"
+                            },
+                            {
+                              text: "Yes", onPress: () => {
+                                firestore()
+                                  .collection('CarStuff')
+                                  .doc(item.key)
+                                  .delete()
+                                  .then(() => {
+                                    alert("Item deleted");
+                                  });
+                              }
+                            }
+                          ]
+                        )
+                      }>
                         <Text style={{ color: 'red', width: 85 }}>Delete</Text>
                       </Button>
                     </View>
@@ -119,26 +142,8 @@ const SOItemListScreen = () => {
 
       </Content>
 
-      {/* Footer */}
-      <View style={{ flexDirection: 'row', alignContent: "center", backgroundColor: "darkblue" }}>
-        <FooterTab transparent style={{ backgroundColor: "darkblue" }}>
-          <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('SOHome')}>
-            <Icon style={{ color: 'white' }} name="home" />
-            <Text style={{ color: 'white' }}> Home</Text>
-          </Button>
+      <FooterComponent home="SOHome" profile="SOProfile" contactus="SOContactUs" bkcolor="darkblue"/>
 
-          <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('SOProfile')}>
-            <Icon name="person" style={{ color: 'white' }} />
-            <Text style={{ color: 'white' }}>Profile</Text>
-          </Button>
-
-          <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('SOContactUs')}>
-            <Icon style={{ color: 'white' }} name="call" />
-            <Text style={{ color: 'white' }} >Contact Us</Text>
-          </Button>
-        </FooterTab>
-      </View>
-      {/* End Footer */}
     </Container>
   );
 }

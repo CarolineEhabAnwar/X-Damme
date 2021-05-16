@@ -13,7 +13,7 @@ const ItemsScreen = ({ navigation }) => {
   //Search bar Value
   const [search_item, set_search_item] = useState('');
 
-  //Picker Selected Values 
+  //Picker Selected Values
   const [filterType, setFilterType] = useState(0);
   const [filterBrand, setFilterBrand] = useState(0);
   const [filterModel, setFilterModel] = useState(0);
@@ -101,6 +101,7 @@ const ItemsScreen = ({ navigation }) => {
     setModalVisible(!modalVisible);
 
     let temp_filter_items_Type = [];
+
     if (types[filterType] != "Select Type" && types[filterType] != null) {
       for (let i = 0; i < items.length; i++) {
         if (items[i].Name.toUpperCase().includes(types[filterType].toUpperCase())) {

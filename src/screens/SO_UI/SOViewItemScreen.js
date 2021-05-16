@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { Image, StyleSheet } from 'react-native';
+import { Image, StyleSheet,Alert } from 'react-native';
 import { Entypo, Ionicons } from '@expo/vector-icons';
 import { Container, FooterTab, Content, Card, CardItem, Text, Button, Icon, Body, View } from 'native-base';
-import { useNavigation } from '@react-navigation/native';
+import FooterComponent from '../components/FooterComponent'
 
 
-const SOViewItemScreen = ({ route }) => {
-  const navigation = useNavigation();
+const SOViewItemScreen = ({ navigation, route }) => {
 
   return (
     <Container>
@@ -70,9 +69,30 @@ const SOViewItemScreen = ({ route }) => {
                   <Text style={styles.buttonTextStyle}>Edit</Text>
                 </Button>
 
-                {/* Decline */}
-                <Button style={{ marginLeft: 30, backgroundColor: '#eb1c1c' }}>
-                  <Text style={styles.buttonTextStyle}>Delete</Text>
+                {/* Delete */}
+                <Button transparent  style={{ marginLeft: 30, backgroundColor: '#eb1c1c' }} onPress={() =>
+                        Alert.alert(
+                          "Warning",
+                          "Are you sure you want to delete this item?",
+                          [
+                            {
+                              text: "No"
+                            },
+                            {
+                              text: "Yes", onPress: () => {
+                                firestore()
+                                  .collection('CarStuff')
+                                  .doc(item.key)
+                                  .delete()
+                                  .then(() => {
+                                    alert("Item deleted");
+                                  });
+                              }
+                            }
+                          ]
+                        )
+                      }>
+                  <Text style={{fontWeight:'bold',color:'white'}}>Delete</Text>
                 </Button>
               </View>
             </Body>
@@ -80,26 +100,7 @@ const SOViewItemScreen = ({ route }) => {
         </Card>
       </Content>
 
-      {/* Footer */}
-      <View style={{ flexDirection: 'row', alignContent: "center", backgroundColor: "darkblue" }}>
-        <FooterTab transparent style={{ backgroundColor: "darkblue" }}>
-          <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('SOHome')}>
-            <Icon style={{ color: 'white' }} name="home" />
-            <Text style={{ color: 'white' }}> Home</Text>
-          </Button>
-
-          <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('SOProfile')}>
-            <Icon name="person" style={{ color: 'white' }} />
-            <Text style={{ color: 'white' }}>Profile</Text>
-          </Button>
-
-          <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('SOContactUs')}>
-            <Icon style={{ color: 'white' }} name="call" />
-            <Text style={{ color: 'white' }} >Contact Us</Text>
-          </Button>
-        </FooterTab>
-      </View>
-      {/* End Footer */}
+      <FooterComponent home="SOHome" profile="SOProfile" contactus="SOContactUs" bkcolor="darkblue"/>
 
     </Container>
   );

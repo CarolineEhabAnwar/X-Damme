@@ -9,7 +9,10 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 //Importing Waiting Screen
 import WaitingScreen from '../screens/WaitingScreen'
+
+//Importing Components
 import ItemComponent from '../screens/components/ItemComponent'
+import FooterComponent from '../screens/components/FooterComponent'
 
 //Importing User Screens
 import HomeScreen from '../screens/UserUI/HomeScreen'
@@ -191,6 +194,11 @@ const UserStack = ({ navigation }) => (
     <Stack.Screen
       name="MyReviews"
       component={MyReviewsScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="FooterComponent"
+      component={FooterComponent}
       options={{ header: () => null }}
     />
   </Stack.Navigator>

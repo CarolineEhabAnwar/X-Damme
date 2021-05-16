@@ -27,10 +27,6 @@ export default class SOAddOfferScreen extends Component {
     
     render() {
 
-    let home_notification = 5;
-    let profile_notification = 5;
-    let settings_notification = 5;
-
     return (
       <Container>
       {/* Search bar with drawer */}
@@ -131,26 +127,8 @@ export default class SOAddOfferScreen extends Component {
         </Form>
       </Content>
 
-        {/* Footer */}
-        <View style={{flexDirection: 'row',alignContent:"center", backgroundColor: "darkblue"}}>
-          <FooterTab transparent style={{backgroundColor: "darkblue"}}>
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOHome')}>
-              <Icon style={{color:'white'}} name="home" />
-              <Text style={{color:'white'}}> Home</Text>
-            </Button>
-
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOProfile')}>
-              <Icon name="person" style={{color:'white'}}/>
-              <Text style={{color:'white'}}>Profile</Text>
-            </Button>
-
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOContactUs')}>
-              <Icon style={{color:'white'}} name="call" />
-              <Text style={{color:'white'}} >Contact Us</Text>
-            </Button>
-          </FooterTab>
-        </View>
-        {/* End Footer */}      
+      <FooterComponent home="SOHome" profile="SOProfile" contactus="SOContactUs"/>
+          
     </Container>
     );
 
