@@ -1,5 +1,5 @@
-import React, { useContext, Component , useEffect} from 'react';
-import { Platform, StyleSheet, View, LogBox , ToastAndroid} from 'react-native';
+import React, { useContext, Component, useEffect } from 'react';
+import { Platform, StyleSheet, View, LogBox, ToastAndroid } from 'react-native';
 import { Container, FooterTab, Badge, Header, Content, Item, Input, Icon, Text, Radio, Picker, Form, Button, Image } from 'native-base';
 import { TouchableOpacity } from 'react-native';
 import { Feather, Ionicons } from '@expo/vector-icons';
@@ -11,6 +11,7 @@ import DatePicker from 'react-native-datepicker';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../../navigation/AuthProvider';
 import storage from '@react-native-firebase/storage';
+import FooterComponent from '../components/FooterComponent';
 
 //npm install react-native-image-crop-picker
 //npm outdated
@@ -23,7 +24,7 @@ import storage from '@react-native-firebase/storage';
 //npm install @react-native-community/datetimepicker
 
 async function addItems(x_name, x_price, x_made_in, x_manufacture_date, x_car_model,
-  x_car_brand, x_item_quality, x_image_path, x_type , user) {
+  x_car_brand, x_item_quality, x_image_path, x_type, user) {
   try {
     const Added_Item = await firestore().collection("CarStuff").add({
       Name: x_name,
@@ -41,7 +42,7 @@ async function addItems(x_name, x_price, x_made_in, x_manufacture_date, x_car_mo
       'Item has been added Succenfully.',
       ToastAndroid.SHORT
     );
-    
+
   }
   catch (error) {
     alert(error);
@@ -69,6 +70,8 @@ const SOAddItemScreen = ({ navigation }) => {
   const [is_image_choosen, setis_image_choosen] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [is_image_uploaded, setis_image_uploaded] = useState(false);
+  const [loadingScreen, setloadingScreen] = useState(true);
+
 
   const [uploadedOnce, setuploadedOnce] = useState(false);
   const [Type, setSelectedType] = useState(0);
@@ -136,6 +139,7 @@ const SOAddItemScreen = ({ navigation }) => {
         }
       });
     setQualities(temp_Qualities);
+    setloadingScreen(false);
   }
 
   useEffect(() => {
@@ -210,18 +214,18 @@ const SOAddItemScreen = ({ navigation }) => {
     }
   };
 
-  const removeAll = () =>{
+  const removeAll = () => {
     setName('');
     setPrice('');
     setMade_in('');
     setManufacture_date("2016-05-15");
     setImage_path('');
     setImage(null);
-  
+
     setis_image_choosen(false);
     setUploading(false);
     setis_image_uploaded(false);
-  
+
     setuploadedOnce(false);
     setSelectedType(0);
     setSelectedBrand(0);
@@ -244,216 +248,219 @@ const SOAddItemScreen = ({ navigation }) => {
       </View>
       {/* End Search bar with drawer */}
 
-      <Content style={{ marginHorizontal: 15, paddingVertical: 10 }}>
+      {loadingScreen ? <Content><Text style={styles.loadingStyle}> Loading... </Text></Content> :
 
-        <Form>
-          <Item regular style={styles.InputStyle}>
-            <Input value={name} placeholder='Item Name' onChangeText={name => setName(name)} />
-          </Item>
+        <Content style={{ marginHorizontal: 15, paddingVertical: 10 }}>
 
-          <Item regular style={styles.InputStyle}>
-            <Input value={price} keyboardType="numeric" placeholder='Item Price' onChangeText={price => setPrice(price)} />
-          </Item>
-          <Item regular style={styles.InputStyle}>
-            <Input value={made_in} placeholder='Made In' onChangeText={made_in => setMade_in(made_in)} />
-          </Item>
+          <Form>
+            <Item regular style={styles.InputStyle}>
+              <Input value={name} placeholder='Item Name' onChangeText={name => setName(name)} />
+            </Item>
 
-          <Item regular style={{
-            marginBottom: 10,
-            borderWidth: 3,
-            borderColor: 'darkblue',
-            borderRadius: 6,
-            alignSelf: 'flex-start'
-          }}>
-            <Picker
-              mode="dialog"
-              iosIcon={<Icon name="arrow-down" style={{ marginLeft: -5 }} />}
-              placeholderStyle={{ color: "darkred" }}
-              selectedValue={Type}
-              onValueChange={(Selected_Type) => setSelectedType(Selected_Type)}
-            >
-              {types.map((item, index) => {
-                return (<Picker.Item label={item} value={index} key={index} />)
-              })}
-            </Picker>
-          </Item>
+            <Item regular style={styles.InputStyle}>
+              <Input value={price} keyboardType="numeric" placeholder='Item Price' onChangeText={price => setPrice(price)} />
+            </Item>
+            <Item regular style={styles.InputStyle}>
+              <Input value={made_in} placeholder='Made In' onChangeText={made_in => setMade_in(made_in)} />
+            </Item>
 
-          <Item regular style={styles.InputStyle}>
-            <Button transparent
-              style={{ height: 45, fontSize: 50, color: 'darkblue', margin: 2 }}
-              onPress={async () => {
-                choosePhotoFromLibrary();
-              }}>
-              <Text> Choose Photo</Text>
-            </Button>
-            {is_image_choosen ? <Ionicons name="checkmark-outline" size={24} color="black" /> : null}
-            {uploading ? <Feather name="loader" size={24} color="black" /> : null}
-            {is_image_uploaded ? <Ionicons name="checkmark-done-outline" size={24} color="black" /> : null}
-            <Button
-              style={{ height: 45, position: 'relative', backgroundColor: 'darkblue', margin: 2 }}
-              onPress={async () => {
-                try {
-                  const imageUrl = await Upload_The_Image();
-                  setImage_path(imageUrl);
-                  setis_image_choosen(false);
-                  setis_image_uploaded(true);
-                } catch (error) {
-                  alert("There has been some error in uploading the image");
-                }
-              }}>
-              <Text> Upload Photo</Text>
-            </Button>
+            <Item regular style={{
+              marginBottom: 10,
+              borderWidth: 3,
+              borderColor: 'darkblue',
+              borderRadius: 6,
+              alignSelf: 'flex-start'
+            }}>
+              <Picker
+                mode="dialog"
+                iosIcon={<Icon name="arrow-down" style={{ marginLeft: -5 }} />}
+                placeholderStyle={{ color: "darkred" }}
+                selectedValue={Type}
+                onValueChange={(Selected_Type) => setSelectedType(Selected_Type)}
+              >
+                {types.map((item, index) => {
+                  return (<Picker.Item label={item} value={index} key={index} />)
+                })}
+              </Picker>
+            </Item>
 
-          </Item>
+            <Item regular style={styles.InputStyle}>
+              <Button transparent
+                style={{ height: 45, fontSize: 50, color: 'darkblue', margin: 2 }}
+                onPress={async () => {
+                  choosePhotoFromLibrary();
+                }}>
+                <Text> Choose Photo</Text>
+              </Button>
+              {is_image_choosen ? <Ionicons name="checkmark-outline" size={24} color="black" /> : null}
+              {uploading ? <Feather name="loader" size={24} color="black" /> : null}
+              {is_image_uploaded ? <Ionicons name="checkmark-done-outline" size={24} color="black" /> : null}
+              <Button
+                style={{ height: 45, position: 'relative', backgroundColor: 'darkblue', margin: 2 }}
+                onPress={async () => {
+                  try {
+                    const imageUrl = await Upload_The_Image();
+                    setImage_path(imageUrl);
+                    setis_image_choosen(false);
+                    setis_image_uploaded(true);
+                  } catch (error) {
+                    alert("There has been some error in uploading the image");
+                  }
+                }}>
+                <Text> Upload Photo</Text>
+              </Button>
+
+            </Item>
 
 
-          {/* Car Model */}
-          <Item regular style={{
-            marginBottom: 10,
-            borderWidth: 3,
-            borderColor: 'darkblue',
-            borderRadius: 6,
-            alignSelf: 'flex-start'
-          }}>
+            {/* Car Model */}
+            <Item regular style={{
+              marginBottom: 10,
+              borderWidth: 3,
+              borderColor: 'darkblue',
+              borderRadius: 6,
+              alignSelf: 'flex-start'
+            }}>
 
-            <Picker
-              mode="dialog"
-              iosIcon={<Icon name="arrow-down" style={{ marginLeft: -5 }} />}
-              placeholderStyle={{ color: "darkred" }}
-              selectedValue={Brand}
-              onValueChange={(Selected_Brand) => setSelectedBrand(Selected_Brand)}
-            >
-              {brands.map((item, index) => {
-                return (<Picker.Item label={item} value={index} key={index} />)
-              })}
-            </Picker>
-          </Item>
-          {/*
+              <Picker
+                mode="dialog"
+                iosIcon={<Icon name="arrow-down" style={{ marginLeft: -5 }} />}
+                placeholderStyle={{ color: "darkred" }}
+                selectedValue={Brand}
+                onValueChange={(Selected_Brand) => setSelectedBrand(Selected_Brand)}
+              >
+                {brands.map((item, index) => {
+                  return (<Picker.Item label={item} value={index} key={index} />)
+                })}
+              </Picker>
+            </Item>
+            {/*
           {/* Car Brand */}
-          <Item regular style={{
-            marginBottom: 10,
-            borderWidth: 3,
-            borderColor: 'darkblue',
-            borderRadius: 6,
-            alignSelf: 'flex-start'
-          }}>
+            <Item regular style={{
+              marginBottom: 10,
+              borderWidth: 3,
+              borderColor: 'darkblue',
+              borderRadius: 6,
+              alignSelf: 'flex-start'
+            }}>
 
-            <Picker
-              mode="dialog"
-              iosIcon={<Icon name="arrow-down" style={{ marginLeft: -5 }} />}
-              placeholderStyle={{ color: "darkred" }}
-              selectedValue={Model}
-              onValueChange={(Selected_Model) => setSelectedModel(Selected_Model)}
-            >
-              {models.map((item, index) => {
-                return (<Picker.Item label={item} value={index} key={index} />)
-              })}
-            </Picker>
-          </Item>
+              <Picker
+                mode="dialog"
+                iosIcon={<Icon name="arrow-down" style={{ marginLeft: -5 }} />}
+                placeholderStyle={{ color: "darkred" }}
+                selectedValue={Model}
+                onValueChange={(Selected_Model) => setSelectedModel(Selected_Model)}
+              >
+                {models.map((item, index) => {
+                  return (<Picker.Item label={item} value={index} key={index} />)
+                })}
+              </Picker>
+            </Item>
 
-          <Item regular style={{
-            marginBottom: 10,
-            borderWidth: 3,
-            borderColor: 'darkblue',
-            borderRadius: 6,
-            alignSelf: 'flex-start',
-            height: 50
-          }}>
-            <Text style={{ marginLeft: 10, marginRight: 5, color: 'darkblue' }}>
-              Manufacture Date:
-            </Text>
-            <DatePicker
-              style={{ width: 200 }}
-              date={manufacture_date}
-              mode="date"
-              placeholder="select date"
-              format="YYYY-MM-DD"
-              minDate="1990-01-01"
-              maxDate="2025-01-01"
-              confirmBtnText="Confirm"
-              cancelBtnText="Cancel"
-              customStyles={{
-                dateIcon: {
-                  position: 'absolute',
-                  left: 0,
-                  top: 4,
-                  marginLeft: 0
-                },
-                dateInput: {
-                  marginLeft: 36
+            <Item regular style={{
+              marginBottom: 10,
+              borderWidth: 3,
+              borderColor: 'darkblue',
+              borderRadius: 6,
+              alignSelf: 'flex-start',
+              height: 50
+            }}>
+              <Text style={{ marginLeft: 10, marginRight: 5, color: 'darkblue' }}>
+                Manufacture Date:
+              </Text>
+              <DatePicker
+                style={{ width: 200 }}
+                date={manufacture_date}
+                mode="date"
+                placeholder="select date"
+                format="YYYY-MM-DD"
+                minDate="1990-01-01"
+                maxDate="2025-01-01"
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                customStyles={{
+                  dateIcon: {
+                    position: 'absolute',
+                    left: 0,
+                    top: 4,
+                    marginLeft: 0
+                  },
+                  dateInput: {
+                    marginLeft: 36
+                  }
+                }}
+                onDateChange={(manufacture_date) => setManufacture_date(manufacture_date)}
+              />
+            </Item>
+
+            <Item regular style={{
+              marginBottom: 10,
+              borderWidth: 3,
+              borderColor: 'darkblue',
+              borderRadius: 6,
+              alignSelf: 'flex-start'
+            }}>
+
+              <Picker
+                mode="dialog"
+                iosIcon={<Icon name="arrow-down" style={{ marginLeft: -5 }} />}
+                placeholderStyle={{ color: "darkred" }}
+                selectedValue={Quality}
+                onValueChange={(Selected_Quality) => setSelectedQuality(Selected_Quality)}
+              >
+                {qualities.map((item, index) => {
+                  return (<Picker.Item label={item} value={index} key={index} />)
+                })}
+              </Picker>
+            </Item>
+
+
+
+            <Button
+              onPress={async () => {
+                if (uploading) {
+                  alert("Please Wait untill the uploads finshs.");
                 }
-              }}
-              onDateChange={(manufacture_date) => setManufacture_date(manufacture_date)}
-            />
-          </Item>
+                else if (name == '') {
+                  alert("Please insert Item Name.");
+                }
+                else if (price == '') {
+                  alert("Please insert Price.");
+                }
+                else if (made_in == '') {
+                  alert("Please insert Manufacture Country.");
+                }
+                else if (types[Type] == 'Select Type') {
+                  alert("Please select a type.")
+                }
+                else if (!uploadedOnce) {
+                  alert("Please choose and upload an Image.");
+                }
+                else if (brands[Brand] == 'Select Brand') {
+                  alert("Please select a brand.")
+                }
+                else if (models[Model] == 'Select Model') {
+                  alert("Please select a model.")
+                }
+                else if (qualities[Quality] == 'Select Quality') {
+                  alert("Please select a quality.")
+                }
+                else {
+                  addItems(name, price, made_in, manufacture_date, models[Model], brands[Brand], qualities[Quality], image_path, types[Type], user);
+                  removeAll();
+                }
+              }}  // Please handle all of the errors.
 
-          <Item regular style={{
-            marginBottom: 10,
-            borderWidth: 3,
-            borderColor: 'darkblue',
-            borderRadius: 6,
-            alignSelf: 'flex-start'
-          }}>
+              style={{ backgroundColor: 'darkblue', marginVertical: 20, alignSelf: 'center' }}>
+              <Text>Add Item</Text>
+            </Button>
 
-            <Picker
-              mode="dialog"
-              iosIcon={<Icon name="arrow-down" style={{ marginLeft: -5 }} />}
-              placeholderStyle={{ color: "darkred" }}
-              selectedValue={Quality}
-              onValueChange={(Selected_Quality) => setSelectedQuality(Selected_Quality)}
-            >
-              {qualities.map((item, index) => {
-                return (<Picker.Item label={item} value={index} key={index} />)
-              })}
-            </Picker>
-          </Item>
+          </Form>
 
+        </Content>
+      }
 
-
-          <Button
-            onPress={async () => {
-              if (uploading) {
-                alert("Please Wait untill the uploads finshs.");
-              }
-              else if (name == '') {
-                alert("Please insert Item Name.");
-              }
-              else if (price == '') {
-                alert("Please insert Price.");
-              }
-              else if (made_in == '') {
-                alert("Please insert Manufacture Country.");
-              }
-              else if (types[Type] == 'Select Type'){
-                alert("Please select a type.")
-              }
-              else if (!uploadedOnce) {
-                alert("Please choose and upload an Image.");
-              }
-              else if (brands[Brand] == 'Select Brand'){
-                alert("Please select a brand.")
-              }
-              else if (models[Model] == 'Select Model'){
-                alert("Please select a model.")
-              }
-              else if (qualities[Quality] == 'Select Quality'){
-                alert("Please select a quality.")
-              }
-              else {
-                addItems(name, price, made_in,manufacture_date, models[Model], brands[Brand], qualities[Quality], image_path, types[Type] ,user);
-                removeAll();
-              }
-            }}  // Please handle all of the errors.
-
-            style={{ backgroundColor: 'darkblue', marginVertical: 20, alignSelf: 'center' }}>
-            <Text>Add Item</Text>
-          </Button>
-
-        </Form>
-
-      </Content>
-
-      <FooterComponent home="SOHome" profile="SOProfile" contactus="SOContactUs" bkcolor="darkblue"/>
+      <FooterComponent home="SOHome" profile="SOProfile" contactus="SOContactUs" bkcolor="darkblue" />
 
     </Container>
   );
@@ -471,6 +478,14 @@ const styles = StyleSheet.create({
   ViewStyle: {
     marginBottom: 10,
     flexDirection: 'row',
+  },
+  loadingStyle: {
+    color: 'darkblue',
+    alignSelf: 'center',
+    fontSize: 22,
+    textAlignVertical: 'center',
+    fontWeight: 'bold',
+    marginTop: 180
   }
 })
 

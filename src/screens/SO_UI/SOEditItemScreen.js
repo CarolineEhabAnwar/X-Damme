@@ -71,7 +71,6 @@ const SOEditItemScreen = ({ navigation, route }) => {
   const [is_image_choosen, setis_image_choosen] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [is_image_uploaded, setis_image_uploaded] = useState(false);
-  const [uploadedOnce, setuploadedOnce] = useState(false);
   const [loadingScreen, setloadingScreen] = useState(true);
   const [finsihedLoadingScreen, setFinishedLoadingScreen] = useState(false);
 
