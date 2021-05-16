@@ -40,7 +40,7 @@ async function UpdateItem(x_name, x_price, x_made_in, x_manufacture_date, x_car_
       Shop_Owner_ID: user.uid
     });
     ToastAndroid.show(
-      'Item has been eddited Succenfully.',
+      'Item has been edited Succenfully.',
       ToastAndroid.SHORT
     );
 
@@ -460,8 +460,8 @@ const SOEditItemScreen = ({ navigation, route }) => {
               </Picker>
             </Item>
 
-
-            <Item regular style={styles.ButtonStyle}>
+            <View style={{flexDirection:'row',alignSelf:'center', alignItems:'center'}}>
+            <Item style={styles.ButtonStyle}>
               <Button
                 onPress={async () => {
                   if (uploading) {
@@ -494,8 +494,8 @@ const SOEditItemScreen = ({ navigation, route }) => {
                   }
                 }}  // Please handle all of the errors.
 
-                style={{ backgroundColor: 'darkblue', marginVertical: 20, alignSelf: 'center' }}>
-                <Text>Edit</Text>
+                style={{ backgroundColor: 'darkblue', marginVertical: 20, alignSelf: 'center',marginRight:40 }}>
+                <Text>Confirm</Text>
               </Button>
 
               <Button
@@ -503,10 +503,11 @@ const SOEditItemScreen = ({ navigation, route }) => {
                   navigation.goBack();
                 }}
 
-                style={{ backgroundColor: 'darkblue', marginVertical: 20, alignSelf: 'center' }}>
-                <Text>Cancel</Text>
+                style={{ backgroundColor: 'white',borderWidth:1, marginVertical: 20,color:'white' }}>
+                <Text style={{color:'darkblue'}}>Cancel</Text>
               </Button>
             </Item>
+            </View>
 
           </Form>
 

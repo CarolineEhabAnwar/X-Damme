@@ -51,9 +51,9 @@ const SOViewItemScreen = ({ navigation, route }) => {
               <Text style={styles.textStyles}>Item ID: </Text>
               <Text style={styles.itemsTextStyle}>{route.params.itemID}</Text>
 
-              <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 17, marginLeft: '15%' }}>
-                {/* Accept */}
-                <Button style={{ marginLeft: 30, backgroundColor: '#eb1c1c' }}
+              <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 17, alignSelf:'center' }}>
+                {/* Edit */}
+                <Button style={{ marginLeft: 30, backgroundColor: 'darkblue' }}
                   onPress={() => navigation.navigate('SOEditItem', {
                   imagePath: route.params.imagePath,
                   name: route.params.name,
