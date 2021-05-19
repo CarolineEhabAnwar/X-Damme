@@ -40,7 +40,7 @@ async function UpdateItem(x_name, x_price, x_made_in, x_manufacture_date, x_car_
       Shop_Owner_ID: user.uid
     });
     ToastAndroid.show(
-      'Item has been edited Succenfully.',
+      'Item has been edited Successfully.',
       ToastAndroid.SHORT
     );
 

@@ -1,9 +1,10 @@
 import { FooterTab, Content, Container, Button, Icon } from 'native-base';
-import React, { useContext, Component , useState, useEffect} from 'react';
+import React, { useContext, Component, useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import { FontAwesome5, Ionicons, AntDesign, MaterialIcons, Feather, Foundation, MaterialCommunityIcons } from '@expo/vector-icons';
 import { AuthContext } from '../../navigation/AuthProvider';
 import firestore from '@react-native-firebase/firestore';
+import FooterComponent from '../components/FooterComponent'
 
 
 
@@ -11,6 +12,22 @@ const SOProfileScreen = ({ navigation }) => {
 
   const [FinalShopRating, setFinalShopRating] = useState(0);
   const [loading, setloading] = useState(true);
+  const [name,setName] = useState('');
+
+  const { user } = useContext(AuthContext);
+
+  const [shop_Owner_Name, setShop_Owner_name] = useState("");
+
+  useEffect(() => {
+      try {
+          firestore().collection('users').doc(user.uid).get().then((User_data) => {
+              setShop_Owner_name(User_data.data().fname + " " + User_data.data().lname)
+          });
+
+      } catch (error) {
+          alert(error);
+      }
+  });
 
   async function Get_Rating() {
 
@@ -56,7 +73,6 @@ const SOProfileScreen = ({ navigation }) => {
   }, []);
 
   const { logout } = useContext(AuthContext);
-  const { user } = useContext(AuthContext);
 
 
   return (
@@ -83,10 +99,10 @@ const SOProfileScreen = ({ navigation }) => {
               <View style={styles.headerContent}>
                 <Image style={styles.avatar} source={require("../../../assets/mechanic.png")} />
                 <Text style={styles.name}>
-                  Shopowner X
+                  {shop_Owner_Name}
                     </Text>
                 <Text style={styles.name}>
-                  Average Rating: {Math.round(FinalShopRating*10) / 10}
+                  Average Rating: {Math.round(FinalShopRating * 10) / 10}
                 </Text>
               </View>
             </View>
@@ -113,26 +129,12 @@ const SOProfileScreen = ({ navigation }) => {
           </View>
         </Content>
       }
-      {/* Footer */}
-      <View style={{ flexDirection: 'row', alignContent: "center", backgroundColor: "darkblue" }}>
-        <FooterTab transparent style={{ backgroundColor: "darkblue" }}>
-          <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('SOHome')}>
-            <Icon style={{ color: 'white' }} name="home" />
-            <Text style={{ color: 'white' }}> Home</Text>
-          </Button>
-
-          <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('SOProfile')}>
-            <Icon name="person" style={{ color: 'white' }} />
-            <Text style={{ color: 'white' }}>Profile</Text>
-          </Button>
-
-          <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('SOContactUs')}>
-            <Icon style={{ color: 'white' }} name="call" />
-            <Text style={{ color: 'white' }} >Contact Us</Text>
-          </Button>
-        </FooterTab>
-      </View>
-      {/* End Footer */}
+      <FooterComponent
+        home="SOHome"
+        profile="SOProfile"
+        contactus="SOContactUs"
+        bkcolor="darkblue"
+      />
     </Container>
   );
 }
@@ -155,15 +157,18 @@ const styles = StyleSheet.create({
     borderColor: "darkblue",
     marginBottom: 10,
   },
+  loadingStyle: {
+    color: 'darkblue',
+    alignSelf: 'center',
+    fontSize: 20,
+    textAlignVertical: 'center',
+    fontWeight: 'bold',
+    marginTop: 0
+  },
   name: {
     fontSize: 25,
     color: "darkblue",
     fontWeight: '800',
-  },
-  bodyContent: {
-    flex: 1,
-    alignItems: 'center',
-    padding: 30,
   },
   textInfo: {
     fontSize: 18,
@@ -172,7 +177,7 @@ const styles = StyleSheet.create({
   },
   bodyContent: {
     flexDirection: 'row',
-    flexWrap: 'wrap'
+    justifyContent:'center'
   },
   menuBox: {
     backgroundColor: "darkblue",

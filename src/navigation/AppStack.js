@@ -39,6 +39,9 @@ import CartViewItemScreen from "../screens/UserUI/CartViewItemScreen"
 import ReviewScreen from "../screens/UserUI/ReviewScreen"
 import CustomersReviewsScreen from "../screens/UserUI/CustomersReviewsScreen"
 import MyReviewsScreen from "../screens/UserUI/MyReviewsScreen"
+import ChangeNameScreen from "../screens/UserUI/ChangeNameScreen"
+import ChangePasswordScreen from "../screens/UserUI/ChangePasswordScreen"
+import ChangeEmailScreen from "../screens/UserUI/ChangeEmailScreen"
 
 //Importing Mechanic Screens
 import MechAddOfferScreen from "../screens/Mech_UI/MechAddOfferScreen"
@@ -201,6 +204,21 @@ const UserStack = ({ navigation }) => (
       component={FooterComponent}
       options={{ header: () => null }}
     />
+    <Stack.Screen
+      name="ChangeName"
+      component={ChangeNameScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="ChangePassword"
+      component={ChangePasswordScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="ChangeEmail"
+      component={ChangeEmailScreen}
+      options={{ header: () => null }}
+    />
   </Stack.Navigator>
 );
 
@@ -271,6 +289,22 @@ const ShopOwnerStack = ({ navigation }) => (
       component={SOHomeScreen}
       options={{ header: () => null }}
     />
+    <Stack.Screen
+      name="ChangeName"
+      component={ChangeNameScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="ChangePassword"
+      component={ChangePasswordScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="ChangeEmail"
+      component={ChangeEmailScreen}
+      options={{ header: () => null }}
+    />
+
     <Stack.Screen
       name="SOAddItem"
       component={SOAddItemScreen}

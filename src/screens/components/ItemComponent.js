@@ -1,4 +1,4 @@
-import React, { Component,useState , useEffect, useContext } from 'react';
+import React, { useState , useEffect, useContext } from 'react';
 import firestore from '@react-native-firebase/firestore';
 import { StyleSheet, View, Image } from 'react-native';
 import { Card, CardItem, Text, Button, Icon, Left, Body, Right } from 'native-base';

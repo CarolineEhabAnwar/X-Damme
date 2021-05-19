@@ -4,14 +4,19 @@ import { Container,FooterTab, Content, Icon,Text, Button,List, ListItem } from '
 import { DrawerActions } from 'react-navigation-drawer';
 import { FontAwesome5,Ionicons,Foundation,MaterialCommunityIcons,Entypo  } from '@expo/vector-icons'; 
 
-export default class SOSettingsScreen extends Component {
-  render() {
+const SOSettingsScreen =({navigation}) => {
+     
+  const home = 'SOHome'
+  const profile = 'SOProfile'
+  const contactus = 'SOContactUs'
+  const color='darkblue'
+
     return (
       <Container>
         
         {/* Text with drawer */}
         <View searchBar style={{flexDirection: 'row', paddingTop:25 , marginBottom: 0, paddingBottom: 6, alignContent:"center", backgroundColor: "darkblue", top: 0}}>
-        <Button transparent onPress={() => this.props.navigation.navigate('SOProfile')} >
+        <Button transparent onPress={() => navigation.goBack()} >
               <Ionicons
                 name='arrow-back-outline'
                 style={{ fontSize: 30, marginTop:4,marginRight:12,marginLeft:12 ,color: 'white'}}
@@ -23,28 +28,37 @@ export default class SOSettingsScreen extends Component {
       <Content>
           <List>
             <ListItem>
-              <Button transparent>
+              <Button transparent onPress={() => navigation.navigate('ChangeName',{
+               Color:color,
+               Home:home,
+               Profile:profile,
+               ContactUs:contactus
+              })}>
                 <Ionicons name="person" style= {{marginRight:-5}} size={24} color="darkblue" />
-                <Text style={{color:'darkblue',fontSize:18,fontWeight:'500'}}>Change First Name</Text>
+                <Text style={{color:'darkblue',fontSize:18,fontWeight:'500'}}>Change Name</Text>
               </Button>
             </ListItem>
 
             <ListItem>
-            <Button transparent>
-                <Ionicons name="person" style= {{marginRight:-5}} size={24} color="darkblue" />
-                <Text style={{color:'darkblue',fontSize:18,fontWeight:'500'}}>Change Last Name</Text>
-              </Button>
-            </ListItem>
+              <Button transparent onPress={() => navigation.navigate('ChangeEmail',{
+               Color:color,
+               Home:home,
+               Profile:profile,
+               ContactUs:contactus
+              })}>
 
-            <ListItem>
-              <Button transparent>
                 <Entypo name="email" style= {{marginRight:-5}} size={24} color="darkblue" />
                 <Text style={{color:'darkblue',fontSize:18,fontWeight:'500'}}>Change Email</Text>
               </Button>
             </ListItem>
 
             <ListItem>
-              <Button transparent>
+              <Button transparent onPress={() => navigation.navigate('ChangePassword',{
+               Color:color,
+               Home:home,
+               Profile:profile,
+               ContactUs:contactus
+              })}>
                 <Ionicons name="ios-key" style= {{marginRight:-5}} size={24} color="darkblue" />
                 <Text style={{color:'darkblue',fontSize:18,fontWeight:'500'}}>Change Password</Text>
               </Button>
@@ -61,17 +75,17 @@ export default class SOSettingsScreen extends Component {
         {/* Footer */}
         <View style={{flexDirection: 'row',alignContent:"center", backgroundColor: "darkblue"}}>
           <FooterTab transparent style={{backgroundColor: "darkblue"}}>
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOHome')}>
+            <Button style={{marginTop:5}} onPress={() => navigation.navigate('SOHome')}>
               <Icon style={{color:'white'}} name="home" />
               <Text style={{color:'white'}}> Home</Text>
             </Button>
 
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOProfile')}>
+            <Button style={{marginTop:5}} onPress={() => navigation.navigate('SOProfile')}>
               <Icon name="person" style={{color:'white'}}/>
               <Text style={{color:'white'}}>Profile</Text>
             </Button>
 
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOContactUs')}>
+            <Button style={{marginTop:5}} onPress={() => navigation.navigate('SOContactUs')}>
               <Icon style={{color:'white'}} name="call" />
               <Text style={{color:'white'}} >Contact Us</Text>
             </Button>
@@ -80,8 +94,10 @@ export default class SOSettingsScreen extends Component {
         {/* End Footer */}
       </Container>
     );
-  }
+  
 }
+
+export default SOSettingsScreen
 
 const styles = StyleSheet.create({
   textStyles:{
