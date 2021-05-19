@@ -12,21 +12,21 @@ const SOProfileScreen = ({ navigation }) => {
 
   const [FinalShopRating, setFinalShopRating] = useState(0);
   const [loading, setloading] = useState(true);
-  const [name,setName] = useState('');
+  const [name, setName] = useState('');
 
   const { user } = useContext(AuthContext);
 
   const [shop_Owner_Name, setShop_Owner_name] = useState("");
 
   useEffect(() => {
-      try {
-          firestore().collection('users').doc(user.uid).get().then((User_data) => {
-              setShop_Owner_name(User_data.data().fname + " " + User_data.data().lname)
-          });
+    try {
+      firestore().collection('users').doc(user.uid).get().then((User_data) => {
+        setShop_Owner_name(User_data.data().fname + " " + User_data.data().lname)
+      });
 
-      } catch (error) {
-          alert(error);
-      }
+    } catch (error) {
+      alert(error);
+    }
   });
 
   async function Get_Rating() {
@@ -91,7 +91,7 @@ const SOProfileScreen = ({ navigation }) => {
       </View>
       {/* End Text with drawer */}
 
-      {loading ? <Text style={styles.loadingStyle}> Loading Profile... </Text> :
+      {loading ? <Content><Text style={styles.loadingStyle}> Loading Profile... </Text></Content> :
 
         <Content>
           <View style={styles.container}>
@@ -100,7 +100,7 @@ const SOProfileScreen = ({ navigation }) => {
                 <Image style={styles.avatar} source={require("../../../assets/mechanic.png")} />
                 <Text style={styles.name}>
                   {shop_Owner_Name}
-                    </Text>
+                </Text>
                 <Text style={styles.name}>
                   Average Rating: {Math.round(FinalShopRating * 10) / 10}
                 </Text>
@@ -110,7 +110,7 @@ const SOProfileScreen = ({ navigation }) => {
             <View style={styles.body}>
               <View style={styles.bodyContent}>
 
-                <Button style={styles.menuBox} onPress={() => navigation.navigate('SORequests',{Editing: false})}>
+                <Button style={styles.menuBox} onPress={() => navigation.navigate('SORequests', { Editing: false })}>
                   <MaterialIcons name="history" size={40} color="white" />
                   <Text style={styles.info}>Requests</Text>
                 </Button>
@@ -160,10 +160,10 @@ const styles = StyleSheet.create({
   loadingStyle: {
     color: 'darkblue',
     alignSelf: 'center',
-    fontSize: 20,
+    fontSize: 22,
     textAlignVertical: 'center',
     fontWeight: 'bold',
-    marginTop: 0
+    marginTop: 180
   },
   name: {
     fontSize: 25,
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
   },
   bodyContent: {
     flexDirection: 'row',
-    justifyContent:'center'
+    justifyContent: 'center'
   },
   menuBox: {
     backgroundColor: "darkblue",
