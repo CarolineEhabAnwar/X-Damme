@@ -1,29 +1,42 @@
 import React, { Component, useState, useEffect, useContext } from 'react';
 import firestore from '@react-native-firebase/firestore';
-import { StyleSheet, View, Image , FlatList , LogBox } from 'react-native';
+import { StyleSheet, View, Image, FlatList, LogBox } from 'react-native';
 import { Card, CardItem, Text, Button, Icon, Left, Body, Right } from 'native-base';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { AuthContext } from '../../navigation/AuthProvider';
+import Moment from 'moment';
 
 const RequestCardComponent = (props) => {
     LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
     LogBox.ignoreLogs(['VirtualizedList: missing keys for items']);
 
+    let Date_Of_Request = new Date((props.Data.Request_Made_In_Date.nanoseconds/1000)+(props.Data.Request_Made_In_Date.seconds*1000));
+    let S_Date_Of_Request = Date_Of_Request.getDate() + "/" + (Date_Of_Request.getMonth() +1) + "/" +Date_Of_Request.getFullYear();
+
+    let Date_Of_Due = new Date((props.Data.Request_Expected_Due_Date.nanoseconds/1000)+(props.Data.Request_Expected_Due_Date.seconds*1000));
+    let S_Date_Of_Due = Date_Of_Due.getDate() + "/" + (Date_Of_Due.getMonth() +1) + "/" +Date_Of_Due.getFullYear();
+
     return (
         <View style={{ borderColor: "darkred", borderWidth: 2, marginVertical: 5 }}>
             <Text style={styles.title}> Shop Owner:  </Text>
-            <Text style={styles.writing}> {props.ShopOwner_Name} </Text>
+            <Text style={styles.writing}> {props.Data.Shop_Owner_Name} </Text>
             <Text style={styles.title}> Items:  </Text>
             <FlatList
-                data={props.Items}
+                data={props.Data.Items_And_Quantites}
                 renderItem={({ item }) => {
                     return (
-                        <Text style={styles.writing}> Name: {item[0]} ,Quantity: {item[1]} ,Price: {item[2]} </Text>
+                        <Text style={styles.writing}> Name: {item.split("/")[0]} ,Quantity: {item.split("/")[1]} ,Price: {item.split("/")[2]} </Text>
                     )
                 }}
             />
             <Text style={styles.title}> Total Price: </Text>
-            <Text style={styles.writing}> {props.Total_Price} </Text>
+            <Text style={styles.writing}> {props.Data.Total_Price} L.E </Text>
+            <Text style={styles.title}> Status: </Text>
+            <Text style={styles.writing}> {props.Data.Status} </Text>
+            <Text style={styles.title}> Order Date: </Text>
+            <Text style={styles.writing}> {S_Date_Of_Request} </Text>
+            <Text style={styles.title}> Due Date: </Text>
+            <Text style={styles.writing}> {S_Date_Of_Due} </Text>
         </View>
     );
 }

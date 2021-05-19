@@ -62,7 +62,8 @@ const SOHomeScreen = ({ navigation }) => {
                         </View>
                         <View style={{ flexDirection: "row", justifyContent: "space-around", marginBottom: 50, marginTop: 30 }}>
                             <Button rounded info style={{ backgroundColor: 'darkblue', width: 150, justifyContent: "center", top: 40, marginHorizontal: 10 }}
-                                onPress={() => navigation.navigate('SORequests')}>
+                                onPress={() => navigation.navigate('SORequests',{
+                                    Editing: true})}>
                                 <FontAwesome5 name="buffer" size={24} style={styles.IconsStyle} color="white" />
                                 <Text style={{ fontWeight: 'bold' }}> Requests </Text>
                             </Button>

@@ -15,7 +15,11 @@ const CartScreen = ({ navigation, route }) => {
     const [loading, setLoading] = useState(true);
     const [totalPrice, setTotalPrice] = useState(0);
 
-    function Get_Requests() {
+    const [MyName, setMyName] = useState(0);
+    const [MyAddress, setMyAddress] = useState(0);
+    const [MyID, setMyID] = useState(0);
+
+    async function Get_Requests() {
         //Making the request
         let Requests = [];
         //for loop to check how many shop owners thier is.
@@ -35,63 +39,55 @@ const CartScreen = ({ navigation, route }) => {
         //Getting all of the items of that shop owner
         for (let i = 0; i < Shop_Owners_list.length; i++) {
             let Same_Shop_Owner_Item_list = [];
-            let Request_to_Send = [];
+            let totalPrice = 0;
             for (let j = 0; j < items.length; j++) {
                 if (items[j][1][1].Shop_Owner_ID == Shop_Owners_list[i]) {
-                    let temp__item = [];
-                    temp__item.push(items[j][1][0], items[j][0])
-                    Same_Shop_Owner_Item_list.push(temp__item);
+                    let S = items[j][1][1].Name + "/" + items[j][0] + "/" + items[j][1][1].Price + "/" + (items[j][0] * items[j][1][1].Price);
+                    Same_Shop_Owner_Item_list.push(S);
+                    totalPrice += (items[j][0] * items[j][1][1].Price);
                 }
             }
-            //Handling request formate for shop owner
-            let Request_In_String = user.uid+"*";
-            
-            for(let i = 0; i < Same_Shop_Owner_Item_list.length; i++){
-                Request_In_String+=Same_Shop_Owner_Item_list[i][0]+","+Same_Shop_Owner_Item_list[i][1]+"/";
-            }
-            //Handling request formate for user
-            let Request_for_user_history = Shop_Owners_list[i]+"*";
-            for(let i = 0; i < Same_Shop_Owner_Item_list.length; i++){
-                Request_for_user_history+=Same_Shop_Owner_Item_list[i][0]+","+Same_Shop_Owner_Item_list[i][1]+"/";
-            }
+            let Shop_Owner_Name ="";
+            await firestore().collection('users').doc(Shop_Owners_list[i]).get().then(Shop_Owner_Data => {
+                if(Shop_Owner_Data.exists){
+                    Shop_Owner_Name = Shop_Owner_Data.data().fname + " " + Shop_Owner_Data.data().lname;
+                }
+            });
 
-            //console.log("Shop Owner with ID: "+ Shop_Owners_list[i]+" items is : "+Same_Shop_Owner_Item_list);
-            Request_to_Send.push(Shop_Owners_list[i],Request_In_String,Request_for_user_history);
-            Requests.push(Request_to_Send);
+            Requests.push({
+                User_Name: MyName,
+                User_ID: MyID,
+                User_Address: MyAddress,
+                Items_And_Quantites: Same_Shop_Owner_Item_list,
+                Total_Price: totalPrice,
+                Shop_Owner_ID: Shop_Owners_list[i],
+                Shop_Owner_Name: Shop_Owner_Name,
+                Request_Made_In_Date: firestore.Timestamp.fromDate(new Date()),
+                Request_Expected_Due_Date: "Waiting Approval",
+                Status: "Pending"
+            });
         }
         return Requests;
     }
 
-    async function Send_Request(Request){
-        //Sending the request for each shop owner
-        await firestore().collection('users').doc(Request[0]).get().then((Shop_ID_Requests) => {
-            if(Shop_ID_Requests.exists){
-                let temp_Shop_Requests = [];
-                temp_Shop_Requests = Shop_ID_Requests.data().requests;
-                temp_Shop_Requests.push(Request[1]);
-                firestore().collection('users').doc(Request[0]).update({
-                    requests: temp_Shop_Requests
-                })
-            }
-        });
-        //Sending the request for the user
-        await firestore().collection('users').doc(user.uid).get().then((User_Data) => {
-            if(User_Data.exists){
-                let temp_User_Requests = [];
-                temp_User_Requests = User_Data.data().requestHistory;
-                console.log(user.uid)
-                console.log(temp_User_Requests);
-                temp_User_Requests.push(Request[2]);
-                firestore().collection('users').doc(user.uid).update({
-                    requestHistory: temp_User_Requests
-                })
-            }
+    async function Send_Request(Request) {
+        await firestore().collection('Requests').add({
+            User_Name: Request.User_Name,
+            User_ID: Request.User_ID,
+            User_Address: Request.User_Address,
+            Items_And_Quantites: Request.Items_And_Quantites,
+            Total_Price: Request.Total_Price,
+            Shop_Owner_ID: Request.Shop_Owner_ID,
+            Shop_Owner_Name: Request.Shop_Owner_Name,
+            Request_Made_In_Date: Request.Request_Made_In_Date,
+            Request_Expected_Due_Date: Request.Request_Expected_Due_Date,
+            Status: Request.Status
         });
     }
 
     async function CheckOut() {
         try {
-            const Requests = Get_Requests();
+            const Requests = await Get_Requests();
             //Sending The Requests
             for(let i = 0; i < Requests.length; i++){
                 await Send_Request(Requests[i]);
@@ -104,7 +100,7 @@ const CartScreen = ({ navigation, route }) => {
         }
     }
 
-    async function Remove_All(){
+    async function Remove_All() {
         try {
             setLoading(true);
             await firestore().collection('users').doc(user.uid).get().then((User_Data) => {
@@ -122,7 +118,7 @@ const CartScreen = ({ navigation, route }) => {
         }
     }
 
-    async function Remove(Data) {
+    async function Remove(Data) {//Eba2a bos hena basa kda
         try {
             setLoading(true);
             await firestore().collection('users').doc(user.uid).get().then((User_Data) => {
@@ -135,7 +131,7 @@ const CartScreen = ({ navigation, route }) => {
                 }).catch(error => alert(error));
             });
             if (user.uid != null)
-                LoadUp(user.uid);
+                LoadUp();
         }
         catch (error) {
             alert(error);
@@ -143,12 +139,18 @@ const CartScreen = ({ navigation, route }) => {
         }
     }
 
-    async function Get_Data_From_User(User_ID) {
+    async function Get_Data_From_User() {
         let temp_ID_Array = [];
-        await firestore().collection('users').doc(User_ID).get().then(documentSnapshot => {
+        await firestore().collection('users').doc(user.uid).get().then(documentSnapshot => {
             if (documentSnapshot.exists) {
+
+                setMyName(documentSnapshot.data().fname + " " + documentSnapshot.data().lname);
+                setMyID(user.uid);
+                setMyAddress(documentSnapshot.data().address);
+
                 documentSnapshot.data().cart.forEach(element => {
                     temp_ID_Array.push(element);
+
                 });
             }
         })
@@ -164,11 +166,11 @@ const CartScreen = ({ navigation, route }) => {
         return temp_Items_Array;
     }
 
-    async function LoadUp(User_ID) {
+    async function LoadUp() {
         setLoading(true);
         try {
             //Getting  Item ID array from the User Tabel
-            let ID_Array = await Get_Data_From_User(User_ID);
+            let ID_Array = await Get_Data_From_User();
             //Getting Each Item Details from the Car Staff Tabel
             let Item_Array = [];
             for (let i = 0; i < ID_Array.length; i++) {
@@ -205,7 +207,7 @@ const CartScreen = ({ navigation, route }) => {
             }
             //Setting The need variables
             setTotalPrice(total_Price);
-            if( temp_Unique_List.length == 0){
+            if (temp_Unique_List.length == 0) {
                 setItems([]);
             }
             else
@@ -220,7 +222,7 @@ const CartScreen = ({ navigation, route }) => {
     useEffect(() => {
         try {
             if (user.uid != null)
-                LoadUp(user.uid);
+                LoadUp();
         } catch (error) {
             alert(error);
         }
@@ -241,7 +243,7 @@ const CartScreen = ({ navigation, route }) => {
                 <Button transparent style={{ height: 50 }} onPress={() => {
                     if (loading)
                         return alert("Please wait untill loaded.");
-                    else if(items.length==0)
+                    else if (items.length == 0)
                         return alert("Please add items to the cart first.");
                     CheckOut()
                     //alert("Ana edast hanshof han3ml eh ba2a");
@@ -298,7 +300,7 @@ const CartScreen = ({ navigation, route }) => {
                     {items.length == 0 ? <Content>
                         <Text style={styles.loadingStyle}> Cart is Empty.</Text>
                     </Content> :
-                    <Text style={{ fontWeight: '400', marginLeft: 100, marginTop: 20, marginBottom: 10 }}>Total Price: {totalPrice} EGP</Text>}
+                        <Text style={{ fontWeight: '400', marginLeft: 100, marginTop: 20, marginBottom: 10 }}>Total Price: {totalPrice} EGP</Text>}
                 </Content>}
 
             {/* Footer */}

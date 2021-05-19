@@ -110,7 +110,7 @@ const SOProfileScreen = ({ navigation }) => {
             <View style={styles.body}>
               <View style={styles.bodyContent}>
 
-                <Button style={styles.menuBox} onPress={() => navigation.navigate('SORequests')}>
+                <Button style={styles.menuBox} onPress={() => navigation.navigate('SORequests',{Editing: false})}>
                   <MaterialIcons name="history" size={40} color="white" />
                   <Text style={styles.info}>Requests</Text>
                 </Button>

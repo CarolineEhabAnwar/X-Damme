@@ -1,108 +1,129 @@
-import React, { Component } from 'react';
-import { Image,StyleSheet } from 'react-native';
-import { Entypo,Ionicons } from '@expo/vector-icons';
-import { Container,FooterTab,Badge, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right, View } from 'native-base';
+import React, { Component, useEffect, useState, useContext } from 'react';
+import { Image, StyleSheet, FlatList, LogBox } from 'react-native';
+import { Entypo, Ionicons } from '@expo/vector-icons';
+import { Container, FooterTab, Badge, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right, View } from 'native-base';
+import SORequestCardComponent from "../components/SORequestCardComponent";
+import firestore from '@react-native-firebase/firestore';
+import FooterComponent from '../components/FooterComponent'
+import { AuthContext } from '../../navigation/AuthProvider';
+import { quality } from 'jimp';
 
 
-export default class SORequestsScreen extends Component {
-  render() {
-    let home_notification = 5;
-    let profile_notification = 5;
-    let settings_notification = 5;
-    return (
-      <Container>
-        {/* Search bar with drawer */}
-        <View searchBar style={{flexDirection: 'row', paddingTop:26 , marginBottom: 12, paddingBottom: 6, alignContent:"center", backgroundColor: "darkblue", top: 0}}>
-        <Button transparent onPress={() => this.props.navigation.navigate('SOHome')} >
-              <Ionicons
-                name='arrow-back-outline'
-                style={{ fontSize: 30, marginTop:4,marginRight:12,marginLeft:12 ,color: 'white'}}
-              />
-            </Button>
-            <Text style={{color: "white",height:50,fontSize:20, textAlign:'center',paddingLeft:'22%',paddingTop:12, fontWeight:'bold'}}> Requests</Text> 
-        </View>
-        {/* End Search bar with drawer */}        
-      
-        <Content>
-          <Card style={{flex: 0,borderColor:'darkblue'}}>
-              <CardItem style={{marginHorizontal:1}}>
-                <Body>
-                  <Text style={styles.textStyles}>Request ID: -</Text>
-                  <Text style={styles.textStyles}>Item ID: -</Text>
-                  <Text style={styles.textStyles}>Quantity needed: -</Text>
-                  <Text style={styles.textStyles}>Requested By: -</Text>
-                  
-                  <View style={{flexDirection:'row',justifyContent:'center',marginTop:17, marginLeft:'15%'}}>
-                    {/* Accept */}
-                    <Button style={{marginLeft:13,backgroundColor:'green'}}>
-                      <Text style={styles.buttonTextStyle}>Accept</Text>
-                    </Button>
+const SORequestsScreen = ({ navigation, route }) => {
 
-                    {/* Decline */}
-                    <Button style={{marginLeft:30,backgroundColor:'#eb1c1c'}}>
-                      <Text style={styles.buttonTextStyle}>Decline</Text>
-                    </Button>
-                  </View>
-                </Body>
-              </CardItem>
-              <Right>
-              <Button style={styles.cartItemStyle} transparent onPress={() => this.props.navigation.navigate('SOViewRequest')}>
-                  <Text style={{fontSize: 16,fontWeight:'bold',marginRight:-15,color:'darkblue'}}> See Item Details </Text>
-                  <Icon active style={{fontSize: 25, color: 'darkblue'}} name="arrow-forward" />
-                </Button>
-              </Right>
-          </Card>
-        </Content>
+  LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
-        {/* Footer */}
-        <View style={{flexDirection: 'row',alignContent:"center", backgroundColor: "darkblue"}}>
-          <FooterTab transparent style={{backgroundColor: "darkblue"}}>
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOHome')}>
-              <Icon style={{color:'white'}} name="home" />
-              <Text style={{color:'white'}}> Home</Text>
-            </Button>
+  const { user } = useContext(AuthContext);
+  const [loading, setLoading] = useState(true);
+  const [showList, setShowList] = useState([]);
+  const [isEmpty, setIsEmpty] = useState(false);
 
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOProfile')}>
-              <Icon name="person" style={{color:'white'}}/>
-              <Text style={{color:'white'}}>Profile</Text>
-            </Button>
-
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('SOContactUs')}>
-              <Icon style={{color:'white'}} name="call" />
-              <Text style={{color:'white'}} >Contact Us</Text>
-            </Button>
-          </FooterTab>
-        </View>
-        {/* End Footer */}
-        
-      </Container>
-    );
+  async function GetScreenReady() {
+    setIsEmpty(false);
+    setLoading(true);
+    let temp = [];
+    if (route.params.Editing) {
+      await firestore().collection('Requests').where("Shop_Owner_ID", "==", user.uid).where("Status", "==", "Pending").get().then(querySnapshot => {
+        querySnapshot.forEach((documentSnapshot) => {
+          temp.push([documentSnapshot.data(), documentSnapshot.id])
+        });
+      });
+    }else{
+      await firestore().collection('Requests').where("Shop_Owner_ID", "==", user.uid).where("Status", "in", ["Accepted","Declined"]).get().then(querySnapshot => {
+        querySnapshot.forEach((documentSnapshot) => {
+          temp.push([documentSnapshot.data(), documentSnapshot.id]) 
+        });
+      });
+    }
+    if (temp.length == 0) {
+      setIsEmpty(true);
+    }
+    setShowList(temp);
+    setLoading(false);
   }
+
+  useEffect(() => {
+    try {
+      GetScreenReady();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  return (
+    <Container>
+      {/* Search bar with drawer */}
+      <View searchBar style={{ flexDirection: 'row', paddingTop: 26, marginBottom: 12, paddingBottom: 6, alignContent: "center", backgroundColor: "darkblue", top: 0 }}>
+        <Button transparent onPress={() => navigation.navigate('SOHome')} >
+          <Ionicons
+            name='arrow-back-outline'
+            style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
+          />
+        </Button>
+        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '22%', paddingTop: 12, fontWeight: 'bold' }}> Requests</Text>
+      </View>
+      {/* End Search bar with drawer */}
+
+      {isEmpty ? <Content><Text style={styles.loadingStyle}> No Current Requests... </Text></Content> : null}
+
+      {loading ? <Content><Text style={styles.loadingStyle}> Loading Requests... </Text></Content> :
+        <Content>
+          <FlatList
+            data={showList}
+            keyExtractor={(item) => item[1]}
+            renderItem={({ item }) => {
+              return (
+                <SORequestCardComponent
+                  Data={item[0]}
+                  ID={item[1]}
+                  RefreshParent={() => { GetScreenReady() }}
+                  Editing={route.params.Editing}
+                />
+              )
+            }}
+          />
+        </Content>
+      }
+
+      <FooterComponent home="SOHome" profile="SOProfile" contactus="SOContactUs" bkcolor="darkblue" />
+
+    </Container>
+  );
 }
 
+export default SORequestsScreen;
+
 const styles = StyleSheet.create({
-  textStyles:{
-    fontSize:20,
-    marginBottom:4,
-    fontWeight:'bold',
-    color:'black',
+  textStyles: {
+    fontSize: 20,
+    marginBottom: 4,
+    fontWeight: 'bold',
+    color: 'black',
     textShadowColor: 'darkblue',
     textShadowRadius: 1.5,
-     textShadowOffset: { 
-        width: 0,
-        height: 0
-      },
-    marginBottom:10
-    
+    textShadowOffset: {
+      width: 0,
+      height: 0
+    },
+    marginBottom: 10
+
   },
 
-  buttonStyle:{
-    marginTop:7,
-    marginLeft:'auto',
-    backgroundColor:'darkblue',
+  buttonStyle: {
+    marginTop: 7,
+    marginLeft: 'auto',
+    backgroundColor: 'darkblue',
   },
 
-  buttonTextStyle:{
-    fontWeight:'bold'
+  buttonTextStyle: {
+    fontWeight: 'bold'
+  },
+  loadingStyle: {
+    color: 'darkblue',
+    alignSelf: 'center',
+    fontSize: 22,
+    textAlignVertical: 'center',
+    fontWeight: 'bold',
+    marginTop: 180
   }
 })

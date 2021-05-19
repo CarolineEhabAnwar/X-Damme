@@ -16,53 +16,19 @@ const MyRequestsScreen = ({ navigation }) => {
   const { user } = useContext(AuthContext);
   const [show_List, setShow_List] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [ShopOwnerName,setShopOwnerName] = useState("");
 
   async function Load_Screen() {
     setLoading(true);
-    setShow_List([]);
-    let temp_request_list = [];
-    let all_detailed_requests = [];
-    //Getting request history from user
-    await firestore().collection('users').doc(user.uid).get().then((User_Data) => {
-      if (User_Data.exists) {
-        let temp_list = User_Data.data().requestHistory;
-        let temp_ShopOwnerID = "";
-        let temp_items = [];
-        for (let i = 0; i < temp_list.length; i++) {
-          let temp = [];
-          temp_ShopOwnerID = temp_list[i].split("*")[0];
-          temp_items = temp_list[i].split("*")[1].split("/");
-          temp.push(temp_ShopOwnerID, temp_items.slice(0, -1));
-          temp_request_list.push(temp);
-        }
-      }
-    });
-    //Getting Each detail using IDs
-    for (let i = 0; i < temp_request_list.length; i++) {
-      let temp_request_element = [];
-      let ShopOwner_Name = "";
-      await firestore().collection('users').doc(temp_request_list[i][0]).get().then((Shop_Owner_Data) => {
-        if (Shop_Owner_Data.exists) {
-          ShopOwner_Name = Shop_Owner_Data.data().fname + " " + Shop_Owner_Data.data().lname;
-        }
+    let temp =[];
+    let index = 0;
+    await firestore().collection('Requests').where("User_ID","==",user.uid).get().then(querySnapshot => {
+      querySnapshot.forEach((documentSnapshot)=>{
+        temp.push([documentSnapshot.data(),(index+"")])
+        index++;
       });
-      let total_Price = 0;
-      let temp_Items_elements = [];
-      for (let j = 0; j < temp_request_list[i][1].length; j++) {
-        await firestore().collection('CarStuff').doc(temp_request_list[i][1][j].split(',')[0]).get().then((Car_Stuff_Data) => {
-          if (Car_Stuff_Data.exists) {
-
-            total_Price += Car_Stuff_Data.data().Price * temp_request_list[i][1][j].split(',')[1];
-            let temp = [];
-            temp.push(Car_Stuff_Data.data().Name, temp_request_list[i][1][j].split(',')[1], Car_Stuff_Data.data().Price)
-            temp_Items_elements.push(temp)
-          }
-        });
-      }
-      temp_request_element.push(ShopOwner_Name, temp_Items_elements, total_Price);
-      all_detailed_requests.push(temp_request_element);
-    }
-    setShow_List(all_detailed_requests);
+    });
+    setShow_List(temp);
     setLoading(false);
   }
 
@@ -93,13 +59,11 @@ const MyRequestsScreen = ({ navigation }) => {
         <Content>
           <FlatList
             data={show_List}
-            keyExtractor={(item) => item[0]}
+            keyExtractor={(item) => item[1]}
             renderItem={({ item }) => {
               return (
                 <RequestCardComponent
-                  ShopOwner_Name={item[0]}
-                  Items={item[1]}
-                  Total_Price={item[2]} 
+                  Data={item[0]}
                 />
               )
             }}
