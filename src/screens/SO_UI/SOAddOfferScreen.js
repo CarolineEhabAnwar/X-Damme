@@ -5,18 +5,8 @@ import { TouchableOpacity } from 'react-native';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import FooterComponent from '../components/FooterComponent'
-import DatePicker from 'react-native-datepicker';
 
 const SOAddOfferScreen = ({ navigation }) => {
-
-  const [From_Date, setFrom_Date] = useState("2016-05-15");
-  const [To_Date, setTo_Date] = useState("2016-05-15");
-
-  let Date_Of_Request = new Date(Date.now());
-  let S_Date_Of_Request = Date_Of_Request.getDate() + "/" + (Date_Of_Request.getMonth() + 1) + "/" + Date_Of_Request.getFullYear();
-
-  let Date_Of_Due = new Date(Date.now());
-  let S_Date_Of_Due = Date_Of_Due.getDate() + "/" + (Date_Of_Due.getMonth() + 1) + "/" + Date_Of_Due.getFullYear();
 
   return (
     <Container>
@@ -55,29 +45,6 @@ const SOAddOfferScreen = ({ navigation }) => {
             alignSelf: 'flex-start',
             height: 50
           }}>
-            <DatePicker
-              style={{ width: 200 }}
-              date={From_Date}
-              mode="date"
-              placeholder="select date"
-              format="YYYY-MM-DD"
-              minDate="1990-01-01"
-              maxDate="2025-01-01"
-              confirmBtnText="Confirm"
-              cancelBtnText="Cancel"
-              customStyles={{
-                dateIcon: {
-                  position: 'absolute',
-                  left: 0,
-                  top: 4,
-                  marginLeft: 0
-                },
-                dateInput: {
-                  marginLeft: 36
-                }
-              }}
-              onDateChange={(New_Date) => setFrom_Date(New_Date)}
-            />
           </Item>
 
           <Item regular style={{
@@ -88,29 +55,6 @@ const SOAddOfferScreen = ({ navigation }) => {
             alignSelf: 'flex-start',
             height: 50
           }}>
-            <DatePicker
-              style={{ width: 200 }}
-              date={To_Date}
-              mode="date"
-              placeholder="select date"
-              format="YYYY-MM-DD"
-              minDate="1990-01-01"
-              maxDate="2025-01-01"
-              confirmBtnText="Confirm"
-              cancelBtnText="Cancel"
-              customStyles={{
-                dateIcon: {
-                  position: 'absolute',
-                  left: 0,
-                  top: 4,
-                  marginLeft: 0
-                },
-                dateInput: {
-                  marginLeft: 36
-                }
-              }}
-              onDateChange={(New_Date) => setTo_Date(New_Date)}
-            />
           </Item>
 
           <Item regular style={styles.InputStyle}>

@@ -20,7 +20,6 @@ const MechAddServiceScreen = ({ navigation }) => {
   const [FridaySelected, setFridaySelected] = useState(false);
   const [SaturdaySelected, setSaturdaySelected] = useState(false);
   const [SundaySelected, setSundaySelected] = useState(false);
-  const selectedDays = []
   const [duration,setDuration]=useState(0);
   const [price,setPrice]=useState(null);
   const [startTime, setStartTime] = useState(new Date())
@@ -28,6 +27,8 @@ const MechAddServiceScreen = ({ navigation }) => {
   const [endTime, setEndTime] = useState(new Date())
   let getEndTime = ''
   const [selectedService, setSelectedService] = useState('Wench');
+
+  const selectedDays = []
 
   async function addService(service_type, price, days, startTime,
     endTime, duration,mechID) {
@@ -74,9 +75,9 @@ const MechAddServiceScreen = ({ navigation }) => {
         <View style={styles.serviceTypeStyle}>
               <Text style={styles.textStyle}>Service Type:</Text>
                 <Picker
-                  selectedValue={setSelectedService}
+                  selectedValue={selectedService}
                   onValueChange={(itemValue, itemIndex) =>
-                    selectedService(itemValue)
+                    setSelectedService(itemValue)
                   }>
                   <Picker.Item label="Wench" value="Wench" />
                   <Picker.Item label="Fix Motor" value="Fix Motor" />
@@ -171,7 +172,8 @@ const MechAddServiceScreen = ({ navigation }) => {
                 ThursdaySelected ? selectedDays.push('Thursday') : null,
                 FridaySelected ? selectedDays.push('Friday') : null,
                 SaturdaySelected ? selectedDays.push('Saturday') : null,
-                SundaySelected ? selectedDays.push('Sunday') : null
+                SundaySelected ? selectedDays.push('Sunday') : null,
+                true? null:null
               }
             </View>
           </Item>
