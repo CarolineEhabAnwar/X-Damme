@@ -1,192 +1,298 @@
 import React, { Component, useContext, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, TextInput } from 'react-native';
-import { Container, FooterTab, Badge, Header, Content, Item, Input, Icon, DatePicker, Text, Radio, Picker, Form, Button, Image, CheckBox } from 'native-base';
+import { StyleSheet, View, CheckBox, TextInput, Alert } from 'react-native';
+import { Container, FooterTab, Badge, Header, Content, Item, Input, Text, Radio, Form, Button } from 'native-base';
 import { Fontisto, Ionicons } from '@expo/vector-icons';
-import ImagePicker from "react-native-image-picker"
+import firestore from "@react-native-firebase/firestore";
+import FooterComponent from "../components/FooterComponent"
+import DatePicker from 'react-native-date-picker'
+import {Picker} from '@react-native-picker/picker';
+import { AuthContext } from '../../navigation/AuthProvider';
 
-export default class MechAddServiceScreen extends Component {
 
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      service: {
-        name: "",
-        price: "",
-        dur_from: "",
-        dur_to: "",
-        monday : false,
-        tuesday : false,
-        wednesday : false,
-        thursday : false,
-        friday : false,
-        saturday : false,
-        sunday : false,
-        car_models: "",
-        car_brands: "",
-        mech_ID: ""
-      },
-      date: {
-        selected: undefined,
-        chosenDate: new Date()
-      }
+const MechAddServiceScreen = ({ navigation }) => {
+
+  const { user } = useContext(AuthContext);
+  const [MondaySelected, setMondaySelected] = useState(false);
+  const [TuesdaySelected, setTuesdaySelected] = useState(false);
+  const [WednesdaySelected, setWednesdaySelected] = useState(false);
+  const [ThursdaySelected, setThursdaySelected] = useState(false);
+  const [FridaySelected, setFridaySelected] = useState(false);
+  const [SaturdaySelected, setSaturdaySelected] = useState(false);
+  const [SundaySelected, setSundaySelected] = useState(false);
+  const selectedDays = []
+  const [duration,setDuration]=useState(0);
+  const [price,setPrice]=useState(null);
+  const [startTime, setStartTime] = useState(new Date())
+  let getStartTime = ''
+  const [endTime, setEndTime] = useState(new Date())
+  let getEndTime = ''
+  const [selectedService, setSelectedService] = useState('Wench');
+
+  async function addService(service_type, price, days, startTime,
+    endTime, duration,mechID) {
+    try {
+      await firestore().collection("Services").add({
+        Type: service_type,
+        Price: price,
+        Days: days,
+        Start_Time: startTime,
+        End_Time: endTime,
+        Duration:duration,
+        Mech_ID:mechID
+      });
+      alert('Service has been added successfully!')
+      navigation.goBack()
+  
     }
+    catch (error) {
+      alert(error);
+    }
+  
+  };
 
 
-  }
+  return (
+    <Container >
+      {/* Search bar with drawer */}
+      <View searchBar style={{ flexDirection: 'row', paddingTop: 26, marginBottom: 12, paddingBottom: 6, alignContent: "center", backgroundColor: "darkgreen", top: 0 }}>
+        <Button transparent onPress={() => navigation.goBack()} >
+          <Ionicons
+            name='arrow-back-outline'
+            style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
+          />
+        </Button>
+        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '21%', paddingTop: 12, fontWeight: 'bold' }}> Add Service</Text>
+      </View>
+      {/* End Search bar with drawer */}
 
+      <Content style={{ marginHorizontal: 15, paddingVertical: 10 }}>
 
+        
+        <Form>
+        
+        <View style={styles.serviceTypeStyle}>
+              <Text style={styles.textStyle}>Service Type:</Text>
+                <Picker
+                  selectedValue={setSelectedService}
+                  onValueChange={(itemValue, itemIndex) =>
+                    selectedService(itemValue)
+                  }>
+                  <Picker.Item label="Wench" value="Wench" />
+                  <Picker.Item label="Fix Motor" value="Fix Motor" />
+                  <Picker.Item label="Electricity" value="Electricity" />
+                  <Picker.Item label="Check Engine" value="Check Engine" />
+                </Picker>
+          </View>
 
-  onValueChange(value) {
-    this.setState({
-
-      selected: value
-    });
-  }
-
-  setDate(newDate) {
-    this.setState({ chosenDate: new Date(Date.GMT(2019, 2, 18)) });
-  }
-
-
-  handleChoosePhoto = () => {
-    const options = {};
-    ImagePicker.launchImageLibrary(options, response => { console.log("response", response); })
-  }
-
-  render() {
-    let home_notification = 5;
-    let profile_notification = 5;
-    let settings_notification = 5;
-    
-    return (
-      <Container >
-        {/* Search bar with drawer */}
-        <View searchBar style={{ flexDirection: 'row', paddingTop: 26, marginBottom: 12, paddingBottom: 6, alignContent: "center", backgroundColor: "darkgreen", top: 0 }}>
-          <Button transparent onPress={() => this.props.navigation.navigate('MechHome')} >
-            <Ionicons
-              name='arrow-back-outline'
-              style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
+          <Item regular style={styles.PriceStyle}>
+            <Input
+              keyboardType="numeric"
+              placeholder='Service Price'
+              onChangeText={(price) => setPrice(price)}
             />
+            <Text style={{ marginRight: 15,color:'darkgreen' }}>EGP</Text>
+          </Item>
+
+          <Text style={styles.textStyle}>Service Avaiability</Text>
+
+          <Item regular style={styles.InputStyle}>
+            <View style={styles.container}>
+              <View style={styles.checkboxContainer}>
+
+                <View style={{ flexDirection: 'row' }}>
+                  <CheckBox
+                    value={MondaySelected}
+                    onValueChange={setMondaySelected}
+                    style={styles.checkbox}
+                  />
+                  <Text style={styles.label}>Monday</Text>
+                </View>
+
+                <View style={{ flexDirection: 'row' }}>
+                  <CheckBox
+                    value={TuesdaySelected}
+                    onValueChange={setTuesdaySelected}
+                    style={styles.checkbox}
+                  />
+                  <Text style={styles.label}>Tuesday</Text>
+                </View>
+
+                <View style={{ flexDirection: 'row' }}>
+                  <CheckBox
+                    value={WednesdaySelected}
+                    onValueChange={setWednesdaySelected}
+                    style={styles.checkbox}
+                  />
+                  <Text style={styles.label}>Wednesday</Text>
+                </View>
+
+                <View style={{ flexDirection: 'row' }}>
+                  <CheckBox
+                    value={ThursdaySelected}
+                    onValueChange={setThursdaySelected}
+                    style={styles.checkbox}
+                  />
+                  <Text style={styles.label}>Thursday</Text>
+                </View>
+
+                <View style={{ flexDirection: 'row' }}>
+                  <CheckBox
+                    value={FridaySelected}
+                    onValueChange={setFridaySelected}
+                    style={styles.checkbox}
+                  />
+                  <Text style={styles.label}>Friday</Text>
+                </View>
+
+                <View style={{ flexDirection: 'row' }}>
+                  <CheckBox
+                    value={SaturdaySelected}
+                    onValueChange={setSaturdaySelected}
+                    style={styles.checkbox}
+                  />
+                  <Text style={styles.label}>Saturday</Text>
+                </View>
+
+                <View style={{ flexDirection: 'row' }}>
+                  <CheckBox
+                    value={SundaySelected}
+                    onValueChange={setSundaySelected}
+                    style={styles.checkbox}
+                  />
+                  <Text style={styles.label}>Sunday</Text>
+                </View>
+
+              </View>
+              {
+                MondaySelected ? selectedDays.push('Monday') : null,
+                TuesdaySelected ? selectedDays.push('Tuesday') : null,
+                WednesdaySelected ? selectedDays.push('Wednesday') : null,
+                ThursdaySelected ? selectedDays.push('Thursday') : null,
+                FridaySelected ? selectedDays.push('Friday') : null,
+                SaturdaySelected ? selectedDays.push('Saturday') : null,
+                SundaySelected ? selectedDays.push('Sunday') : null
+              }
+            </View>
+          </Item>
+
+          <Item style={styles.InputStyle}>
+            <Text style={styles.textStyle}>From: </Text>
+            <DatePicker
+              date={startTime}
+              mode="time"
+              onDateChange={(time) => setStartTime(time)}
+              androidVariant='nativeAndroid'
+            />
+          </Item>
+
+          <Item style={styles.InputStyle}>
+            <Text style={styles.textStyle}>To: </Text>
+            <DatePicker
+              date={endTime}
+              mode="time"
+              onDateChange={(end_time) => setEndTime(end_time)}
+              androidVariant='nativeAndroid'
+            />
+          </Item>
+
+          <Item regular style={styles.PriceStyle}>
+            <Input
+              keyboardType="numeric"
+              placeholder='Service duration'
+              onChangeText={(duration) => setDuration(duration)}
+            />
+            <Text style={{ marginRight: 15,color:'darkgreen' }}>Hours</Text>
+          </Item>
+
+          <Button style={styles.AddServiceBtnStyle} onPress = {() => {
+            
+            getStartTime = startTime.toString().substring(15, 21)
+            getEndTime = endTime.toString().substring(15, 21)
+
+            if(price == null){
+              alert('Please enter service price')
+            }
+            else if(duration == 0){
+              alert('Please enter suitable service duration')
+            }
+            else if(selectedDays.length == 0){
+              alert('Please select service availability days')
+            }
+            else if(getStartTime == getEndTime){
+              alert('Service start and end time are the same!')
+            }
+            else{
+              addService(selectedService, price, selectedDays, getStartTime, getEndTime, duration,user.uid)
+            }
+          }}>
+          
+            <Text>Add Service</Text>
           </Button>
-          <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '21%', paddingTop: 12, fontWeight: 'bold' }}> Add Service</Text>
-        </View>
-        {/* End Search bar with drawer */}
+        </Form>
+      </Content>
 
-        <Content style={{ marginHorizontal: 15, paddingVertical: 10 }}>
+      <FooterComponent
+        home="MechHome"
+        profile="MechProfile"
+        contactus="MechContactUs"
+        bkcolor="darkgreen"
+      />
 
-          <Form>
-            <Item regular style={styles.InputStyle}>
-              <Input
-                placeholder='Service Name'
-                onChangeText={(changed_Text) => this.state.service.name = changed_Text}
-              />
-            </Item>
-
-            <Item regular style={styles.InputStyle}>
-              <Input
-                keyboardType="numeric"
-                placeholder='Service Price'
-                onChangeText={(changed_Text) => this.state.service.price = changed_Text}
-              />
-            </Item>
-
-            <Text style={{fontSize:16}}>Service Duration</Text>
-
-            <Item regular style={styles.InputStyle}>
-              <Text style={{fontSize:16 , marginLeft: 5 }}>From</Text>
-              <Input
-                placeholder=''
-                keyboardType="numeric"
-                onChangeText={(changed_Text) => this.state.service.dur_from = changed_Text}
-                alignContent="center"
-              />
-              <Text style={{fontSize:16}}>hours To</Text>
-              <Input
-                placeholder=''
-                keyboardType="numeric"
-                onChangeText={(changed_Text) => this.state.service.dur_to = changed_Text}
-              />
-              <Text style={{fontSize:16 , marginRight: 5 }}>hours</Text>
-            </Item>
-
-            <Item regular style={styles.InputStyle}>
-              <TouchableOpacity>
-                <CheckBox
-                  value={true}
-                  //onValueChange={setMonday()}
-                />
-                <Text style={{fontSize:16 , marginRight: 5 }}>Monday</Text>
-
-              </TouchableOpacity>
-            </Item>
-
-            <Item regular style={{
-              marginBottom: 10,
-              borderWidth: 3,
-              borderColor: 'darkgreen',
-              borderRadius: 6,
-              alignSelf: 'flex-start'
-            }}>
-
-              <Picker
-                mode="dialog"
-
-                iosIcon={<Icon name="arrow-down" style={{ marginLeft: -5 }} />}
-                placeholder="Service Type"
-                placeholderStyle={{ color: "darkgreen" }}
-                selectedValue={this.state.selected}
-                onValueChange={this.onValueChange.bind(this)}
-              >
-                <Picker.Item label="Wench" value="key0" />
-                <Picker.Item label="Fix Motor" value="key1" />
-                <Picker.Item label="Electrican" value="key2" />
-              </Picker>
-            </Item>
-
-            <Button style={{ backgroundColor: 'darkgreen', marginVertical: 20, alignSelf: 'center' }}>
-              <Text>Add Service</Text>
-            </Button>
-
-          </Form>
-
-        </Content>
-        {/* Footer */}
-        <View style={{ flexDirection: 'row', alignContent: "center", backgroundColor: "darkgreen" }}>
-          <FooterTab transparent style={{ backgroundColor: "darkgreen" }}>
-            <Button style={{ marginTop: 5 }} onPress={() => this.props.navigation.navigate('MechHome')}>
-              <Icon style={{ color: 'white' }} name="home" />
-              <Text style={{ color: 'white' }}> Home</Text>
-            </Button>
-
-            <Button style={{ marginTop: 5 }} onPress={() => this.props.navigation.navigate('MechProfile')}>
-              <Icon name="person" style={{ color: 'white' }} />
-              <Text style={{ color: 'white' }}>Profile</Text>
-            </Button>
-
-            <Button style={{ marginTop: 5 }} onPress={() => this.props.navigation.navigate('MechContactUs')}>
-              <Icon style={{ color: 'white' }} name="call" />
-              <Text style={{ color: 'white' }} >Contact Us</Text>
-            </Button>
-          </FooterTab>
-        </View>
-        {/* End Footer */}
-      </Container>
-    );
-
-  }
+    </Container>
+  );
 }
+
+export default MechAddServiceScreen;
 
 const styles = StyleSheet.create({
   InputStyle: {
     marginBottom: 10,
     borderColor: 'darkgreen',
     borderRadius: 6,
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
-
+  container: {
+    flex: 1
+  },
+  PriceStyle: {
+    marginBottom: 10,
+    borderColor: 'darkgreen',
+    borderRadius: 6,
+    justifyContent: 'space-between',
+    width: 200
+  },
+  AddServiceBtnStyle:{
+    backgroundColor: 'darkgreen', 
+    marginVertical: 25, 
+    alignSelf: 'center' 
+  },
+  checkboxContainer: {
+    flexWrap: 'wrap',
+    marginBottom: 5,
+  },
+  serviceTypeStyle:{
+    marginBottom:10,
+    borderColor:'darkgreen',
+    borderWidth:0.5,
+    borderRadius:10,
+    padding:6
+  },
+  checkbox: {
+    alignSelf: "center",
+  },
+  label: {
+    margin: 8,
+    marginLeft: 3
+  },
   ViewStyle: {
     marginBottom: 10,
     flexDirection: 'row',
   },
+  textStyle:{
+    color:'darkgreen',
+    fontSize:16,
+    fontWeight:'bold',
+    marginBottom:5
+  }
 })

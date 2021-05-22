@@ -13,6 +13,8 @@ import WaitingScreen from '../screens/WaitingScreen'
 //Importing Components
 import ItemComponent from '../screens/components/ItemComponent'
 import FooterComponent from '../screens/components/FooterComponent'
+import MechanicComponent from '../screens/components/MechanicComponent';
+import ServiceComponent from '../screens/components/ServiceComponent'
 
 //Importing User Screens
 import HomeScreen from '../screens/UserUI/HomeScreen'
@@ -68,6 +70,7 @@ import SORequestsScreen from "../screens/SO_UI/SORequestsScreen"
 import SOViewRequestScreen from "../screens/SO_UI/SOViewRequestScreen"
 import SOSettingsScreen from "../screens/SO_UI/SOSettingsScreen"
 import SOViewItemScreen from "../screens/SO_UI/SOViewItemScreen"
+
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -217,6 +220,16 @@ const UserStack = ({ navigation }) => (
     <Stack.Screen
       name="ChangeEmail"
       component={ChangeEmailScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="MechanicComponent"
+      component={MechanicComponent}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="ServiceComponent"
+      component={ServiceComponent}
       options={{ header: () => null }}
     />
   </Stack.Navigator>
