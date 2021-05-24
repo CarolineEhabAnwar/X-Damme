@@ -46,15 +46,14 @@ const ReviewComponent = (props) => {
 
     return (
         <View style={{ borderColor: "darkred", borderWidth: 2, marginVertical: 5 }}>
-            <Text style={styles.title}>Review By:  </Text>
-            <Text style={styles.writing}> {Reviewer_Name} </Text>
-            <Text style={styles.title}>Reviewed On:  </Text>
-            <Text style={styles.writing}> {date.toDateString()} </Text>
+            <Text style={styles.title}>Review By:  <Text style={styles.writing}> {Reviewer_Name} </Text></Text>
+            
+            <Text style={styles.title}>Reviewed On:  <Text style={styles.writing}> {date.toDateString()} </Text></Text>
+            
             <Text style={styles.title}>Item Rating: </Text>
             <Rating
                 showRating fractions={1}
                 startingValue={props.itemrating}
-                readonly
                 style={{ paddingVertical: 10 }}
             />
             
@@ -62,7 +61,6 @@ const ReviewComponent = (props) => {
             <Rating
                 showRating fractions={1}
                 startingValue={props.shoprating}
-                readonly
                 style={{ paddingVertical: 10 }}
             />
 

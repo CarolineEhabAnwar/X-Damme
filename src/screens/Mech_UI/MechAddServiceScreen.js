@@ -1,11 +1,11 @@
-import React, { Component, useContext, useState } from 'react';
+import React, { Component, useContext, useState, useEffect } from 'react';
 import { StyleSheet, View, CheckBox, TextInput, Alert } from 'react-native';
 import { Container, FooterTab, Badge, Header, Content, Item, Input, Text, Radio, Form, Button } from 'native-base';
 import { Fontisto, Ionicons } from '@expo/vector-icons';
 import firestore from "@react-native-firebase/firestore";
 import FooterComponent from "../components/FooterComponent"
 import DatePicker from 'react-native-date-picker'
-import {Picker} from '@react-native-picker/picker';
+import { Picker } from '@react-native-picker/picker';
 import { AuthContext } from '../../navigation/AuthProvider';
 
 
@@ -13,6 +13,7 @@ import { AuthContext } from '../../navigation/AuthProvider';
 const MechAddServiceScreen = ({ navigation }) => {
 
   const { user } = useContext(AuthContext);
+  const [Service_Types, setService_Types] = useState([])
   const [MondaySelected, setMondaySelected] = useState(false);
   const [TuesdaySelected, setTuesdaySelected] = useState(false);
   const [WednesdaySelected, setWednesdaySelected] = useState(false);
@@ -21,16 +22,26 @@ const MechAddServiceScreen = ({ navigation }) => {
   const [SaturdaySelected, setSaturdaySelected] = useState(false);
   const [SundaySelected, setSundaySelected] = useState(false);
   const selectedDays = []
-  const [duration,setDuration]=useState(0);
-  const [price,setPrice]=useState(null);
+  const [duration, setDuration] = useState(0);
+  const [price, setPrice] = useState(null);
   const [startTime, setStartTime] = useState(new Date())
   let getStartTime = ''
   const [endTime, setEndTime] = useState(new Date())
   let getEndTime = ''
-  const [selectedService, setSelectedService] = useState('Wench');
+  const [selectedService, setSelectedService] = useState("");
+
+  MondaySelected ? selectedDays.push('Monday') : null,
+    TuesdaySelected ? selectedDays.push('Tuesday') : null,
+    WednesdaySelected ? selectedDays.push('Wednesday') : null,
+    ThursdaySelected ? selectedDays.push('Thursday') : null,
+    FridaySelected ? selectedDays.push('Friday') : null,
+    SaturdaySelected ? selectedDays.push('Saturday') : null,
+    SundaySelected ? selectedDays.push('Sunday') : null
+
+
 
   async function addService(service_type, price, days, startTime,
-    endTime, duration,mechID) {
+    endTime, duration, mechID) {
     try {
       await firestore().collection("Services").add({
         Type: service_type,
@@ -38,18 +49,35 @@ const MechAddServiceScreen = ({ navigation }) => {
         Days: days,
         Start_Time: startTime,
         End_Time: endTime,
-        Duration:duration,
-        Mech_ID:mechID
+        Duration: duration,
+        Mech_ID: mechID
       });
       alert('Service has been added successfully!')
       navigation.goBack()
-  
+
     }
     catch (error) {
       alert(error);
     }
-  
+
   };
+
+  async function Get_Service_Types() {
+    await firestore().collection("App Details").doc("k82zp4G54ApB6UORzmMV").get().then((Service_Types) => {
+      if (Service_Types.exists) {
+        setService_Types(Service_Types.data().Service_Type);
+      }
+    });
+  }
+
+
+  useEffect(() => {
+    try {
+      Get_Service_Types();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
 
   return (
@@ -68,21 +96,20 @@ const MechAddServiceScreen = ({ navigation }) => {
 
       <Content style={{ marginHorizontal: 15, paddingVertical: 10 }}>
 
-        
+
         <Form>
-        
-        <View style={styles.serviceTypeStyle}>
-              <Text style={styles.textStyle}>Service Type:</Text>
-                <Picker
-                  selectedValue={setSelectedService}
-                  onValueChange={(itemValue, itemIndex) =>
-                    selectedService(itemValue)
-                  }>
-                  <Picker.Item label="Wench" value="Wench" />
-                  <Picker.Item label="Fix Motor" value="Fix Motor" />
-                  <Picker.Item label="Electricity" value="Electricity" />
-                  <Picker.Item label="Check Engine" value="Check Engine" />
-                </Picker>
+
+          <View style={styles.serviceTypeStyle}>
+            <Text style={styles.textStyle}>Service Type:</Text>
+            <Picker
+              selectedValue={selectedService}
+              onValueChange={(itemValue, itemIndex) =>
+                setSelectedService(itemValue)
+              }>
+              {Service_Types.map((item, index) => {
+                return (<Picker.Item label={item} value={item} key={index} />)
+              })}
+            </Picker>
           </View>
 
           <Item regular style={styles.PriceStyle}>
@@ -91,7 +118,7 @@ const MechAddServiceScreen = ({ navigation }) => {
               placeholder='Service Price'
               onChangeText={(price) => setPrice(price)}
             />
-            <Text style={{ marginRight: 15,color:'darkgreen' }}>EGP</Text>
+            <Text style={{ marginRight: 15, color: 'darkgreen' }}>EGP</Text>
           </Item>
 
           <Text style={styles.textStyle}>Service Avaiability</Text>
@@ -164,15 +191,6 @@ const MechAddServiceScreen = ({ navigation }) => {
                 </View>
 
               </View>
-              {
-                MondaySelected ? selectedDays.push('Monday') : null,
-                TuesdaySelected ? selectedDays.push('Tuesday') : null,
-                WednesdaySelected ? selectedDays.push('Wednesday') : null,
-                ThursdaySelected ? selectedDays.push('Thursday') : null,
-                FridaySelected ? selectedDays.push('Friday') : null,
-                SaturdaySelected ? selectedDays.push('Saturday') : null,
-                SundaySelected ? selectedDays.push('Sunday') : null
-              }
             </View>
           </Item>
 
@@ -202,31 +220,34 @@ const MechAddServiceScreen = ({ navigation }) => {
               placeholder='Service duration'
               onChangeText={(duration) => setDuration(duration)}
             />
-            <Text style={{ marginRight: 15,color:'darkgreen' }}>Hours</Text>
+            <Text style={{ marginRight: 15, color: 'darkgreen' }}>Hours</Text>
           </Item>
 
-          <Button style={styles.AddServiceBtnStyle} onPress = {() => {
-            
+          <Button style={styles.AddServiceBtnStyle} onPress={() => {
+
             getStartTime = startTime.toString().substring(15, 21)
             getEndTime = endTime.toString().substring(15, 21)
 
-            if(price == null){
+            if(selectedService == "Select Type" ){
+              alert('Please Enter a Service Type.')
+            }
+            else if (price == null) {
               alert('Please enter service price')
             }
-            else if(duration == 0){
+            else if (duration == 0) {
               alert('Please enter suitable service duration')
             }
-            else if(selectedDays.length == 0){
+            else if (selectedDays.length == 0) {
               alert('Please select service availability days')
             }
-            else if(getStartTime == getEndTime){
+            else if (getStartTime == getEndTime) {
               alert('Service start and end time are the same!')
             }
-            else{
-              addService(selectedService, price, selectedDays, getStartTime, getEndTime, duration,user.uid)
+            else {
+              addService(selectedService, price, selectedDays, getStartTime, getEndTime, duration, user.uid)
             }
           }}>
-          
+
             <Text>Add Service</Text>
           </Button>
         </Form>
@@ -262,21 +283,21 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: 200
   },
-  AddServiceBtnStyle:{
-    backgroundColor: 'darkgreen', 
-    marginVertical: 25, 
-    alignSelf: 'center' 
+  AddServiceBtnStyle: {
+    backgroundColor: 'darkgreen',
+    marginVertical: 25,
+    alignSelf: 'center'
   },
   checkboxContainer: {
     flexWrap: 'wrap',
     marginBottom: 5,
   },
-  serviceTypeStyle:{
-    marginBottom:10,
-    borderColor:'darkgreen',
-    borderWidth:0.5,
-    borderRadius:10,
-    padding:6
+  serviceTypeStyle: {
+    marginBottom: 10,
+    borderColor: 'darkgreen',
+    borderWidth: 0.5,
+    borderRadius: 10,
+    padding: 6
   },
   checkbox: {
     alignSelf: "center",
@@ -289,10 +310,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     flexDirection: 'row',
   },
-  textStyle:{
-    color:'darkgreen',
-    fontSize:16,
-    fontWeight:'bold',
-    marginBottom:5
+  textStyle: {
+    color: 'darkgreen',
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5
   }
 })

@@ -76,8 +76,8 @@ const MyReviewComponent = (props) => {
             })}>
                 <Text style={styles.howWeCalculate}>{items.Name}</Text>
             </TouchableOpacity>
-            <Text style={styles.title}>Reviewed On: </Text>
-            <Text style={styles.writing}>{Moment(props.dateofreview).format('d MMM yyyy')} </Text>
+            <Text style={styles.title}>Reviewed On: <Text style={styles.writing}>{Moment(props.dateofreview).format('d MMM yyyy')} </Text></Text>
+            
             <Text style={styles.title}>Item Rating: </Text>
             <Rating
                 showRating fractions={1}
@@ -94,8 +94,8 @@ const MyReviewComponent = (props) => {
             >
                  {props.writtenreview}
             </Text>
-            <Text style={styles.title}>Shop Owner Name: </Text>
-            <Text style={styles.writing}>{Shop_Owner_Name} </Text>
+            <Text style={styles.title}>Shop Owner Name: <Text style={styles.writing}>{Shop_Owner_Name} </Text></Text>
+            
 
             <Text style={styles.title}>Shop Owner Rating: </Text>
             <Rating
