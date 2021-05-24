@@ -1,12 +1,35 @@
-import React, { Component, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useContext, Component, useEffect, useState } from 'react';
+import { StyleSheet, View, LogBox, ToastAndroid, Slider } from 'react-native';
 import { Container, Header, FooterTab, Badge, Content, Item, Input, Icon, Text, Radio, Picker, Form, Button, Image } from 'native-base';
 import { TouchableOpacity } from 'react-native';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import FooterComponent from '../components/FooterComponent'
+import ImagePicker from "react-native-image-crop-picker"
+import storage from '@react-native-firebase/storage';
+import firestore from "@react-native-firebase/firestore";
+import { AuthContext } from '../../navigation/AuthProvider';
 
 const SOAddOfferScreen = ({ navigation }) => {
+
+  const [SliderValue, SetSliderValue] = useState(0);
+  const [Offer_Title, SetOffer_Title] = useState("");
+
+  const choosePhotoFromLibrary = async () => {
+    try {
+      ImagePicker.openPicker({
+        width: 1200,
+        height: 780,
+        cropping: true,
+      }).then((image) => {
+        const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
+        setImage(imageUri);
+        console.log(imageUri);
+      });
+    } catch (error) {
+      console.log(error)
+    }
+  };
 
   return (
     <Container>
@@ -29,13 +52,28 @@ const SOAddOfferScreen = ({ navigation }) => {
         </View>
         <Form>
           <Item regular style={styles.InputStyle}>
-            <Input placeholder='Offer Percentage' keyboardType="numeric" />
+            <Input placeholder='Offer Title' onChangeText={SetOffer_Title} />
           </Item>
 
-          <Item regular style={styles.InputStyle}>
-            <Input placeholder='Item ID' />
+          <Item regular style={{ marginBottom: 10, borderColor: 'darkblue', borderRadius: 6, justifyContent: 'space-evenly' }}>
+            <Slider style={{ flex: 10 }}
+              value={0}
+              maximumValue={100}
+              minimumValue={1}
+              step={0.5}
+              onValueChange={SetSliderValue}
+            />
+            <Text style={{ fontSize: 20, flex: 2 }}>{SliderValue}%</Text>
           </Item>
 
+          
+          <Button 
+          
+          style={{ backgroundColor: 'darkblue', marginVertical: 20, marginRight: 40, alignSelf: 'center' }}
+          onPress={console.log("I am pressed")}
+          >
+            <Text>Choose Items</Text>
+          </Button>
 
           <Item regular style={{
             marginBottom: 10,
