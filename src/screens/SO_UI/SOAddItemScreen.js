@@ -36,7 +36,11 @@ async function addItems(x_name, x_price, x_made_in, x_manufacture_date, x_car_mo
       Car_Brand: x_car_brand,
       Quality: x_item_quality,
       Image_Path: x_image_path,
-      Shop_Owner_ID: user.uid
+      Shop_Owner_ID: user.uid,
+      InOffer: "false",
+      After_Price: null,
+      Offer_Start_Date: null,
+      Offer_Duration: null
     });
     ToastAndroid.show(
       'Item has been added Succenfully.',
