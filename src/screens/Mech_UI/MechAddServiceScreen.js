@@ -40,6 +40,8 @@ const MechAddServiceScreen = ({ navigation }) => {
 
 
 
+  const selectedDays = []
+
   async function addService(service_type, price, days, startTime,
     endTime, duration, mechID) {
     try {
