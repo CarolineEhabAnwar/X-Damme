@@ -141,14 +141,14 @@ const SignupScreen = ({ navigation }) => {
             alert("Please insert your first name.");
           else if (lname === "")
             alert("Please insert your last name.");
-          else if (address === "")
-            alert("Please insert your address.");
           else if (email === "")
             alert("Please insert an email.");
-          else if (email === "")
+          else if (password === "")
             alert("Please insert a password.");
           else if (password !== confirmPassword)
             alert("Password mismatch with the confirm password.");
+          else if (address === "")
+            alert("Please insert your address.");
           else if (type === "")
             alert("Please select a type.");
           else {

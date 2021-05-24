@@ -17,9 +17,9 @@ const RequestCardComponent = (props) => {
     let S_Date_Of_Due = Date_Of_Due.getDate() + "/" + (Date_Of_Due.getMonth() +1) + "/" +Date_Of_Due.getFullYear();
 
     return (
-        <View style={{ borderColor: "darkred", borderWidth: 2, marginVertical: 5 }}>
-            <Text style={styles.title}> Shop Owner:  </Text>
-            <Text style={styles.writing}> {props.Data.Shop_Owner_Name} </Text>
+        <View style={{ borderColor: "darkred", borderWidth: 2, marginVertical: 5 ,marginHorizontal:5}}>
+            <Text style={styles.title}> Shop Owner:  <Text style={styles.writing}> {props.Data.Shop_Owner_Name} </Text></Text>
+            
             <Text style={styles.title}> Items:  </Text>
             <FlatList
                 data={props.Data.Items_And_Quantites}
@@ -29,14 +29,14 @@ const RequestCardComponent = (props) => {
                     )
                 }}
             />
-            <Text style={styles.title}> Total Price: </Text>
-            <Text style={styles.writing}> {props.Data.Total_Price} L.E </Text>
-            <Text style={styles.title}> Status: </Text>
-            <Text style={styles.writing}> {props.Data.Status} </Text>
-            <Text style={styles.title}> Order Date: </Text>
-            <Text style={styles.writing}> {S_Date_Of_Request} </Text>
-            <Text style={styles.title}> Due Date: </Text>
-            <Text style={styles.writing}> {S_Date_Of_Due} </Text>
+            <Text style={styles.title}> Total Price: <Text style={styles.writing}> {props.Data.Total_Price} L.E </Text></Text>
+            
+            <Text style={styles.title}> Status: <Text style={styles.writing}> {props.Data.Status} </Text></Text>
+            
+            <Text style={styles.title}> Order Date: <Text style={styles.writing}> {S_Date_Of_Request} </Text></Text>
+            
+            <Text style={styles.title}> Due Date: <Text style={styles.writing}> {S_Date_Of_Due} </Text></Text>
+            
         </View>
     );
 }
@@ -125,7 +125,8 @@ const styles = StyleSheet.create({
         color: "darkred",
         textAlign: "left",
         fontWeight: 'bold',
-        marginLeft: 10
+        marginLeft: 10,
+        marginBottom:10
     },
     totalWrap: {
         marginTop: 2,

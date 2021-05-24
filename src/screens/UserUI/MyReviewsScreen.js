@@ -50,25 +50,19 @@ const MyReviewsScreen = ({ navigation, route }) => {
     return (
         <Container>
             {/* Item Card */}
-            {/* Search bar with nav back */}
-            <View searchBar style={{ flexDirection: 'row', paddingTop: 25, marginBottom: 12, paddingBottom: 6, alignContent: "center", backgroundColor: "darkred", top: 0 }}>
-                <Button transparent onPress={() => navigation.goBack()} >
+            {/* Text with drawer */}
+            <View searchBar style={{ flexDirection: 'row', paddingTop: 25, marginBottom: 0, paddingBottom: 6, alignContent: "center", backgroundColor: "darkred", top: 0 }}>
+                <Button transparent onPress={() => navigation.navigate('Home')} >
                     <Ionicons
                         name='arrow-back-outline'
                         style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
                     />
                 </Button>
-                <InputGroup rounded style={{ flex: 1, backgroundColor: '#fff', height: 35, marginTop: 7, paddingLeft: 10, paddingRight: 10 }}>
-                    <Icon name="ios-search" style={{ color: "darkred" }} />
-                    <Input style={{ height: 40, marginTop: 5, color: "darkred" }} placeholder="Search" />
-                </InputGroup>
-                <Button transparent style={{ height: 50 }} onPress={() => null}>
-                    <Text style={{ color: "white", fontWeight: 'bold' }}>Search</Text>
-                </Button>
+                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '24%', paddingTop: 12, fontWeight: 'bold' }}>My Reviews</Text>
             </View>
-            {/* End Search bar with nav back */}
+            {/* End Text with drawer */}
             <Container>
-                
+
                 {loading ? <Text style={styles.loadingStyle}> Loading Reviews... </Text> :
                     <FlatList
                         data={reviews}
