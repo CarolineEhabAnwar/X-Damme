@@ -1,27 +1,74 @@
-import React, { Component,useContext,useState,useEffect } from 'react';
+import React, { Component, useContext, useState, useEffect } from 'react';
 import { Container, InputGroup, Header, Item, Icon, Input, Content, Left, Right, Title, Body, Footer, FooterTab, Button, Text, Badge } from 'native-base';
 import { StyleSheet, View, Image, FlatList, TouchableOpacity } from 'react-native';
 import { DrawerActions } from 'react-navigation-drawer';
-import ItemComponent from "../components/ItemComponent";
+import AdvComponent from "../components/AdvComponent";
 import { ScrollView } from 'react-native-gesture-handler';
 import { AuthContext } from '../../navigation/AuthProvider';
 import firestore from "@react-native-firebase/firestore";
 
 
-const HomeScreen = ({navigation}) => {
+const HomeScreen = ({ navigation }) => {
 
+  const [ads, setAds] = useState([]);
+
+  const Check_Date = (Date_To_Check, Duration) => {
+    let Duration_In_Millisecond = Duration * 86400000;
+    let Due_Date = Date_To_Check.toMillis() + Duration_In_Millisecond;
+    let Today = new Date().getTime();
+
+    if(Today<Due_Date){
+      return true;
+    }
+    else{
+      return false;
+    }
+
+  }
+
+  async function Get_Ads() {
+    await firestore().collection("Ads").get().then((Ads) => {
+      let temp = [];
+      for (let i = 0; i < Ads.docs.length; i++) {
+        if (Check_Date(Ads.docs[i].data().Date_Of_Offer,Ads.docs[i].data().Duration)) {
+          let ad_temp = { ...Ads.docs[i].data(), key: Ads.docs[i].id }
+          temp.push(ad_temp);
+        }
+        else{
+          for(let j = 0;j<Ads.docs[i].data().Items.length;j++){
+            firestore().collection("CarStuff").doc(Ads.docs[i].data().Items[i]).update({
+              InOffer: "false",
+              After_Price: null,
+              Offer_Start_Date: null,
+              Offer_Duration: null
+            });
+          }
+          firestore().collection("Ads").doc(Ads.docs[i].id).delete();
+        }
+      }
+      setAds(temp);
+    });
+  }
+
+  useEffect(() => {
+    try {
+      Get_Ads();
+    } catch (error) {
+      console.log(error)
+    }
+  }, []);
   return (
     <Container>
-     
+
       {/* Header */}
-      <View style={{ flexDirection: 'row',justifyContent:'space-between', paddingTop: 26, marginBottom: 12, paddingBottom: 6, backgroundColor: "darkred" }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 26, marginBottom: 12, paddingBottom: 6, backgroundColor: "darkred" }}>
         <Button transparent onPress={() => navigation.dispatch(DrawerActions.openDrawer())} >
           <Icon ios='ios-menu' android="md-menu" style={{ fontSize: 28, color: 'white' }} />
         </Button>
-        
-        <Button transparent style={{ height: 50}} onPress={() => navigation.navigate('Cart')}>
-          <Icon name='cart' style={{ fontSize: 24,marginRight:-6, color: 'white' }}></Icon>
-          <Text style={{ color: "white",fontSize:16, fontWeight: 'bold' }}>My Cart</Text>
+
+        <Button transparent style={{ height: 50 }} onPress={() => navigation.navigate('Cart')}>
+          <Icon name='cart' style={{ fontSize: 24, marginRight: -6, color: 'white' }}></Icon>
+          <Text style={{ color: "white", fontSize: 16, fontWeight: 'bold' }}>My Cart</Text>
         </Button>
       </View>
       {/* End Header */}
@@ -82,18 +129,14 @@ const HomeScreen = ({navigation}) => {
         </View>
         <View scrollEnabled style={{ textcolor: 'darkred', flexDirection: "row" }}>
           <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
-            <ItemComponent
-              imageSource={require('../../../assets/spring.png')}
-            />
-            <ItemComponent
-              imageSource={require('../../../assets/spring.png')}
-            />
-            <ItemComponent
-              imageSource={require('../../../assets/spring.png')}
-            />
-            <ItemComponent
-              imageSource={require('../../../assets/spring.png')}
-            />
+            {ads.map((item, index) => {
+              return (
+                <AdvComponent
+                  AD={item}
+                  key={index}
+                />
+              )
+            })}
           </ScrollView>
         </View>
       </Content>

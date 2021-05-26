@@ -42,14 +42,21 @@ const CartScreen = ({ navigation, route }) => {
             let totalPrice = 0;
             for (let j = 0; j < items.length; j++) {
                 if (items[j][1][1].Shop_Owner_ID == Shop_Owners_list[i]) {
-                    let S = items[j][1][1].Name + "/" + items[j][0] + "/" + items[j][1][1].Price + "/" + (items[j][0] * items[j][1][1].Price);
-                    Same_Shop_Owner_Item_list.push(S);
-                    totalPrice += (items[j][0] * items[j][1][1].Price);
+                    if (items[j][1][1].InOffer == "true") {
+                        let S = items[j][1][1].Name + "/" + items[j][0] + "/" + items[j][1][1].After_Price + "/" + (items[j][0] * items[j][1][1].After_Price);
+                        Same_Shop_Owner_Item_list.push(S);
+                        totalPrice += (items[j][0] * items[j][1][1].After_Price);
+                    }
+                    else {
+                        let S = items[j][1][1].Name + "/" + items[j][0] + "/" + items[j][1][1].Price + "/" + (items[j][0] * items[j][1][1].Price);
+                        Same_Shop_Owner_Item_list.push(S);
+                        totalPrice += (items[j][0] * items[j][1][1].Price);
+                    }
                 }
             }
-            let Shop_Owner_Name ="";
+            let Shop_Owner_Name = "";
             await firestore().collection('users').doc(Shop_Owners_list[i]).get().then(Shop_Owner_Data => {
-                if(Shop_Owner_Data.exists){
+                if (Shop_Owner_Data.exists) {
                     Shop_Owner_Name = Shop_Owner_Data.data().fname + " " + Shop_Owner_Data.data().lname;
                 }
             });
@@ -89,7 +96,7 @@ const CartScreen = ({ navigation, route }) => {
         try {
             const Requests = await Get_Requests();
             //Sending The Requests
-            for(let i = 0; i < Requests.length; i++){
+            for (let i = 0; i < Requests.length; i++) {
                 await Send_Request(Requests[i]);
             }
             Remove_All();
@@ -203,7 +210,12 @@ const CartScreen = ({ navigation, route }) => {
             //Calculating Total Price
             let total_Price = 0;
             for (let i = 0; i < temp_Unique_List.length; i++) {
-                total_Price += (temp_Unique_List[i][1][1].Price * temp_Unique_List[i][0]);
+                if (temp_Unique_List[i][1][1].InOffer == "true") {
+                    total_Price += (temp_Unique_List[i][1][1].After_Price * temp_Unique_List[i][0]);
+                }
+                else {
+                    total_Price += (temp_Unique_List[i][1][1].Price * temp_Unique_List[i][0]);
+                }
             }
             //Setting The need variables
             setTotalPrice(total_Price);
@@ -255,6 +267,12 @@ const CartScreen = ({ navigation, route }) => {
             </View>
             {/* End Text with drawer */}
 
+            <View style={{ width: 230, flexDirection: 'row', paddingTop: 25, justifyContent: 'space-between', paddingBottom: 6, alignContent: "center", top: 0 }}>
+                <Left><Text style={{ fontWeight: '500' }}> Quantity</Text></Left>
+                <Body><Text style={{ fontWeight: '500' }}> Name</Text></Body>
+                <Right><Text style={{ fontWeight: '500' }}> Price/Unit</Text></Right>
+            </View>
+
             {loading ? <Content><Text style={styles.loadingStyle}> Loading Items... </Text></Content> :
                 <Content>
                     <FlatList
@@ -272,18 +290,24 @@ const CartScreen = ({ navigation, route }) => {
                                     </Body>
                                     <Right>
                                         <View style={{ flexDirection: 'row', justifyContent: "flex-start" }}>
-                                            <Text style={{ fontWeight: '400', marginTop: 12 }}>{parseFloat(item[1][1].Price)} EGP</Text>
+                                            {item[1][1].InOffer == "true" ?
+                                                <Text style={{ fontWeight: '400', marginTop: 12 }}>{parseFloat(item[1][1].After_Price)} EGP</Text>
+                                                :
+                                                <Text style={{ fontWeight: '400', marginTop: 12 }}>{parseFloat(item[1][1].Price)} EGP</Text>
+                                            }
                                             <Button transparent onPress={() => navigation.navigate('CartViewItem', {
                                                 ItemName: item[1][1].Name,
                                                 CarBrand: item[1][1].Car_Brand,
                                                 CarModel: item[1][1].Car_Model,
                                                 Price: item[1][1].Price,
+                                                After_Price: item[1][1].After_Price,
                                                 MadeIn: item[1][1].Made_In,
                                                 Manufacture_Date: item[1][1].Manufacture_Date,
                                                 Quality: item[1][1].Quality,
                                                 Shop_Owner_ID: item[1][1].Shop_Owner_ID,
                                                 ItemIMG: item[1][1].Image_Path,
-                                                Item_ID: item[1][0]
+                                                Item_ID: item[1][0],
+                                                InOffer: item[1][1].InOffer
                                             })}>
                                                 <Text style={{ color: 'blue', fontWeight: 'bold' }}>View</Text>
                                             </Button>

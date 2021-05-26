@@ -80,7 +80,7 @@ const ItemDetailsScreen = ({ navigation, route }) => {
     let temp_Stars_Perc = [0, 0, 0, 0, 0, 0];
 
     try {
-      await firestore().collection('Reviews').where('ItemID', '==', route.params.ItemID)
+      await firestore().collection('Reviews').where('ItemID', '==', route.params.Item.key)
         .get()
         .then(querySnapshot => {
           itemCount = querySnapshot.docs.length;
@@ -127,7 +127,7 @@ const ItemDetailsScreen = ({ navigation, route }) => {
 
         });
 
-      await firestore().collection('Reviews').where('ShopOwnerID', '==', route.params.ShopOwnerID)
+      await firestore().collection('Reviews').where('ShopOwnerID', '==', route.params.Item.Shop_Owner_ID)
         .get()
         .then(querySnapshot => {
 
@@ -182,32 +182,42 @@ const ItemDetailsScreen = ({ navigation, route }) => {
       <Content>
         {loading ? <Text style={styles.loadingStyle}> Loading Item Details... </Text> :
           <Card style={{ marginTop: 0, flex: 0 }}>
-            <Image source={{ uri: route.params.ItemIMG }} style={{ marginBottom: 20, height: 200, width: null }} />
+            <Image source={{ uri: route.params.Item.Image_Path }} style={{ marginBottom: 20, height: 200, width: null }} />
             <CardItem style={{ marginHorizontal: 1, borderWidth: 3, borderColor: 'darkred' }}>
               <Body>
                 <Text style={styles.textStyles}>Name: </Text>
-                <Text style={styles.itemsTextStyle}>{route.params.ItemName}</Text>
+                <Text style={styles.itemsTextStyle}>{route.params.Item.Name}</Text>
 
-                <Text style={styles.textStyles}>Price: </Text>
-                <Text style={styles.itemsTextStyle}>{route.params.Price}</Text>
+                {route.params.Item.InOffer == "true" ?
+                  <View>
+                    <Text style={styles.textStyles}>Price: </Text>
+                    <Text style={{fontSize: 19,marginBottom: 10,fontWeight: 'bold',textDecorationLine: 'line-through'}}>{route.params.Item.Price}</Text>
+                    <Text style={styles.itemsTextStyle}>{route.params.Item.After_Price}</Text>
+                  </View>
+                  :
+                  <View>
+                    <Text style={styles.textStyles}>Price: </Text>
+                    <Text style={styles.itemsTextStyle}>{route.params.Item.Price}</Text>
+                  </View>
+                }
 
                 <Text style={styles.textStyles}>Car Brand: </Text>
-                <Text style={styles.itemsTextStyle}>{route.params.CarBrand}</Text>
+                <Text style={styles.itemsTextStyle}>{route.params.Item.Car_Brand}</Text>
 
                 <Text style={styles.textStyles}>Car Model:</Text>
-                <Text style={styles.itemsTextStyle}>{route.params.CarModel}</Text>
+                <Text style={styles.itemsTextStyle}>{route.params.Item.Car_Model}</Text>
 
                 <Text style={styles.textStyles}>Quality:</Text>
-                <Text style={styles.itemsTextStyle}>{route.params.Quality}</Text>
+                <Text style={styles.itemsTextStyle}>{route.params.Item.Quality}</Text>
 
                 <Text style={styles.textStyles}>Made In:</Text>
-                <Text style={styles.itemsTextStyle}>{route.params.MadeIn}</Text>
+                <Text style={styles.itemsTextStyle}>{route.params.Item.Made_In}</Text>
 
                 <Text style={styles.textStyles}>Manufacture Date:</Text>
-                <Text style={styles.itemsTextStyle}>{route.params.Manufacture_Date}</Text>
+                <Text style={styles.itemsTextStyle}>{route.params.Item.Manufacture_Date}</Text>
 
                 <Text style={styles.textStyles}>Shop Owner:</Text>
-                <Text style={styles.itemsTextStyle}>{route.params.Shop_Owner}</Text>
+                <Text style={styles.itemsTextStyle}>{route.params.Item.Shop_Owner_Name}</Text>
 
                 <Text style={styles.textStyles}>Rating:</Text>
                 <View style={styles.reviewContainer}>
@@ -250,9 +260,7 @@ const ItemDetailsScreen = ({ navigation, route }) => {
                   </View>
                   <TouchableOpacity onPress={() => {
                     navigation.navigate("CustomersReviews", {
-
-                      itemID: route.params.ItemID
-
+                      itemID: route.params.Item.key
                     })
                   }}>
                     <Text style={styles.howWeCalculate}>See Customer Reviews</Text>
@@ -279,8 +287,8 @@ const ItemDetailsScreen = ({ navigation, route }) => {
                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignSelf: 'center' }}>
                   <Button style={styles.buttonStyle} onPress={() => {
                     navigation.navigate("Review", {
-                      ItemID: route.params.ItemID,
-                      shopownerID: route.params.ShopOwnerID,
+                      ItemID: route.params.Item.key,
+                      shopownerID: route.params.Item.Shop_Owner_ID,
 
                     })
                   }}>
@@ -292,7 +300,7 @@ const ItemDetailsScreen = ({ navigation, route }) => {
                       await firestore().collection('users').doc(user.uid).get().then((User_Data) => {
                         let temp_cart = [];
                         temp_cart = User_Data.data().cart;
-                        temp_cart.push(route.params.ItemID);
+                        temp_cart.push(route.params.Item.key);
                         firestore().collection('users').doc(user.uid).update({
                           cart: temp_cart
                         }).then(() => {

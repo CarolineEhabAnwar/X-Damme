@@ -21,7 +21,6 @@ const MechAddServiceScreen = ({ navigation }) => {
   const [FridaySelected, setFridaySelected] = useState(false);
   const [SaturdaySelected, setSaturdaySelected] = useState(false);
   const [SundaySelected, setSundaySelected] = useState(false);
-  const selectedDays = []
   const [duration, setDuration] = useState(0);
   const [price, setPrice] = useState(null);
   const [startTime, setStartTime] = useState(new Date())

@@ -42,7 +42,7 @@ const CartViewItemScreen = ({ navigation, route }) => {
         <Container>
 
             {/* Text with drawer */}
-            <View  style={{ flexDirection: 'row', paddingTop: 25, marginBottom: 12, paddingBottom: 6, alignContent: "center", backgroundColor: "darkred", top: 0 }}>
+            <View style={{ flexDirection: 'row', paddingTop: 25, marginBottom: 12, paddingBottom: 6, alignContent: "center", backgroundColor: "darkred", top: 0 }}>
                 <Button transparent onPress={() => navigation.goBack()} >
                     <Ionicons
                         name='arrow-back-outline'
@@ -50,7 +50,7 @@ const CartViewItemScreen = ({ navigation, route }) => {
                     />
                 </Button>
                 <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '24%', paddingTop: 12, fontWeight: 'bold' }}>View Item</Text>
-                
+
             </View>
             {/* End Text with drawer */}
             <Content>
@@ -61,8 +61,18 @@ const CartViewItemScreen = ({ navigation, route }) => {
                             <Text style={styles.textStyles}>Name: </Text>
                             <Text style={styles.itemsTextStyle}>{route.params.ItemName}</Text>
 
-                            <Text style={styles.textStyles}>Price: </Text>
-                            <Text style={styles.itemsTextStyle}>{route.params.Price}</Text>
+                            {route.params.InOffer == "true" ?
+                                <View>
+                                    <Text style={styles.textStyles}>Price: </Text>
+                                    <Text style={{fontSize: 19,marginBottom: 10,fontWeight: 'bold',textDecorationLine:'line-through'}}>{route.params.Price}</Text>
+                                    <Text style={styles.itemsTextStyle}>{route.params.After_Price}</Text>
+                                </View>
+                                :
+                                <View>
+                                    <Text style={styles.textStyles}>Price: </Text>
+                                    <Text style={styles.itemsTextStyle}>{route.params.Price}</Text>
+                                </View>
+                            }
 
                             <Text style={styles.textStyles}>Car Brand: </Text>
                             <Text style={styles.itemsTextStyle}>{route.params.CarBrand}</Text>
@@ -135,11 +145,11 @@ const styles = StyleSheet.create({
         backgroundColor: 'darkred',
         marginRight: 10
     },
-    itemsTextStyle:{
-        fontSize:19,
-        marginBottom:10,
-        fontWeight:'bold',
-      },
+    itemsTextStyle: {
+        fontSize: 19,
+        marginBottom: 10,
+        fontWeight: 'bold',
+    },
 
     buttonTextStyle: {
         fontWeight: 'bold'

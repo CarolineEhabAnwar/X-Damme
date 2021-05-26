@@ -44,6 +44,7 @@ import MyReviewsScreen from "../screens/UserUI/MyReviewsScreen"
 import ChangeNameScreen from "../screens/UserUI/ChangeNameScreen"
 import ChangePasswordScreen from "../screens/UserUI/ChangePasswordScreen"
 import ChangeEmailScreen from "../screens/UserUI/ChangeEmailScreen"
+import AdvViewScreen from "../screens/UserUI/AdvViewScreen"
 
 //Importing Mechanic Screens
 import MechAddOfferScreen from "../screens/Mech_UI/MechAddOfferScreen"
@@ -230,6 +231,11 @@ const UserStack = ({ navigation }) => (
     <Stack.Screen
       name="ServiceComponent"
       component={ServiceComponent}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="AdvView"
+      component={AdvViewScreen}
       options={{ header: () => null }}
     />
   </Stack.Navigator>

@@ -1,4 +1,4 @@
-import React, { useContext, Component, useEffect } from 'react';
+import React, { useContext, Component, useEffect, useState } from 'react';
 import { Platform, StyleSheet, View, LogBox, ToastAndroid } from 'react-native';
 import { Container, FooterTab, Badge, Header, Content, Item, Input, Icon, Text, Radio, Picker, Form, Button, Image } from 'native-base';
 import { TouchableOpacity } from 'react-native';
@@ -6,7 +6,6 @@ import { Feather, Ionicons } from '@expo/vector-icons';
 import ImagePicker from "react-native-image-crop-picker"
 import SOProfileScreen from './SOProfileScreen';
 import firestore from "@react-native-firebase/firestore";
-import { useState } from "react";
 import DatePicker from 'react-native-datepicker';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../../navigation/AuthProvider';
@@ -24,7 +23,7 @@ import FooterComponent from '../components/FooterComponent';
 //npm install @react-native-community/datetimepicker
 
 async function addItems(x_name, x_price, x_made_in, x_manufacture_date, x_car_model,
-  x_car_brand, x_item_quality, x_image_path, x_type, user) {
+  x_car_brand, x_item_quality, x_image_path, x_type, user,MyName) {
   try {
     const Added_Item = await firestore().collection("CarStuff").add({
       Name: x_name,
@@ -36,7 +35,12 @@ async function addItems(x_name, x_price, x_made_in, x_manufacture_date, x_car_mo
       Car_Brand: x_car_brand,
       Quality: x_item_quality,
       Image_Path: x_image_path,
-      Shop_Owner_ID: user.uid
+      Shop_Owner_ID: user.uid,
+      Shop_Owner_Name: MyName,
+      InOffer: "false",
+      After_Price: null,
+      Offer_Start_Date: null,
+      Offer_Duration: null
     });
     ToastAndroid.show(
       'Item has been added Succenfully.',
@@ -85,6 +89,7 @@ const SOAddItemScreen = ({ navigation }) => {
   const [all_models, set_all_models] = useState([]);
   const [models, setModel] = useState([]);
   const [qualities, setQualities] = useState([]);
+  const [MyName, setMyName] = useState("");
 
 
   async function Set_Pickers_Data() {
@@ -142,6 +147,12 @@ const SOAddItemScreen = ({ navigation }) => {
     setloadingScreen(false);
   }
 
+  async function Get_My_Name(){
+    await firestore().collection("users").doc(user.uid).get().then((MyInfo) => {
+      setMyName(MyInfo.data().fname + " " + MyInfo.data().lname);
+    })
+  }
+
   useEffect(() => {
     if (all_models[Brand] != null) {
       setModel(all_models[Brand]);
@@ -150,6 +161,7 @@ const SOAddItemScreen = ({ navigation }) => {
 
   useEffect(() => {
     try {
+      Get_My_Name();
       Set_Pickers_Data();
     } catch (error) {
       alert(error);
@@ -446,7 +458,7 @@ const SOAddItemScreen = ({ navigation }) => {
                   alert("Please select a quality.")
                 }
                 else {
-                  addItems(name, price, made_in, manufacture_date, models[Model], brands[Brand], qualities[Quality], image_path, types[Type], user);
+                  addItems(name, price, made_in, manufacture_date, models[Model], brands[Brand], qualities[Quality], image_path, types[Type], user,MyName);
                   removeAll();
                 }
               }}  // Please handle all of the errors.
