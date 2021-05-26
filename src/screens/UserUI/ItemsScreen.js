@@ -414,17 +414,7 @@ const ItemsScreen = ({ navigation }) => {
             renderItem={({ item }) => {
               return (
                 <ItemComponent
-                  itemName={item.Name}
-                  carBrand={item.Car_Brand}
-                  carModel={item.Car_Model}
-                  price={item.Price}
-                  madeIn={item.Made_In}
-                  manufacture_Date={item.Manufacture_Date}
-                  quality={item.Quality}
-                  shop_owner_id={item.Shop_Owner_ID}
-                  itemImg={item.Image_Path}
-                  cart={item.cart}
-                  itemID={item.key}
+                  Item={item}
                 />);
             }}
           />

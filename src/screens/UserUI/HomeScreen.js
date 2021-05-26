@@ -1,27 +1,47 @@
-import React, { Component,useContext,useState,useEffect } from 'react';
+import React, { Component, useContext, useState, useEffect } from 'react';
 import { Container, InputGroup, Header, Item, Icon, Input, Content, Left, Right, Title, Body, Footer, FooterTab, Button, Text, Badge } from 'native-base';
 import { StyleSheet, View, Image, FlatList, TouchableOpacity } from 'react-native';
 import { DrawerActions } from 'react-navigation-drawer';
-import ItemComponent from "../components/ItemComponent";
+import AdvComponent from "../components/AdvComponent";
 import { ScrollView } from 'react-native-gesture-handler';
 import { AuthContext } from '../../navigation/AuthProvider';
 import firestore from "@react-native-firebase/firestore";
 
 
-const HomeScreen = ({navigation}) => {
+const HomeScreen = ({ navigation }) => {
 
+  const [ads, setAds] = useState([]);
+
+  async function Get_Ads() {
+    await firestore().collection("Ads").get().then((Ads) => {
+      let temp = [];
+      for (let i = 0; i < Ads.docs.length; i++) {
+        let ad_temp = { ...Ads.docs[i].data(), key: Ads.docs[i].id }
+        temp.push(ad_temp);
+      }
+      setAds(temp);
+    });
+  }
+
+  useEffect(() => {
+    try {
+      Get_Ads();
+    } catch (error) {
+      console.log(error)
+    }
+  }, []);
   return (
     <Container>
-     
+
       {/* Header */}
-      <View style={{ flexDirection: 'row',justifyContent:'space-between', paddingTop: 26, marginBottom: 12, paddingBottom: 6, backgroundColor: "darkred" }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 26, marginBottom: 12, paddingBottom: 6, backgroundColor: "darkred" }}>
         <Button transparent onPress={() => navigation.dispatch(DrawerActions.openDrawer())} >
           <Icon ios='ios-menu' android="md-menu" style={{ fontSize: 28, color: 'white' }} />
         </Button>
-        
-        <Button transparent style={{ height: 50}} onPress={() => navigation.navigate('Cart')}>
-          <Icon name='cart' style={{ fontSize: 24,marginRight:-6, color: 'white' }}></Icon>
-          <Text style={{ color: "white",fontSize:16, fontWeight: 'bold' }}>My Cart</Text>
+
+        <Button transparent style={{ height: 50 }} onPress={() => navigation.navigate('Cart')}>
+          <Icon name='cart' style={{ fontSize: 24, marginRight: -6, color: 'white' }}></Icon>
+          <Text style={{ color: "white", fontSize: 16, fontWeight: 'bold' }}>My Cart</Text>
         </Button>
       </View>
       {/* End Header */}
@@ -82,18 +102,14 @@ const HomeScreen = ({navigation}) => {
         </View>
         <View scrollEnabled style={{ textcolor: 'darkred', flexDirection: "row" }}>
           <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
-            <ItemComponent
-              imageSource={require('../../../assets/spring.png')}
-            />
-            <ItemComponent
-              imageSource={require('../../../assets/spring.png')}
-            />
-            <ItemComponent
-              imageSource={require('../../../assets/spring.png')}
-            />
-            <ItemComponent
-              imageSource={require('../../../assets/spring.png')}
-            />
+            {ads.map((item, index) => {
+              return (
+                <AdvComponent
+                  AD={item}
+                  key={index}
+                />
+              )
+            })}
           </ScrollView>
         </View>
       </Content>

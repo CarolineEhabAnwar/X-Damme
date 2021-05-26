@@ -29,6 +29,14 @@ const SOAddOfferScreen = ({ navigation }) => {
   const [is_image_uploaded, setis_image_uploaded] = useState(false);
   const [uploadedOnce, setuploadedOnce] = useState(false);
 
+  const [MyName, setMyName] = useState("");
+
+  const Get_My_Name = async () => {
+    await firestore().collection("users").doc(user.uid).get().then((MyInfo) => {
+      setMyName(MyInfo.data().fname+" "+MyInfo.data().lname);
+    })
+  }
+
   const choosePhotoFromLibrary = async () => {
     try {
       ImagePicker.openPicker({
@@ -109,10 +117,10 @@ const SOAddOfferScreen = ({ navigation }) => {
     console.log("Offer Duration: " + Duration);
     try {
 
-      let Items_String = [];
+      let Items_ID = [];
       for (let i = 0; i < ChoosenItems.length; i++) {
         ChoosenItems[i].Item_Price_After = ChoosenItems[i].Item_Price_Before * (100 - SliderValue) / 100;
-        Items_String.push(ChoosenItems[i].Item_ID + "/" + ChoosenItems[i].Item_Name + "/" + ChoosenItems[i].Item_Price_Before + "/" + ChoosenItems[i].Item_Price_After)
+        Items_ID.push(ChoosenItems[i].Item_ID);
 
         await firestore().collection("CarStuff").doc(ChoosenItems[i].Item_ID).update({
           InOffer: "true",
@@ -120,18 +128,17 @@ const SOAddOfferScreen = ({ navigation }) => {
           Offer_Start_Date: firestore.Timestamp.fromDate(new Date()),
           Offer_Duration: Duration
         });
-
       }
-      console.log(Items_String);
 
 
       await firestore().collection("Ads").add({
         Title: Offer_Title,
         Percentage: SliderValue,
-        Items: Items_String,
+        Items: Items_ID,
         Image_Path: image_path,
         Duration: Duration,
-        Date_Of_Offer: firestore.Timestamp.fromDate(new Date())
+        Date_Of_Offer: firestore.Timestamp.fromDate(new Date()),
+        ShopOwnerName: MyName
       });
 
       ToastAndroid.show(
@@ -162,6 +169,7 @@ const SOAddOfferScreen = ({ navigation }) => {
   useEffect(() => {
     try {
       Get_Items();
+      Get_My_Name();
     } catch (error) {
       console.log(error);
     }
