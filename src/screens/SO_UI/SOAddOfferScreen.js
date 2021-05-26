@@ -110,11 +110,6 @@ const SOAddOfferScreen = ({ navigation }) => {
   }
 
   async function Upload_Offer() {
-    console.log("Offer Title: " + Offer_Title);
-    console.log("Offer Percentage: " + SliderValue);
-    console.log("Offered Items: " + ChoosenItems);
-    console.log("Offer Image Path: " + image_path);
-    console.log("Offer Duration: " + Duration);
     try {
 
       let Items_ID = [];
@@ -290,7 +285,6 @@ const SOAddOfferScreen = ({ navigation }) => {
                   alert("Please insert the offer duration.");
                 }
                 else {
-                  //addItems(name, price, made_in, manufacture_date, models[Model], brands[Brand], qualities[Quality], image_path, types[Type], user);
                   Upload_Offer();
                 }
               }}
