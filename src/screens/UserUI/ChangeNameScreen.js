@@ -15,10 +15,19 @@ const ChangeNameScreen = ({route}) => {
     let [fname, setfname] = useState('');
     let [lname, setlname] = useState('')
 
-    firestore().collection('users').doc(user.uid).onSnapshot(documentSnapshot => {
-        setfname(documentSnapshot.data().fname);
-        setlname(documentSnapshot.data().lname);
+    useEffect(() => {
+        try {
+
+            firestore().collection('users').doc(user.uid).onSnapshot(documentSnapshot => {
+                setfname(documentSnapshot.data().fname);
+                setlname(documentSnapshot.data().lname);
+            });
+
+        } catch (error) {
+            alert(error);
+        }
     });
+
 
     return (
         <Container >
@@ -30,7 +39,7 @@ const ChangeNameScreen = ({route}) => {
                         style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
                     />
                 </Button>
-                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '17%', paddingTop: 12, fontWeight: 'bold' }}>Change Name</Text>
+                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '22%', paddingTop: 12, fontWeight: 'bold' }}>Change Name</Text>
             </View>
             {/* End Search bar with drawer */}
 
