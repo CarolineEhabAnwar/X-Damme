@@ -175,6 +175,7 @@ const CartScreen = ({ navigation, route }) => {
 
     async function LoadUp() {
         setLoading(true);
+        console.log(user.uid);
         try {
             //Getting  Item ID array from the User Tabel
             let ID_Array = await Get_Data_From_User();
@@ -226,7 +227,7 @@ const CartScreen = ({ navigation, route }) => {
                 setItems(temp_Unique_List);
 
         } catch (error) {
-            alert(error);
+            console.log(error)
         }
         setLoading(false);
     }
