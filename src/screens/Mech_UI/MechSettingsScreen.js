@@ -1,50 +1,65 @@
 import React, { Component,useState } from 'react';
 import { Image,StyleSheet,View } from 'react-native';
 import { Container,FooterTab, Content, Icon,Text, Button,List, ListItem } from 'native-base';
-import { DrawerActions } from 'react-navigation-drawer';
+import FooterComponent from '../components/FooterComponent'
 import { FontAwesome5,Ionicons,Foundation,MaterialCommunityIcons,Entypo  } from '@expo/vector-icons'; 
 
-export default class MechSettingsScreen extends Component {
-  render() {
+const MechSettingsScreen =({navigation}) => {
+     
+  const home = 'MechHome'
+  const profile = 'MechProfile'
+  const contactus = 'MechContactUs'
+  const color='darkgreen'
+
     return (
       <Container>
         
         {/* Text with drawer */}
         <View searchBar style={{flexDirection: 'row', paddingTop:25 , marginBottom: 0, paddingBottom: 6, alignContent:"center", backgroundColor: "darkgreen", top: 0}}>
-        <Button transparent onPress={() => this.props.navigation.navigate('MechProfile')} >
+        <Button transparent onPress={() => navigation.goBack()} >
               <Ionicons
                 name='arrow-back-outline'
                 style={{ fontSize: 30, marginTop:4,marginRight:12,marginLeft:12 ,color: 'white'}}
               />
         </Button>
-        <Text style={{color: "white",height:50,fontSize:20, textAlign:'center',paddingLeft:'25%',paddingTop:12, fontWeight:'bold'}}>Settings</Text> 
+        <Text style={{color: "white",height:50,fontSize:20, textAlign:'center',paddingLeft:'27%',paddingTop:12, fontWeight:'bold'}}>Settings</Text> 
       </View>
       {/* End Text with drawer */}
+
       <Content>
           <List>
             <ListItem>
-              <Button transparent>
+              <Button transparent onPress={() => navigation.navigate('ChangeName',{
+               Color:color,
+               Home:home,
+               Profile:profile,
+               ContactUs:contactus
+              })}>
                 <Ionicons name="person" style= {{marginRight:-5}} size={24} color="darkgreen" />
-                <Text style={{color:'darkgreen',fontSize:18,fontWeight:'500'}}>Change First Name</Text>
+                <Text style={{color:'darkgreen',fontSize:18,fontWeight:'500'}}>Change Name</Text>
               </Button>
             </ListItem>
 
             <ListItem>
-            <Button transparent>
-                <Ionicons name="person" style= {{marginRight:-5}} size={24} color="darkgreen" />
-                <Text style={{color:'darkgreen',fontSize:18,fontWeight:'500'}}>Change Last Name</Text>
-              </Button>
-            </ListItem>
+              <Button transparent onPress={() => navigation.navigate('ChangeEmail',{
+               Color:color,
+               Home:home,
+               Profile:profile,
+               ContactUs:contactus
+              })}>
 
-            <ListItem>
-              <Button transparent>
                 <Entypo name="email" style= {{marginRight:-5}} size={24} color="darkgreen" />
                 <Text style={{color:'darkgreen',fontSize:18,fontWeight:'500'}}>Change Email</Text>
               </Button>
             </ListItem>
 
             <ListItem>
-              <Button transparent>
+              <Button transparent onPress={() => navigation.navigate('ChangePassword',{
+               Color:color,
+               Home:home,
+               Profile:profile,
+               ContactUs:contactus
+              })}>
                 <Ionicons name="ios-key" style= {{marginRight:-5}} size={24} color="darkgreen" />
                 <Text style={{color:'darkgreen',fontSize:18,fontWeight:'500'}}>Change Password</Text>
               </Button>
@@ -58,30 +73,20 @@ export default class MechSettingsScreen extends Component {
             </ListItem>
           </List>
       </Content>
-        {/* Footer */}
-        <View style={{flexDirection: 'row',alignContent:"center", backgroundColor: "darkgreen"}}>
-          <FooterTab transparent style={{backgroundColor: "darkgreen"}}>
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('MechHome')}>
-              <Icon style={{color:'white'}} name="home" />
-              <Text style={{color:'white'}}> Home</Text>
-            </Button>
 
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('MechProfile')}>
-              <Icon name="person" style={{color:'white'}}/>
-              <Text style={{color:'white'}}>Profile</Text>
-            </Button>
+        <FooterComponent 
+          home={home}
+          profile={profile}
+          contactus={contactus}
+          bkcolor={color}
+        />
 
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('MechContactUs')}>
-              <Icon style={{color:'white'}} name="call" />
-              <Text style={{color:'white'}} >Contact Us</Text>
-            </Button>
-          </FooterTab>
-        </View>
-        {/* End Footer */}
       </Container>
     );
-  }
+  
 }
+
+export default MechSettingsScreen
 
 const styles = StyleSheet.create({
   textStyles:{

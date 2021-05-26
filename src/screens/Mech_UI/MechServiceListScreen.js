@@ -1,143 +1,185 @@
-import React, { Component } from 'react';
-import { Image,StyleSheet } from 'react-native';
-import { Container,FooterTab,Badge, InputGroup, Header, Content, List,Item,Input, ListItem, Thumbnail, Text, Left, Body, Right, Button, Icon, View } from 'native-base';
-import { Entypo,Ionicons } from '@expo/vector-icons';
-import { DrawerActions } from 'react-navigation-drawer';
+import React, { Component, useState, useEffect, useRef, useContext } from 'react';
+import { Image, StyleSheet, FlatList, LogBox, Alert } from 'react-native';
+import { Container, FooterTab, Badge, InputGroup, Header, Content, List, Item, Input, ListItem, Thumbnail, Text, Left, Body, Right, Button, Icon, View } from 'native-base';
+import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import { AuthContext } from '../../navigation/AuthProvider';
+import firestore from '@react-native-firebase/firestore';
+import FooterComponent from '../components/FooterComponent'
 
-export default class MechServiceListScreen extends Component {
-  render() {
-    let home_notification = 5;
-    let profile_notification = 5;
-    let settings_notification = 5;
 
-    return (
-      <Container >
-        {/* Search bar with drawer */}
-        <View searchBar style={{flexDirection: 'row', paddingTop:26 , paddingBottom: 6, alignContent:"center", backgroundColor: "darkgreen", top: 0}}>
-        <Button transparent onPress={() => this.props.navigation.navigate('MechHome')} >
-              <Ionicons
-                name='arrow-back-outline'
-                style={{ fontSize: 30, marginTop:4,marginRight:12,marginLeft:12 ,color: 'white'}}
-              />
-            </Button>
-        <InputGroup rounded style={{flex:1,backgroundColor:'white',height:35,marginTop:7, paddingLeft:10, paddingRight:10}}>
-          <Icon name="ios-search" style={{color: "darkgreen"}} />
-          <Input style={{height:30,marginTop:-5, color: "white"}} place placeholder="Search Service" />
-        </InputGroup>
-        <Button transparent style={{height:50}} onPress={() => null}>
-          <Text style={{color: "white",fontWeight:'bold'}}>Search</Text> 
-        </Button> 
-        </View>
-        {/* End Search bar with drawer */}  
-        
-        <Content>
-          <List>
-            {/* Service 1 */}
-            <ListItem>
-              <Body>
-                <View style={{flexDirection:'row'}}>
-                    <Text style={{fontWeight:'500',marginLeft:2, marginRight:50}}>Fix Motor</Text>
-                </View>
-              </Body>
-              <Right>
-                <View style={{flexDirection:'row', justifyContent: "flex-start"}}>
-                    <Button transparent onPress={() => this.props.navigation.navigate('MechViewService')}>
-                      <Text style={{color: 'blue'}}>View</Text>
-                    </Button>
+const MechServiceListScreen = () => {
+  LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+  LogBox.ignoreLogs(['VirtualizedList: Missing keys for items']);
 
-                    <Button transparent onPress={() => this.props.navigation.navigate('MechEditService')}>
-                      <Text style={{color: 'green'}}>Edit</Text>
-                    </Button>
+  const navigation = useNavigation();
+  const { user } = useContext(AuthContext);
+  const [services, setServices] = useState([]);
+  const [ShowServices, SetShowServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
 
-                    <Button transparent>
-                      <Text style={{color: 'red', width: 80}}>Delete</Text>
-                    </Button>
-                </View>
-              </Right>
-            </ListItem>
 
-            {/* Service 2 */}
-            <ListItem>
-              <Body>
-                <View style={{flexDirection:'row'}}>
-                    <Text style={{fontWeight:'500',marginLeft:2,marginRight:50}}>Fix Electricity</Text>
-                </View>
-              </Body>
-              <Right>
-                <View style={{flexDirection:'row'}}>
-                    <Button transparent onPress={() => this.props.navigation.navigate('MechViewService')}>
-                      <Text style={{color: 'blue'}}>View</Text>
-                    </Button>
-
-                    <Button transparent onPress={() => this.props.navigation.navigate('MechEditService')}>
-                      <Text style={{color: 'green'}}>Edit</Text>
-                    </Button>
-
-                    <Button transparent>
-                      <Text style={{color: 'red', width: 80}}>Delete</Text>
-                    </Button>
-                </View>
-              </Right>
-            </ListItem>
-
-            {/* Service 3 */}
-            <ListItem>
-              <Body>
-                <View style={{flexDirection:'row'}}>
-                    <Text style={{fontWeight:'500',marginLeft:2,marginRight:50}}>Wench</Text>
-                </View>
-              </Body>
-              <Right>
-                <View style={{flexDirection:'row'}}>
-                    <Button transparent onPress={() => this.props.navigation.navigate('MechViewService')}>
-                      <Text style={{color: 'blue'}}>View</Text>
-                    </Button>
-
-                    <Button transparent onPress={() => this.props.navigation.navigate('MechEditService')}>
-                      <Text style={{color: 'green'}}>Edit</Text>
-                    </Button>
-
-                    <Button transparent>
-                      <Text style={{color: 'red', width: 80}}>Delete</Text>
-                    </Button>
-                </View>
-              </Right>
-            </ListItem>
-          </List>
-        </Content>
-
-        {/* Footer */}
-        <View style={{flexDirection: 'row',alignContent:"center", backgroundColor: "darkgreen"}}>
-          <FooterTab transparent style={{backgroundColor: "darkgreen"}}>
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('MechHome')}>
-              <Icon style={{color:'white'}} name="home" />
-              <Text style={{color:'white'}}> Home</Text>
-            </Button>
-
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('MechProfile')}>
-              <Icon name="person" style={{color:'white'}}/>
-              <Text style={{color:'white'}}>Profile</Text>
-            </Button>
-
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('MechContactUs')}>
-              <Icon style={{color:'white'}} name="call" />
-              <Text style={{color:'white'}} >Contact Us</Text>
-            </Button>
-          </FooterTab>
-        </View>
-        {/* End Footer */}       
-      </Container>
-    );
+  const Search = () => {
+    if (search == "") {
+      SetShowServices(services);
+    }
+    else {
+      let temp = [];
+      for (let i = 0; i < services.length; i++) {
+        if (services[i].Type.toUpperCase().includes(search.toUpperCase())) {
+          temp.push(services[i]);
+        }
+      }
+      SetShowServices(temp);
+    }
   }
+
+  useEffect(() => {
+    const subscriber = firestore()
+      .collection('Services')
+      .where('Mech_ID', '==', (user.uid))
+      .onSnapshot(querySnapshot => {
+        const temp_services = [];
+
+        querySnapshot.forEach(documentSnapshot => {
+          temp_services.push({
+            ...documentSnapshot.data(),
+            key: documentSnapshot.id,
+          });
+        });
+
+        setServices(temp_services);
+        SetShowServices(temp_services);
+        setLoading(false);
+      });
+
+    // Unsubscribe from events when no longer in use
+    return () => subscriber();
+  }, []);
+
+  return (
+
+    <Container >
+      {/* Search bar with drawer */}
+      <View searchBar style={{ flexDirection: 'row', paddingTop: 26, paddingBottom: 6, alignContent: "center", backgroundColor: "darkgreen", top: 0 }}>
+        <Button transparent onPress={() => navigation.goBack()} >
+          <Ionicons
+            name='arrow-back-outline'
+            style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
+          />
+        </Button>
+        <InputGroup rounded style={{ flex: 1, backgroundColor: 'white', height: 35, marginTop: 7, paddingLeft: 10, paddingRight: 10 }}>
+          <Icon name="ios-search" style={{ color: "darkgreen" }} />
+          <Input style={{ height: 40, marginTop: 5, color: "darkgreen" }} placeholder="Search" onChangeText={(SearchText) => { setSearch(SearchText) }} />
+        </InputGroup>
+        <Button transparent style={{ height: 50 }} onPress={() => Search()}>
+          <Text style={{ color: "white", fontWeight: 'bold' }}>Search</Text>
+        </Button>
+      </View>
+      {/* End Search bar with drawer */}
+
+      <Content>
+
+        {loading ? <Text style={styles.loadingStyle}> Loading Services... </Text> :
+          <FlatList
+            data={ShowServices}
+            renderItem={({ item }) => {
+              return (
+                <ListItem>
+                  <Body>
+                    <View style={{ flexDirection: 'row' }}>
+                      <Text style={{ fontWeight: '500', marginLeft: 2, marginRight: 50 }}>{item.Type}</Text>
+                    </View>
+                  </Body>
+                  <Right>
+                    <View style={{ flexDirection: 'row', justifyContent: "flex-start" }}>
+
+                      {/* View Item Button */}
+                      <Button transparent onPress={() => navigation.navigate('MechViewService',
+                        {
+                          type: item.Type,
+                          price: item.Price,
+                          days: item.Days,
+                          start_time: item.Start_Time,
+                          end_time: item.End_Time,
+                          duration: item.Duration
+                        }
+                      )}>
+                        <Text style={{ color: 'green' }}>View</Text>
+                      </Button>
+                      {/* End View Item Button */}
+
+                      <Button transparent onPress={() => navigation.navigate('MechEditService', {
+                        type: item.Type,
+                        price: item.Price,
+                        days: item.Days,
+                        start_time: item.Start_Time,
+                        end_time: item.End_Time,
+                        duration: item.Duration,
+                        serviceID: item.key
+                      })}>
+                        <Text style={{ color: 'blue' }}>Edit</Text>
+                      </Button>
+
+                      <Button transparent onPress={() =>
+                        Alert.alert(
+                          "Warning",
+                          "Are you sure you want to delete this service?",
+                          [
+                            {
+                              text: "No"
+                            },
+                            {
+                              text: "Yes", onPress: () => {
+                                firestore()
+                                  .collection('Services')
+                                  .doc(item.key)
+                                  .delete()
+                                  .then(() => {
+                                    alert("Service has been deleted");
+                                  });
+                              }
+                            }
+                          ]
+                        )
+                      }>
+                        <Text style={{ color: 'red', width: 85 }}>Delete</Text>
+                      </Button>
+                    </View>
+                  </Right>
+                </ListItem>
+              );
+            }}
+          />
+        }
+
+      </Content>
+
+      <FooterComponent home="MechHome" profile="MechProfile" contactus="MechContactUs" bkcolor="darkgreen" />
+
+    </Container>
+  );
 }
 
+export default MechServiceListScreen;
+
 const styles = StyleSheet.create({
-    IconStyle:{
-      color:'darkgreen',
-      marginLeft:-30
-    },
-    textStyles:{
-        fontWeight:'500'
-    }
-})
-  
+  IconStyle: {
+    color: 'darkgreen',
+    marginLeft: -30
+  },
+  textStyles: {
+    fontWeight: '500'
+  },
+  loadingStyle: {
+    color: 'darkgreen',
+    alignSelf: 'center',
+    fontSize: 22,
+    textAlignVertical: 'center',
+    fontWeight: 'bold',
+    marginTop: 180
+  }
+});
+
+

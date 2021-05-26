@@ -292,6 +292,21 @@ const MechanicStack = ({ navigation }) => (
       component={MechSettingsScreen}
       options={{ header: () => null }}
     />
+    <Stack.Screen
+      name="ChangeName"
+      component={ChangeNameScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="ChangePassword"
+      component={ChangePasswordScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="ChangeEmail"
+      component={ChangeEmailScreen}
+      options={{ header: () => null }}
+    />
   </Stack.Navigator>
 );
 

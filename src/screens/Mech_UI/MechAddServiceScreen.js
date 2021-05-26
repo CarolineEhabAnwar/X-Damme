@@ -39,9 +39,6 @@ const MechAddServiceScreen = ({ navigation }) => {
     SundaySelected ? selectedDays.push('Sunday') : null
 
 
-
-  const selectedDays = []
-
   async function addService(service_type, price, days, startTime,
     endTime, duration, mechID) {
     try {
@@ -100,7 +97,6 @@ const MechAddServiceScreen = ({ navigation }) => {
 
 
         <Form>
-
           <View style={styles.serviceTypeStyle}>
             <Text style={styles.textStyle}>Service Type:</Text>
             <Picker
