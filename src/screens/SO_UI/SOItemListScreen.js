@@ -96,16 +96,7 @@ const SOItemListScreen = () => {
                       {/* View Item Button */}
                       <Button transparent onPress={() => navigation.navigate('SOViewItem',
                         {
-                          imagePath: item.Image_Path,
-                          name: item.Name,
-                          price: item.Price,
-                          quality: item.Quality,
-                          manf_date: item.Manufacture_Date,
-                          made_in: item.Made_In,
-                          car_model: item.Car_Model,
-                          car_brand: item.Car_Brand,
-                          type: item.Type,
-                          itemID: item.key
+                          Item: item
                         }
                       )}>
                         <Text style={{ color: 'green' }}>View</Text>
