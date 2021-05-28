@@ -11,7 +11,7 @@ const AdvComponent = (props) => {
     const navigation = useNavigation();
 
     return (
-        <Card style={{ borderRadius: 3 }}>
+        <Card style={{ borderRadius: 2, borderColor:'darkred' }}>
             <CardItem>
                 <Left>
                     <Body style={{ marginBottom: 8 }}>
@@ -20,18 +20,10 @@ const AdvComponent = (props) => {
                     </Body>
                 </Left>
             </CardItem>
-            <CardItem cardBody>
+            <CardItem cardBody >
                 <Image source={{ uri: props.AD.Image_Path }} style={{ height: 210, width: null, flex: 1 }} />
             </CardItem>
-            <CardItem>
-                <Body>
-                    <Button transparent>
-                        <Icon active style={{ color: "darkred" }} name="person" />
-                        <Text style={{ marginLeft: -7, fontWeight: 'bold', marginTop: 5, color: 'darkred', fontSize: 15 }}> {props.AD.ShopOwnerName} </Text>
-                    </Button>
-                </Body>
-            </CardItem>
-            <CardItem style={{ marginLeft: 'auto' }}>
+            <CardItem style={{ marginTop:10 }}>
                 <Right>
                     <Button style={styles.cartItemStyle} transparent onPress={() => navigation.navigate('AdvView', {
                         AD: props.AD,

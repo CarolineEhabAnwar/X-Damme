@@ -28,14 +28,15 @@ const MechAddServiceScreen = ({ navigation }) => {
   const [endTime, setEndTime] = useState(new Date())
   let getEndTime = ''
   const [selectedService, setSelectedService] = useState("");
+  let selectedDays = []
 
   MondaySelected ? selectedDays.push('Monday') : null,
-    TuesdaySelected ? selectedDays.push('Tuesday') : null,
-    WednesdaySelected ? selectedDays.push('Wednesday') : null,
-    ThursdaySelected ? selectedDays.push('Thursday') : null,
-    FridaySelected ? selectedDays.push('Friday') : null,
-    SaturdaySelected ? selectedDays.push('Saturday') : null,
-    SundaySelected ? selectedDays.push('Sunday') : null
+  TuesdaySelected ? selectedDays.push('Tuesday') : null,
+  WednesdaySelected ? selectedDays.push('Wednesday') : null,
+  ThursdaySelected ? selectedDays.push('Thursday') : null,
+  FridaySelected ? selectedDays.push('Friday') : null,
+  SaturdaySelected ? selectedDays.push('Saturday') : null,
+  SundaySelected ? selectedDays.push('Sunday') : null
 
 
   async function addService(service_type, price, days, startTime,

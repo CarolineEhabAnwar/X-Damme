@@ -13,8 +13,12 @@ import WaitingScreen from '../screens/WaitingScreen'
 //Importing Components
 import ItemComponent from '../screens/components/ItemComponent'
 import FooterComponent from '../screens/components/FooterComponent'
-import MechanicComponent from '../screens/components/MechanicComponent';
+import MechanicComponent from '../screens/components/MechanicComponent'
 import ServiceComponent from '../screens/components/ServiceComponent'
+import ServiceRequestComponent from '../screens/components/ServiceRequestComponent'
+import ServiceRequestViewComponent from '../screens/components/ServiceRequestViewComponent'
+import UserServiceRequestViewComponent from '../screens/components/UserServiceRequestViewComponent'
+
 
 //Importing User Screens
 import HomeScreen from '../screens/UserUI/HomeScreen'
@@ -45,6 +49,7 @@ import ChangeNameScreen from "../screens/UserUI/ChangeNameScreen"
 import ChangePasswordScreen from "../screens/UserUI/ChangePasswordScreen"
 import ChangeEmailScreen from "../screens/UserUI/ChangeEmailScreen"
 import AdvViewScreen from "../screens/UserUI/AdvViewScreen"
+import MyServiceRequestsScreen from "../screens/UserUI/MyServiceRequestsScreen"
 
 //Importing Mechanic Screens
 import MechAddOfferScreen from "../screens/Mech_UI/MechAddOfferScreen"
@@ -58,6 +63,7 @@ import MechRequestsScreen from "../screens/Mech_UI/MechRequestsScreen"
 import MechServiceListScreen from "../screens/Mech_UI/MechServiceListScreen"
 import MechViewRequestScreen from "../screens/Mech_UI/MechViewRequestScreen"
 import MechViewServiceScreen from "../screens/Mech_UI/MechViewServiceScreen"
+import MechRequestsHistoryScreen from "../screens/Mech_UI/MechRequestsHistoryScreen"
 
 //Importing Shop Owner Screens
 import SOAddItemScreen from "../screens/SO_UI/SOAddItemScreen"
@@ -238,6 +244,16 @@ const UserStack = ({ navigation }) => (
       component={AdvViewScreen}
       options={{ header: () => null }}
     />
+    <Stack.Screen
+      name="MyServiceRequests"
+      component={MyServiceRequestsScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="UserServiceRequestViewComponent"
+      component={UserServiceRequestViewComponent}
+      options={{ header: () => null }}
+    />
   </Stack.Navigator>
 );
 
@@ -311,6 +327,21 @@ const MechanicStack = ({ navigation }) => (
     <Stack.Screen
       name="ChangeEmail"
       component={ChangeEmailScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="ServiceRequestComponent"
+      component={ServiceRequestComponent}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="MechRequestsHistory"
+      component={MechRequestsHistoryScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="ServiceRequestViewComponent"
+      component={ServiceRequestViewComponent}
       options={{ header: () => null }}
     />
   </Stack.Navigator>

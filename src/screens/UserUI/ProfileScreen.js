@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 import { FontAwesome5, Ionicons,  MaterialIcons } from '@expo/vector-icons';
 import { AuthContext } from '../../navigation/AuthProvider';
 import firestore from '@react-native-firebase/firestore';
+import FooterComponent from '../components/FooterComponent';
 
 
 const ProfileScreen = ({ navigation }) => {
@@ -53,53 +54,45 @@ const ProfileScreen = ({ navigation }) => {
           <View>
             <View style={styles.bodyContent}>
               <Button style={styles.menuBox} onPress={() => navigation.navigate('MyCars')}>
-                <FontAwesome5 name="car-side" size={35} color="white" />
+                <FontAwesome5 name="car-side" size={40} color="white" />
                 <Text style={styles.info}>My Cars</Text>
               </Button>
 
               <Button style={styles.menuBox} onPress={() => navigation.navigate('MyRequests')}>
-                <MaterialIcons name="history" size={40} color="white" />
-                <Text style={styles.info}>Requests</Text>
+                <MaterialIcons name="history" size={45} color="white" />
+                <Text style={styles.info}>Item Requests</Text>
+              </Button>
+
+              <Button style={styles.menuBox} onPress={() => navigation.navigate('MyServiceRequests')}>
+                <MaterialIcons name="history" size={45} color="white" />
+                <Text style={styles.info}>Service Requests</Text>
               </Button>
 
               <Button style={styles.menuBox} onPress={() => navigation.navigate('MyReviews')}>
-                <MaterialIcons name="rate-review" size={40} color="white" />
+                <MaterialIcons name="rate-review" size={45} color="white" />
                 <Text style={styles.info}>Reviews</Text>
               </Button>
 
               <Button style={styles.menuBox} onPress={() => navigation.navigate('Settings')}>
-                <MaterialIcons name="settings" size={40} color="white" />
+                <MaterialIcons name="settings" size={45} color="white" />
                 <Text style={styles.info}>Settings</Text>
               </Button>
 
               <Button style={styles.menuBox} onPress={() => logout()}>
-                <MaterialIcons name="logout" size={40} color="white" />
+                <MaterialIcons name="logout" size={45} color="white" />
                 <Text style={styles.info}>Logout</Text>
               </Button>
             </View>
           </View>
         </View>
       </Content>
-      {/* Footer */}
-      <View style={{ flexDirection: 'row', alignContent: "center", backgroundColor: "darkred" }}>
-        <FooterTab transparent style={{ backgroundColor: "darkred" }}>
-          <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Home')}>
-            <Icon style={{ color: 'white' }} name="home" />
-            <Text style={{ color: 'white' }}> Home</Text>
-          </Button>
-
-          <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Profile')}>
-            <Icon name="person" style={{ color: 'white' }} />
-            <Text style={{ color: 'white' }}>Profile</Text>
-          </Button>
-
-          <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('ContactUs')}>
-            <Icon style={{ color: 'white' }} name="call" />
-            <Text style={{ color: 'white' }} >Contact Us</Text>
-          </Button>
-        </FooterTab>
-      </View>
-      {/* End Footer */}
+      
+      <FooterComponent 
+        home="Home"
+        profile="Profile"
+        contactus="ContactUs"
+        bkcolor="darkred"
+      />
     </Container>
   );
 }
@@ -148,8 +141,8 @@ const styles = StyleSheet.create({
   },
   menuBox: {
     backgroundColor: "darkred",
-    width: 100,
-    height: 100,
+    width: 150,
+    height: 120,
     alignItems: 'center',
     justifyContent: 'center',
     margin: 12,
@@ -173,5 +166,6 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginTop: 10,
     color: "white",
+    alignSelf:'center'
   }
 });

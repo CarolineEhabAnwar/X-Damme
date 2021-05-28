@@ -7,8 +7,9 @@ import ServiceRequestComponent from '../components/ServiceRequestComponent'
 import { FlatList } from 'react-native-gesture-handler';
 import firestore from '@react-native-firebase/firestore';
 import { AuthContext } from '../../navigation/AuthProvider';
+import UserServiceRequestViewComponent from '../components/UserServiceRequestViewComponent';
 
-const MechRequestsScreen = ({navigation}) => {
+const MyServiceRequestsScreen = ({navigation}) => {
 
   LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
@@ -22,8 +23,7 @@ const MechRequestsScreen = ({navigation}) => {
   useEffect(() => {
     firestore()
       .collection('Service Requests')
-      .where('Mech_ID', '==', (user.uid))
-      .where('Status', '==', 'Pending')
+      .where('User_ID', '==', (user.uid))
       .onSnapshot(querySnapshot => {
         const temp_requests = [];
 
@@ -43,32 +43,34 @@ const MechRequestsScreen = ({navigation}) => {
     return (
       <Container>
         {/* Search bar with drawer */}
-        <View searchBar style={{flexDirection: 'row', paddingTop:26 , marginBottom: 12, paddingBottom: 6, alignContent:"center", backgroundColor: "darkgreen", top: 0}}>
+        <View searchBar style={{flexDirection: 'row', paddingTop:26 , marginBottom: 12, paddingBottom: 6, alignContent:"center", backgroundColor: "darkred", top: 0}}>
         <Button transparent onPress={() => navigation.goBack()} >
               <Ionicons
                 name='arrow-back-outline'
                 style={{ fontSize: 30, marginTop:4,marginRight:12,marginLeft:12 ,color: 'white'}}
               />
             </Button>
-            <Text style={{color: "white",height:50,fontSize:20, textAlign:'center',paddingLeft:'25%',paddingTop:12, fontWeight:'bold'}}> Requests</Text> 
+            <Text style={{color: "white",height:50,fontSize:20, textAlign:'center',paddingLeft:'19%',paddingTop:12, fontWeight:'bold'}}> Requests History</Text> 
         </View>
         {/* End Search bar with drawer */}        
 
            
         <Content>
           
-        {loading ? <Text style={styles.loadingStyle}> Loading Requests... </Text> :
+        {loading ? <Text style={styles.loadingStyle}> Loading Requests History... </Text> :
           <FlatList
             data={requests}
             renderItem={({ item }) => {
                 return (
-                  <ServiceRequestComponent 
+                  <UserServiceRequestViewComponent 
                     service_type = {item.Service_Type}
                     requested_time = {item.Requested_Time}
                     reserved_day = {item.Reserved_Day}
                     requestID = {item.key}
                     request_status = {item.Status}
                     requested_by = {item.User_Name}
+                    status={item.Status}
+                    mech_name={item.Mech_Name}
                   />
                 );
             }}
@@ -77,22 +79,22 @@ const MechRequestsScreen = ({navigation}) => {
         </Content>
 
         <FooterComponent 
-          home="MechHome"
-          profile="MechProfile"
-          contactus="MechContactUs"
-          bkcolor="darkgreen"
+          home="Home"
+          profile="Profile"
+          contactus="ContactUs"
+          bkcolor="darkred"
         />
         
       </Container>
     );
 }
 
-export default MechRequestsScreen
+export default MyServiceRequestsScreen
 
 const styles = StyleSheet.create({
 
     loadingStyle: {
-        color: 'darkgreen',
+        color: 'darkred',
         alignSelf: 'center',
         fontSize: 22,
         textAlignVertical: 'center',

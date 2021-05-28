@@ -7,8 +7,9 @@ import ServiceRequestComponent from '../components/ServiceRequestComponent'
 import { FlatList } from 'react-native-gesture-handler';
 import firestore from '@react-native-firebase/firestore';
 import { AuthContext } from '../../navigation/AuthProvider';
+import ServiceRequestViewComponent from '../components/ServiceRequestViewComponent';
 
-const MechRequestsScreen = ({navigation}) => {
+const MechRequestsHistoryScreen = ({navigation}) => {
 
   LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
@@ -23,7 +24,6 @@ const MechRequestsScreen = ({navigation}) => {
     firestore()
       .collection('Service Requests')
       .where('Mech_ID', '==', (user.uid))
-      .where('Status', '==', 'Pending')
       .onSnapshot(querySnapshot => {
         const temp_requests = [];
 
@@ -50,25 +50,26 @@ const MechRequestsScreen = ({navigation}) => {
                 style={{ fontSize: 30, marginTop:4,marginRight:12,marginLeft:12 ,color: 'white'}}
               />
             </Button>
-            <Text style={{color: "white",height:50,fontSize:20, textAlign:'center',paddingLeft:'25%',paddingTop:12, fontWeight:'bold'}}> Requests</Text> 
+            <Text style={{color: "white",height:50,fontSize:20, textAlign:'center',paddingLeft:'19%',paddingTop:12, fontWeight:'bold'}}> Requests History</Text> 
         </View>
         {/* End Search bar with drawer */}        
 
            
         <Content>
           
-        {loading ? <Text style={styles.loadingStyle}> Loading Requests... </Text> :
+        {loading ? <Text style={styles.loadingStyle}> Loading Requests History... </Text> :
           <FlatList
             data={requests}
             renderItem={({ item }) => {
                 return (
-                  <ServiceRequestComponent 
+                  <ServiceRequestViewComponent 
                     service_type = {item.Service_Type}
                     requested_time = {item.Requested_Time}
                     reserved_day = {item.Reserved_Day}
                     requestID = {item.key}
                     request_status = {item.Status}
                     requested_by = {item.User_Name}
+                    status={item.Status}
                   />
                 );
             }}
@@ -87,7 +88,7 @@ const MechRequestsScreen = ({navigation}) => {
     );
 }
 
-export default MechRequestsScreen
+export default MechRequestsHistoryScreen
 
 const styles = StyleSheet.create({
 

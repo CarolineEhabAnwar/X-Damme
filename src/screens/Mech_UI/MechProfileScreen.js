@@ -109,7 +109,7 @@ const MechProfileScreen = ({ navigation }) => {
             <View style={styles.body}>
               <View style={styles.bodyContent}>
 
-                <Button style={styles.menuBox} onPress={() => navigation.navigate('MechRequests', { Editing: false })}>
+                <Button style={styles.menuBox} onPress={() => navigation.navigate('MechRequestsHistory', { Editing: false })}>
                   <MaterialIcons name="history" size={40} color="white" />
                   <Text style={styles.info}>Requests</Text>
                 </Button>

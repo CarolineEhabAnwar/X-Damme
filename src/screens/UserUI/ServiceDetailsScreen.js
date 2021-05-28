@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from "react";
-import { LogBox, StyleSheet, FlatList, Modal, View, CheckBox } from 'react-native';
+import { LogBox, StyleSheet, FlatList, Modal, View, CheckBox,Pressable,Alert } from 'react-native';
 import { Container, Form, Icon, InputGroup, Input, Button, Item, Text, Content } from "native-base";
 import firestore from "@react-native-firebase/firestore";
 import { Ionicons } from '@expo/vector-icons';
@@ -12,12 +12,13 @@ const ServiceDetailsScreen = ({ route, navigation }) => {
   LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
   const mechID_sent = route.params.mechID
   const [mech_services, set_mech_serives] = useState([])
+  
   let [filtered_services, set_filtered_services] = useState([])
   const [show_services, set_show_services] = useState([])
   const [loading, setloading] = useState(true)
   const [search, setSearch] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedService, setSelectedService] = useState('Wench')
+
   const [MondaySelected, setMondaySelected] = useState(false);
   const [TuesdaySelected, setTuesdaySelected] = useState(false);
   const [WednesdaySelected, setWednesdaySelected] = useState(false);
@@ -25,8 +26,8 @@ const ServiceDetailsScreen = ({ route, navigation }) => {
   const [FridaySelected, setFridaySelected] = useState(false);
   const [SaturdaySelected, setSaturdaySelected] = useState(false);
   const [SundaySelected, setSundaySelected] = useState(false);
-  const [Service_Types, setService_Types] = useState([]);
 
+  const [Service_Types, setService_Types] = useState([]);
   const [type_f, set_type_f] = useState('')
   const [days_f, set_days_f] = useState([])
   const [time_f, set_time_f] = useState('')
@@ -35,12 +36,12 @@ const ServiceDetailsScreen = ({ route, navigation }) => {
   const selectedDays = []
 
   MondaySelected ? selectedDays.push('Monday') : null,
-    TuesdaySelected ? selectedDays.push('Tuesday') : null,
-    WednesdaySelected ? selectedDays.push('Wednesday') : null,
-    ThursdaySelected ? selectedDays.push('Thursday') : null,
-    FridaySelected ? selectedDays.push('Friday') : null,
-    SaturdaySelected ? selectedDays.push('Saturday') : null,
-    SundaySelected ? selectedDays.push('Sunday') : null
+  TuesdaySelected ? selectedDays.push('Tuesday') : null,
+  WednesdaySelected ? selectedDays.push('Wednesday') : null,
+  ThursdaySelected ? selectedDays.push('Thursday') : null,
+  FridaySelected ? selectedDays.push('Friday') : null,
+  SaturdaySelected ? selectedDays.push('Saturday') : null,
+  SundaySelected ? selectedDays.push('Sunday') : null
 
   const [price_min, set_price_min] = useState(0)
   const [price_max, set_price_max] = useState(0)
@@ -87,14 +88,6 @@ const ServiceDetailsScreen = ({ route, navigation }) => {
 
   const filterServices = (type_f, days_f, time_f, duration_f, price_min, price_max) => {
 
-    // if ((parseFloat(price_min)) > (parseFloat(price_max))) {
-    //   console.log((parseFloat(price_min)))
-    //   console.log((parseFloat(price_max)))
-    //   alert('Please enter minimum price less than the maximum price')
-    // }
-
-    // else {
-
     if (type_f != '' && type_f != "Select Type") {
       filtered_services = filtered_services.filter((service) => (service.Type.toString() == type_f.toString()))
     }
@@ -118,8 +111,8 @@ const ServiceDetailsScreen = ({ route, navigation }) => {
 
   // ---------------------- Service Types -------------------//
 
-  async function Get_Service_Types() {
-    await firestore().collection("App Details").doc("k82zp4G54ApB6UORzmMV").get().then((Service_Types) => {
+  function Get_Service_Types() {
+    firestore().collection("App Details").doc("k82zp4G54ApB6UORzmMV").get().then((Service_Types) => {
       if (Service_Types.exists) {
         setService_Types(Service_Types.data().Service_Type);
       }
@@ -138,7 +131,8 @@ const ServiceDetailsScreen = ({ route, navigation }) => {
 
   return (
     <Container>
-      {/* Start Modal */}
+
+      {/* Start Filter Modal */}
       <Modal
         animationType="fade"
         transparent={true}
@@ -284,6 +278,9 @@ const ServiceDetailsScreen = ({ route, navigation }) => {
           </View>
         </View>
       </Modal>
+      {/* End Filter Modal */}
+
+
 
       {/* Search bar with nav back */}
       <View searchBar style={{ flexDirection: 'row', paddingTop: 25, marginBottom: 12, paddingBottom: 6, alignContent: "center", backgroundColor: "darkred", top: 0 }}>
@@ -302,6 +299,7 @@ const ServiceDetailsScreen = ({ route, navigation }) => {
         </Button>
       </View>
       {/* End Search bar with nav back */}
+
       {/* Filter Button */}
       <Button rounded style={{ marginLeft: 5, marginBottom: 5, backgroundColor: 'darkred' }} onPress={() => setModalVisible(true)}>
         <Icon name='filter' />
@@ -320,6 +318,7 @@ const ServiceDetailsScreen = ({ route, navigation }) => {
                   duration={item.Duration}
                   start_time={item.Start_Time}
                   end_time={item.End_Time}
+                  mechID = {item.Mech_ID}
                 />);
             }}
           />
