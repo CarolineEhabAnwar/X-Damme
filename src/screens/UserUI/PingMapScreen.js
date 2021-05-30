@@ -13,6 +13,8 @@ import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 import { Circle } from 'react-native-maps';
 import * as firebase from "firebase";
 import * as GeoFire from 'geofire';
+import PushNotification from "react-native-push-notification";
+
 
 
 const PingMapScreen = ({ navigation, route }) => {
@@ -48,7 +50,27 @@ const PingMapScreen = ({ navigation, route }) => {
     }
 
     const geofire = require('geofire');
+
     const geoFireInstance = new geofire.GeoFire(firebaseRef.database().ref());
+
+    PushNotification.configure({
+        // (optional) Called when Token is generated (iOS and Android)
+        onRegister: function (token) {
+            console.log("TOKEN:", token);
+        },
+
+        // (required) Called when a remote or local notification is opened or received
+        onNotification: function (notification) {
+            console.log("NOTIFICATION:", notification);
+
+            // process the notification here
+
+        },
+        // Android only
+        senderID: "717529296732"
+    });
+
+
 
     // var geoQuery = geoFireInstance.query({
     //     center: [region.latitude, region.longitude],
@@ -56,10 +78,14 @@ const PingMapScreen = ({ navigation, route }) => {
     // });
 
     useEffect(() => {
-        Get_Location();
-        Get_GeoFire();
-        Get_Nearby_Users();
+        Call_All_Functions();
     }, []);
+
+    async function Call_All_Functions() {
+        // await Get_GeoFire();
+        await Get_Location();
+        await Get_Nearby_Users();
+    }
 
     async function Get_GeoFire() {
 
@@ -75,8 +101,6 @@ const PingMapScreen = ({ navigation, route }) => {
                 console.log("Error: " + error);
             });
     }
-
-
 
     async function Get_Location() {
         try {
@@ -96,8 +120,8 @@ const PingMapScreen = ({ navigation, route }) => {
                 }
                 if (region2 != undefined) {
                     setRegion({ ...region, ...region2 });
-                    geoFireInstance.set(user.uid, [region2.latitude, region2.longitude]).then(function () {
-                        console.log("Provided key has been added to GeoFire");
+                    await geoFireInstance.set(user.uid, [region2.latitude, region2.longitude]).then(function () {
+                        console.log("Current User Location has been added to GeoFire");
                     }, function (error) {
                         console.log("Error: " + error);
                     });
@@ -151,7 +175,7 @@ const PingMapScreen = ({ navigation, route }) => {
             console.log("Get Nearby Users Function is Now Launched !")
             var geoQuery = geoFireInstance.query({
                 center: [30.0956817, 31.3337783],
-                radius: 3000
+                radius: 3 // Radius in KM 
             });
 
             console.log("These are the nearby user:")
@@ -200,7 +224,7 @@ const PingMapScreen = ({ navigation, route }) => {
                             scrollEnabled={true}
                             zoomTapEnabled={true}
                             showsMyLocationButton={true}
-                            style={{ flex: 1, height: 520, margin: 1 }}
+                            style={{ flex: 1, height: 510, margin: 1 }}
                         />
                     </View>
 
