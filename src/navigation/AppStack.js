@@ -36,6 +36,7 @@ import CartViewItemScreen from "../screens/UserUI/CartViewItemScreen"
 import ReviewScreen from "../screens/UserUI/ReviewScreen"
 import CustomersReviewsScreen from "../screens/UserUI/CustomersReviewsScreen"
 import MyReviewsScreen from "../screens/UserUI/MyReviewsScreen"
+import PingMapScreen from "../screens/UserUI/PingMapScreen"
 
 //Importing Mechanic Screens
 import MechAddOfferScreen from "../screens/Mech_UI/MechAddOfferScreen"
@@ -191,6 +192,11 @@ const UserStack = ({ navigation }) => (
     <Stack.Screen
       name="MyReviews"
       component={MyReviewsScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="PingMap"
+      component={PingMapScreen}
       options={{ header: () => null }}
     />
   </Stack.Navigator>

@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "carparts",
-    "slug": "carparts",
+    "name": "X-Damme",
+    "slug": "X-Damme",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo2.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/logo2.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -21,13 +21,18 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/logo2.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.ainshams.x_damme"
+      "package": "com.ainshams.x_damme",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyAId_oCMqFC-0de24uB002T4TUOnKcLylY"
+        }
+      }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/logo2.png"
     }
   }
 }

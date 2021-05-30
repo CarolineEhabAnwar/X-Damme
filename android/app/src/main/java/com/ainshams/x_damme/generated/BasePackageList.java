@@ -13,14 +13,16 @@ public class BasePackageList {
         new expo.modules.filesystem.FileSystemPackage(),
         new expo.modules.font.FontLoaderPackage(),
         new expo.modules.imageloader.ImageLoaderPackage(),
+        new expo.modules.intentlauncher.IntentLauncherPackage(),
         new expo.modules.keepawake.KeepAwakePackage(),
         new expo.modules.lineargradient.LinearGradientPackage(),
         new expo.modules.location.LocationPackage(),
         new expo.modules.permissions.PermissionsPackage(),
+        new expo.modules.sqlite.SQLitePackage(),
         new expo.modules.securestore.SecureStorePackage(),
         new expo.modules.splashscreen.SplashScreenPackage(),
-        new expo.modules.sqlite.SQLitePackage(),
-        new expo.modules.updates.UpdatesPackage()
+        new expo.modules.updates.UpdatesPackage(),
+        new expo.modules.webbrowser.WebBrowserPackage()
     );
   }
 }
