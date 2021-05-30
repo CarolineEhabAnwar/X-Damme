@@ -69,8 +69,7 @@ const PingMapScreen = ({ navigation, route }) => {
                     console.log("Provided key is not in GeoFire");
                 }
                 else {
-                    console.log("Provided key has a location of ")
-                    console.log(location);
+                    console.log("Provided key has a location ")
                 }
             }, function (error) {
                 console.log("Error: " + error);
@@ -145,17 +144,30 @@ const PingMapScreen = ({ navigation, route }) => {
     //     });
     // });
 
-    function Get_Nearby_Users() {
+    async function Get_Nearby_Users() {
 
         try {
 
-            var geoQuery = geoFire.query({
-                center: [region.latitude, region.longitude],
-                radius: 10.5
+            console.log("Get Nearby Users Function is Now Launched !")
+            var geoQuery = geoFireInstance.query({
+                center: [30.0956817, 31.3337783],
+                radius: 3000
             });
 
             console.log("These are the nearby user:")
-            console.log(geoQuery);
+            var First_Name;
+            var Last_Name;
+
+            var onKeyEnteredRegistration = geoQuery.on("key_entered", async function (key, location) {
+                await firestore().collection("users").doc(key).get().then((DataFetched) => {
+                    First_Name = DataFetched.data().fname;
+                    Last_Name = DataFetched.data().lname;
+                })
+                console.log(First_Name + " " + Last_Name + " entered the query. Hi " + First_Name + " " + Last_Name + "!");
+
+                // document.getElementById(key + "Inside").style.display = "block";
+                // document.getElementById(key + "Outside").style.display = "none";
+            });
 
         }
         catch (error) {
