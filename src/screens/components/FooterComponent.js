@@ -8,7 +8,7 @@ const FooterComponent = (props) => {
     const navigation = useNavigation();
 
     return( 
-    <View style={{ flexDirection: 'row', alignContent: "center", backgroundColor: "darkblue" }}>
+    <View style={{ flexDirection: 'row', alignContent: "center", backgroundColor: props.backgroundColor }}>
         <FooterTab transparent style={{ backgroundColor: props.bkcolor }}>
             <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate(props.home)}>
                 <Icon style={{ color: 'white' }} name="home" />

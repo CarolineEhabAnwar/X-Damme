@@ -49,7 +49,11 @@ const MechAddServiceScreen = ({ navigation }) => {
         Start_Time: startTime,
         End_Time: endTime,
         Duration: duration,
-        Mech_ID: mechID
+        Mech_ID: mechID,
+        InOffer: "false",
+        After_Price: null,
+        Offer_Start_Date: null,
+        Offer_Duration: null
       });
       alert('Service has been added successfully!')
       navigation.goBack()

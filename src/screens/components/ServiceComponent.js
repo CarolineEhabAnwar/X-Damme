@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import firestore from '@react-native-firebase/firestore';
-import { StyleSheet, View, LogBox, Modal, FlatList,Alert } from 'react-native';
+import { StyleSheet, View, LogBox, Modal, FlatList, Alert } from 'react-native';
 import { Content, Card, CardItem, Text, Button, Item, Body } from 'native-base';
 import { FontAwesome5, AntDesign } from '@expo/vector-icons';
 import DatePicker from 'react-native-date-picker'
@@ -57,14 +57,14 @@ const ServiceComponent = (props, { navigation }) => {
                     },
                     {
                         text: "Yes", onPress: async () => {
-                             await firestore().collection("Service Requests").add({
+                            await firestore().collection("Service Requests").add({
                                 Service_Type: props.type,
                                 Reserved_Day: checked,
                                 Requested_Time: requestedTime_full,
                                 User_Name: user_name,
                                 Mech_ID: props.mechID,
                                 User_ID: user.uid,
-                                Mech_Name:mech_name,
+                                Mech_Name: mech_name,
                                 Status: "Pending"
                             });
                             alert('Request has been sent successfully!')
@@ -189,7 +189,7 @@ const ServiceComponent = (props, { navigation }) => {
 
 
                             <Item style={styles.InputStyle}>
-                                <Text style={[styles.textStyle,{color:'darkred',fontWeight:'bold',fontSize:15}]}>At: </Text>
+                                <Text style={[styles.textStyle, { color: 'darkred', fontWeight: 'bold', fontSize: 15 }]}>At: </Text>
                                 <DatePicker
                                     date={requestedTime}
                                     mode="time"
@@ -217,14 +217,14 @@ const ServiceComponent = (props, { navigation }) => {
                                             alert('Please select a suitable day')
                                         }
 
-                                        else if ((startTime_hour>end_time_hour)) {
-                                            if((startTime_hour <= requestedTime_hour) && (requestedTime_hour >= end_time_hour)){
+                                        else if ((startTime_hour > end_time_hour)) {
+                                            if ((startTime_hour <= requestedTime_hour) && (requestedTime_hour >= end_time_hour)) {
                                                 add_service_request()
                                             }
-                                            else if((startTime_hour == requestedTime_hour)  && (startTime_min < requestedTime_min)){
+                                            else if ((startTime_hour == requestedTime_hour) && (startTime_min < requestedTime_min)) {
                                                 add_service_request()
                                             }
-                                            else if((end_time_hour == requestedTime_hour)  && (end_time_min > requestedTime_min)){
+                                            else if ((end_time_hour == requestedTime_hour) && (end_time_min > requestedTime_min)) {
                                                 add_service_request()
                                             }
                                             else {
@@ -232,7 +232,7 @@ const ServiceComponent = (props, { navigation }) => {
                                             }
                                         }
 
-                                        else if ((startTime_hour<end_time_hour) && (startTime_hour <= requestedTime_hour) && (requestedTime_hour <= end_time_hour)) {
+                                        else if ((startTime_hour < end_time_hour) && (startTime_hour <= requestedTime_hour) && (requestedTime_hour <= end_time_hour)) {
                                             if ((startTime_hour == requestedTime_hour) && (startTime_min > requestedTime_min)) { //Handling minutes errors
                                                 alert('Please select a time within the provided ones')
                                             }
@@ -283,8 +283,21 @@ const ServiceComponent = (props, { navigation }) => {
                     <Body>
                         <View style={{ flexDirection: 'row' }}>
                             <FontAwesome5 style={styles.IconStyles} name="money-bill-wave" size={18} color="black" />
-                            <Text style={styles.textStyles}>Service Price:  </Text>
-                            <Text style={styles.propsStyle}>{props.price} EGP </Text>
+
+                            {props.InOffer == "true" ?
+                                <View>
+                                    <Text style={styles.textStyles}>Service Price:  </Text>
+                                    <Text style={{ marginVertical: 7, fontWeight: 'bold', textDecorationLine: 'line-through'
+                                    }}>{props.price} EGP</Text>
+                                    <Text style={styles.propsStyle}>{props.after_Price} EGP </Text>
+                                </View>
+                                :
+                                <View>
+                                    <Text style={styles.textStyles}>Service Price:  </Text>
+                                    <Text style={styles.propsStyle}>{props.price} EGP </Text>
+                                </View>
+                            }
+
                         </View>
 
 

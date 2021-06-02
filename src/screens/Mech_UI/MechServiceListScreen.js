@@ -98,12 +98,7 @@ const MechServiceListScreen = () => {
                       {/* View Item Button */}
                       <Button transparent onPress={() => navigation.navigate('MechViewService',
                         {
-                          type: item.Type,
-                          price: item.Price,
-                          days: item.Days,
-                          start_time: item.Start_Time,
-                          end_time: item.End_Time,
-                          duration: item.Duration
+                          item: item
                         }
                       )}>
                         <Text style={{ color: 'green' }}>View</Text>

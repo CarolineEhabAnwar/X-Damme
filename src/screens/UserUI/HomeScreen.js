@@ -17,10 +17,10 @@ const HomeScreen = ({ navigation }) => {
     let Due_Date = Date_To_Check.toMillis() + Duration_In_Millisecond;
     let Today = new Date().getTime();
 
-    if(Today<Due_Date){
+    if (Today < Due_Date) {
       return true;
     }
-    else{
+    else {
       return false;
     }
 
@@ -30,13 +30,16 @@ const HomeScreen = ({ navigation }) => {
     await firestore().collection("Ads").get().then((Ads) => {
       let temp = [];
       for (let i = 0; i < Ads.docs.length; i++) {
-        if (Check_Date(Ads.docs[i].data().Date_Of_Offer,Ads.docs[i].data().Duration)) {
+        if (Check_Date(Ads.docs[i].data().Date_Of_Offer, Ads.docs[i].data().Duration)) {
           let ad_temp = { ...Ads.docs[i].data(), key: Ads.docs[i].id }
           temp.push(ad_temp);
         }
-        else{
-          for(let j = 0;j<Ads.docs[i].data().Items.length;j++){
-            firestore().collection("CarStuff").doc(Ads.docs[i].data().Items[i]).update({
+        else {
+          for (let j = 0; j < Ads.docs[i].data().Items.length; j++) {
+            let Type_of_Ad = "CarStuff";
+            if (Ads.docs[i].data().Service == "true")
+              Type_of_Ad = "Services";
+            firestore().collection(Type_of_Ad).doc(Ads.docs[i].data().Items[i]).update({
               InOffer: "false",
               After_Price: null,
               Offer_Start_Date: null,

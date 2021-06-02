@@ -314,6 +314,8 @@ const ServiceDetailsScreen = ({ route, navigation }) => {
                 <ServiceComponent
                   type={item.Type}
                   price={item.Price}
+                  after_Price={item.After_Price}
+                  InOffer={item.InOffer}
                   days={item.Days}
                   duration={item.Duration}
                   start_time={item.Start_Time}

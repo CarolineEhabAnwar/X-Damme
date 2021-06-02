@@ -133,7 +133,8 @@ const SOAddOfferScreen = ({ navigation }) => {
         Image_Path: image_path,
         Duration: Duration,
         Date_Of_Offer: firestore.Timestamp.fromDate(new Date()),
-        ShopOwnerName: MyName
+        ShopOwnerName: MyName,
+        Service: "false"
       });
 
       ToastAndroid.show(

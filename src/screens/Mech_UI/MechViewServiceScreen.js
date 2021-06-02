@@ -30,14 +30,24 @@ const MechViewServiceScreen = ({ navigation, route }) => {
             <Body>
 
               <Text style={styles.textStyles}>Type: </Text>
-              <Text style={styles.itemsTextStyle}>{route.params.type}</Text>
+              <Text style={styles.itemsTextStyle}>{route.params.item.Type}</Text>
 
-              <Text style={styles.textStyles}>Price: </Text>
-              <Text style={styles.itemsTextStyle}>{route.params.price} EGP</Text>
+              {route.params.item.InOffer == "true" ?
+                <View>
+                  <Text style={styles.textStyles}>Price: </Text>
+                  <Text style={{ fontSize: 19, marginBottom: 10, fontWeight: 'bold', textDecorationLine: 'line-through' }}>{route.params.item.Price}</Text>
+                  <Text style={styles.itemsTextStyle}>{route.params.item.After_Price}</Text>
+                </View>
+                :
+                <View>
+                  <Text style={styles.textStyles}>Price: </Text>
+                  <Text style={styles.itemsTextStyle}>{route.params.item.Price}</Text>
+                </View>
+              }
 
               <Text style={styles.textStyles}>Service Availability: </Text>
               <FlatList
-                data={route.params.days}
+                data={route.params.item.Days}
                 renderItem={({ item }) => {
                   return (
                     <Text style={styles.daysTextStyle}>{item}</Text>
@@ -47,28 +57,25 @@ const MechViewServiceScreen = ({ navigation, route }) => {
               />
 
               <Text style={styles.textStyles}>Start Time </Text>
-              <Text style={styles.itemsTextStyle}>{route.params.start_time}</Text>
+              <Text style={styles.itemsTextStyle}>{route.params.item.Start_Time}</Text>
 
               <Text style={styles.textStyles}>End Time: </Text>
-              <Text style={styles.itemsTextStyle}>{route.params.end_time}</Text>
+              <Text style={styles.itemsTextStyle}>{route.params.item.End_Time}</Text>
 
               <Text style={styles.textStyles}>Duration: </Text>
-              <Text style={styles.itemsTextStyle}>{route.params.duration} Hours</Text>
+              <Text style={styles.itemsTextStyle}>{route.params.item.Duration} Hours</Text>
 
               <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 17, alignSelf: 'center' }}>
                 {/* Edit */}
                 <Button style={{ marginLeft: 30, backgroundColor: 'darkgreen' }}
-                  onPress={() => navigation.navigate('SOEditItem', {
-                    imagePath: route.params.imagePath,
-                    name: route.params.name,
-                    price: route.params.price,
-                    quality: route.params.quality,
-                    manf_date: route.params.manf_date,
-                    made_in: route.params.made_in,
-                    car_model: route.params.car_model,
-                    car_brand: route.params.car_brand,
-                    type: route.params.type,
-                    itemID: route.params.itemID
+                  onPress={() => navigation.navigate('MechEditService', {
+                    type: route.params.item.Type,
+                    price: route.params.item.Price,
+                    days: route.params.item.Days,
+                    start_time: route.params.item.Start_Time,
+                    end_time: route.params.item.End_Time,
+                    duration: route.params.item.Duration,
+                    serviceID: route.params.item.key
                   })}>
                   <Text style={styles.buttonTextStyle}>Edit</Text>
                 </Button>
@@ -104,7 +111,7 @@ const MechViewServiceScreen = ({ navigation, route }) => {
         </Card>
       </Content>
 
-      <FooterComponent home="MechHome" profile="MechProfile" contactus="MechContactUs" bkcolor="darkgreen" />
+      <FooterComponent home="MechHome" profile="MechProfile" contactus="MechContactUs" backgroundColor="darkgreen" />
 
     </Container>
   );
@@ -133,7 +140,7 @@ const styles = StyleSheet.create({
 
   daysTextStyle: {
     fontSize: 19,
-    marginBottom:5,
+    marginBottom: 5,
     fontWeight: 'bold',
   },
 

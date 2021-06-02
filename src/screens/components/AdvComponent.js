@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import firestore from '@react-native-firebase/firestore';
 import { StyleSheet, View, Image } from 'react-native';
-import { Card, CardItem, Text, Button, Icon, Left, Body, Right } from 'native-base';
+import { Card, CardItem, Text, Button, Icon, Left, Body, Right, CheckBox } from 'native-base';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { AuthContext } from '../../navigation/AuthProvider';
 import { useNavigation } from '@react-navigation/native';
@@ -10,24 +10,63 @@ const AdvComponent = (props) => {
 
     const navigation = useNavigation();
 
+    let ad_Mech = {
+        fname: "",
+        lname: "",
+        address: "",
+        mechID: ""
+    }
+
+    async function Check_If_Mech() {
+        if (props.AD.Service == "true") {
+            await firestore().collection("users").doc(props.AD.Mech_ID).get().then((Data) => {
+                if (Data.exists) {
+                    ad_Mech.fname = Data.data().fname;
+                    ad_Mech.lname = Data.data().lname;
+                    ad_Mech.address = Data.data().address;
+                    ad_Mech.mechID = props.AD.Mech_ID;
+                }
+            })
+        }
+    }
+
+    useEffect(() => {
+        try {
+            Check_If_Mech()
+        } catch (error) {
+            console.log(error);
+        }
+    });
+
     return (
-        <Card style={{ borderRadius: 2, borderColor:'darkred' }}>
+        <Card style={{ borderRadius: 2, borderColor: 'darkred' }}>
             <CardItem>
                 <Left>
                     <Body style={{ marginBottom: 8 }}>
                         <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{props.AD.Title}</Text>
-                        <Text style={{ fontWeight: 'bold' }} note>{props.carBrand} Discount: {props.AD.Percentage}%</Text>
+                        <Text style={{ fontWeight: 'bold' }} note> Discount: {props.AD.Percentage}%</Text>
                     </Body>
                 </Left>
             </CardItem>
             <CardItem cardBody >
                 <Image source={{ uri: props.AD.Image_Path }} style={{ height: 210, width: null, flex: 1 }} />
             </CardItem>
-            <CardItem style={{ marginTop:10 }}>
+            <CardItem style={{ marginTop: 10 }}>
                 <Right>
-                    <Button style={styles.cartItemStyle} transparent onPress={() => navigation.navigate('AdvView', {
-                        AD: props.AD,
-                    })}>
+                    <Button style={styles.cartItemStyle} transparent onPress={() => {
+                        if (props.AD.Service == "true") {
+                            navigation.navigate('MechanicDetails', {
+                                fname: ad_Mech.fname,
+                                lname: ad_Mech.lname,
+                                address: ad_Mech.address,
+                                mechID: ad_Mech.mechID
+                            })
+                        } else {
+                            navigation.navigate('AdvView', {
+                                AD: props.AD,
+                            })
+                        }
+                    }}>
                         <Text style={{ fontSize: 16, fontWeight: 'bold', marginRight: -15, color: 'darkred' }}> See Offer Details </Text>
                         <Icon active style={{ fontSize: 25, color: 'darkred' }} name="arrow-forward" />
                     </Button>
