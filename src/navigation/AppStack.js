@@ -50,6 +50,10 @@ import ChangePasswordScreen from "../screens/UserUI/ChangePasswordScreen"
 import ChangeEmailScreen from "../screens/UserUI/ChangeEmailScreen"
 import AdvViewScreen from "../screens/UserUI/AdvViewScreen"
 import MyServiceRequestsScreen from "../screens/UserUI/MyServiceRequestsScreen"
+import BeginnersStuffScreen from "../screens/UserUI/BeginnersStuffScreen"
+import StuckOnTheRoadScreen from "../screens/UserUI/StuckOnTheRoadScreen"
+import FirstAidScreen from "../screens/UserUI/FirstAidScreen"
+import CarCheckUpScreen from "../screens/UserUI/CarCheckUpScreen"
 
 //Importing Mechanic Screens
 import MechAddOfferScreen from "../screens/Mech_UI/MechAddOfferScreen"
@@ -252,6 +256,26 @@ const UserStack = ({ navigation }) => (
     <Stack.Screen
       name="UserServiceRequestViewComponent"
       component={UserServiceRequestViewComponent}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="BeginnersStuff"
+      component={BeginnersStuffScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="StuckOnTheRoad"
+      component={StuckOnTheRoadScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="CarCheckUp"
+      component={CarCheckUpScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="FirstAid"
+      component={FirstAidScreen}
       options={{ header: () => null }}
     />
   </Stack.Navigator>
