@@ -166,6 +166,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginTop: 10,
     color: "white",
-    alignSelf:'center'
+    alignSelf:'center',
+    fontWeight:'bold'
   }
 });
