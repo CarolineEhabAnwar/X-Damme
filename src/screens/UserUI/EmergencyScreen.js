@@ -4,13 +4,10 @@ import { Container, Badge,FooterTab,Header,Button,Text,Icon,InputGroup,Input } f
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { Entypo, FontAwesome, MaterialIcons,FontAwesome5,MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { Fontisto,Ionicons } from '@expo/vector-icons';
-import { DrawerActions } from 'react-navigation-drawer';
+import FooterComponent from "../components/FooterComponent"
 
-export default class EmergencyScreen extends Component {
-  render() {
-    let home_notification = 5;
-    let profile_notification = 5;
-    let settings_notification = 5;
+const EmergencyScreen = ({navigation}) => {
+
     return (
       <Container>
       {/* Text with navback */}
@@ -32,7 +29,7 @@ export default class EmergencyScreen extends Component {
             </Button>
           </Col>
           <Col style={{ backgroundColor: '#1b2696' }}>
-            <Button full transparent style={styles.buttonStyle} onPress={() => this.props.navigation.navigate('EmergencyContacts')} >
+            <Button full transparent style={styles.buttonStyle} onPress={() => navigation.navigate('EmergencyContacts')} >
               <MaterialIcons name="quick-contacts-dialer" style={styles.iconStyle} />
               <Text style={styles.textStyle}>Emergency Contacts </Text>
             </Button>
@@ -46,36 +43,26 @@ export default class EmergencyScreen extends Component {
           </Button>
           </Col>
           <Col style={{ backgroundColor: '#80207e' }}>
-          <Button full transparent style={styles.buttonStyle} onPress={() => this.props.navigation.navigate('WinchNumbers')}>
+          <Button full transparent style={styles.buttonStyle} onPress={() => navigation.navigate('WinchNumbers')}>
             <MaterialCommunityIcons name="tow-truck" style={styles.iconStyle} />
             <Text style={styles.textStyle}>Winch Numbers</Text>
           </Button>
           </Col>
         </Grid>
-        {/* Footer */}
-        <View style={{flexDirection: 'row',alignContent:"center", backgroundColor: "darkred"}}>
-          <FooterTab transparent style={{backgroundColor: "darkred"}}>
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('Home')}>
-              <Icon style={{color:'white'}} name="home" />
-              <Text style={{color:'white'}}> Home</Text>
-            </Button>
+        
+        <FooterComponent 
+          home="Home"
+          profile="Profile"
+          contactus="ContactUs"
+          bkcolor="darkred"
+        />
 
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('Profile')}>
-              <Icon name="person" style={{color:'white'}}/>
-              <Text style={{color:'white'}}>Profile</Text>
-            </Button>
-
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('ContactUs')}>
-              <Icon style={{color:'white'}} name="call" />
-              <Text style={{color:'white'}} >Contact Us</Text>
-            </Button>
-          </FooterTab>
-        </View>
-        {/* End Footer */}    
       </Container>
     );
-  }
 }
+
+export default EmergencyScreen;
+
 const styles = StyleSheet.create({
   buttonStyle:{
     width: "100%",

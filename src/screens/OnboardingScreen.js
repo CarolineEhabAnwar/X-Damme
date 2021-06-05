@@ -58,22 +58,28 @@ const OnboardingScreen = ({navigation}) => {
         onDone={() => navigation.navigate("Login")}
         pages={[
           {
-            backgroundColor: '#a6e4d0',
-            image: <Image source={require('../../assets/assetsTest/onboarding-img1.png')} />,
-            title: 'Connect to the World',
-            subtitle: 'A New Way To Connect With The World',
+            backgroundColor: '#db9191',
+            image: <Image style={{width:400,height:450,marginLeft:10,marginTop:-70, resizeMode:'stretch'}}source={require('../../assets/logo2.png')} />,
+            title: <Text style={styles.titleStyle}>Welcome To X-Damme</Text>,
+            subtitle: 'A New Way To Find What Your Car Needs',
           },
           {
-            backgroundColor: '#fdeb93',
-            image: <Image source={require('../../assets/assetsTest/onboarding-img2.png')} />,
-            title: 'Share Your Favorites',
-            subtitle: 'Share Your Thoughts With Similar Kind of People',
+            backgroundColor: '#bdbdbd',
+            image: <Image style={{resizeMode:'stretch',width:440,marginTop:-70}} source={require('../../assets/onboarding2.png')} />,
+            title: 'Find your car part',
+            subtitle: 'You will find the car part you are searching for!',
           },
           {
-            backgroundColor: '#e9bcbe',
-            image: <Image source={require('../../assets/assetsTest/onboarding-img3.png')} />,
-            title: 'Become The Star',
-            subtitle: "Let The Spot Light Capture You",
+            backgroundColor: '#adb4d9',
+            image: <Image style={{resizeMode:'stretch',width:420,height:300}} source={require('../../assets/onboardin3.jpg')} />,
+            title: 'Fix and check you car',
+            subtitle: "Reserve an appointment with any mechanic you want!",
+          },
+          {
+            backgroundColor: '#f5bb5d',
+            image: <Image style={{resizeMode:'stretch',width:200,height:300}} source={require('../../assets/onboarding4.png')} />,
+            title: 'Help!',
+            subtitle: "You will receive help wherever you are!",
           },
         ]}
       />
@@ -88,4 +94,9 @@ const styles = StyleSheet.create({
     alignItems: 'center', 
     justifyContent: 'center'
   },
+  titleStyle:{
+      fontSize:25,
+      color:'#c2271d',
+      fontWeight:'bold'
+  }
 });
