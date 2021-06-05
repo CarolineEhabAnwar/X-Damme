@@ -105,7 +105,8 @@ export const AuthProvider = ({children}) => {
                   userImg: null,
                   cart: cart,
                   requests:requests,
-                  requestHistory:empty_arr
+                  requestHistory:empty_arr,
+                  MyCars: empty_arr
               })
               //ensure we catch any errors at this stage to advise us if something does go wrong
               .catch(error => {

@@ -54,6 +54,9 @@ import BeginnersStuffScreen from "../screens/UserUI/BeginnersStuffScreen"
 import StuckOnTheRoadScreen from "../screens/UserUI/StuckOnTheRoadScreen"
 import FirstAidScreen from "../screens/UserUI/FirstAidScreen"
 import CarCheckUpScreen from "../screens/UserUI/CarCheckUpScreen"
+import RecommendationScreen from "../screens/UserUI/RecommendationScreen"
+import HotOffersScreen from "../screens/UserUI/HotOffersScreen"
+import ReminderScreen from "../screens/UserUI/ReminderScreen"
 
 //Importing Mechanic Screens
 import MechAddOfferScreen from "../screens/Mech_UI/MechAddOfferScreen"
@@ -276,6 +279,21 @@ const UserStack = ({ navigation }) => (
     <Stack.Screen
       name="FirstAid"
       component={FirstAidScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="Recommendation"
+      component={RecommendationScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="HotOffers"
+      component={HotOffersScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="Reminder"
+      component={ReminderScreen}
       options={{ header: () => null }}
     />
   </Stack.Navigator>

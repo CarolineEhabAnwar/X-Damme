@@ -5,17 +5,14 @@ import { DrawerActions } from 'react-navigation-drawer';
 import { FontAwesome5,Ionicons,Foundation,MaterialCommunityIcons,Entypo  } from '@expo/vector-icons'; 
 import Modal from 'react-native-modal';
 
-export default class MyCarsDetailsScreen extends Component {
-  render() {
-    let home_notification = 5;
-    let profile_notification = 5;
-    let settings_notification = 5;
+const MyCarsDetailsScreen = ({ navigation, route }) => {
+
     return (
       <Container>
         
         {/* Text with drawer */}
         <View searchBar style={{flexDirection: 'row', paddingTop:25 , marginBottom: 0, paddingBottom: 6, alignContent:"center", backgroundColor: "darkred", top: 0}}>
-        <Button transparent onPress={() => this.props.navigation.navigate('MyCars')} >
+        <Button transparent onPress={() => navigation.navigate('MyCars')} >
               <Ionicons
                 name='arrow-back-outline'
                 style={{ fontSize: 30, marginTop:4,marginRight:12,marginLeft:12 ,color: 'white'}}
@@ -43,7 +40,7 @@ export default class MyCarsDetailsScreen extends Component {
                         <Text style={styles.buttonTextStyle}>Change Oil</Text>
                     </Button>
                   </View>
-                  <Button style={styles.buttonStyle} onPress={() => this.props.navigation.navigate('EditKM')}>
+                  <Button style={styles.buttonStyle} onPress={() => navigation.navigate('EditKM')}>
                     <Icon style={{marginRight:-6}} name="trending-up-outline"></Icon>
                     <Text style={styles.buttonTextStyle}>Edit KM</Text>
                   </Button>
@@ -56,17 +53,17 @@ export default class MyCarsDetailsScreen extends Component {
         {/* Footer */}
         <View style={{flexDirection: 'row',alignContent:"center", backgroundColor: "darkred"}}>
           <FooterTab transparent style={{backgroundColor: "darkred"}}>
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('Home')}>
+            <Button style={{marginTop:5}} onPress={() => navigation.navigate('Home')}>
               <Icon style={{color:'white'}} name="home" />
               <Text style={{color:'white'}}> Home</Text>
             </Button>
 
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('Profile')}>
+            <Button style={{marginTop:5}} onPress={() => navigation.navigate('Profile')}>
               <Icon name="person" style={{color:'white'}}/>
               <Text style={{color:'white'}}>Profile</Text>
             </Button>
 
-            <Button style={{marginTop:5}} onPress={() => this.props.navigation.navigate('ContactUs')}>
+            <Button style={{marginTop:5}} onPress={() => navigation.navigate('ContactUs')}>
               <Icon style={{color:'white'}} name="call" />
               <Text style={{color:'white'}} >Contact Us</Text>
             </Button>
@@ -75,8 +72,9 @@ export default class MyCarsDetailsScreen extends Component {
         {/* End Footer */}
       </Container>
     );
-  }
 }
+
+export default MyCarsDetailsScreen;
 
 const styles = StyleSheet.create({
   textStyles:{

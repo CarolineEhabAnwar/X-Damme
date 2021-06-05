@@ -118,7 +118,8 @@ const HomeScreen = ({ navigation }) => {
 
           {/* Recommendations Bubble */}
           <View >
-            <Button transparent style={{ alignSelf: 'center', height: 100, width: 100 }}>
+            <Button transparent style={{ alignSelf: 'center', height: 100, width: 100 }}
+            onPress={()=>navigation.navigate('Recommendation')}>
               <Image source={require("../../../assets/recommendation.png")} style={styles.profileImg} />
             </Button>
             <Text style={styles.textStyle}>Recommendations</Text>
