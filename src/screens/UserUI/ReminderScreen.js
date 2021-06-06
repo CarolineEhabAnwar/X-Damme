@@ -20,8 +20,8 @@ const ReminderScreen = ({ navigation }) => {
     async function Save_Questions() {
         for (let i = 0; i < MyCars.length; i++) {
             let temp = [];
-            for (let j = 0; j < Questions[i].length; j++){
-                temp.push(Questions[i][j].Title+"!"+Questions[i][j].Answer)
+            for (let j = 0; j < Questions[i].length; j++) {
+                temp.push(Questions[i][j].Title + "!" + Questions[i][j].Answer)
             }
             await firestore().collection("User's Cars").doc(MyCars[i].key).update({
                 Questions: temp
@@ -75,18 +75,20 @@ const ReminderScreen = ({ navigation }) => {
                         });
                         let temp_Questions_per_car = [];
                         for (let j = 0; j < Data.docs[i].data().Questions.length; j++) {
-                            temp_Questions_per_car.push({ 
-                                Title: Data.docs[i].data().Questions[j].split("!")[0], 
-                                Answer: Data.docs[i].data().Questions[j].split("!")[1], 
+                            temp_Questions_per_car.push({
+                                Title: Data.docs[i].data().Questions[j].split("!")[0],
+                                Answer: Data.docs[i].data().Questions[j].split("!")[1],
                                 key: j
                             });
                         }
                         temp_Questions.push(temp_Questions_per_car);
                     }
                 }
-                setMyCars(temp);
-                setQuestions(temp_Questions);
-                setQuestions_To_Show(temp_Questions[SelectedCar])
+                if (temp.length != 0) {
+                    setMyCars(temp);
+                    setQuestions(temp_Questions);
+                    setQuestions_To_Show(temp_Questions[SelectedCar])
+                }
             }
         });
 

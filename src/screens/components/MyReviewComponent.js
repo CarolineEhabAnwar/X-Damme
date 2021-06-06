@@ -13,22 +13,21 @@ import Moment from 'moment';
 const MyReviewComponent = (props) => {
     const navigation = useNavigation();
 
+    const [loading, setLoading] = useState(true);
     const [Shop_Owner_Name, setShopOwner_name] = useState("");
-    const [items, setItems] = useState("");
+    const [items, setItems] = useState([]);
 
-
-    function Get_Item() {
-        useEffect(() => {
-            const subscriber = firestore()
-                .collection('CarStuff')
-                .doc(props.item)
-                .onSnapshot(documentSnapshot => {
-                    setItems(documentSnapshot.data());
-                });
-
-            // Stop listening for updates when no longer required
-            return () => subscriber();
-        }, []);
+    async function Fetch_Data() {
+        setLoading(true);
+        await firestore()
+            .collection('CarStuff')
+            .doc(props.item).get().then((Data) => {
+                if (Data.exists) {
+                    setItems(Data.data());
+                    console.log(Data.data())
+                }
+            })
+        setLoading(false);
     }
 
     function Get_ShopOwner_Name() {
@@ -52,82 +51,93 @@ const MyReviewComponent = (props) => {
         }, []);
     }
 
-
-    Get_Item();
     Get_ShopOwner_Name();
+
+
+    useEffect(() => {
+        Fetch_Data();
+    }, []);
+
+
+
 
 
     return (
         <View style={{ borderColor: "darkred", borderWidth: 2, marginVertical: 5 }}>
-            <Text style={styles.title}>Item Name:  </Text>
+            {loading ?
+                null
+                :
+                <View>
+                    <Text style={styles.title}>Item Name:  </Text>
 
-            <TouchableOpacity onPress={() => navigation.navigate('ItemDetails', {
-                ItemName: items.Name,
-                CarBrand: items.Car_Brand,
-                CarModel: items.Car_Model,
-                Price: items.Price,
-                MadeIn: items.Made_In,
-                Manufacture_Date: items.Manufacture_Date,
-                Quality: items.Quality,
-                Shop_Owner: Shop_Owner_Name,
-                ItemIMG: items.Image_Path,
-                ItemID: props.item,
-                ShopOwnerID: items.Shop_Owner_ID
-            })}>
-                <Text style={styles.howWeCalculate}>{items.Name}</Text>
-            </TouchableOpacity>
-            <Text style={styles.title}>Reviewed On: <Text style={styles.writing}>{Moment(props.dateofreview).format('d MMM yyyy')} </Text></Text>
-            
-            <Text style={styles.title}>Item Rating: </Text>
-            <Rating
-                showRating fractions={1}
-                startingValue={props.itemrating}
-                readonly
-                style={{ paddingVertical: 10 }}
-            />
-            <Text style={styles.title}>Review: </Text>
-
-            <Text
-                style={ styles.writing}
-                multiline
-                textAlignVertical={'top'}
-            >
-                 {props.writtenreview}
-            </Text>
-            <Text style={styles.title}>Shop Owner Name: <Text style={styles.writing}>{Shop_Owner_Name} </Text></Text>
-            
-
-            <Text style={styles.title}>Shop Owner Rating: </Text>
-            <Rating
-                showRating fractions={1}
-                startingValue={props.shoprating}
-                readonly
-                style={{ paddingVertical: 10 }}
-            />
-            <View style={{ flexDirection: 'row', justifyContent: 'center', alignSelf: 'center', marginVertical: 10 }}>
-                <Button style={styles.buttonStyle}
-                    onPress={() => navigation.navigate("Review", {
+                    <TouchableOpacity onPress={() => navigation.navigate('ItemDetails', {
+                        ItemName: items.Name,
+                        CarBrand: items.Car_Brand,
+                        CarModel: items.Car_Model,
+                        Price: items.Price,
+                        MadeIn: items.Made_In,
+                        Manufacture_Date: items.Manufacture_Date,
+                        Quality: items.Quality,
+                        Shop_Owner: Shop_Owner_Name,
+                        ItemIMG: items.Image_Path,
                         ItemID: props.item,
-                        shopownerID: props.shopowner,
+                        ShopOwnerID: items.Shop_Owner_ID
+                    })}>
+                        <Text style={styles.howWeCalculate}>{items.Name}</Text>
+                    </TouchableOpacity>
+                    <Text style={styles.title}>Reviewed On: <Text style={styles.writing}>{Moment(props.dateofreview).format('d MMM yyyy')} </Text></Text>
 
-                    })
-                    }>
-                    <Text style={styles.buttonTextStyle}>Edit</Text>
-                </Button>
-                <Button style={styles.buttonStyle} onPress={() => {
-                    firestore()
-                        .collection('Reviews')
-                        .doc(props.reviewID)
-                        .delete()
-                        .then(() => {
-                            alert('Review Deleted Successfully !');
-                        });
-                }}>
-                    <Text style={styles.buttonTextStyle}>Delete</Text>
-                </Button>
-            </View>
+                    <Text style={styles.title}>Item Rating: </Text>
+                    <Rating
+                        showRating fractions={1}
+                        startingValue={props.itemrating}
+                        readonly
+                        style={{ paddingVertical: 10 }}
+                    />
+                    <Text style={styles.title}>Review: </Text>
+
+                    <Text
+                        style={styles.writing}
+                        multiline
+                        textAlignVertical={'top'}
+                    >
+                        {props.writtenreview}
+                    </Text>
+                    <Text style={styles.title}>Shop Owner Name: <Text style={styles.writing}>{Shop_Owner_Name} </Text></Text>
+
+
+                    <Text style={styles.title}>Shop Owner Rating: </Text>
+                    <Rating
+                        showRating fractions={1}
+                        startingValue={props.shoprating}
+                        readonly
+                        style={{ paddingVertical: 10 }}
+                    />
+                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignSelf: 'center', marginVertical: 10 }}>
+                        <Button style={styles.buttonStyle}
+                            onPress={() => navigation.navigate("Review", {
+                                ItemID: props.item,
+                                shopownerID: props.shopowner,
+
+                            })
+                            }>
+                            <Text style={styles.buttonTextStyle}>Edit</Text>
+                        </Button>
+                        <Button style={styles.buttonStyle} onPress={() => {
+                            firestore()
+                                .collection('Reviews')
+                                .doc(props.reviewID)
+                                .delete()
+                                .then(() => {
+                                    alert('Review Deleted Successfully !');
+                                });
+                        }}>
+                            <Text style={styles.buttonTextStyle}>Delete</Text>
+                        </Button>
+                    </View>
+                </View>
+            }
         </View>
-
     );
 }
 
