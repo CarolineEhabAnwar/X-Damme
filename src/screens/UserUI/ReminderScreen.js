@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect, useContext } from 'react';
-import { Image, StyleSheet, View, Modal, TextInput } from 'react-native';
+import { Image, StyleSheet, View, Modal, TextInput, ToastAndroid } from 'react-native';
 import { Container, FooterTab, Content, Icon, Text, Button, Item, Input, List, ListItem, Card, CardItem, Body, Picker } from 'native-base';
 import { DrawerActions } from 'react-navigation-drawer';
 import { FontAwesome5, Ionicons, Foundation, MaterialCommunityIcons, Entypo, SimpleLineIcons, AntDesign } from '@expo/vector-icons';
@@ -18,6 +18,10 @@ const ReminderScreen = ({ navigation }) => {
     const [modalVisible, setModalVisible] = useState(false);
 
     async function Save_Questions() {
+        if (MyCars.length == 0) {
+            alert("Please add your Car First.")
+            return;
+        }
         for (let i = 0; i < MyCars.length; i++) {
             let temp = [];
             for (let j = 0; j < Questions[i].length; j++) {
@@ -27,7 +31,10 @@ const ReminderScreen = ({ navigation }) => {
                 Questions: temp
             })
         }
-        alert("Saved Succesfully...");
+        ToastAndroid.show(
+            "Saved Succesfully...",
+            ToastAndroid.SHORT
+        );
         navigation.navigate('Recommendation')
     }
 
@@ -157,7 +164,11 @@ const ReminderScreen = ({ navigation }) => {
                 </Button>
                 <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '22%', paddingTop: 12, fontWeight: 'bold' }}>Reminder</Text>
                 <Button style={{ marginLeft: 'auto', alignSelf: 'center' }} transparent onPress={() => {
-                    setModalVisible(true);
+                    if (MyCars.length != 0) {
+                        setModalVisible(true);
+                    } else {
+                        alert("Please add your car first.");
+                    }
                 }}>
                     <Ionicons name='add' size={30} color='white' style={{ paddingRight: 10 }} />
                 </Button>
@@ -170,48 +181,54 @@ const ReminderScreen = ({ navigation }) => {
                 </Content>
                 :
                 <Content>
-                    <Item regular style={{
-                        marginBottom: 10,
-                        borderWidth: 3,
-                        borderColor: 'darkred',
-                        borderRadius: 6,
-                        alignSelf: 'flex-start'
-                    }}>
+                    {MyCars.length == 0 ?
+                        <Text style={styles.loadingStyle}> Please Add your Car First. </Text>
+                        :
+                        <View>
+                            <Item regular style={{
+                                marginBottom: 10,
+                                borderWidth: 3,
+                                borderColor: 'darkred',
+                                borderRadius: 6,
+                                alignSelf: 'flex-start'
+                            }}>
 
-                        <Picker
-                            mode="dialog"
-                            iosIcon={<Icon name="arrow-down" style={{ marginLeft: -5 }} />}
-                            placeholderStyle={{ color: "darkred" }}
-                            selectedValue={SelectedCar}
-                            onValueChange={(Selected_Car) => setSelectedCar(Selected_Car)}
-                        >
-                            {MyCars.map((item, index) => {
-                                return (<Picker.Item label={item.Brand + " " + item.Model} value={index} key={index} />)
-                            })}
-                        </Picker>
-                    </Item>
-                    <View style={{ marginLeft: 8 }}>
-                        {Questions_To_Show.map((item) => {
-                            return (
-                                <Item regular style={styles.InputStyle}>
-                                    <Text style={{ marginLeft: 3 }}>{item.Title}</Text>
-                                    <Input defaultValue={item.Answer} placeholder="" onChangeText={Value => { item.Answer = Value }} />
-                                    <Button transparent style={{ marginRight: 10, marginTop: 2, backgroundColor: "white" }} onPress={() => { Delele_Question(MyCars[SelectedCar].key, item.key) }}>
-                                        <MaterialCommunityIcons name="window-minimize" style={{ backgroundColor: "white", color: 'blue', fontSize: 30 }} />
-                                    </Button>
-                                </Item>
-                            )
-                        })}
-                    </View>
-                    <View style={{ MaxWidth: "auto", flex: 1, justifyContent: "center", alignItems: "center", }}>
-                        <Button style={{ alignSelf: 'center', backgroundColor: "darkred" }}
-                            onPress={() => {
-                                Save_Questions()
-                            }}
-                        >
-                            <Text>Save</Text>
-                        </Button>
-                    </View>
+                                <Picker
+                                    mode="dialog"
+                                    iosIcon={<Icon name="arrow-down" style={{ marginLeft: -5 }} />}
+                                    placeholderStyle={{ color: "darkred" }}
+                                    selectedValue={SelectedCar}
+                                    onValueChange={(Selected_Car) => setSelectedCar(Selected_Car)}
+                                >
+                                    {MyCars.map((item, index) => {
+                                        return (<Picker.Item label={item.Brand + " " + item.Model} value={index} key={index} />)
+                                    })}
+                                </Picker>
+                            </Item>
+                            <View style={{ marginLeft: 8 }}>
+                                {Questions_To_Show.map((item) => {
+                                    return (
+                                        <Item regular style={styles.InputStyle}>
+                                            <Text style={{ marginLeft: 3 }}>{item.Title}</Text>
+                                            <Input defaultValue={item.Answer} placeholder="" onChangeText={Value => { item.Answer = Value }} />
+                                            <Button transparent style={{ marginRight: 10, marginTop: 2, backgroundColor: "white" }} onPress={() => { Delele_Question(MyCars[SelectedCar].key, item.key) }}>
+                                                <MaterialCommunityIcons name="window-minimize" style={{ backgroundColor: "white", color: 'blue', fontSize: 30 }} />
+                                            </Button>
+                                        </Item>
+                                    )
+                                })}
+                            </View>
+                            <View style={{ MaxWidth: "auto", flex: 1, justifyContent: "center", alignItems: "center", }}>
+                                <Button style={{ alignSelf: 'center', backgroundColor: "darkred" }}
+                                    onPress={() => {
+                                        Save_Questions()
+                                    }}
+                                >
+                                    <Text>Save</Text>
+                                </Button>
+                            </View>
+                        </View>
+                    }
                 </Content>
 
             }

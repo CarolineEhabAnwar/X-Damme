@@ -434,16 +434,24 @@ const HotOffersScreen = ({ navigation }) => {
 
 
 
-                {loading ? <Text style={styles.loadingStyle}> Loading Items... </Text> :
-                    <FlatList
-                        data={show_Items}
-                        renderItem={({ item }) => {
-                            return (
-                                <ItemComponent
-                                    Item={item}
-                                />);
-                        }}
-                    />
+                {loading ?
+                    <Text style={styles.loadingStyle}> Loading Items... </Text>
+                    :
+                    <View>
+                        {show_Items.length == 0 ? 
+                        <Text style={styles.loadingStyle}> No Current Offers </Text>                
+                        :
+                            <FlatList
+                                data={show_Items}
+                                renderItem={({ item }) => {
+                                    return (
+                                        <ItemComponent
+                                            Item={item}
+                                        />);
+                                }}
+                            />
+                        }
+                    </View>
                 }
 
             </Content>

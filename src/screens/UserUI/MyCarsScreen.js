@@ -21,19 +21,17 @@ const MyCarsScreen = ({ navigation }) => {
 
   async function LoadUP() {
     setloadingScreen(true);
-
+    let temp = [];
     await firestore().collection("User's Cars").get().then((Data) => {
       if (Data.docs.length != 0) {
-        let temp = [];
         for (let i = 0; i < Data.docs.length; i++) {
-          if(Data.docs[i].data().Owner_ID == user.uid){
+          if (Data.docs[i].data().Owner_ID == user.uid) {
             temp.push({ Brand: Data.docs[i].data().Brand, Model: Data.docs[i].data().Model, key: Data.docs[i].id });
           }
         }
-        setMyCars(temp);
       }
     });
-
+    setMyCars(temp);
     setloadingScreen(false);
   }
 
@@ -74,7 +72,7 @@ const MyCarsScreen = ({ navigation }) => {
               : null}
             {MyCars.map((item) => {
               return (
-                <ListItem>
+                <ListItem key={item.key}>
                   <Button transparent>
                     <Ionicons name="car" style={{ marginRight: -5 }} size={27} color="darkred" />
                     <Text style={{ color: 'darkred', fontSize: 18, fontWeight: '500' }}>{item.Brand} {item.Model}</Text>
@@ -82,7 +80,6 @@ const MyCarsScreen = ({ navigation }) => {
 
                   <Button transparent style={{ marginLeft: 'auto' }}
                     onPress={() => {
-                      console.log(item.key)
                       DeleteMe(item.key)
                     }}>
                     <Ionicons name="trash-outline" style={{ marginBottom: 3, alignSelf: 'flex-end' }} size={23} color="darkred" />

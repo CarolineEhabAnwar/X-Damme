@@ -57,6 +57,7 @@ import CarCheckUpScreen from "../screens/UserUI/CarCheckUpScreen"
 import RecommendationScreen from "../screens/UserUI/RecommendationScreen"
 import HotOffersScreen from "../screens/UserUI/HotOffersScreen"
 import ReminderScreen from "../screens/UserUI/ReminderScreen"
+import BestCarsScreen from "../screens/UserUI/BestCarsScreen"
 
 //Importing Mechanic Screens
 import MechAddOfferScreen from "../screens/Mech_UI/MechAddOfferScreen"
@@ -294,6 +295,11 @@ const UserStack = ({ navigation }) => (
     <Stack.Screen
       name="Reminder"
       component={ReminderScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="BestCars"
+      component={BestCarsScreen}
       options={{ header: () => null }}
     />
   </Stack.Navigator>

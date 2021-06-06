@@ -39,7 +39,9 @@ const RecommendationScreen = ({ navigation }) => {
                     </Button>
                 </View>
                 <View style={styles.container}>
-                    <Button style={{ height: 150, width: 400, backgroundColor: 'blue' }}>
+                    <Button style={{ height: 150, width: 400, backgroundColor: 'blue' }}
+                        onPress={() => navigation.push("BestCars")}
+                    >
                         <AntDesign style={{ marginLeft: 30, flex: 3, fontSize: 90 }} name='car' />
                         <Text style={{ flex: 8, fontWeight: 'bold', fontSize: 40 }}>Best Cars</Text>
                     </Button>

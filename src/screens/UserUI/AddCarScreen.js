@@ -31,6 +31,7 @@ const AddCarScreen = ({ navigation }) => {
       'Item has been added Succenfully.',
       ToastAndroid.SHORT
     );
+    navigation.push('MyCars')
   }
 
   async function LoadUP() {
