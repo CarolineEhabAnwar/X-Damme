@@ -55,6 +55,7 @@
     "react-native-paper": "^4.9.1",
     "react-native-pie": "^1.1.2",
     "react-native-pie-chart": "^1.0.13",
+    "react-native-push-notification": "^7.3.1",
     "react-native-ratings": "^8.0.4",
     "react-native-reanimated": "^1.13.2",
     "react-native-safe-area-context": "^3.1.9",
