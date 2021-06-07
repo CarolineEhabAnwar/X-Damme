@@ -48,6 +48,7 @@ import MyReviewsScreen from "../screens/UserUI/MyReviewsScreen"
 import ChangeNameScreen from "../screens/UserUI/ChangeNameScreen"
 import ChangePasswordScreen from "../screens/UserUI/ChangePasswordScreen"
 import ChangeEmailScreen from "../screens/UserUI/ChangeEmailScreen"
+import ChangeProfilePhotoScreen from "../screens/UserUI/ChangeProfilePhotoScreen"
 import AdvViewScreen from "../screens/UserUI/AdvViewScreen"
 import MyServiceRequestsScreen from "../screens/UserUI/MyServiceRequestsScreen"
 import BeginnersStuffScreen from "../screens/UserUI/BeginnersStuffScreen"
@@ -302,6 +303,11 @@ const UserStack = ({ navigation }) => (
       component={BestCarsScreen}
       options={{ header: () => null }}
     />
+    <Stack.Screen
+      name="ChangeProfilePhoto"
+      component={ChangeProfilePhotoScreen}
+      options={{ header: () => null }}
+    />
   </Stack.Navigator>
 );
 
@@ -378,6 +384,11 @@ const MechanicStack = ({ navigation }) => (
       options={{ header: () => null }}
     />
     <Stack.Screen
+      name="ChangeProfilePhoto"
+      component={ChangeProfilePhotoScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
       name="ServiceRequestComponent"
       component={ServiceRequestComponent}
       options={{ header: () => null }}
@@ -415,6 +426,11 @@ const ShopOwnerStack = ({ navigation }) => (
     <Stack.Screen
       name="ChangeEmail"
       component={ChangeEmailScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="ChangeProfilePhoto"
+      component={ChangeProfilePhotoScreen}
       options={{ header: () => null }}
     />
 

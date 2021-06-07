@@ -11,22 +11,26 @@ const MechProfileScreen = ({ navigation }) => {
 
   const [FinalShopRating, setFinalShopRating] = useState(0);
   const [loading, setloading] = useState(true);
-  const [name, setName] = useState('');
+  const [Image_Path, setImage_Path] = useState("");
+  const { logout } = useContext(AuthContext);
 
   const { user } = useContext(AuthContext);
 
   const [mech_name, set_mech_name] = useState("");
 
-  useEffect(() => {
-    try {
-      firestore().collection('users').doc(user.uid).get().then((User_data) => {
-        set_mech_name(User_data.data().fname + " " + User_data.data().lname)
-      });
-
-    } catch (error) {
-      alert(error);
-    }
-  });
+  async function LoadUP() {
+    setloading(true);
+    await firestore().collection('users').doc(user.uid).get().then(Data => {
+      if (Data.exists) {
+        set_mech_name(Data.data().fname + " " + Data.data().lname);
+        if (Data.data().profileIMG != null) {
+          setImage_Path(Data.data().profileIMG);
+        }
+      }
+    });
+    await Get_Rating();
+    setloading(false);
+  }
 
   async function Get_Rating() {
 
@@ -55,9 +59,6 @@ const MechProfileScreen = ({ navigation }) => {
       }
 
       setFinalShopRating(final_shop_rating);
-
-      if (loading)
-        setloading(false);
     }
     catch (error) {
       alert(error);
@@ -66,13 +67,12 @@ const MechProfileScreen = ({ navigation }) => {
   }
 
   useEffect(() => {
-
-    Get_Rating();
-
-  }, []);
-
-  const { logout } = useContext(AuthContext);
-
+    try {
+      LoadUP();
+    } catch (error) {
+      alert(error);
+    }
+  },[]);
 
   return (
 
@@ -96,7 +96,11 @@ const MechProfileScreen = ({ navigation }) => {
           <View style={styles.container}>
             <View style={styles.header}>
               <View style={styles.headerContent}>
-                <Image style={styles.avatar} source={require("../../../assets/mechanic.png")} />
+                {Image_Path == "" ?
+                  <Image style={styles.avatar} source={require("../../../assets/mechanic.png")} />
+                  :
+                  <Image source={{ uri: Image_Path }} style={{ borderRadius: 100, height: 200, width: 200, flex: 1 }} />
+                }
                 <Text style={styles.name}>
                   {mech_name}
                 </Text>

@@ -18,21 +18,26 @@ const MechanicComponent = (props) => {
                 <CardItem>
                     <Left>
                         <Body style={{ marginBottom: 8 }}>
-                            <Text style={{ fontWeight: 'bold', fontSize: 18.5 }}>{props.fname} {props.lname}</Text>
+                            <Text style={{ fontWeight: 'bold', fontSize: 18.5 }}>{props.mech.fname} {props.mech.lname}</Text>
                             <Text note>Rate</Text>
                         </Body>
                     </Left>
                 </CardItem>
                 <CardItem cardBody>
+                    {props.mech.profileIMG == null || props.mech.profileIMG == ""? 
                     <Image source={require("../../../assets/mechanic.png")} style={{ height: 200, width: null, flex: 1 }} />
+                    :                 
+                    <Image source={{ uri: props.mech.profileIMG }} style={{ height: 200, width: null, flex: 1 }} />
+                    }
                 </CardItem>
                 <CardItem style={{ marginLeft: 'auto' }}>
                     <Right>
                         <Button style={styles.cartItemStyle} transparent onPress={() => navigation.navigate('MechanicDetails', {
-                            fname: props.fname,
-                            lname: props.lname,
-                            address: props.address,
-                            mechID:props.mechID
+                            fname: props.mech.fname,
+                            lname: props.mech.lname,
+                            address: props.mech.address,
+                            mechID:props.mech.key,
+                            Image: props.mech.profileIMG,
                         })}>
                             <Text style={{ fontSize: 15, marginRight: -15, color: 'darkred', fontWeight: 'bold' }} > See Mechanic Details </Text>
                             <Icon active style={{ fontSize: 25, color: 'darkred' }} name="arrow-forward" />

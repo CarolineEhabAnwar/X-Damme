@@ -10,24 +10,27 @@ import FooterComponent from '../components/FooterComponent'
 
 const SOProfileScreen = ({ navigation }) => {
 
+  const { logout } = useContext(AuthContext);
   const [FinalShopRating, setFinalShopRating] = useState(0);
   const [loading, setloading] = useState(true);
-  const [name, setName] = useState('');
-
   const { user } = useContext(AuthContext);
 
   const [shop_Owner_Name, setShop_Owner_name] = useState("");
+  const [Image_Path, setImage_Path] = useState("");
 
-  useEffect(() => {
-    try {
-      firestore().collection('users').doc(user.uid).get().then((User_data) => {
-        setShop_Owner_name(User_data.data().fname + " " + User_data.data().lname)
-      });
-
-    } catch (error) {
-      alert(error);
-    }
-  });
+  async function LoadUP() {
+    setloading(true);
+    await firestore().collection('users').doc(user.uid).get().then(Data => {
+      if (Data.exists) {
+        setShop_Owner_name(Data.data().fname + " " + Data.data().lname);
+        if (Data.data().profileIMG != null) {
+          setImage_Path(Data.data().profileIMG);
+        }
+      }
+    });
+    await Get_Rating();
+    setloading(false);
+  }
 
   async function Get_Rating() {
 
@@ -67,12 +70,13 @@ const SOProfileScreen = ({ navigation }) => {
   }
 
   useEffect(() => {
+    try {
+      LoadUP();
 
-    Get_Rating();
-
+    } catch (error) {
+      alert(error);
+    }
   }, []);
-
-  const { logout } = useContext(AuthContext);
 
 
   return (
@@ -97,7 +101,11 @@ const SOProfileScreen = ({ navigation }) => {
           <View style={styles.container}>
             <View style={styles.header}>
               <View style={styles.headerContent}>
-                <Image style={styles.avatar} source={require("../../../assets/mechanic.png")} />
+                {Image_Path == "" ?
+                  <Image style={styles.avatar} source={require("../../../assets/mechanic.png")} />
+                  :
+                  <Image source={{ uri: Image_Path }} style={{ borderRadius: 100, height: 200, width: 200, flex: 1 }} />
+                }
                 <Text style={styles.name}>
                   {shop_Owner_Name}
                 </Text>

@@ -15,7 +15,7 @@ const SettingsScreen = ({navigation}) => {
 
       {/* Text with drawer */}
       <View searchBar style={{ flexDirection: 'row', paddingTop: 25, marginBottom: 0, paddingBottom: 6, alignContent: "center", backgroundColor: "darkred", top: 0 }}>
-        <Button transparent onPress={() => navigation.goBack()} >
+        <Button transparent onPress={() => navigation.push("Profile")} >
           <Ionicons
             name='arrow-back-outline'
             style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
@@ -68,6 +68,18 @@ const SettingsScreen = ({navigation}) => {
               <Text style={{ color: 'darkred', fontSize: 18, fontWeight: '500' }}>Addresses</Text>
             </Button>
           </ListItem>
+
+          <ListItem>
+            <Button transparent onPress={() => {navigation.navigate('ChangeProfilePhoto',{
+               Color:color,
+               Home:home,
+               Profile:profile,
+               ContactUs:contactus
+              })}}>
+              <MaterialCommunityIcons name="image" style={{ marginRight: -5 }} size={26} color={color} />
+              <Text style={{ color:color, fontSize: 18, fontWeight: '500' }}>Change Profile Photo</Text>
+            </Button>
+          </ListItem>
         </List>
       </Content>
       {/* Footer */}
@@ -78,7 +90,7 @@ const SettingsScreen = ({navigation}) => {
             <Text style={{ color: 'white' }}> Home</Text>
           </Button>
 
-          <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Profile')}>
+          <Button style={{ marginTop: 5 }} onPress={() => navigation.push('Profile')}>
             <Icon name="person" style={{ color: 'white' }} />
             <Text style={{ color: 'white' }}>Profile</Text>
           </Button>

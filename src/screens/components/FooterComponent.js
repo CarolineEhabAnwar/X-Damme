@@ -15,7 +15,7 @@ const FooterComponent = (props) => {
                 <Text style={{ color: 'white' }}> Home</Text>
             </Button>
 
-            <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate(props.profile)}>
+            <Button style={{ marginTop: 5 }} onPress={() => navigation.push(props.profile)}>
                 <Icon name="person" style={{ color: 'white' }} />
                 <Text style={{ color: 'white' }}>Profile</Text>
             </Button>

@@ -1,7 +1,7 @@
 import { FooterTab, Content, Container, Button, Icon } from 'native-base';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
-import { FontAwesome5, Ionicons,  MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome5, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { AuthContext } from '../../navigation/AuthProvider';
 import firestore from '@react-native-firebase/firestore';
 import FooterComponent from '../components/FooterComponent';
@@ -11,18 +11,31 @@ const ProfileScreen = ({ navigation }) => {
 
   const { logout } = useContext(AuthContext);
   const { user } = useContext(AuthContext);
-  const [userName,setUserName] = useState('');
+  const [userName, setUserName] = useState('');
+  const [Image_Path, setImage_Path] = useState("");
+  const [loading, setloading] = useState(true);
 
-
-  firestore()
-    .collection('users')
-    .doc(user.uid)
-    .get()
-    .then(documentSnapshot => documentSnapshot.get('fname'))
-    .then(username => {
-      setUserName(username)
+  async function LoadUP() {
+    setloading(true);
+    await firestore().collection('users').doc(user.uid).get().then(Data => {
+      if (Data.exists) {
+        setUserName(Data.data().fname + " " + Data.data().lname);
+        if (Data.data().profileIMG != null) {
+          setImage_Path(Data.data().profileIMG);
+        }
+      }
     });
 
+    setloading(false);
+  }
+  
+  useEffect(() => {
+    try {
+      LoadUP();
+    } catch (error) {
+      console.log(error);
+    }
+  }, [])
 
   return (
 
@@ -39,55 +52,61 @@ const ProfileScreen = ({ navigation }) => {
       </View>
       {/* End Text with drawer */}
 
-      <Content>
+      {loading ? <Content><Text style={styles.loadingStyle}> Loading Profile... </Text></Content> :
+        <Content>
 
-        <View style={styles.container}>
-          <View style={styles.header}>
-            <View style={styles.headerContent}>
-              <Image style={styles.avatar} source={require("../../../assets/user.png")} />
-              <Text style={styles.name}>
-                {userName}
-              </Text>
+          <View style={styles.container}>
+            <View style={styles.header}>
+              <View style={styles.headerContent}>
+                {Image_Path == "" ?
+                  <Image style={styles.avatar} source={require("../../../assets/user.png")} />
+                  :
+                  <Image source={{ uri: Image_Path }} style={{ borderRadius: 100, height: 200, width: 200, flex: 1 }} />
+                }
+                <Text style={styles.name}>
+                  {userName}
+                </Text>
+              </View>
+            </View>
+
+            <View>
+              <View style={styles.bodyContent}>
+                <Button style={styles.menuBox} onPress={() => navigation.navigate('MyCars')}>
+                  <FontAwesome5 name="car-side" size={40} color="white" />
+                  <Text style={styles.info}>My Cars</Text>
+                </Button>
+
+                <Button style={styles.menuBox} onPress={() => navigation.navigate('MyRequests')}>
+                  <MaterialIcons name="history" size={45} color="white" />
+                  <Text style={styles.info}>Item Requests</Text>
+                </Button>
+
+                <Button style={styles.menuBox} onPress={() => navigation.navigate('MyServiceRequests')}>
+                  <MaterialIcons name="history" size={45} color="white" />
+                  <Text style={styles.info}>Service Requests</Text>
+                </Button>
+
+                <Button style={styles.menuBox} onPress={() => navigation.navigate('MyReviews')}>
+                  <MaterialIcons name="rate-review" size={45} color="white" />
+                  <Text style={styles.info}>Reviews</Text>
+                </Button>
+
+                <Button style={styles.menuBox} onPress={() => navigation.navigate('Settings')}>
+                  <MaterialIcons name="settings" size={45} color="white" />
+                  <Text style={styles.info}>Settings</Text>
+                </Button>
+
+                <Button style={styles.menuBox} onPress={() => logout()}>
+                  <MaterialIcons name="logout" size={45} color="white" />
+                  <Text style={styles.info}>Logout</Text>
+                </Button>
+              </View>
             </View>
           </View>
+        </Content>
+      }
 
-          <View>
-            <View style={styles.bodyContent}>
-              <Button style={styles.menuBox} onPress={() => navigation.navigate('MyCars')}>
-                <FontAwesome5 name="car-side" size={40} color="white" />
-                <Text style={styles.info}>My Cars</Text>
-              </Button>
-
-              <Button style={styles.menuBox} onPress={() => navigation.navigate('MyRequests')}>
-                <MaterialIcons name="history" size={45} color="white" />
-                <Text style={styles.info}>Item Requests</Text>
-              </Button>
-
-              <Button style={styles.menuBox} onPress={() => navigation.navigate('MyServiceRequests')}>
-                <MaterialIcons name="history" size={45} color="white" />
-                <Text style={styles.info}>Service Requests</Text>
-              </Button>
-
-              <Button style={styles.menuBox} onPress={() => navigation.navigate('MyReviews')}>
-                <MaterialIcons name="rate-review" size={45} color="white" />
-                <Text style={styles.info}>Reviews</Text>
-              </Button>
-
-              <Button style={styles.menuBox} onPress={() => navigation.navigate('Settings')}>
-                <MaterialIcons name="settings" size={45} color="white" />
-                <Text style={styles.info}>Settings</Text>
-              </Button>
-
-              <Button style={styles.menuBox} onPress={() => logout()}>
-                <MaterialIcons name="logout" size={45} color="white" />
-                <Text style={styles.info}>Logout</Text>
-              </Button>
-            </View>
-          </View>
-        </View>
-      </Content>
-      
-      <FooterComponent 
+      <FooterComponent
         home="Home"
         profile="Profile"
         contactus="ContactUs"
@@ -152,7 +171,7 @@ const styles = StyleSheet.create({
       height: 2,
       width: -2
     },
-    
+
     borderRadius: 13,
     elevation: 4,
     flexDirection: 'column'
@@ -166,7 +185,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginTop: 10,
     color: "white",
-    alignSelf:'center',
-    fontWeight:'bold'
+    alignSelf: 'center',
+    fontWeight: 'bold'
   }
 });

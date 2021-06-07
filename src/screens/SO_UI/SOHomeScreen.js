@@ -5,7 +5,8 @@ import { Container, InputGroup, Input, Badge, Icon, FooterTab, Header, Content, 
 import { StyleSheet, View, Image, FlatList, TouchableOpacity } from 'react-native';
 import { DrawerActions } from 'react-navigation-drawer';
 import { Ionicons, FontAwesome5, FontAwesome } from '@expo/vector-icons';
-import FooterComponent from '../components/FooterComponent'
+import FooterComponent from '../components/FooterComponent';
+import GetProfileIMGComponent from "../components/GetProfileIMGComponent";
 
 const SOHomeScreen = ({ navigation }) => {
 
@@ -42,6 +43,7 @@ const SOHomeScreen = ({ navigation }) => {
             </View>
             {/* End Search bar with drawer */}
             <Content>
+                <GetProfileIMGComponent Color={"darkblue"} />
                 <View style={{ flexDirection: "column", justifyContent: "space-evenly" }}>
                     <View style={{ flexDirection: "column", alignItems: "center", justifyContent: "space-around" }}>
                         <Image source={require("../../../assets/logo.png")} style={styles.logoStyle} />
@@ -62,8 +64,9 @@ const SOHomeScreen = ({ navigation }) => {
                         </View>
                         <View style={{ flexDirection: "row", justifyContent: "space-around", marginBottom: 50, marginTop: 30 }}>
                             <Button rounded info style={{ backgroundColor: 'darkblue', width: 150, justifyContent: "center", top: 40, marginHorizontal: 10 }}
-                                onPress={() => navigation.navigate('SORequests',{
-                                    Editing: true})}>
+                                onPress={() => navigation.navigate('SORequests', {
+                                    Editing: true
+                                })}>
                                 <FontAwesome5 name="buffer" size={24} style={styles.IconsStyle} color="white" />
                                 <Text style={{ fontWeight: 'bold' }}> Requests </Text>
                             </Button>
@@ -78,7 +81,7 @@ const SOHomeScreen = ({ navigation }) => {
                 </View>
             </Content>
 
-            <FooterComponent home="SOHome" profile="SOProfile" contactus="SOContactUs" bkcolor="darkblue"/>
+            <FooterComponent home="SOHome" profile="SOProfile" contactus="SOContactUs" bkcolor="darkblue" />
 
         </Container>
     );

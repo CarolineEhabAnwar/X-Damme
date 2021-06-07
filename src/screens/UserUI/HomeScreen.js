@@ -6,6 +6,7 @@ import AdvComponent from "../components/AdvComponent";
 import { ScrollView } from 'react-native-gesture-handler';
 import { AuthContext } from '../../navigation/AuthProvider';
 import firestore from "@react-native-firebase/firestore";
+import GetProfileIMGComponent from "../components/GetProfileIMGComponent";
 
 
 const HomeScreen = ({ navigation }) => {
@@ -78,6 +79,7 @@ const HomeScreen = ({ navigation }) => {
 
 
       <Content scrollEnabled>
+        <GetProfileIMGComponent Color={"darkred"}/>
         <Text style={styles.title}>Welcome</Text>
         <View style={{ marginTop: 40, marginBottom: 50, flexDirection: "row", justifyContent: 'space-evenly' }}>
 

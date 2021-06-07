@@ -1,4 +1,4 @@
-import React, { useContext,useState,useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Container, Icon, Content, Button, Text } from 'native-base';
 import { StyleSheet, View, Image } from 'react-native';
 import { DrawerActions } from 'react-navigation-drawer';
@@ -6,8 +6,9 @@ import { AuthContext } from '../../navigation/AuthProvider';
 import firestore from '@react-native-firebase/firestore';
 import FooterComponent from '../components/FooterComponent'
 import { Ionicons, FontAwesome5, FontAwesome } from '@expo/vector-icons';
+import GetProfileIMGComponent from "../components/GetProfileIMGComponent";
 
-const MechHomeScreen = ({navigation}) => {
+const MechHomeScreen = ({ navigation }) => {
 
     const { user } = useContext(AuthContext);
 
@@ -42,10 +43,11 @@ const MechHomeScreen = ({navigation}) => {
             </View>
             {/* End Search bar with drawer */}
             <Content>
+                <GetProfileIMGComponent Color={"darkgreen"} />
                 <View style={{ flexDirection: "column", justifyContent: "space-evenly" }}>
                     <View style={{ flexDirection: "column", alignItems: "center" }}>
                         <Image source={require("../../../assets/logo.png")} style={styles.logoStyle} />
-                        
+
                         <Text style={styles.title}>Welcome</Text>
                         <Text style={styles.title}>{name}</Text>
 
@@ -79,10 +81,10 @@ const MechHomeScreen = ({navigation}) => {
                 </View>
             </Content>
 
-            <FooterComponent 
-                home="MechHome" 
-                profile="MechProfile" 
-                contactus="MechContactUs" 
+            <FooterComponent
+                home="MechHome"
+                profile="MechProfile"
+                contactus="MechContactUs"
                 bkcolor="darkgreen"
             />
 

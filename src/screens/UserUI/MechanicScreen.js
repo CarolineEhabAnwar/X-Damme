@@ -215,10 +215,7 @@ const MechanicScreen = ({ navigation }) => {
             renderItem={({ item }) => {
               return (
                 <MechanicComponent
-                  fname={item.fname}
-                  lname={item.lname}
-                  address={item.address}
-                  mechID={item.key}
+                  mech={item}
                 />);
             }}
           />

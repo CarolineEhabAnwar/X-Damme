@@ -12,7 +12,7 @@ const RecommendationScreen = ({ navigation }) => {
 
             {/* Text with drawer */}
             <View searchBar style={{ flexDirection: 'row', paddingTop: 25, marginBottom: 0, paddingBottom: 6, alignContent: "center", backgroundColor: "darkred", top: 0 }}>
-                <Button transparent onPress={() => navigation.push('Home')} >
+                <Button transparent onPress={() => navigation.navigate('Home')} >
                     <Ionicons
                         name='arrow-back-outline'
                         style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}

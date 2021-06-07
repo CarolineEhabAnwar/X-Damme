@@ -24,7 +24,11 @@ const MechanicDetailsScreen = ({ route, navigation }) => {
       {/* End Text with navback */}
       <Content>
         <Card style={{ flex: 0 }}>
-          <Image source={require("../../../assets/mechanic.png")} style={{ marginBottom: 20, height: 196, width: null }} />
+          {route.params.Image == null || route.params.Image == "" ?
+            <Image source={require("../../../assets/mechanic.png")} style={{ marginBottom: 20, height: 196, width: null }} />
+            :
+            <Image source={{ uri: route.params.Image }} style={{ marginBottom: 20, height: 196, width: null }} />
+          }
           <CardItem style={{ marginHorizontal: 1, borderWidth: 3, borderColor: 'darkred' }}>
             <Body>
               <Text style={styles.textStyles}>Name: </Text>
@@ -38,8 +42,8 @@ const MechanicDetailsScreen = ({ route, navigation }) => {
               {/* <Text style={styles.textStyles}>Open Time: -</Text>
                   <Text style={styles.textStyles}>Close Time: -</Text>
                   <Text style={styles.textStyles}>Working Days: -</Text> */}
-              <Button style={styles.buttonStyle} onPress={() => navigation.navigate('ServiceDetails',{
-              mechID:mechID
+              <Button style={styles.buttonStyle} onPress={() => navigation.navigate('ServiceDetails', {
+                mechID: mechID
               })}>
                 <Icon style={{ marginRight: -6 }} name="build-outline"></Icon>
                 <Text style={styles.buttonTextStyle}>Services</Text>
@@ -49,12 +53,12 @@ const MechanicDetailsScreen = ({ route, navigation }) => {
         </Card>
       </Content>
 
-      <FooterComponent 
-          home='Home' 
-          profile='Profile'
-          contactus='ContactUs'
-          bkcolor='darkred'
-        />
+      <FooterComponent
+        home='Home'
+        profile='Profile'
+        contactus='ContactUs'
+        bkcolor='darkred'
+      />
 
     </Container>
   );
