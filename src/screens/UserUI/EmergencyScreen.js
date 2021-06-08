@@ -12,7 +12,7 @@ const EmergencyScreen = ({navigation}) => {
       <Container>
       {/* Text with navback */}
         <View searchBar style={{flexDirection: 'row', paddingTop:25 , paddingBottom: 6, alignContent:"center", backgroundColor: "darkred", top: 0}}>
-           <Button transparent onPress={() => this.props.navigation.navigate('Home')} >
+           <Button transparent onPress={() => navigation.navigate('Home')} >
               <Ionicons
                 name='arrow-back-outline'
                 style={{ fontSize: 30, marginTop:4,marginRight:12,marginLeft:12 ,color: 'white'}}
@@ -37,7 +37,10 @@ const EmergencyScreen = ({navigation}) => {
         </Grid>
         <Grid>
           <Col style={{ backgroundColor: '#d91118' }}>
-          <Button full transparent style={styles.buttonStyle}>
+          <Button full transparent style={styles.buttonStyle} onPress={()=>{
+            navigation.navigate("NearbyHospitals")
+            console.log("Hospitals")
+          }}>
             <FontAwesome5 style={styles.iconStyle} name="hospital"/>
             <Text style={styles.textStyle}>Nearby Hospitals</Text>
           </Button>

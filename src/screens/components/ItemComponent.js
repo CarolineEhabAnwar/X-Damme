@@ -26,7 +26,10 @@ const ItemComponent = (props) => {
       </CardItem>
       <CardItem>
         <Left>
-          <Button transparent>
+          <Button transparent onPress={() => navigation.navigate('ShopOwnerProfile', {
+            ID: props.Item.Shop_Owner_ID,
+            Name: props.Item.Shop_Owner_Name
+          })}>
             <Icon active style={{ color: "darkred" }} name="person" />
             <Text style={{ marginLeft: -7, fontWeight: 'bold', marginTop: 5, color: 'darkred', fontSize: 15 }}>{props.Item.Shop_Owner_Name}</Text>
           </Button>

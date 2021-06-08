@@ -1,14 +1,14 @@
 import React from 'react';
-import {StyleSheet, View } from 'react-native';
-import {Container, FooterTab, Content, Icon, Text, Button, List, ListItem } from 'native-base';
-import {Ionicons,MaterialCommunityIcons,Entypo} from '@expo/vector-icons';
+import { StyleSheet, View } from 'react-native';
+import { Container, FooterTab, Content, Icon, Text, Button, List, ListItem } from 'native-base';
+import { Ionicons, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 
-const SettingsScreen = ({navigation}) => {
+const SettingsScreen = ({ navigation }) => {
 
   const home = 'Home'
   const profile = 'Profile'
   const contactus = 'ContactUs'
-  const color='darkred'
+  const color = 'darkred'
 
   return (
     <Container>
@@ -27,57 +27,86 @@ const SettingsScreen = ({navigation}) => {
       <Content>
         <List>
           <ListItem>
-            <Button transparent onPress={() => {navigation.navigate('ChangeName',{
-               Color:color,
-               Home:home,
-               Profile:profile,
-               ContactUs:contactus
-              })}}>
+            <Button transparent onPress={() => {
+              navigation.navigate('ChangeName', {
+                Color: color,
+                Home: home,
+                Profile: profile,
+                ContactUs: contactus
+              })
+            }}>
               <Ionicons name="person" style={{ marginRight: -5 }} size={24} color="darkred" />
               <Text style={{ color: 'darkred', fontSize: 18, fontWeight: '500' }}>Change Name</Text>
             </Button>
           </ListItem>
 
           <ListItem>
-            <Button transparent onPress={() => {navigation.navigate('ChangeEmail',{
-               Color:color,
-               Home:home,
-               Profile:profile,
-               ContactUs:contactus
-              })}}>
+            <Button transparent onPress={() => {
+              navigation.navigate('ChangeEmail', {
+                Color: color,
+                Home: home,
+                Profile: profile,
+                ContactUs: contactus
+              })
+            }}>
               <Ionicons name="mail" style={{ marginRight: -5 }} size={24} color="darkred" />
               <Text style={{ color: 'darkred', fontSize: 18, fontWeight: '500' }}>Change Email Address</Text>
             </Button>
           </ListItem>
 
           <ListItem>
-            <Button transparent onPress={() => {navigation.navigate('ChangePassword',{
-               Color:color,
-               Home:home,
-               Profile:profile,
-               ContactUs:contactus
-              })}}>
+            <Button transparent onPress={() => {
+              navigation.navigate('ChangePassword', {
+                Color: color,
+                Home: home,
+                Profile: profile,
+                ContactUs: contactus
+              })
+            }}>
               <Ionicons name="ios-key" style={{ marginRight: -5 }} size={24} color="darkred" />
               <Text style={{ color: 'darkred', fontSize: 18, fontWeight: '500' }}>Change Password</Text>
             </Button>
           </ListItem>
 
           <ListItem>
-            <Button transparent>
-              <MaterialCommunityIcons name="city" style={{ marginRight: -5 }} size={26} color="darkred" />
-              <Text style={{ color: 'darkred', fontSize: 18, fontWeight: '500' }}>Addresses</Text>
+            <Button transparent onPress={() => {
+              navigation.navigate('ChangePhoneNumber', {
+                Color: color,
+                Home: home,
+                Profile: profile,
+                ContactUs: contactus
+              })
+            }}>
+              <Entypo name="phone" style={{ marginRight: -5 }} size={24} color={color} />
+              <Text style={{ color: color, fontSize: 18, fontWeight: '500' }}>Change Phone Number</Text>
             </Button>
           </ListItem>
 
           <ListItem>
-            <Button transparent onPress={() => {navigation.navigate('ChangeProfilePhoto',{
-               Color:color,
-               Home:home,
-               Profile:profile,
-               ContactUs:contactus
-              })}}>
+            <Button transparent onPress={() => {
+              navigation.navigate('ChangeAddress', {
+                Color: color,
+                Home: home,
+                Profile: profile,
+                ContactUs: contactus
+              })
+            }}>
+              <MaterialCommunityIcons name="city" style={{ marginRight: -5 }} size={26} color="darkred" />
+              <Text style={{ color: 'darkred', fontSize: 18, fontWeight: '500' }}>Change Address</Text>
+            </Button>
+          </ListItem>
+
+          <ListItem>
+            <Button transparent onPress={() => {
+              navigation.navigate('ChangeProfilePhoto', {
+                Color: color,
+                Home: home,
+                Profile: profile,
+                ContactUs: contactus
+              })
+            }}>
               <MaterialCommunityIcons name="image" style={{ marginRight: -5 }} size={26} color={color} />
-              <Text style={{ color:color, fontSize: 18, fontWeight: '500' }}>Change Profile Photo</Text>
+              <Text style={{ color: color, fontSize: 18, fontWeight: '500' }}>Change Profile Photo</Text>
             </Button>
           </ListItem>
         </List>

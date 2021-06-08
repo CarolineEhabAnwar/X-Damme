@@ -9,6 +9,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 //Importing Waiting Screen
 import WaitingScreen from '../screens/WaitingScreen'
+import testScreen from "../screens/testScreen";
 
 //Importing Components
 import ItemComponent from '../screens/components/ItemComponent'
@@ -49,6 +50,8 @@ import ChangeNameScreen from "../screens/UserUI/ChangeNameScreen"
 import ChangePasswordScreen from "../screens/UserUI/ChangePasswordScreen"
 import ChangeEmailScreen from "../screens/UserUI/ChangeEmailScreen"
 import ChangeProfilePhotoScreen from "../screens/UserUI/ChangeProfilePhotoScreen"
+import ChangeAddressScreen from "../screens/UserUI/ChangeAddressScreen";
+import ChangePhoneNumberScreen from "../screens/UserUI/ChangePhoneNumberScreen";
 import AdvViewScreen from "../screens/UserUI/AdvViewScreen"
 import MyServiceRequestsScreen from "../screens/UserUI/MyServiceRequestsScreen"
 import BeginnersStuffScreen from "../screens/UserUI/BeginnersStuffScreen"
@@ -59,6 +62,8 @@ import RecommendationScreen from "../screens/UserUI/RecommendationScreen"
 import HotOffersScreen from "../screens/UserUI/HotOffersScreen"
 import ReminderScreen from "../screens/UserUI/ReminderScreen"
 import BestCarsScreen from "../screens/UserUI/BestCarsScreen"
+import ShopOwnerProfileScreen from "../screens/UserUI/ShopOwnerProfileScreen"
+import NearbyHospitalsScreen from "../screens/UserUI/NearbyHospitalsScreen"
 
 //Importing Mechanic Screens
 import MechAddOfferScreen from "../screens/Mech_UI/MechAddOfferScreen"
@@ -308,6 +313,31 @@ const UserStack = ({ navigation }) => (
       component={ChangeProfilePhotoScreen}
       options={{ header: () => null }}
     />
+    <Stack.Screen
+      name="test"
+      component={testScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="ChangeAddress"
+      component={ChangeAddressScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="ChangePhoneNumber"
+      component={ChangePhoneNumberScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="ShopOwnerProfile"
+      component={ShopOwnerProfileScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="NearbyHospitals"
+      component={NearbyHospitalsScreen}
+      options={{ header: () => null }}
+    />
   </Stack.Navigator>
 );
 
@@ -403,6 +433,16 @@ const MechanicStack = ({ navigation }) => (
       component={ServiceRequestViewComponent}
       options={{ header: () => null }}
     />
+    <Stack.Screen
+      name="ChangeAddress"
+      component={ChangeAddressScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="ChangePhoneNumber"
+      component={ChangePhoneNumberScreen}
+      options={{ header: () => null }}
+    />
   </Stack.Navigator>
 );
 
@@ -486,7 +526,16 @@ const ShopOwnerStack = ({ navigation }) => (
       component={SOViewItemScreen}
       options={{ header: () => null }}
     />
-
+    <Stack.Screen
+      name="ChangeAddress"
+      component={ChangeAddressScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="ChangePhoneNumber"
+      component={ChangePhoneNumberScreen}
+      options={{ header: () => null }}
+    />
   </Stack.Navigator>
 );
 

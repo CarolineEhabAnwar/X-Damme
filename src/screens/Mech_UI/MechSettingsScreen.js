@@ -66,9 +66,30 @@ const MechSettingsScreen = ({ navigation }) => {
           </ListItem>
 
           <ListItem>
-            <Button transparent>
+            <Button transparent onPress={() => {
+              navigation.navigate('ChangePhoneNumber', {
+                Color: color,
+                Home: home,
+                Profile: profile,
+                ContactUs: contactus
+              })
+            }}>
+              <Entypo name="phone" style={{ marginRight: -5 }} size={24} color={color} />
+              <Text style={{ color: color, fontSize: 18, fontWeight: '500' }}>Change Phone Number</Text>
+            </Button>
+          </ListItem>
+
+          <ListItem>
+            <Button transparent onPress={() => {
+              navigation.navigate('ChangeAddress', {
+                Color: color,
+                Home: home,
+                Profile: profile,
+                ContactUs: contactus
+              })
+            }}>
               <MaterialCommunityIcons name="city" style={{ marginRight: -5 }} size={26} color="darkgreen" />
-              <Text style={{ color: 'darkgreen', fontSize: 18, fontWeight: '500' }}>Addresses</Text>
+              <Text style={{ color: 'darkgreen', fontSize: 18, fontWeight: '500' }}>Change Addresse</Text>
             </Button>
           </ListItem>
 

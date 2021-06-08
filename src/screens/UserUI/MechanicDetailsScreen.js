@@ -1,13 +1,37 @@
-import React, { Component } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import React, { Component, useState, useEffect } from 'react';
+import { Image, StyleSheet, View, Linking } from 'react-native';
 import { Container, FooterTab, Badge, InputGroup, Input, Header, Content, Card, Icon, CardItem, Thumbnail, Text, Button, Left, Body, Right } from 'native-base';
 import { DrawerActions } from 'react-navigation-drawer';
 import { FontAwesome5, Ionicons } from '@expo/vector-icons';
-import FooterComponent from '../components/FooterComponent'
+import FooterComponent from '../components/FooterComponent';
 
 const MechanicDetailsScreen = ({ route, navigation }) => {
 
-  const mechID = route.params.mechID
+  const mechID = route.params.mech.key
+  const [locationURL, setlocationURL] = useState("");
+
+  const Get_Location = () => {
+    const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
+    const latLng = `${route.params.mech.address[3].split(":")[1]},${route.params.mech.address[4].split(":")[1]}`;
+    const label = 'Custom Label';
+    const url = Platform.select({
+      ios: `${scheme}${label}@${latLng}`,
+      android: `${scheme}${latLng}(${label})`
+    });
+    setlocationURL(url)
+  }
+
+  useEffect(() => {
+    try {
+      Get_Location();
+    } catch (error) {
+      console.log(error);
+    }
+  }, [])
+
+  const Check_Location = () => {
+    Linking.openURL(locationURL);
+  }
 
   return (
     <Container>
@@ -24,30 +48,35 @@ const MechanicDetailsScreen = ({ route, navigation }) => {
       {/* End Text with navback */}
       <Content>
         <Card style={{ flex: 0 }}>
-          {route.params.Image == null || route.params.Image == "" ?
+          {route.params.mech.profileIMG == null || route.params.mech.profileIMG == "" ?
             <Image source={require("../../../assets/mechanic.png")} style={{ marginBottom: 20, height: 196, width: null }} />
             :
-            <Image source={{ uri: route.params.Image }} style={{ marginBottom: 20, height: 196, width: null }} />
+            <Image source={{ uri: route.params.mech.profileIMG }} style={{ marginBottom: 20, height: 196, width: null }} />
           }
           <CardItem style={{ marginHorizontal: 1, borderWidth: 3, borderColor: 'darkred' }}>
             <Body>
               <Text style={styles.textStyles}>Name: </Text>
-              <Text style={styles.mechanicsTextStyle}>{route.params.fname} {route.params.lname}</Text>
+              <Text style={styles.mechanicsTextStyle}>{route.params.mech.fname} {route.params.mech.lname}</Text>
 
-              <Text style={styles.textStyles}>Location: </Text>
-              <Text style={styles.mechanicsTextStyle}>{route.params.address}</Text>
+              <Text style={styles.textStyles}>Phone Number:</Text>
+              <Text style={styles.mechanicsTextStyle}>{route.params.mech.phoneNumber}</Text>
 
               <Text style={styles.textStyles}>Rate:</Text>
               <Text style={styles.mechanicsTextStyle}>//Rate//</Text>
-              {/* <Text style={styles.textStyles}>Open Time: -</Text>
-                  <Text style={styles.textStyles}>Close Time: -</Text>
-                  <Text style={styles.textStyles}>Working Days: -</Text> */}
-              <Button style={styles.buttonStyle} onPress={() => navigation.navigate('ServiceDetails', {
-                mechID: mechID
-              })}>
-                <Icon style={{ marginRight: -6 }} name="build-outline"></Icon>
-                <Text style={styles.buttonTextStyle}>Services</Text>
-              </Button>
+
+              <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
+                <Button style={styles.buttonStyle} onPress={() => Check_Location()}>
+                  <Icon style={{ marginRight: -6 }} name="location-outline"></Icon>
+                  <Text style={styles.buttonTextStyle}>Check Location</Text>
+                </Button>
+
+                <Button style={styles.buttonStyle} onPress={() => navigation.navigate('ServiceDetails', {
+                  mechID: mechID
+                })}>
+                  <Icon style={{ marginRight: -6 }} name="build-outline"></Icon>
+                  <Text style={styles.buttonTextStyle}>Services</Text>
+                </Button>
+              </View>
             </Body>
           </CardItem>
         </Card>
@@ -84,7 +113,6 @@ const styles = StyleSheet.create({
 
   buttonStyle: {
     marginTop: 15,
-    marginLeft: 'auto',
     backgroundColor: 'darkred',
   },
 

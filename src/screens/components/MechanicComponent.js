@@ -33,11 +33,7 @@ const MechanicComponent = (props) => {
                 <CardItem style={{ marginLeft: 'auto' }}>
                     <Right>
                         <Button style={styles.cartItemStyle} transparent onPress={() => navigation.navigate('MechanicDetails', {
-                            fname: props.mech.fname,
-                            lname: props.mech.lname,
-                            address: props.mech.address,
-                            mechID:props.mech.key,
-                            Image: props.mech.profileIMG,
+                            mech: props.mech,
                         })}>
                             <Text style={{ fontSize: 15, marginRight: -15, color: 'darkred', fontWeight: 'bold' }} > See Mechanic Details </Text>
                             <Icon active style={{ fontSize: 25, color: 'darkred' }} name="arrow-forward" />

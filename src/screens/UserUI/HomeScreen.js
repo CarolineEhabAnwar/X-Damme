@@ -7,6 +7,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { AuthContext } from '../../navigation/AuthProvider';
 import firestore from "@react-native-firebase/firestore";
 import GetProfileIMGComponent from "../components/GetProfileIMGComponent";
+//import GetLocation from 'react-native-get-location'
 
 
 const HomeScreen = ({ navigation }) => {
@@ -63,10 +64,9 @@ const HomeScreen = ({ navigation }) => {
   }, []);
   return (
     <Container>
-
       {/* Header */}
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 26, marginBottom: 12, paddingBottom: 6, backgroundColor: "darkred" }}>
-        <Button transparent onPress={() => navigation.dispatch(DrawerActions.openDrawer())} >
+        <Button transparent onPress={() => navigation.navigate("test")} >
           <Icon ios='ios-menu' android="md-menu" style={{ fontSize: 28, color: 'white' }} />
         </Button>
 
@@ -79,7 +79,7 @@ const HomeScreen = ({ navigation }) => {
 
 
       <Content scrollEnabled>
-        <GetProfileIMGComponent Color={"darkred"}/>
+        <GetProfileIMGComponent Color={"darkred"} />
         <Text style={styles.title}>Welcome</Text>
         <View style={{ marginTop: 40, marginBottom: 50, flexDirection: "row", justifyContent: 'space-evenly' }}>
 
@@ -121,7 +121,7 @@ const HomeScreen = ({ navigation }) => {
           {/* Recommendations Bubble */}
           <View >
             <Button transparent style={{ alignSelf: 'center', height: 100, width: 100 }}
-            onPress={()=>navigation.navigate('Recommendation')}>
+              onPress={() => navigation.navigate('Recommendation')}>
               <Image source={require("../../../assets/recommendation.png")} style={styles.profileImg} />
             </Button>
             <Text style={styles.textStyle}>Recommendations</Text>
