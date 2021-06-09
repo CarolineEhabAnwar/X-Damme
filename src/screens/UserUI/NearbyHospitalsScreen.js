@@ -70,6 +70,8 @@ const NearbyHospitalsScreen = ({ navigation }) => {
         setCurrentLocation(null);
         setloading(true);
 
+        //console.log(GetLocation.getCurrentPosition())
+
         await GetLocation.getCurrentPosition({
             enableHighAccuracy: true,
             timeout: 150000,

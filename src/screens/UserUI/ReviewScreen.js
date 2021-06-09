@@ -10,14 +10,20 @@ import { Rating } from 'react-native-ratings';
 const ReviewScreen = ({ navigation, route }) => {
 
     const { user } = useContext(AuthContext);
-    const [review, setReview] = React.useState("");
-    const [itemrating, setItemRating] = React.useState("");
-    const [shoprating, setShopRating] = React.useState("");
-    const [approved, setApproval] = React.useState(true);
-    const [reviewID, setReviewID] = React.useState("");
+    const [review, setReview] = useState("");
+    const [itemrating, setItemRating] = useState("");
+    const [shoprating, setShopRating] = useState("");
+    const [approved, setApproval] = useState(true);
+    const [reviewID, setReviewID] = useState("");
+    const [item, setItem] = useState([]);
 
     async function Get_User_Review() {
 
+        await firestore().collection("CarStuff").doc(route.params.ItemID).get().then((Data) => {
+            if (Data.exists) {
+                setItem({...Data.data(),key:Data.id});
+            }
+        })
 
         await firestore().collection('Reviews').where('UserID', '==', user.uid)
             .where("ItemID", "==", route.params.ItemID)
@@ -112,7 +118,9 @@ const ReviewScreen = ({ navigation, route }) => {
 
                                     }
 
-                                    navigation.goBack();
+                                    navigation.push('ItemDetails', {
+                                        Item: item
+                                    })
                                 }
                                 catch (error) {
                                     alert(error);

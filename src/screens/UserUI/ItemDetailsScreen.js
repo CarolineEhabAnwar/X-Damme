@@ -158,7 +158,7 @@ const ItemDetailsScreen = ({ navigation, route }) => {
         setloading(false);
     }
     catch (error) {
-      alert(error);
+      console.log(error);
     }
 
   }
