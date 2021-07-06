@@ -116,18 +116,10 @@ export const AuthProvider = ({ children }) => {
 
               });
               var dateNow = firestore.Timestamp.fromDate(new Date());
-              console.log("New Ping")
 
               temp_pings.forEach(singleping => {
-                if (dateNow.seconds - singleping.PingTime.seconds < 3601) {
-                  console.log("Difference within timestampe is: " + (dateNow.seconds - singleping.PingTime.seconds))
+                if (0 < dateNow.seconds - singleping.PingTime.seconds < 3601) {
 
-                  console.log("Date is within range")
-
-                  console.log("My ID: " + auth().currentUser.uid)
-                  console.log("My Address")
-                  console.log("Ping ID: " + singleping.key)
-                  console.log(addr)
                   let lat1 = addr[0];
                   let lon1 = addr[1];
                   let lat2 = singleping.PingerLocation.latitude;
@@ -147,8 +139,6 @@ export const AuthProvider = ({ children }) => {
                   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
                   let Distance = parseFloat((R * c) / 1000).toFixed(3); // in km
-
-                  console.log("Distance = " + Distance)
 
                   if (Distance < 10) {
 
