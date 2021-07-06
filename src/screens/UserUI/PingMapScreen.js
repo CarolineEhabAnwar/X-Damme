@@ -4,7 +4,7 @@ import { Container, InputGroup, FooterTab, Input, Content, Text, Button, Icon } 
 import { Ionicons } from '@expo/vector-icons';
 import firestore from "@react-native-firebase/firestore";
 import { AuthContext } from '../../navigation/AuthProvider';
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 // import { usePermissions } from 'react-native-use-permissions';
 import * as Permissions from 'expo-permissions';
 import usePermissions from 'expo-permissions-hooks';
@@ -14,12 +14,16 @@ import { Circle } from 'react-native-maps';
 import * as firebase from "firebase";
 import * as GeoFire from 'geofire';
 import PushNotification from "react-native-push-notification";
+import messaging from '@react-native-firebase/messaging';
 
 
 
 const PingMapScreen = ({ navigation, route }) => {
 
     const { user } = useContext(AuthContext);
+
+    const FIREBASE_API_KEY = "AIzaSyAId_oCMqFC-0de24uB002T4TUOnKcLylY";
+
 
     const [region, setRegion] = useState({
         region: {
@@ -31,8 +35,18 @@ const PingMapScreen = ({ navigation, route }) => {
         }
     });
     const [loading, setloading] = useState(true);
+    const [ComingUsers, setComingUsers] = useState([]);
+
+    const [loadingUsers, setloadingUsers] = useState(false);
+    const [loadingUsers2, setloadingUsers2] = useState(false);
+
+    const [markers, setMarkers] = useState(true);
+
+
 
     var firebaseRef;
+
+    var Tokens = [];
 
     if (!firebase.apps.length) {
         firebaseRef = firebase.initializeApp({
@@ -53,61 +67,21 @@ const PingMapScreen = ({ navigation, route }) => {
 
     const geoFireInstance = new geofire.GeoFire(firebaseRef.database().ref());
 
-    PushNotification.configure({
-        // (optional) Called when Token is generated (iOS and Android)
-        onRegister: function (token) {
-            console.log("TOKEN:", token);
-        },
-
-        // (required) Called when a remote or local notification is opened or received
-        onNotification: function (notification) {
-            console.log("NOTIFICATION:", notification);
-
-            // process the notification here
-
-        },
-        // Android only
-        senderID: "717529296732"
-    });
-
-
-
-    // var geoQuery = geoFireInstance.query({
-    //     center: [region.latitude, region.longitude],
-    //     radius: 5
-    // });
-
     useEffect(() => {
         Call_All_Functions();
     }, []);
 
     async function Call_All_Functions() {
-        // await Get_GeoFire();
         await Get_Location();
-        await Get_Nearby_Users();
+
     }
 
-    async function Get_GeoFire() {
-
-        geoFireInstance.get("royXPeuIu0hoz7mD3eRJsXZc1Zq2")
-            .then(function (location) {
-                if (location === null) {
-                    console.log("Provided key is not in GeoFire");
-                }
-                else {
-                    console.log("Provided key has a location ")
-                }
-            }, function (error) {
-                console.log("Error: " + error);
-            });
-    }
 
     async function Get_Location() {
         try {
 
             const { status, permissions } = await Permissions.askAsync(Permissions.LOCATION);
             let gpsServiceStatus = await Location.hasServicesEnabledAsync();
-
             if (status === 'granted' && gpsServiceStatus) {
                 let location2 = await Location.getCurrentPositionAsync({ enableHighAccuracy: true });
 
@@ -123,7 +97,7 @@ const PingMapScreen = ({ navigation, route }) => {
                     await geoFireInstance.set(user.uid, [region2.latitude, region2.longitude]).then(function () {
                         console.log("Current User Location has been added to GeoFire");
                     }, function (error) {
-                        console.log("Error: " + error);
+                        console.log(error);
                     });
 
                     if (loading)
@@ -142,7 +116,9 @@ const PingMapScreen = ({ navigation, route }) => {
                 })
                     .then((data) => {
                         gpsServiceStatus = true;
-                    })
+                        Location.requestBackgroundPermissionsAsync();
+                    }
+                    )
                     .catch((err) => {
                         alert("Location is Not Enabled. Please Enable ")
 
@@ -159,46 +135,108 @@ const PingMapScreen = ({ navigation, route }) => {
     }
 
 
-    // geoQuery.on("key_moved", function (key, location, distance) {
-    //     console.log(key + " moved within query to " + location + " (" + distance + " km from center)");
-    //     geoFireInstance.set(user.uid, [location.latitude, location.longitude]).then(function () {
-    //         console.log("Location Updated !");
-    //     }, function (error) {
-    //         console.log("Error: " + error);
-    //     });
-    // });
-
-    async function Get_Nearby_Users() {
+    async function Ping_Users() {
 
         try {
+            await firestore().collection('Pings').where('Pinger', '==', user.uid)
+                .get()
+                .then(documentSnapshot => {
+                    if (documentSnapshot.docs.length != 0) {
+                        documentSnapshot.forEach(document => {
+                            console.log("This is the id of the ping: " + document.id);
+                            firestore().collection("Pings").doc(document.id).update({
+                                PingerLocation: region,
+                                PingTime: firestore.Timestamp.fromDate(new Date()),
+                                AcceptedBy: [],
+                            });
+                            alert("Ping has been updated and Resent successfully.");
+                        })
+                    }
+                    else {
+                        firestore().collection("Pings").add({
+                            Pinger: user.uid,
+                            PingerLocation: region,
+                            PingTime: firestore.Timestamp.fromDate(new Date()),
+                            AcceptedBy: [],
+                        });
+                        alert("Ping has been sent successfully.");
 
-            console.log("Get Nearby Users Function is Now Launched !")
-            var geoQuery = geoFireInstance.query({
-                center: [30.0956817, 31.3337783],
-                radius: 3 // Radius in KM 
-            });
-
-            console.log("These are the nearby user:")
-            var First_Name;
-            var Last_Name;
-
-            var onKeyEnteredRegistration = geoQuery.on("key_entered", async function (key, location) {
-                await firestore().collection("users").doc(key).get().then((DataFetched) => {
-                    First_Name = DataFetched.data().fname;
-                    Last_Name = DataFetched.data().lname;
-                })
-                console.log(First_Name + " " + Last_Name + " entered the query. Hi " + First_Name + " " + Last_Name + "!");
-
-                // document.getElementById(key + "Inside").style.display = "block";
-                // document.getElementById(key + "Outside").style.display = "none";
-            });
-
+                    }
+                });
         }
+
         catch (error) {
             alert(error);
         }
     }
 
+    async function Check_Who_Is_Coming() {
+        setloadingUsers(false);
+        setloadingUsers2(false);
+
+        try {
+            var PingAcceptedBy = [];
+            await firestore().collection('Pings').where('Pinger', '==', user.uid)
+                .get()
+                .then(querySnapshot => {
+                    if (querySnapshot.docs.length != 0) {
+                        querySnapshot.forEach(documentSnapshot => {
+                            PingAcceptedBy = documentSnapshot.data().AcceptedBy;
+
+                        });
+                        console.log("Accepted By: ")
+                        console.log(PingAcceptedBy)
+                    }
+                });
+            if (PingAcceptedBy.length != 0) {
+                setComingUsers(PingAcceptedBy);
+
+                let m = [];
+
+                PingAcceptedBy.forEach(accepter => {
+                    let info = accepter.split("/");
+                    m.push({
+                        latitude: info[1],
+                        longitude: info[2],
+                        title: info[0],
+                        subtitle: info[3] + " Km Away"
+                    })
+                })
+                setMarkers(m);
+                console.log("Markers: ")
+                console.log(m);
+                setloadingUsers(true);
+                setloadingUsers2(true);
+            }
+            else {
+                alert("Sorry, no one is coming yet")
+            }
+
+        } catch (err) {
+            alert(err);
+        }
+    }
+
+    async function Cancel_Ping() {
+        try {
+            await firestore()
+                .collection('Pings')
+                .where('Pinger', '==', user.uid)
+                .get()
+                .then(function (querySnapshot) {
+
+                    querySnapshot.forEach(function (doc) {
+                        doc.ref.delete();
+                    });
+                    alert('Ping Request Cancelled Successfully !');
+                    setloadingUsers(false);
+                    setloadingUsers2(false);
+                });
+        }
+        catch (err) {
+            alert(err);
+        }
+    }
 
     return (
         <Container>
@@ -212,24 +250,76 @@ const PingMapScreen = ({ navigation, route }) => {
                 </Button>
                 <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '18%', paddingTop: 12, fontWeight: 'bold' }}>Ping Nearest Users</Text>
             </View>
-            <Content>
+            <Container >
                 {loading ? <Text style={styles.loadingStyle}> Loading Map... </Text> :
-                    <View>
-                        <MapView
-                            initialRegion={region}
-                            showsCompass={true}
-                            rotateEnabled={true}
-                            showsUserLocation={true}
-                            zoomEnabled={true}
-                            scrollEnabled={true}
-                            zoomTapEnabled={true}
-                            showsMyLocationButton={true}
-                            style={{ flex: 1, height: 510, margin: 1 }}
-                        />
-                    </View>
+                    <Container >
+                        <View style={{ height: 400 }}>
+                            <MapView
+                                initialRegion={region}
+                                showsCompass={true}
+                                rotateEnabled={true}
+                                showsUserLocation={true}
+                                zoomEnabled={true}
+                                scrollEnabled={true}
+                                zoomTapEnabled={true}
+                                showsMyLocationButton={true}
+                                style={{ flex: 1, height: 400, margin: 1 }}
+                                annotations={markers} >
+                                {
+                                    loadingUsers2 ? markers.map((mark) => (<Marker coordinate={{
+                                        latitude: parseFloat(mark.latitude),
+                                        longitude: parseFloat(mark.longitude)
+                                    }}
+                                        title={mark.title}
+                                        description={mark.subtitle}
+                                    >
+
+                                    </Marker>)) : null
+                                }
+
+                            </MapView>
+
+                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignSelf: 'center', marginTop: 10, marginLeft: 25 }}>
+                                <Button style={styles.buttonStyle} >
+                                    <Text style={styles.buttonTextStyle} onPress={() => { Ping_Users() }}>Ping Users</Text>
+                                </Button>
+                                <Button style={styles.buttonStyle} onPress={() => { navigation.navigate("PingRequests") }} >
+                                    <Text style={styles.buttonTextStyle}>Ping Requests</Text>
+                                </Button>
+                            </View>
+                            <View style={{ alignContent: "center", margin: 5, alignItems: "center", flexDirection: "row", justifyContent: "center" }}>
+                                <Button style={styles.buttonStyle}>
+                                    <Text style={styles.buttonTextStyle} onPress={() => { Check_Who_Is_Coming() }}>Check Who's Coming</Text>
+                                </Button>
+                                <Button style={styles.buttonStyle}>
+                                    <Text style={styles.buttonTextStyle} onPress={() => { Cancel_Ping() }}>Cancel Ping Request</Text>
+                                </Button>
+                            </View>
+                        </View>
+
+                        <Container>
+                            {loadingUsers ?
+                                <Container>
+                                    <Text style={{ color: "darkred", alignContent: "center", margin: 5, fontWeight: "bold" }}> Users Coming to Help:  </Text>
+                                    <FlatList
+                                        data={ComingUsers}
+                                        renderItem={({ item }) => {
+                                            var coming_users = item.split("/")
+                                            return (
+                                                <Text style={{ color: "darkred", alignContent: "center", margin: 5 }}>
+                                                    User Name: {coming_users[0]} {'\n'}Distance: {coming_users[3]} Km {'\n'}Accepted At: {coming_users[4]} {'\n'}{'\n'}
+                                                </Text>);
+                                        }}
+                                        keyExtractor={(item, index) => index.toString()}
+                                    />
+                                </Container> : null
+                            }
+                        </Container>
+                    </Container>
 
                 }
-            </Content>
+            </Container>
+
             {/* Footer */}
             <View style={{ flexDirection: 'row', alignContent: "center", backgroundColor: "darkred" }}>
                 <FooterTab transparent style={{ backgroundColor: "darkred" }}>
@@ -258,6 +348,7 @@ const PingMapScreen = ({ navigation, route }) => {
 
 }
 
+
 const styles = StyleSheet.create({
 
     container: {
@@ -271,7 +362,16 @@ const styles = StyleSheet.create({
         textAlignVertical: 'center',
         fontWeight: 'bold',
         marginTop: 220
-    }
+    },
+    buttonStyle: {
+        marginTop: 7,
+        backgroundColor: 'darkred',
+        marginRight: 10
+    },
+
+    buttonTextStyle: {
+        fontWeight: 'bold'
+    },
 });
 
 export default PingMapScreen;

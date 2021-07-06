@@ -1,4 +1,4 @@
-import React, { Component,useContext,useState,useEffect } from 'react';
+import React, { Component, useContext, useState, useEffect } from 'react';
 import { Container, InputGroup, Header, Item, Icon, Input, Content, Left, Right, Title, Body, Footer, FooterTab, Button, Text, Badge } from 'native-base';
 import { StyleSheet, View, Image, FlatList, TouchableOpacity } from 'react-native';
 import { DrawerActions } from 'react-navigation-drawer';
@@ -6,22 +6,24 @@ import ItemComponent from "../components/ItemComponent";
 import { ScrollView } from 'react-native-gesture-handler';
 import { AuthContext } from '../../navigation/AuthProvider';
 import firestore from "@react-native-firebase/firestore";
+import * as TaskManager from 'expo-task-manager';
 
 
-const HomeScreen = ({navigation}) => {
+
+const HomeScreen = ({ navigation }) => {
 
   return (
     <Container>
-     
+
       {/* Header */}
-      <View style={{ flexDirection: 'row',justifyContent:'space-between', paddingTop: 26, marginBottom: 12, paddingBottom: 6, backgroundColor: "darkred" }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 26, marginBottom: 12, paddingBottom: 6, backgroundColor: "darkred" }}>
         <Button transparent onPress={() => navigation.dispatch(DrawerActions.openDrawer())} >
           <Icon ios='ios-menu' android="md-menu" style={{ fontSize: 28, color: 'white' }} />
         </Button>
-        
-        <Button transparent style={{ height: 50}} onPress={() => navigation.navigate('Cart')}>
-          <Icon name='cart' style={{ fontSize: 24,marginRight:-6, color: 'white' }}></Icon>
-          <Text style={{ color: "white",fontSize:16, fontWeight: 'bold' }}>My Cart</Text>
+
+        <Button transparent style={{ height: 50 }} onPress={() => navigation.navigate('Cart')}>
+          <Icon name='cart' style={{ fontSize: 24, marginRight: -6, color: 'white' }}></Icon>
+          <Text style={{ color: "white", fontSize: 16, fontWeight: 'bold' }}>My Cart</Text>
         </Button>
       </View>
       {/* End Header */}
