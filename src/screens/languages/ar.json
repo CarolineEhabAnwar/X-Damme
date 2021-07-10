@@ -1,0 +1,25 @@
+{
+    "translation": {
+        "forgotPass": "هل نسيت كلمة المرور؟",
+        "NoAccount": " ليس لديك حساب؟ اضغط هنا !",
+        "SignIn": "تسجيل دخول",
+        "FBSignIn": "قم بتسجيل الدخول باستخدام الفيسبوك",
+        "GSignIn": "قم بتسجيل الدخول باستخدام جوجل",
+        "EmailText": "البريد الإلكتروني",
+        "PasswordText": "رمز المرور",
+        "fillSlots": "من فضلك املأ جميع الخانات.",
+        "writeEmail": "من فضلك اكتب البريد الإلكتروني",
+        "ApproveNotificationPermission": "الرجاء الموافقة على إذن لإرسال واستقبال الإخطارات.",
+        "PingNotificationBody": "مستخدم يحتاج إلى مساعدتك!",
+        "PingNotificationTitle": "اخطار للمساعدة",
+        "EmailBadFormat": "عنوان البريد الإلكتروني منسق بشكل سيئ.",
+        "EmailNotFound": "البريد الإلكتروني غير موجود.",
+        "InvalidPassword": "رمز المرور خاطئ.",
+        "SomethingWrongwithSignUp": "حدث خطأ في التسجيل: ",
+        "FirebaseSomethingWrongWithSignUp": "حدث خطأ ما عند إضافة مستخدم إلى متجر firestore: ",
+        "ShortPassword": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل",
+        "EmailAlreadyExists": "عنوان البريد الإلكتروني قيد الاستخدام بالفعل من قبل حساب آخر.",
+        "ResetPasswordEmail": "تم إرسال بريد إلكتروني مع إعادة تعيين كلمة المرور.",
+        "SomethingWentWrong": "هناك خطأ ما."
+    }
+}
