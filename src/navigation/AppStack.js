@@ -9,7 +9,17 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 //Importing Waiting Screen
 import WaitingScreen from '../screens/WaitingScreen'
+import testScreen from "../screens/testScreen";
+
+//Importing Components
 import ItemComponent from '../screens/components/ItemComponent'
+import FooterComponent from '../screens/components/FooterComponent'
+import MechanicComponent from '../screens/components/MechanicComponent'
+import ServiceComponent from '../screens/components/ServiceComponent'
+import ServiceRequestComponent from '../screens/components/ServiceRequestComponent'
+import ServiceRequestViewComponent from '../screens/components/ServiceRequestViewComponent'
+import UserServiceRequestViewComponent from '../screens/components/UserServiceRequestViewComponent'
+
 
 //Importing User Screens
 import HomeScreen from '../screens/UserUI/HomeScreen'
@@ -36,6 +46,24 @@ import CartViewItemScreen from "../screens/UserUI/CartViewItemScreen"
 import ReviewScreen from "../screens/UserUI/ReviewScreen"
 import CustomersReviewsScreen from "../screens/UserUI/CustomersReviewsScreen"
 import MyReviewsScreen from "../screens/UserUI/MyReviewsScreen"
+import ChangeNameScreen from "../screens/UserUI/ChangeNameScreen"
+import ChangePasswordScreen from "../screens/UserUI/ChangePasswordScreen"
+import ChangeEmailScreen from "../screens/UserUI/ChangeEmailScreen"
+import ChangeProfilePhotoScreen from "../screens/UserUI/ChangeProfilePhotoScreen"
+import ChangeAddressScreen from "../screens/UserUI/ChangeAddressScreen";
+import ChangePhoneNumberScreen from "../screens/UserUI/ChangePhoneNumberScreen";
+import AdvViewScreen from "../screens/UserUI/AdvViewScreen"
+import MyServiceRequestsScreen from "../screens/UserUI/MyServiceRequestsScreen"
+import BeginnersStuffScreen from "../screens/UserUI/BeginnersStuffScreen"
+import StuckOnTheRoadScreen from "../screens/UserUI/StuckOnTheRoadScreen"
+import FirstAidScreen from "../screens/UserUI/FirstAidScreen"
+import CarCheckUpScreen from "../screens/UserUI/CarCheckUpScreen"
+import RecommendationScreen from "../screens/UserUI/RecommendationScreen"
+import HotOffersScreen from "../screens/UserUI/HotOffersScreen"
+import ReminderScreen from "../screens/UserUI/ReminderScreen"
+import BestCarsScreen from "../screens/UserUI/BestCarsScreen"
+import ShopOwnerProfileScreen from "../screens/UserUI/ShopOwnerProfileScreen"
+import NearbyHospitalsScreen from "../screens/UserUI/NearbyHospitalsScreen"
 import PingMapScreen from "../screens/UserUI/PingMapScreen"
 import PingRequestsScreen from "../screens/UserUI/PingRequestsScreen"
 
@@ -51,6 +79,7 @@ import MechRequestsScreen from "../screens/Mech_UI/MechRequestsScreen"
 import MechServiceListScreen from "../screens/Mech_UI/MechServiceListScreen"
 import MechViewRequestScreen from "../screens/Mech_UI/MechViewRequestScreen"
 import MechViewServiceScreen from "../screens/Mech_UI/MechViewServiceScreen"
+import MechRequestsHistoryScreen from "../screens/Mech_UI/MechRequestsHistoryScreen"
 
 //Importing Shop Owner Screens
 import SOAddItemScreen from "../screens/SO_UI/SOAddItemScreen"
@@ -64,6 +93,7 @@ import SORequestsScreen from "../screens/SO_UI/SORequestsScreen"
 import SOViewRequestScreen from "../screens/SO_UI/SOViewRequestScreen"
 import SOSettingsScreen from "../screens/SO_UI/SOSettingsScreen"
 import SOViewItemScreen from "../screens/SO_UI/SOViewItemScreen"
+
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -196,6 +226,122 @@ const UserStack = ({ navigation }) => (
       options={{ header: () => null }}
     />
     <Stack.Screen
+      name="FooterComponent"
+      component={FooterComponent}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="ChangeName"
+      component={ChangeNameScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="ChangePassword"
+      component={ChangePasswordScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="ChangeEmail"
+      component={ChangeEmailScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="MechanicComponent"
+      component={MechanicComponent}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="ServiceComponent"
+      component={ServiceComponent}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="AdvView"
+      component={AdvViewScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="MyServiceRequests"
+      component={MyServiceRequestsScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="UserServiceRequestViewComponent"
+      component={UserServiceRequestViewComponent}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="BeginnersStuff"
+      component={BeginnersStuffScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="StuckOnTheRoad"
+      component={StuckOnTheRoadScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="CarCheckUp"
+      component={CarCheckUpScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="FirstAid"
+      component={FirstAidScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="Recommendation"
+      component={RecommendationScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="HotOffers"
+      component={HotOffersScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="Reminder"
+      component={ReminderScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="BestCars"
+      component={BestCarsScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="ChangeProfilePhoto"
+      component={ChangeProfilePhotoScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="test"
+      component={testScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="ChangeAddress"
+      component={ChangeAddressScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="ChangePhoneNumber"
+      component={ChangePhoneNumberScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="ShopOwnerProfile"
+      component={ShopOwnerProfileScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="NearbyHospitals"
+      component={NearbyHospitalsScreen}
+      options={{ header: () => null }}
+    />
+
+    <Stack.Screen
       name="PingMap"
       component={PingMapScreen}
       options={{ header: () => null }}
@@ -205,6 +351,7 @@ const UserStack = ({ navigation }) => (
       component={PingRequestsScreen}
       options={{ header: () => null }}
     />
+
   </Stack.Navigator>
 );
 
@@ -265,6 +412,51 @@ const MechanicStack = ({ navigation }) => (
       component={MechSettingsScreen}
       options={{ header: () => null }}
     />
+    <Stack.Screen
+      name="ChangeName"
+      component={ChangeNameScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="ChangePassword"
+      component={ChangePasswordScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="ChangeEmail"
+      component={ChangeEmailScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="ChangeProfilePhoto"
+      component={ChangeProfilePhotoScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="ServiceRequestComponent"
+      component={ServiceRequestComponent}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="MechRequestsHistory"
+      component={MechRequestsHistoryScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="ServiceRequestViewComponent"
+      component={ServiceRequestViewComponent}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="ChangeAddress"
+      component={ChangeAddressScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="ChangePhoneNumber"
+      component={ChangePhoneNumberScreen}
+      options={{ header: () => null }}
+    />
   </Stack.Navigator>
 );
 
@@ -275,6 +467,27 @@ const ShopOwnerStack = ({ navigation }) => (
       component={SOHomeScreen}
       options={{ header: () => null }}
     />
+    <Stack.Screen
+      name="ChangeName"
+      component={ChangeNameScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="ChangePassword"
+      component={ChangePasswordScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="ChangeEmail"
+      component={ChangeEmailScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="ChangeProfilePhoto"
+      component={ChangeProfilePhotoScreen}
+      options={{ header: () => null }}
+    />
+
     <Stack.Screen
       name="SOAddItem"
       component={SOAddItemScreen}
@@ -327,7 +540,16 @@ const ShopOwnerStack = ({ navigation }) => (
       component={SOViewItemScreen}
       options={{ header: () => null }}
     />
-
+    <Stack.Screen
+      name="ChangeAddress"
+      component={ChangeAddressScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="ChangePhoneNumber"
+      component={ChangePhoneNumberScreen}
+      options={{ header: () => null }}
+    />
   </Stack.Navigator>
 );
 
