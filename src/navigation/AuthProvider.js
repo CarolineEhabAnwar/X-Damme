@@ -132,8 +132,6 @@ export const AuthProvider = ({ children }) => {
                     let lon1 = addr[1];
                     let lat2 = singleping.PingerLocation.latitude;
                     let lon2 = singleping.PingerLocation.longitude;
-                    console.log(lat2)
-                    console.log(lon2)
 
                     const R = 6371e3; // metres
                     const φ1 = lat1 * Math.PI / 180; // φ, λ in radians
@@ -330,7 +328,6 @@ export const AuthProvider = ({ children }) => {
               })
               //we need to catch the whole sign up process if it fails too.
               .catch(error => {
-                console.log(error);
                 if (error == "Error: [auth/invalid-email] The email address is badly formatted.")
                   alert(t('EmailBadFormat'));
                 else if (error == "Error: [auth/weak-password] The given password is invalid. [ Password should be at least 6 characters ]")

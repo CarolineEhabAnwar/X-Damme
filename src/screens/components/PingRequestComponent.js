@@ -108,15 +108,9 @@ const PingRequestComponent = (props) => {
                         if (documentSnapshot.exists) {
                             setPinger_name(documentSnapshot.data().fname + " " + documentSnapshot.data().lname);
                         }
-                        else {
-                            console.log("Document with Pinger ID doesn't exist !");
-                        }
                     });
                 // Stop listening for updates when no longer required
                 return () => subscriber();
-            }
-            else {
-                console.log("No Pinger with the passed ID !!")
             }
         } catch (error) {
             alert(error);

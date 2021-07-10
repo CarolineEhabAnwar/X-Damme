@@ -42,7 +42,6 @@ const PingRequestsScreen = ({ navigation, route }) => {
         }
 
     }, []);
-    // console.log(items[0].fname)
 
     return (
         <Container>

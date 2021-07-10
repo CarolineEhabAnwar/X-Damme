@@ -95,9 +95,8 @@ const PingMapScreen = ({ navigation, route }) => {
                 if (region2 != undefined) {
                     setRegion({ ...region, ...region2 });
                     await geoFireInstance.set(user.uid, [region2.latitude, region2.longitude]).then(function () {
-                        console.log("Current User Location has been added to GeoFire");
                     }, function (error) {
-                        console.log(error);
+                        alert(error);
                     });
 
                     if (loading)
@@ -143,7 +142,6 @@ const PingMapScreen = ({ navigation, route }) => {
                 .then(documentSnapshot => {
                     if (documentSnapshot.docs.length != 0) {
                         documentSnapshot.forEach(document => {
-                            console.log("This is the id of the ping: " + document.id);
                             firestore().collection("Pings").doc(document.id).update({
                                 PingerLocation: region,
                                 PingTime: firestore.Timestamp.fromDate(new Date()),
@@ -184,8 +182,6 @@ const PingMapScreen = ({ navigation, route }) => {
                             PingAcceptedBy = documentSnapshot.data().AcceptedBy;
 
                         });
-                        console.log("Accepted By: ")
-                        console.log(PingAcceptedBy)
                     }
                 });
             if (PingAcceptedBy.length != 0) {
@@ -203,8 +199,6 @@ const PingMapScreen = ({ navigation, route }) => {
                     })
                 })
                 setMarkers(m);
-                console.log("Markers: ")
-                console.log(m);
                 setloadingUsers(true);
                 setloadingUsers2(true);
             }
