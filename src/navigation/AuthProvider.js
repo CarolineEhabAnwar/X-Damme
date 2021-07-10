@@ -8,11 +8,19 @@ import messaging from '@react-native-firebase/messaging';
 import AppStateListener from "react-native-appstate-listener";
 import { Notifications } from 'react-native-notifications';
 import * as firebase from "firebase";
+import { useTranslation } from 'react-i18next';
+import * as RNLocalize from 'react-native-localize'
+
+
 
 export const AuthContext = createContext();
 
-
 export const AuthProvider = ({ children }) => {
+
+  const { t, i18n } = useTranslation();
+
+
+  i18n.language = RNLocalize.getLocales()[0].languageCode;
 
 
   const [token, setToken] = useState("");
@@ -36,7 +44,7 @@ export const AuthProvider = ({ children }) => {
 
           })
           .catch(error => {
-            alert("Please approve permission to send and receive notifications.")
+            alert(t('ApproveNotificationPermission'));
             messaging().requestPermission();
             // If user allow Push Notification
             messaging().getToken().then((currentToken) => {
@@ -83,92 +91,93 @@ export const AuthProvider = ({ children }) => {
 
   async function getMyAddress() {
 
-    let addr = await geoFireInstance.get(auth().currentUser.uid);
-    setAddress(addr);
-    Notifications.registerRemoteNotifications();
+    if (auth().currentUser.uid != null) {
 
-    Notifications.events().registerNotificationReceivedForeground((notification: Notification, completion) => {
-      console.log(`Notification received in foreground: ${notification.title} : ${notification.body}`);
-      completion({ alert: false, sound: false, badge: false });
-    });
+      let addr = await geoFireInstance.get(auth().currentUser.uid);
+      setAddress(addr);
+      Notifications.registerRemoteNotifications();
 
-    Notifications.events().registerNotificationOpened((notification: Notification, completion) => {
-      console.log(`Notification opened: ${notification.payload}`);
-      completion();
-    });
+      Notifications.events().registerNotificationReceivedForeground((notification: Notification, completion) => {
+        completion({ alert: false, sound: false, badge: false });
+      });
 
-    AppState.addEventListener('change', state => {
-      if (state === 'active' || state === 'background' || state === "inactive" || "") {
+      Notifications.events().registerNotificationOpened((notification: Notification, completion) => {
+        completion();
+      });
 
-        try {
-          const subscriber = firestore()
-            .collection('Pings')
-            .onSnapshot(querySnapshot => {
-              const temp_pings = [];
+      AppState.addEventListener('change', state => {
+        if (state === 'active' || state === 'background' || state === "inactive" || "") {
 
-              querySnapshot.forEach(documentSnapshot => {
-                if (documentSnapshot.data()) {
-                  temp_pings.push({
-                    ...documentSnapshot.data(),
-                    key: documentSnapshot.id,
-                  });
-                }
+          try {
+            const subscriber = firestore()
+              .collection('Pings')
+              .onSnapshot(querySnapshot => {
+                const temp_pings = [];
 
-              });
-              var dateNow = firestore.Timestamp.fromDate(new Date());
-
-              temp_pings.forEach(singleping => {
-                if (0 < dateNow.seconds - singleping.PingTime.seconds < 3601) {
-
-                  let lat1 = addr[0];
-                  let lon1 = addr[1];
-                  let lat2 = singleping.PingerLocation.latitude;
-                  let lon2 = singleping.PingerLocation.longitude;
-                  console.log(lat2)
-                  console.log(lon2)
-
-                  const R = 6371e3; // metres
-                  const φ1 = lat1 * Math.PI / 180; // φ, λ in radians
-                  const φ2 = lat2 * Math.PI / 180;
-                  const Δφ = (lat2 - lat1) * Math.PI / 180;
-                  const Δλ = (lon2 - lon1) * Math.PI / 180;
-
-                  const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-                    Math.cos(φ1) * Math.cos(φ2) *
-                    Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
-                  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-                  let Distance = parseFloat((R * c) / 1000).toFixed(3); // in km
-
-                  if (Distance < 10) {
-
-                    Notifications.postLocalNotification({
-                      body: 'A User Needs Yours Help !',
-                      title: 'Ping Notification !',
-                      sound: 'chime.aiff',
-                      category: 'SOME_CATEGORY',
-                      link: 'localNotificationLink',
+                querySnapshot.forEach(documentSnapshot => {
+                  if (documentSnapshot.data()) {
+                    temp_pings.push({
+                      ...documentSnapshot.data(),
+                      key: documentSnapshot.id,
                     });
-                    setPings(temp_pings);
-                    if (loading)
-                      setloading(false);
                   }
-                }
 
+                });
+                var dateNow = firestore.Timestamp.fromDate(new Date());
+
+                temp_pings.forEach(singleping => {
+                  if (0 < dateNow.seconds - singleping.PingTime.seconds < 3601) {
+
+                    let lat1 = addr[0];
+                    let lon1 = addr[1];
+                    let lat2 = singleping.PingerLocation.latitude;
+                    let lon2 = singleping.PingerLocation.longitude;
+                    console.log(lat2)
+                    console.log(lon2)
+
+                    const R = 6371e3; // metres
+                    const φ1 = lat1 * Math.PI / 180; // φ, λ in radians
+                    const φ2 = lat2 * Math.PI / 180;
+                    const Δφ = (lat2 - lat1) * Math.PI / 180;
+                    const Δλ = (lon2 - lon1) * Math.PI / 180;
+
+                    const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+                      Math.cos(φ1) * Math.cos(φ2) *
+                      Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+                    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+                    let Distance = parseFloat((R * c) / 1000).toFixed(3); // in km
+
+                    if (Distance < 10) {
+
+                      Notifications.postLocalNotification({
+                        body: t('PingNotificationBody'),
+                        title: t('PingNotificationTitle'),
+                        sound: 'chime.aiff',
+                        category: 'SOME_CATEGORY',
+                        link: 'localNotificationLink',
+                      });
+                      setPings(temp_pings);
+                      if (loading)
+                        setloading(false);
+                    }
+                  }
+
+                });
               });
-            });
 
-          // Unsubscribe from events when no longer in use
-          return () => subscriber();
+            // Unsubscribe from events when no longer in use
+            return () => subscriber();
 
-        } catch (error) {
-          alert(error);
+
+          } catch (error) {
+            alert(error);
+          }
+
         }
+      });
 
-      }
-    });
-
-
+    }
 
   }
 
@@ -179,7 +188,6 @@ export const AuthProvider = ({ children }) => {
 
     GetToken();
     messaging().onMessage(async remoteMessage => {
-      console.log('A new FCM message arrived!', JSON.stringify(remoteMessage));
       setNotification({
         title: remoteMessage.notification.title,
         body: remoteMessage.notification.body,
@@ -188,7 +196,6 @@ export const AuthProvider = ({ children }) => {
     });
 
     messaging().onNotificationOpenedApp(remoteMessage => {
-      console.log('onNotificationOpenedApp: ', JSON.stringify(remoteMessage));
       setNotification({
         title: remoteMessage.notification.title,
         body: remoteMessage.notification.body,
@@ -200,10 +207,6 @@ export const AuthProvider = ({ children }) => {
       .getInitialNotification()
       .then(remoteMessage => {
         if (remoteMessage) {
-          console.log(
-            'Notification caused app to open from quit state:',
-            JSON.stringify(remoteMessage),
-          );
           setNotification({
             title: remoteMessage.notification.title,
             body: remoteMessage.notification.body,
@@ -213,13 +216,9 @@ export const AuthProvider = ({ children }) => {
       });
 
     messaging().setBackgroundMessageHandler(async remoteMessage => {
-      console.log('Message handled in the background!', remoteMessage);
     });
 
-
   }, []);
-
-
 
 
 
@@ -244,12 +243,12 @@ export const AuthProvider = ({ children }) => {
             })
           } catch (err) {
             if (err == "Error: [auth/invalid-email] The email address is badly formatted.")
-              alert("The email address is badly formatted.");
+              alert(t('EmailBadFormat'));
             else if (err == "Error: [auth/user-not-found] There is no user record corresponding to this identifier. The user may have been deleted.") {
-              alert("Email not found.");
+              alert(t('EmailNotFound'));
             }
             else if (err == "Error: [auth/wrong-password] The password is invalid or the user does not have a password.") {
-              alert("Invalid password.");
+              alert(t('InvalidPassword'));
             }
             else
               alert(err);
@@ -267,7 +266,7 @@ export const AuthProvider = ({ children }) => {
             await auth().signInWithCredential(googleCredential)
 
               .catch(error => {
-                alert('Something went wrong with sign up: ', error);
+                alert(t('SomethingWrongwithSignUp'), error);
               });
           } catch (error) {
             alert({ error });
@@ -296,7 +295,7 @@ export const AuthProvider = ({ children }) => {
             await auth().signInWithCredential(facebookCredential)
 
               .catch(error => {
-                alert('Something went wrong with sign up: ', error);
+                alert(t('SomethingWrongwithSignUp'), error);
               });
           } catch (error) {
             alert({ error });
@@ -326,18 +325,18 @@ export const AuthProvider = ({ children }) => {
                   })
                   //ensure we catch any errors at this stage to advise us if something does go wrong
                   .catch(error => {
-                    alert('Something went wrong with added user to firestore: ', error);
+                    alert(t('FirebaseSomethingWrongWithSignUp'), error);
                   })
               })
               //we need to catch the whole sign up process if it fails too.
               .catch(error => {
                 console.log(error);
                 if (error == "Error: [auth/invalid-email] The email address is badly formatted.")
-                  alert("The email address is badly formatted.");
+                  alert(t('EmailBadFormat'));
                 else if (error == "Error: [auth/weak-password] The given password is invalid. [ Password should be at least 6 characters ]")
-                  alert("Password should be at least 6 characters");
+                  alert(t('ShortPassword'));
                 else if (error == "Error: [auth/email-already-in-use] The email address is already in use by another account.")
-                  alert("The email address is already in use by another account.");
+                  alert(t('EmailAlreadyExists'));
               });
             setType(type);
             setFrom_SignUp(true);
@@ -355,20 +354,20 @@ export const AuthProvider = ({ children }) => {
         forget: async (forgot_email) => {
           try {
             await auth().sendPasswordResetEmail(forgot_email);
-            alert("Email with reset password was sent.");
+            alert(t('ResetPasswordEmail'));
           } catch (err) {
             if (err == "Error: [auth/invalid-email] The email address is badly formatted.")
-              alert("The email address is badly formatted.");
+              alert(t('EmailBadFormat'));
             else if (err == "Error: [auth/user-not-found] There is no user record corresponding to this identifier. The user may have been deleted.")
-              alert("Email not found.");
+              alert(t('EmailNotFound'));
             else
-              alert("Something went wrong.");
+              alert(t('SomethingWentWrong'));
           }
         },
         getType: async () => {
           try {
             var TypeReturned = firestore().collection('users').doc(auth().currentUser.uid).get('type').catch(error => {
-              alert('Something went wrong with added user to firestore: ', error)
+              alert(t('FirebaseSomethingWrongWithSignUp'), error)
             });
             setType(TypeReturned);
           } catch (err) {

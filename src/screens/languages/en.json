@@ -1,0 +1,25 @@
+{
+    "translation": {
+        "forgotPass": "Forgot Password?",
+        "NoAccount": "Don't have an account? Create here!",
+        "SignIn": "Sign In",
+        "FBSignIn": "Sign In with Facebook",
+        "GSignIn": "Sign In with Google ",
+        "EmailText": "Email",
+        "PasswordText": "Password",
+        "fillSlots": "Please fill all the slots.",
+        "writeEmail": "Please write the email.",
+        "ApproveNotificationPermission": "Please approve permission to send and receive notifications.",
+        "PingNotificationBody": "A User Needs Yours Help !",
+        "PingNotificationTitle": "Ping Notification !",
+        "EmailBadFormat": "The email address is badly formatted.",
+        "EmailNotFound": "Email not found.",
+        "InvalidPassword": "Invalid password.",
+        "SomethingWrongwithSignUp": "Something went wrong with sign up: ",
+        "FirebaseSomethingWrongWithSignUp": "Something went wrong with added user to firestore: ",
+        "ShortPassword": "Password should be at least 6 characters",
+        "EmailAlreadyExists": "The email address is already in use by another account.",
+        "ResetPasswordEmail": "Email with reset password was sent.",
+        "SomethingWentWrong": "Something went wrong."
+    }
+}

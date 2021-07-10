@@ -1,10 +1,10 @@
-import React, {useContext, useState} from 'react';
-import {FlatList, SafeAreaView, StatusBar,View, Text, TouchableOpacity, Platform, StyleSheet} from 'react-native';
+import React, { useContext, useState } from 'react';
+import { FlatList, SafeAreaView, StatusBar, View, Text, TouchableOpacity, Platform, StyleSheet } from 'react-native';
 import FormInput from '../screens/components/FormInput';
 import FormButton from '../screens/components/FormButton';
-import {AuthContext} from '../navigation/AuthProvider';
+import { AuthContext } from '../navigation/AuthProvider';
 import { ScrollView } from 'react-native-gesture-handler';
-
+import { t, i18n } from '../screens/LoginScreen'
 
 const DATA = [
   {
@@ -29,20 +29,20 @@ const Item = ({ item, onPress, backgroundColor, textColor }) => (
 
 
 
-const SignupScreen = ({navigation}) => {
+const SignupScreen = ({ navigation }) => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
   const [fname, setFname] = useState();
   const [lname, setLname] = useState();
   const [address, setAddress] = useState();
-  const {register} = useContext(AuthContext);
+  const { register } = useContext(AuthContext);
   const [selectedId, setSelectedId] = useState(null);
   const [type, setType] = useState("");
-  const [cart,setCart] = useState([]);
-  const [requests,setRequests] = useState([]);
+  const [cart, setCart] = useState([]);
+  const [requests, setRequests] = useState([]);
 
- 
+
 
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? "#ab0000" : "white";
@@ -60,15 +60,15 @@ const SignupScreen = ({navigation}) => {
       />
     );
   };
-  
+
 
 
   return (
-    
+
     <ScrollView contentContainerStyle={styles.container}>
 
       <Text style={styles.text}>Create an account</Text>
-    
+
       <FormInput
         labelValue={fname}
         onChangeText={(FirstName) => setFname(FirstName)}
@@ -76,7 +76,7 @@ const SignupScreen = ({navigation}) => {
         iconType="user"
         autoCorrect={false}
       />
-      
+
 
       <FormInput
         labelValue={lname}
@@ -85,7 +85,7 @@ const SignupScreen = ({navigation}) => {
         iconType="user"
         autoCorrect={false}
       />
-      
+
       <FormInput
         labelValue={address}
         onChangeText={(Address) => setAddress(Address)}
@@ -93,7 +93,7 @@ const SignupScreen = ({navigation}) => {
         iconType="city"
         autoCorrect={false}
       />
-    
+
       <FormInput
         labelValue={email}
         onChangeText={(userEmail) => setEmail(userEmail)}
@@ -119,42 +119,42 @@ const SignupScreen = ({navigation}) => {
         secureTextEntry={true}
       />
 
-      <View style={{flexDirection:'row'}}>
-        <SafeAreaView style={{flexDirection:'row'}}>
-        <FlatList
-          data={DATA}
-          scrollEnabled={false}
-          horizontal
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          extraData={selectedId}
-        />
-      </SafeAreaView>
+      <View style={{ flexDirection: 'row' }}>
+        <SafeAreaView style={{ flexDirection: 'row' }}>
+          <FlatList
+            data={DATA}
+            scrollEnabled={false}
+            horizontal
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            extraData={selectedId}
+          />
+        </SafeAreaView>
       </View>
 
       <FormButton
         buttonTitle="Sign Up"
         onPress={() => {
-          if(fname === "")
+          if (fname === "")
             alert("Please insert your first name.");
-          else if(lname === "")
+          else if (lname === "")
             alert("Please insert your last name.");
-          else if(address === "")
+          else if (address === "")
             alert("Please insert your address.");
-          else if(email === "")
+          else if (email === "")
             alert("Please insert an email.");
-          else if(email === "")
+          else if (email === "")
             alert("Please insert a password.");
-          else if(password !== confirmPassword)
+          else if (password !== confirmPassword)
             alert("Password mismatch with the confirm password.");
-          else if(type === "")
+          else if (type === "")
             alert("Please select a type.");
-          else{
-            register(fname, lname, address, email, password, type,cart,requests);
+          else {
+            register(fname, lname, address, email, password, type, cart, requests);
           }
         }}
       />
-      
+
       <TouchableOpacity
         style={styles.navButton}
         onPress={() => navigation.navigate('Login')}>
@@ -176,51 +176,51 @@ const styles = StyleSheet.create({
     fontSize: 28,
     marginBottom: 40,
     color: '#ab0000',
-    fontWeight:'bold'
+    fontWeight: 'bold'
   },
   navButton: {
     marginTop: 10,
   },
   navButtonText: {
     fontSize: 18,
-    marginTop:20,
+    marginTop: 20,
     fontWeight: 'bold',
     color: '#ab0000',
     fontFamily: 'Lato-Regular',
   },
-  menuBox:{
+  menuBox: {
     backgroundColor: "#ab0000",
     justifyContent: 'center',
-    width:80,
-    height:80,
-    margin:15,
+    width: 80,
+    height: 80,
+    margin: 15,
     shadowColor: 'black',
     shadowOpacity: .2,
     shadowOffset: {
-      height:2,
-      width:-2
+      height: 2,
+      width: -2
     },
-    borderRadius:13,
-    elevation:4,
-    flexDirection:'column'
+    borderRadius: 13,
+    elevation: 4,
+    flexDirection: 'column'
   },
   icon: {
-    width:60,
-    height:60,
+    width: 60,
+    height: 60,
   },
-  info:{
-    fontSize:13,
-    fontWeight:'bold',
-    marginTop:10,
+  info: {
+    fontSize: 13,
+    fontWeight: 'bold',
+    marginTop: 10,
     color: "white",
   },
   item: {
     padding: 10,
     marginVertical: 8,
     marginHorizontal: 8,
-    borderRadius:5,
-    borderWidth:2,
-    borderColor:'#ab0000'
+    borderRadius: 5,
+    borderWidth: 2,
+    borderColor: '#ab0000'
   },
   title: {
     fontSize: 20,
