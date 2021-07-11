@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, FlatList, SafeAreaView, LogBox } from 'react-native';
+import { StyleSheet, View, FlatList, LogBox } from 'react-native';
 import { Container, InputGroup, FooterTab, Input, Content, Text, Button, Icon } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import firestore from "@react-native-firebase/firestore";
@@ -12,9 +12,10 @@ const CustomersReviewsScreen = ({ navigation, route }) => {
 
     const [reviews, setReviews] = useState([]); // Initial empty array of Reviews
     const [loading, setloading] = useState(true);
-    useEffect(() => {
+
+    async function Get_Reviews() {
         try {
-            const subscriber = firestore()
+            const subscriber = await firestore()
                 .collection('Reviews')
                 .onSnapshot(querySnapshot => {
                     const temp_reviews = [];
@@ -39,6 +40,10 @@ const CustomersReviewsScreen = ({ navigation, route }) => {
             alert(error);
         }
 
+    }
+
+    useEffect(() => {
+        Get_Reviews();
     }, []);
 
     return (
@@ -62,7 +67,7 @@ const CustomersReviewsScreen = ({ navigation, route }) => {
             </View>
             {/* End Search bar with nav back */}
             <Container>
-                
+
                 {loading ? <Text style={styles.loadingStyle}> Loading Reviews... </Text> :
                     <FlatList
                         data={reviews}

@@ -16,48 +16,49 @@ const ReviewComponent = (props) => {
 
     const [Reviewer_Name, setReviewer_name] = useState("");
 
-    var date = new Date(props.dateofreview.seconds * 1000 + props.dateofreview.nanoseconds/1000000)
+    var date = new Date(props.dateofreview.seconds * 1000 + props.dateofreview.nanoseconds / 1000000)
 
-    function Get_Reviewer_Name() {
-        useEffect(() => {
-            try {
+    async function Get_Name() {
 
-                if (props.reviewer != null) {
-                    const subscriber = firestore()
-                        .collection('users')
-                        .doc(props.reviewer)
-                        .onSnapshot(documentSnapshot => {
-                            if (documentSnapshot.exists) {
-                                setReviewer_name(documentSnapshot.data().fname + " " + documentSnapshot.data().lname);
+        try {
 
-                            }
-                        });
-                    // Stop listening for updates when no longer required
-                    return () => subscriber();
-                }
-            } catch (error) {
-                alert(error);
+            if (props.reviewer != null) {
+                const subscriber = await firestore()
+                    .collection('users')
+                    .doc(props.reviewer)
+                    .onSnapshot(documentSnapshot => {
+                        if (documentSnapshot.exists) {
+                            setReviewer_name(documentSnapshot.data().fname + " " + documentSnapshot.data().lname);
+
+                        }
+                    });
+                // Stop listening for updates when no longer required
+                return () => subscriber();
             }
-        }, []);
+        } catch (error) {
+            alert(error);
+        }
     }
 
+    useEffect(() => {
+        Get_Name();
+    }, []);
 
-    Get_Reviewer_Name();
 
     return (
         <View style={{ borderColor: "darkred", borderWidth: 2, marginVertical: 5 }}>
             <Text style={styles.title}>Review By:  <Text style={styles.writing}> {Reviewer_Name} </Text></Text>
-            
+
             <Text style={styles.title}>Reviewed On:  <Text style={styles.writing}> {date.toDateString()} </Text></Text>
-            
-            <Text style={styles.title}>Item Rating: </Text>
+
+            <Text style={styles.title}>Item/Service Rating: </Text>
             <Rating
                 showRating fractions={1}
                 startingValue={props.itemrating}
                 style={{ paddingVertical: 10 }}
             />
-            
-            <Text style={styles.title}>Shop Owner Rating: </Text>
+
+            <Text style={styles.title}>Shop Owner/Mechanic Rating: </Text>
             <Rating
                 showRating fractions={1}
                 startingValue={props.shoprating}

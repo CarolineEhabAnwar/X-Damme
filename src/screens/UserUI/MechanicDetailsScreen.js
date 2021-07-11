@@ -61,9 +61,6 @@ const MechanicDetailsScreen = ({ route, navigation }) => {
               <Text style={styles.textStyles}>Phone Number:</Text>
               <Text style={styles.mechanicsTextStyle}>{route.params.mech.phoneNumber}</Text>
 
-              <Text style={styles.textStyles}>Rate:</Text>
-              <Text style={styles.mechanicsTextStyle}>//Rate//</Text>
-
               <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
                 <Button style={styles.buttonStyle} onPress={() => Check_Location()}>
                   <Icon style={{ marginRight: -6 }} name="location-outline"></Icon>

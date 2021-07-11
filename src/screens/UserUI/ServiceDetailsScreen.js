@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from "react";
-import { LogBox, StyleSheet, FlatList, Modal, View, CheckBox,Pressable,Alert } from 'react-native';
+import { LogBox, StyleSheet, FlatList, Modal, View, Pressable, Alert } from 'react-native';
 import { Container, Form, Icon, InputGroup, Input, Button, Item, Text, Content } from "native-base";
 import firestore from "@react-native-firebase/firestore";
 import { Ionicons } from '@expo/vector-icons';
@@ -7,12 +7,13 @@ import { Picker } from '@react-native-picker/picker';
 import ServiceComponent from '../components/ServiceComponent'
 import FooterComponent from "../components/FooterComponent";
 import { set } from "react-native-reanimated";
+import CheckBox from '@react-native-community/checkbox';
 
 const ServiceDetailsScreen = ({ route, navigation }) => {
   LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
   const mechID_sent = route.params.mechID
   const [mech_services, set_mech_serives] = useState([])
-  
+
   let [filtered_services, set_filtered_services] = useState([])
   const [show_services, set_show_services] = useState([])
   const [loading, setloading] = useState(true)
@@ -36,12 +37,12 @@ const ServiceDetailsScreen = ({ route, navigation }) => {
   const selectedDays = []
 
   MondaySelected ? selectedDays.push('Monday') : null,
-  TuesdaySelected ? selectedDays.push('Tuesday') : null,
-  WednesdaySelected ? selectedDays.push('Wednesday') : null,
-  ThursdaySelected ? selectedDays.push('Thursday') : null,
-  FridaySelected ? selectedDays.push('Friday') : null,
-  SaturdaySelected ? selectedDays.push('Saturday') : null,
-  SundaySelected ? selectedDays.push('Sunday') : null
+    TuesdaySelected ? selectedDays.push('Tuesday') : null,
+    WednesdaySelected ? selectedDays.push('Wednesday') : null,
+    ThursdaySelected ? selectedDays.push('Thursday') : null,
+    FridaySelected ? selectedDays.push('Friday') : null,
+    SaturdaySelected ? selectedDays.push('Saturday') : null,
+    SundaySelected ? selectedDays.push('Sunday') : null
 
   const [price_min, set_price_min] = useState(0)
   const [price_max, set_price_max] = useState(0)
@@ -305,7 +306,7 @@ const ServiceDetailsScreen = ({ route, navigation }) => {
         <Icon name='filter' />
         <Text style={{ marginLeft: -27 }}> Filter </Text>
       </Button>
-      <Content>
+      <Container>
         {loading ? <Text style={styles.loadingStyle}> Loading Services... </Text> :
           <FlatList
             data={show_services}
@@ -320,13 +321,14 @@ const ServiceDetailsScreen = ({ route, navigation }) => {
                   duration={item.Duration}
                   start_time={item.Start_Time}
                   end_time={item.End_Time}
-                  mechID = {item.Mech_ID}
+                  mechID={item.Mech_ID}
+                  serviceID={item.key}
                 />);
             }}
           />
         }
 
-      </Content>
+      </Container>
 
       <FooterComponent
         home='Home'

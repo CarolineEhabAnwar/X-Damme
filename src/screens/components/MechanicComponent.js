@@ -11,36 +11,98 @@ const MechanicComponent = (props) => {
     const navigation = useNavigation();
 
     const { user } = useContext(AuthContext);
+    const [loading, setloading] = useState(true);
+    const [FinalShopRating, setFinalShopRating] = useState(0);
+    const [TotalShopReviewsCount, setTotalShopReviewsCount] = useState(0);
+
+
+
+    async function Get_Mech_Rating() {
+        setloading(true);
+
+        let shopvalue = 0;
+        let final_shop_rating = 0;
+
+        let shopCount = 0;
+
+
+        try {
+
+            await firestore().collection('Reviews').where('ShopOwnerID', '==', props.mechID)
+                .get()
+                .then(querySnapshot => {
+
+                    shopCount = querySnapshot.docs.length
+                    setTotalShopReviewsCount(shopCount);
+                    querySnapshot.forEach(documentSnapshot => {
+                        shopvalue += documentSnapshot.data().ShopStarRating;
+                    });
+
+                });
+
+            if (shopCount == 0) {
+                final_shop_rating = 0;
+            }
+            else {
+                final_shop_rating = shopvalue / shopCount;
+            }
+
+            setFinalShopRating(final_shop_rating);
+            if (loading)
+                setloading(false);
+        }
+        catch (error) {
+            alert(error);
+        }
+
+    }
+
+    useEffect(() => {
+
+        Get_Mech_Rating();
+
+    }, []);
+
 
     return (
-        
-            <Card style={{ borderRadius: 3 }}>
-                <CardItem>
-                    <Left>
-                        <Body style={{ marginBottom: 8 }}>
-                            <Text style={{ fontWeight: 'bold', fontSize: 18.5 }}>{props.mech.fname} {props.mech.lname}</Text>
-                            <Text note>Rate</Text>
-                        </Body>
-                    </Left>
-                </CardItem>
-                <CardItem cardBody>
-                    {props.mech.profileIMG == null || props.mech.profileIMG == ""? 
-                    <Image source={require("../../../assets/mechanic.png")} style={{ height: 200, width: null, flex: 1 }} />
-                    :                 
-                    <Image source={{ uri: props.mech.profileIMG }} style={{ height: 200, width: null, flex: 1 }} />
-                    }
-                </CardItem>
-                <CardItem style={{ marginLeft: 'auto' }}>
-                    <Right>
-                        <Button style={styles.cartItemStyle} transparent onPress={() => navigation.navigate('MechanicDetails', {
-                            mech: props.mech,
-                        })}>
-                            <Text style={{ fontSize: 15, marginRight: -15, color: 'darkred', fontWeight: 'bold' }} > See Mechanic Details </Text>
-                            <Icon active style={{ fontSize: 25, color: 'darkred' }} name="arrow-forward" />
-                        </Button>
-                    </Right>
-                </CardItem>
-            </Card>
+        <Content>
+            {loading ? null :
+
+                <Card style={{ borderRadius: 3 }}>
+                    <CardItem>
+                        <Left>
+                            <Body style={{ marginBottom: 8 }}>
+                                <Text style={{ fontWeight: 'bold', fontSize: 18.5 }}>{props.fname} {props.lname}</Text>
+                                <Text note>Rate: {FinalShopRating}</Text>
+                            </Body>
+                        </Left>
+                    </CardItem>
+                    <CardItem cardBody>
+                        {props.mech.profileIMG == null || props.mech.profileIMG == "" ?
+                            <Image source={require("../../../assets/mechanic.png")} style={{ height: 200, width: null, flex: 1 }} />
+                            :
+                            <Image source={{ uri: props.mech.profileIMG }} style={{ height: 200, width: null, flex: 1 }} />
+                        }
+                    </CardItem>
+                    <CardItem style={{ marginLeft: 'auto' }}>
+                        <Right>
+                            <Button style={styles.cartItemStyle} transparent onPress={() => navigation.navigate('MechanicDetails', {
+                                fname: props.fname,
+                                lname: props.lname,
+                                address: props.address,
+                                mechID: props.mechID,
+                                mech: props.mech
+
+                            })}>
+                                <Text style={{ fontSize: 15, marginRight: -15, color: 'darkred', fontWeight: 'bold' }} > See Mechanic Details </Text>
+                                <Icon active style={{ fontSize: 25, color: 'darkred' }} name="arrow-forward" />
+                            </Button>
+                        </Right>
+                    </CardItem>
+                </Card>
+            }
+        </Content>
+
     );
 }
 
@@ -54,7 +116,15 @@ const styles = StyleSheet.create({
     cartItemStyle: {
         marginTop: -4,
         marginRight: 3
-    }
+    },
+    loadingStyle: {
+        color: 'darkred',
+        alignSelf: 'center',
+        fontSize: 22,
+        textAlignVertical: 'center',
+        fontWeight: 'bold',
+        marginTop: 220
+    },
 })
 
 export default MechanicComponent;

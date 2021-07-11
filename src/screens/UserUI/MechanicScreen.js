@@ -119,7 +119,7 @@ const MechanicScreen = ({ navigation }) => {
     try {
       Get_Service_Types();
     } catch (error) {
-      console.log(error);
+      alert(error);
     }
   }, []);
 
@@ -201,7 +201,7 @@ const MechanicScreen = ({ navigation }) => {
       {/* End Search bar with nav back */}
 
 
-      <Content>
+      <Container>
 
         <Button rounded style={{ marginLeft: 5, marginBottom: 5, backgroundColor: 'darkred' }} onPress={() => setModalVisible(true)}>
           <Icon name='filter' />
@@ -216,11 +216,15 @@ const MechanicScreen = ({ navigation }) => {
               return (
                 <MechanicComponent
                   mech={item}
+                  fname={item.fname}
+                  lname={item.lname}
+                  address={item.address}
+                  mechID={item.key}
                 />);
             }}
           />
         }
-      </Content>
+      </Container>
 
       <FooterComponent
         home="Home"

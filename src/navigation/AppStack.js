@@ -66,6 +66,7 @@ import ShopOwnerProfileScreen from "../screens/UserUI/ShopOwnerProfileScreen"
 import NearbyHospitalsScreen from "../screens/UserUI/NearbyHospitalsScreen"
 import PingMapScreen from "../screens/UserUI/PingMapScreen"
 import PingRequestsScreen from "../screens/UserUI/PingRequestsScreen"
+import ServiceReviewScreen from "../screens/UserUI/ServiceReviewScreen"
 
 //Importing Mechanic Screens
 import MechAddOfferScreen from "../screens/Mech_UI/MechAddOfferScreen"
@@ -213,6 +214,11 @@ const UserStack = ({ navigation }) => (
     <Stack.Screen
       name="Review"
       component={ReviewScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="ServiceReview"
+      component={ServiceReviewScreen}
       options={{ header: () => null }}
     />
     <Stack.Screen

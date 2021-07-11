@@ -158,7 +158,7 @@ const ItemDetailsScreen = ({ navigation, route }) => {
         setloading(false);
     }
     catch (error) {
-      console.log(error);
+      alert(error);
     }
 
   }
@@ -191,7 +191,7 @@ const ItemDetailsScreen = ({ navigation, route }) => {
                 {route.params.Item.InOffer == "true" ?
                   <View>
                     <Text style={styles.textStyles}>Price: </Text>
-                    <Text style={{fontSize: 19,marginBottom: 10,fontWeight: 'bold',textDecorationLine: 'line-through'}}>{route.params.Item.Price}</Text>
+                    <Text style={{ fontSize: 19, marginBottom: 10, fontWeight: 'bold', textDecorationLine: 'line-through' }}>{route.params.Item.Price}</Text>
                     <Text style={styles.itemsTextStyle}>{route.params.Item.After_Price}</Text>
                   </View>
                   :
