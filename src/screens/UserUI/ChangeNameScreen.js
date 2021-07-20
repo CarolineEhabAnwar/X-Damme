@@ -6,6 +6,7 @@ import { Fontisto, Ionicons } from '@expo/vector-icons';
 import FooterComponent from '../components/FooterComponent'
 import firestore from "@react-native-firebase/firestore";
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 const ChangeNameScreen = ({route}) => {
     const { user } = useContext(AuthContext);
@@ -13,7 +14,8 @@ const ChangeNameScreen = ({route}) => {
     let [newfname, setnewfname] = useState('');
     let [newlname, setnewlname] = useState('');
     let [fname, setfname] = useState('');
-    let [lname, setlname] = useState('')
+    let [lname, setlname] = useState('');
+    const { t, i18n } = useTranslation();
 
     useEffect(() => {
         try {
@@ -39,7 +41,7 @@ const ChangeNameScreen = ({route}) => {
                         style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
                     />
                 </Button>
-                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '22%', paddingTop: 12, fontWeight: 'bold' }}>Change Name</Text>
+                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '22%', paddingTop: 12, fontWeight: 'bold' }}>{t('UserChangeNameScreenTitle')}</Text>
             </View>
             {/* End Search bar with drawer */}
 
@@ -56,7 +58,7 @@ const ChangeNameScreen = ({route}) => {
                     <Button style={{ backgroundColor: route.params.Color, marginVertical: 20, alignSelf: 'center' }} onPress={() => {
 
                         if ((newfname == '') && (newlname == '')) {
-                            alert('You did not change you name!')
+                            alert(t('UserChangeNameScreenAlert1'))
                         }
                         else {
                             {
@@ -67,15 +69,15 @@ const ChangeNameScreen = ({route}) => {
                                     newlname = lname
                                 }
                                 Alert.alert(
-                                    "Warning",
-                                    "Are you sure you want to change your name?",
+                                    t('UserChangeNameScreenAlert2'),
+                                    t('UserChangeNameScreenAlert3'),
                                     [
                                         {
-                                            text: "No",
+                                            text: t('UserChangeNameScreenAlert4'),
                                             style: "cancel"
                                         },
                                         {
-                                            text: "Yes", onPress: () => {
+                                            text: t('UserChangeNameScreenAlert5'), onPress: () => {
                                                 try {
                                                     firestore()
                                                         .collection('users')
@@ -85,7 +87,7 @@ const ChangeNameScreen = ({route}) => {
                                                             lname: newlname,
                                                         })
                                                     navigation.goBack();
-                                                    alert('You name has been changed successfully!')
+                                                    alert(t('UserChangeNameScreenAlert6'))
                                                 } catch (error) {
                                                     alert(error)
                                                 }
@@ -96,7 +98,7 @@ const ChangeNameScreen = ({route}) => {
                             }
                         }
                     }}>
-                        <Text>Change Name</Text>
+                        <Text>{t('UserChangeNameScreenButton1')}</Text>
                     </Button>
                 </Form>
 

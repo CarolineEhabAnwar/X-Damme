@@ -5,6 +5,7 @@ import { FontAwesome5, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { AuthContext } from '../../navigation/AuthProvider';
 import firestore from '@react-native-firebase/firestore';
 import FooterComponent from '../components/FooterComponent';
+import { useTranslation } from 'react-i18next';
 
 
 const ProfileScreen = ({ navigation }) => {
@@ -14,6 +15,7 @@ const ProfileScreen = ({ navigation }) => {
   const [userName, setUserName] = useState('');
   const [Image_Path, setImage_Path] = useState("");
   const [loading, setloading] = useState(true);
+  const { t, i18n } = useTranslation();
 
   async function LoadUP() {
     setloading(true);
@@ -28,7 +30,7 @@ const ProfileScreen = ({ navigation }) => {
 
     setloading(false);
   }
-  
+
   useEffect(() => {
     try {
       LoadUP();
@@ -48,11 +50,11 @@ const ProfileScreen = ({ navigation }) => {
             style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
           />
         </Button>
-        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '27%', paddingTop: 12, fontWeight: 'bold' }}>Profile</Text>
+        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '27%', paddingTop: 12, fontWeight: 'bold' }}>{t('UserProfileScreenText1')}</Text>
       </View>
       {/* End Text with drawer */}
 
-      {loading ? <Content><Text style={styles.loadingStyle}> Loading Profile... </Text></Content> :
+      {loading ? <Content><Text style={styles.loadingStyle}>{t('UserProfileScreenText2')}</Text></Content> :
         <Content>
 
           <View style={styles.container}>
@@ -73,32 +75,32 @@ const ProfileScreen = ({ navigation }) => {
               <View style={styles.bodyContent}>
                 <Button style={styles.menuBox} onPress={() => navigation.navigate('MyCars')}>
                   <FontAwesome5 name="car-side" size={40} color="white" />
-                  <Text style={styles.info}>My Cars</Text>
+                  <Text style={styles.info}>{t('UserProfileScreenText3')}</Text>
                 </Button>
 
                 <Button style={styles.menuBox} onPress={() => navigation.navigate('MyRequests')}>
                   <MaterialIcons name="history" size={45} color="white" />
-                  <Text style={styles.info}>Item Requests</Text>
+                  <Text style={styles.info}>{t('UserProfileScreenText4')}</Text>
                 </Button>
 
                 <Button style={styles.menuBox} onPress={() => navigation.navigate('MyServiceRequests')}>
                   <MaterialIcons name="history" size={45} color="white" />
-                  <Text style={styles.info}>Service Requests</Text>
+                  <Text style={styles.info}>{t('UserProfileScreenText5')}</Text>
                 </Button>
 
                 <Button style={styles.menuBox} onPress={() => navigation.navigate('MyReviews')}>
                   <MaterialIcons name="rate-review" size={45} color="white" />
-                  <Text style={styles.info}>Reviews</Text>
+                  <Text style={styles.info}>{t('UserProfileScreenText6')}</Text>
                 </Button>
 
                 <Button style={styles.menuBox} onPress={() => navigation.navigate('Settings')}>
                   <MaterialIcons name="settings" size={45} color="white" />
-                  <Text style={styles.info}>Settings</Text>
+                  <Text style={styles.info}>{t('UserProfileScreenText7')}</Text>
                 </Button>
 
                 <Button style={styles.menuBox} onPress={() => logout()}>
                   <MaterialIcons name="logout" size={45} color="white" />
-                  <Text style={styles.info}>Logout</Text>
+                  <Text style={styles.info}>{t('UserProfileScreenText8')}</Text>
                 </Button>
               </View>
             </View>
@@ -106,12 +108,24 @@ const ProfileScreen = ({ navigation }) => {
         </Content>
       }
 
-      <FooterComponent
-        home="Home"
-        profile="Profile"
-        contactus="ContactUs"
-        bkcolor="darkred"
-      />
+      <View style={{ flexDirection: 'row', alignContent: "center", backgroundColor: "darkred" }}>
+        <FooterTab transparent style={{ backgroundColor: "darkred" }}>
+          <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Home')}>
+            <Icon style={{ color: 'white' }} name="home" />
+            <Text style={{ color: 'white' }}>{t('UserHomeScreenHome')}</Text>
+          </Button>
+
+          <Button style={{ marginTop: 5 }}>
+            <Icon name="person" style={{ color: 'white' }} />
+            <Text style={{ color: 'white' }}>{t('UserHomeScreenProfile')}</Text>
+          </Button>
+
+          <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('ContactUs')}>
+            <Icon style={{ color: 'white' }} name="call" />
+            <Text style={{ color: 'white' }} >{t('UserHomeScreenContactUs')}</Text>
+          </Button>
+        </FooterTab>
+      </View>
     </Container>
   );
 }

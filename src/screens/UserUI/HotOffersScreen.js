@@ -5,12 +5,14 @@ import { Ionicons } from '@expo/vector-icons';
 import firestore from "@react-native-firebase/firestore";
 import ItemComponent from '../components/ItemComponent'
 import { AuthContext } from '../../navigation/AuthProvider';
+import { useTranslation } from 'react-i18next';
 
 const HotOffersScreen = ({ navigation }) => {
 
     LogBox.ignoreLogs(['VirtualizedList: missing keys for items']);
 
     const { user } = useContext(AuthContext);
+    const { t, i18n } = useTranslation();
 
     //Setting the Model Visible
     const [modalVisible, setModalVisible] = useState(false);
@@ -254,7 +256,7 @@ const HotOffersScreen = ({ navigation }) => {
                     <View style={styles.modalView}>
 
                         {/* Car Model */}
-                        <Text style={styles.modalText}>Filter Items</Text>
+                        <Text style={styles.modalText}>{t('UserHotOffersScreenFilter')}</Text>
 
                         <Form>
                             {/* Item Type Picker */}
@@ -347,7 +349,7 @@ const HotOffersScreen = ({ navigation }) => {
                             </Item>
 
                             {/* Price Range */}
-                            <Text style={styles.textStyle2}>Price Range:</Text>
+                            <Text style={styles.textStyle2}>{t('UserHotOffersScreenPrice')}</Text>
 
 
                             <Item regular style={styles.InputStyle}>
@@ -370,7 +372,7 @@ const HotOffersScreen = ({ navigation }) => {
                                         set_price_min(0);
                                     }}
                                 >
-                                    <Text style={styles.textStyle}>Remove Filter</Text>
+                                    <Text style={styles.textStyle}>{t('UserHotOffersScreenRemoveFilter')}</Text>
                                 </Button >
 
 
@@ -382,7 +384,7 @@ const HotOffersScreen = ({ navigation }) => {
                                         Filter();
                                     }}
                                 >
-                                    <Text style={styles.textStyle}>OK</Text>
+                                    <Text style={styles.textStyle}>{t('UserHotOffersScreenOK')}</Text>
                                 </Button>
                             </View>
                         </Form>
@@ -402,7 +404,7 @@ const HotOffersScreen = ({ navigation }) => {
                 </Button>
                 <InputGroup rounded style={{ flex: 1, backgroundColor: '#fff', height: 35, marginTop: 7, paddingLeft: 10, paddingRight: 10 }}>
                     <Icon name="ios-search" style={{ color: "darkred" }} />
-                    <Input style={{ height: 40, marginTop: 5, color: "darkred" }} placeholder="Search" onChangeText={search_item => set_search_item(search_item)} />
+                    <Input style={{ height: 40, marginTop: 5, color: "darkred" }} placeholder={t('UserAdvViewScreenSearch')} onChangeText={search_item => set_search_item(search_item)} />
                 </InputGroup>
                 <Button transparent style={{ height: 50 }}
                     onPress={() => {
@@ -419,7 +421,7 @@ const HotOffersScreen = ({ navigation }) => {
                         setShow_Items(items_to_show);
                     }}
                 >
-                    <Text style={{ color: "white", fontWeight: 'bold' }}>Search</Text>
+                    <Text style={{ color: "white", fontWeight: 'bold' }}>{t('UserAdvViewScreenSearch')}</Text>
                 </Button>
             </View>
             {/* End Search bar with nav back */}
@@ -428,18 +430,18 @@ const HotOffersScreen = ({ navigation }) => {
                 {/* Filter Button */}
                 <Button rounded style={{ marginLeft: 5, marginBottom: 5, backgroundColor: 'darkred' }} onPress={() => setModalVisible(true)}>
                     <Icon name='filter' />
-                    <Text style={{ marginLeft: -27 }}> Filter </Text>
+                    <Text style={{ marginLeft: -27 }}>{t('UserHotOffersScreenButton1')}</Text>
                 </Button>
                 {/* End filter button */}
 
 
 
                 {loading ?
-                    <Text style={styles.loadingStyle}> Loading Items... </Text>
+                    <Text style={styles.loadingStyle}>{t('UserHotOffersScreenLoading')}</Text>
                     :
                     <View>
                         {show_Items.length == 0 ? 
-                        <Text style={styles.loadingStyle}> No Current Offers </Text>                
+                        <Text style={styles.loadingStyle}>{t('UserHotOffersScreenNoCurrentOffers')}</Text>                
                         :
                             <FlatList
                                 data={show_Items}
@@ -460,17 +462,17 @@ const HotOffersScreen = ({ navigation }) => {
                 <FooterTab transparent style={{ backgroundColor: "darkred" }}>
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Home')}>
                         <Icon style={{ color: 'white' }} name="home" />
-                        <Text style={{ color: 'white' }}> Home</Text>
+                        <Text style={{ color: 'white' }}>{t('UserHomeScreenHome')}</Text>
                     </Button>
 
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Profile')}>
                         <Icon name="person" style={{ color: 'white' }} />
-                        <Text style={{ color: 'white' }}>Profile</Text>
+                        <Text style={{ color: 'white' }}>{t('UserHomeScreenProfile')}</Text>
                     </Button>
 
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('ContactUs')}>
                         <Icon style={{ color: 'white' }} name="call" />
-                        <Text style={{ color: 'white' }} >Contact Us</Text>
+                        <Text style={{ color: 'white' }} >{t('UserHomeScreenContactUs')}</Text>
                     </Button>
                 </FooterTab>
             </View>

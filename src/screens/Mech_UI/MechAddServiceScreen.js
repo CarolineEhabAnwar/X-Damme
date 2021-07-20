@@ -1,5 +1,6 @@
 import React, { Component, useContext, useState, useEffect } from 'react';
-import { StyleSheet, View, CheckBox, TextInput, Alert } from 'react-native';
+import { StyleSheet, View, TextInput, Alert } from 'react-native';
+import CheckBox from "@react-native-community/checkbox";
 import { Container, FooterTab, Badge, Header, Content, Item, Input, Text, Radio, Form, Button } from 'native-base';
 import { Fontisto, Ionicons } from '@expo/vector-icons';
 import firestore from "@react-native-firebase/firestore";

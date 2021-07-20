@@ -9,8 +9,6 @@ import FooterComponent from '../components/FooterComponent'
 
 
 const MechServiceListScreen = () => {
-  LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
-  LogBox.ignoreLogs(['VirtualizedList: Missing keys for items']);
 
   const navigation = useNavigation();
   const { user } = useContext(AuthContext);
@@ -82,9 +80,8 @@ const MechServiceListScreen = () => {
       <Content>
 
         {loading ? <Text style={styles.loadingStyle}> Loading Services... </Text> :
-          <FlatList
-            data={ShowServices}
-            renderItem={({ item }) => {
+          <View>
+            {ShowServices.map((item, index) => {
               return (
                 <ListItem>
                   <Body>
@@ -145,13 +142,18 @@ const MechServiceListScreen = () => {
                   </Right>
                 </ListItem>
               );
-            }}
-          />
+            })
+            }
+          </View>
         }
-
       </Content>
 
-      <FooterComponent home="MechHome" profile="MechProfile" contactus="MechContactUs" bkcolor="darkgreen" />
+      <FooterComponent
+        home="MechHome"
+        profile="MechProfile"
+        contactus="MechContactUs"
+        bkcolor="darkgreen"
+      />
 
     </Container>
   );

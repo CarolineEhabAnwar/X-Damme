@@ -2,8 +2,7 @@ import i18next from "i18next";
 import english from "../screens/languages/en.json"
 import arabic from "../screens/languages/ar.json"
 import { initReactI18next } from "react-i18next";
-import * as RNLocalize from 'react-native-localize'
-
+import * as RNLocalize from 'react-native-localize';
 
 const languageDetector = {
     type: 'languageDetector',
@@ -16,7 +15,7 @@ const languageDetector = {
 };
 
 i18next.use(languageDetector).use(initReactI18next).init({
-    fallbackLng: 'ar',
+    fallbackLng: 'en',
     resources: {
         en: english,
         ar: arabic

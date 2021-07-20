@@ -5,6 +5,7 @@ import { DrawerActions } from 'react-navigation-drawer';
 import { FontAwesome5, Ionicons, Foundation, MaterialCommunityIcons, Entypo, SimpleLineIcons, AntDesign } from '@expo/vector-icons';
 import { AuthContext } from '../../navigation/AuthProvider';
 import firestore from "@react-native-firebase/firestore";
+import { useTranslation } from 'react-i18next';
 
 const ReminderScreen = ({ navigation }) => {
 
@@ -16,6 +17,7 @@ const ReminderScreen = ({ navigation }) => {
     const [SelectedCar, setSelectedCar] = useState(0);
     const [New_Question_Title, setNew_Question_Title] = useState("");
     const [modalVisible, setModalVisible] = useState(false);
+    const { t, i18n } = useTranslation();
 
     async function Save_Questions() {
         if (MyCars.length == 0) {
@@ -131,11 +133,11 @@ const ReminderScreen = ({ navigation }) => {
             >
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
-                        <Text style={{ marginLeft: 3, marginBottom: 2, fontSize: 20, fontWeight: 'bold' }}>Question Title</Text>
+                        <Text style={{ marginLeft: 3, marginBottom: 2, fontSize: 20, fontWeight: 'bold' }}>{t('UserReminderScreenText1')}</Text>
                         <TextInput style={{ width: 300, height: 50, borderWidth: 3, borderColor: "darkred" }} onChangeText={Value => { setNew_Question_Title(Value) }} />
                         <View style={{ flexDirection: 'row' }}>
                             <Button transparent style={{ marginRight: 10, marginTop: 2, backgroundColor: "white" }} onPress={() => { setModalVisible(false) }}>
-                                <Text>Cancel</Text>
+                                <Text>{t('UserReminderScreenText2')}</Text>
                             </Button>
                             <Button transparent style={{ marginRight: 10, marginTop: 2, backgroundColor: "white" }} onPress={() => {
                                 if (New_Question_Title == "") {
@@ -145,7 +147,7 @@ const ReminderScreen = ({ navigation }) => {
                                     Add_Question(MyCars[SelectedCar].key, New_Question_Title)
                                 }
                             }}>
-                                <Text>Add</Text>
+                                <Text>{t('UserReminderScreenText3')}</Text>
                             </Button>
 
                         </View>
@@ -162,7 +164,7 @@ const ReminderScreen = ({ navigation }) => {
                         style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
                     />
                 </Button>
-                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '22%', paddingTop: 12, fontWeight: 'bold' }}>Reminder</Text>
+                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '22%', paddingTop: 12, fontWeight: 'bold' }}>{t('UserReminderScreenText4')}</Text>
                 <Button style={{ marginLeft: 'auto', alignSelf: 'center' }} transparent onPress={() => {
                     if (MyCars.length != 0) {
                         setModalVisible(true);
@@ -177,12 +179,12 @@ const ReminderScreen = ({ navigation }) => {
 
             {loading ?
                 <Content>
-                    <Text style={styles.loadingStyle}> Loading Reminder... </Text>
+                    <Text style={styles.loadingStyle}>{t('UserReminderScreenText5')}</Text>
                 </Content>
                 :
                 <Content>
                     {MyCars.length == 0 ?
-                        <Text style={styles.loadingStyle}> Please Add your Car First. </Text>
+                        <Text style={styles.loadingStyle}>{t('UserReminderScreenText6')}</Text>
                         :
                         <View>
                             <Item regular style={{
@@ -224,7 +226,7 @@ const ReminderScreen = ({ navigation }) => {
                                         Save_Questions()
                                     }}
                                 >
-                                    <Text>Save</Text>
+                                    <Text>{t('UserReminderScreenText7')}</Text>
                                 </Button>
                             </View>
                         </View>
@@ -238,17 +240,17 @@ const ReminderScreen = ({ navigation }) => {
                 <FooterTab transparent style={{ backgroundColor: "darkred" }}>
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Home')}>
                         <Icon style={{ color: 'white' }} name="home" />
-                        <Text style={{ color: 'white' }}> Home</Text>
+                        <Text style={{ color: 'white' }}>{t('UserHomeScreenHome')}</Text>
                     </Button>
 
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Profile')}>
                         <Icon name="person" style={{ color: 'white' }} />
-                        <Text style={{ color: 'white' }}>Profile</Text>
+                        <Text style={{ color: 'white' }}>{t('UserHomeScreenProfile')}</Text>
                     </Button>
 
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('ContactUs')}>
                         <Icon style={{ color: 'white' }} name="call" />
-                        <Text style={{ color: 'white' }} >Contact Us</Text>
+                        <Text style={{ color: 'white' }} >{t('UserHomeScreenContactUs')}</Text>
                     </Button>
                 </FooterTab>
             </View>

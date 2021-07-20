@@ -1,30 +1,23 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, View, FlatList, SafeAreaView, LogBox } from 'react-native';
-import { Container, InputGroup, FooterTab, Input, Content, Text, Button, Icon } from 'native-base';
+import { StyleSheet, View, FlatList} from 'react-native';
+import { Container,FooterTab ,Text, Button, Icon } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import firestore from "@react-native-firebase/firestore";
 import { AuthContext } from '../../navigation/AuthProvider';
 import MapView, { Marker } from 'react-native-maps';
-// import { usePermissions } from 'react-native-use-permissions';
 import * as Permissions from 'expo-permissions';
-import usePermissions from 'expo-permissions-hooks';
 import * as Location from 'expo-location';
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
-import { Circle } from 'react-native-maps';
 import * as firebase from "firebase";
-import * as GeoFire from 'geofire';
-import PushNotification from "react-native-push-notification";
-import messaging from '@react-native-firebase/messaging';
+import GetLocation from 'react-native-get-location';
+import { useTranslation } from 'react-i18next';
 
 
 
-const PingMapScreen = ({ navigation, route }) => {
+const PingMapScreen = ({ navigation }) => {
 
     const { user } = useContext(AuthContext);
-
-    const FIREBASE_API_KEY = "AIzaSyAId_oCMqFC-0de24uB002T4TUOnKcLylY";
-
-
+    const { t, i18n } = useTranslation();
     const [region, setRegion] = useState({
         region: {
             latitude: 0,
@@ -40,98 +33,47 @@ const PingMapScreen = ({ navigation, route }) => {
     const [loadingUsers, setloadingUsers] = useState(false);
     const [loadingUsers2, setloadingUsers2] = useState(false);
 
-    const [markers, setMarkers] = useState(true);
+    const [markers, setMarkers] = useState([]);
 
-
-
-    var firebaseRef;
-
-    var Tokens = [];
-
-    if (!firebase.apps.length) {
-        firebaseRef = firebase.initializeApp({
-            apiKey: "AIzaSyAId_oCMqFC-0de24uB002T4TUOnKcLylY",                             // Auth / General Use
-            appId: "1:717529296732:android:47a522935d497997b95b99",              // General Use
-            projectId: "x-damme",               // General Use
-            authDomain: "x-damme.firebaseapp.com",         // Auth with popup/redirect
-            databaseURL: "https://x-damme-default-rtdb.europe-west1.firebasedatabase.app/", // Realtime Database
-            storageBucket: "x-damme.appspot.com",          // Storage
-            messagingSenderId: "717529296732",                 // Cloud Messaging
-            measurementId: "G-12345"                        // Analytics      
+    function requestLocation() {
+        setloading(true);
+        GetLocation.getCurrentPosition({
+          enableHighAccuracy: true,
+          timeout: 150000,
+        }).then(location => {
+            setRegion({
+                latitude: location.latitude,
+                longitude: location.longitude,
+                latitudeDelta: 0.045,
+                longitudeDelta: 0.045,
+                accuracy: location.accuracy
+            })
+            setloading(false);
+        }).catch(ex => {
+          const { code, message } = ex;
+          console.warn(code, message);
+          if (code === 'CANCELLED') {
+            alert('Location cancelled by user or by another request');
+          }
+          if (code === 'UNAVAILABLE') {
+            alert('Location service is disabled or unavailable');
+          }
+          if (code === 'TIMEOUT') {
+            alert('Location request timed out');
+          }
+          if (code === 'UNAUTHORIZED') {
+            alert('Authorization denied');
+          }
         });
-    } else {
-        firebaseRef = firebase.app(); // if already initialized, use that one
-    }
-
-    const geofire = require('geofire');
-
-    const geoFireInstance = new geofire.GeoFire(firebaseRef.database().ref());
+      }
 
     useEffect(() => {
-        Call_All_Functions();
-    }, []);
-
-    async function Call_All_Functions() {
-        await Get_Location();
-
-    }
-
-
-    async function Get_Location() {
         try {
-
-            const { status, permissions } = await Permissions.askAsync(Permissions.LOCATION);
-            let gpsServiceStatus = await Location.hasServicesEnabledAsync();
-            if (status === 'granted' && gpsServiceStatus) {
-                let location2 = await Location.getCurrentPositionAsync({ enableHighAccuracy: true });
-
-                let region2 = {
-                    latitude: location2.coords.latitude,
-                    longitude: location2.coords.longitude,
-                    latitudeDelta: 0.045,
-                    longitudeDelta: 0.045,
-                    accuracy: location2.coords.accuracy
-                }
-                if (region2 != undefined) {
-                    setRegion({ ...region, ...region2 });
-                    await geoFireInstance.set(user.uid, [region2.latitude, region2.longitude]).then(function () {
-                    }, function (error) {
-                        alert(error);
-                    });
-
-                    if (loading)
-                        setloading(false);
-
-                }
-                else {
-                    alert("Region is undefined !")
-                }
-
-            }
-            else if (gpsServiceStatus != true) {
-                RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({
-                    interval: 10000,
-                    fastInterval: 5000,
-                })
-                    .then((data) => {
-                        gpsServiceStatus = true;
-                        Location.requestBackgroundPermissionsAsync();
-                    }
-                    )
-                    .catch((err) => {
-                        alert("Location is Not Enabled. Please Enable ")
-
-                    });
-            }
-            else {
-                alert("Location Permission is Not Granted !")
-            }
-
-        }
-        catch (error) {
+            requestLocation()
+        } catch (error) {
             alert(error);
         }
-    }
+    }, []);
 
 
     async function Ping_Users() {
@@ -242,10 +184,10 @@ const PingMapScreen = ({ navigation, route }) => {
                         style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
                     />
                 </Button>
-                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '18%', paddingTop: 12, fontWeight: 'bold' }}>Ping Nearest Users</Text>
+                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '18%', paddingTop: 12, fontWeight: 'bold' }}>{t('UserPingMapScreenText1')}</Text>
             </View>
             <Container >
-                {loading ? <Text style={styles.loadingStyle}> Loading Map... </Text> :
+                {loading ? <Text style={styles.loadingStyle}>{t('UserPingMapScreenText2')}</Text> :
                     <Container >
                         <View style={{ height: 400 }}>
                             <MapView
@@ -273,20 +215,20 @@ const PingMapScreen = ({ navigation, route }) => {
 
                             </MapView>
 
-                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignSelf: 'center', marginTop: 10, marginLeft: 25 }}>
+                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignSelf: 'center', marginTop: 10, marginLeft: 10 }}>
                                 <Button style={styles.buttonStyle} >
-                                    <Text style={styles.buttonTextStyle} onPress={() => { Ping_Users() }}>Ping Users</Text>
+                                    <Text style={styles.buttonTextStyle} onPress={() => { Ping_Users() }}>{t('UserPingMapScreenText11')}</Text>
                                 </Button>
                                 <Button style={styles.buttonStyle} onPress={() => { navigation.navigate("PingRequests") }} >
-                                    <Text style={styles.buttonTextStyle}>Ping Requests</Text>
+                                    <Text style={styles.buttonTextStyle}>{t('UserPingMapScreenText3')}</Text>
                                 </Button>
                             </View>
-                            <View style={{ alignContent: "center", margin: 5, alignItems: "center", flexDirection: "row", justifyContent: "center" }}>
+                            <View style={{ alignContent: "center", marginLeft:10, alignItems: "center", flexDirection: "row", justifyContent: "center" }}>
                                 <Button style={styles.buttonStyle}>
-                                    <Text style={styles.buttonTextStyle} onPress={() => { Check_Who_Is_Coming() }}>Check Who's Coming</Text>
+                                    <Text style={styles.buttonTextStyle} onPress={() => { Check_Who_Is_Coming() }}>{t('UserPingMapScreenText4')}</Text>
                                 </Button>
                                 <Button style={styles.buttonStyle}>
-                                    <Text style={styles.buttonTextStyle} onPress={() => { Cancel_Ping() }}>Cancel Ping Request</Text>
+                                    <Text style={styles.buttonTextStyle} onPress={() => { Cancel_Ping() }}>{t('UserPingMapScreenText5')}</Text>
                                 </Button>
                             </View>
                         </View>
@@ -294,14 +236,14 @@ const PingMapScreen = ({ navigation, route }) => {
                         <Container>
                             {loadingUsers ?
                                 <Container>
-                                    <Text style={{ color: "darkred", alignContent: "center", margin: 5, fontWeight: "bold" }}> Users Coming to Help:  </Text>
+                                    <Text style={{ color: "darkred", alignContent: "center", margin: 5, fontWeight: "bold" }}>{t('UserPingMapScreenText6')}</Text>
                                     <FlatList
                                         data={ComingUsers}
                                         renderItem={({ item }) => {
                                             var coming_users = item.split("/")
                                             return (
                                                 <Text style={{ color: "darkred", alignContent: "center", margin: 5 }}>
-                                                    User Name: {coming_users[0]} {'\n'}Distance: {coming_users[3]} Km {'\n'}Accepted At: {coming_users[4]} {'\n'}{'\n'}
+                                                    {t('UserPingMapScreenText7')} {coming_users[0]} {'\n'}{t('UserPingMapScreenText8')} {coming_users[3]}{t('UserPingMapScreenText9')}  {'\n'}{t('UserPingMapScreenText10')} {coming_users[4]} {'\n'}{'\n'}
                                                 </Text>);
                                         }}
                                         keyExtractor={(item, index) => index.toString()}
@@ -319,17 +261,17 @@ const PingMapScreen = ({ navigation, route }) => {
                 <FooterTab transparent style={{ backgroundColor: "darkred" }}>
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Home')}>
                         <Icon style={{ color: 'white' }} name="home" />
-                        <Text style={{ color: 'white' }}> Home</Text>
+                        <Text style={{ color: 'white' }}>{t('UserHomeScreenHome')}</Text>
                     </Button>
 
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Profile')}>
                         <Icon name="person" style={{ color: 'white' }} />
-                        <Text style={{ color: 'white' }}>Profile</Text>
+                        <Text style={{ color: 'white' }}>{t('UserHomeScreenProfile')}</Text>
                     </Button>
 
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('ContactUs')}>
                         <Icon style={{ color: 'white' }} name="call" />
-                        <Text style={{ color: 'white' }} >Contact Us</Text>
+                        <Text style={{ color: 'white' }} >{t('UserHomeScreenContactUs')}</Text>
                     </Button>
                 </FooterTab>
             </View>
@@ -360,11 +302,14 @@ const styles = StyleSheet.create({
     buttonStyle: {
         marginTop: 7,
         backgroundColor: 'darkred',
-        marginRight: 10
+        marginRight: 10,
+        width: 190,
+        justifyContent: "center"
     },
 
     buttonTextStyle: {
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        alignSelf: "center"
     },
 });
 

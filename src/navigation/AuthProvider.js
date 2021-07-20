@@ -9,7 +9,9 @@ import AppStateListener from "react-native-appstate-listener";
 import { Notifications } from 'react-native-notifications';
 import * as firebase from "firebase";
 import { useTranslation } from 'react-i18next';
-import * as RNLocalize from 'react-native-localize'
+import * as RNLocalize from 'react-native-localize';
+import GetLocation from 'react-native-get-location';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -17,12 +19,19 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
 
+  async function Get_Lang() {
+    await AsyncStorage.getItem('Language').then((value) => {
+      if (value == null) {
+        let default_lang = RNLocalize.getLocales()[0].langaugeCode;
+        AsyncStorage.setItem('Language', default_lang);
+        return default_lang;
+      } else {
+        return value;
+      }
+    });
+  }
+
   const { t, i18n } = useTranslation();
-
-
-  i18n.language = RNLocalize.getLocales()[0].languageCode;
-
-
   const [token, setToken] = useState("");
 
   const [notification, setNotification] = useState({
@@ -63,111 +72,138 @@ export const AuthProvider = ({ children }) => {
 
 
   const [pings, setPings] = useState([]); // Initial empty array of Reviews
-  const [loading, setloading] = useState(true);
-  const [Myaddress, setAddress] = useState();
 
 
-  var firebaseRef;
-
-  if (!firebase.apps.length) {
-    firebaseRef = firebase.initializeApp({
-      apiKey: "AIzaSyAId_oCMqFC-0de24uB002T4TUOnKcLylY",                             // Auth / General Use
-      appId: "1:717529296732:android:47a522935d497997b95b99",              // General Use
-      projectId: "x-damme",               // General Use
-      authDomain: "x-damme.firebaseapp.com",         // Auth with popup/redirect
-      databaseURL: "https://x-damme-default-rtdb.europe-west1.firebasedatabase.app/", // Realtime Database
-      storageBucket: "x-damme.appspot.com",          // Storage
-      messagingSenderId: "717529296732",                 // Cloud Messaging
-      measurementId: "G-12345"                        // Analytics      
+  async function requestLocation() {
+    var addr = null;
+    await GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 150000,
+    }).then(location => {
+      addr = location;
+    }).catch(ex => {
+      const { code, message } = ex;
+      console.warn(code, message);
+      if (code === 'CANCELLED') {
+        alert('Location cancelled by user or by another request');
+      }
+      if (code === 'UNAVAILABLE') {
+        alert('Location service is disabled or unavailable');
+      }
+      if (code === 'TIMEOUT') {
+        alert('Location request timed out');
+      }
+      if (code === 'UNAUTHORIZED') {
+        alert('Authorization denied');
+      }
     });
-  } else {
-    firebaseRef = firebase.app(); // if already initialized, use that one
+    return addr;
   }
 
-  const geofire = require('geofire');
+  const Check_Date = (Date_To_Check) => {
+    let Duration_In_Millisecond = 3600000;
+    let Due_Date = Date_To_Check.toMillis() + Duration_In_Millisecond;
+    var dateNow = firestore.Timestamp.fromDate(new Date());
 
-  const geoFireInstance = new geofire.GeoFire(firebaseRef.database().ref());
+    if (dateNow.toMillis() < Due_Date)
+      return true;
+    else
+      return false;
+  }
 
+  const Check_Seen = (ID) => {
+    for (let i = 0; i < pings.length; i++) {
+      if (pings[i] == ID)
+        return true;
+    }
+    return false;
+  }
 
   async function getMyAddress() {
 
-    if (auth().currentUser.uid != null) {
+    if (auth().currentUser != null) {
 
-      let addr = await geoFireInstance.get(auth().currentUser.uid);
-      setAddress(addr);
       Notifications.registerRemoteNotifications();
 
-      Notifications.events().registerNotificationReceivedForeground((notification: Notification, completion) => {
-        completion({ alert: false, sound: false, badge: false });
+      Notifications.events().registerNotificationReceivedForeground((completion) => {
+        completion({ alert: false, sound: true, badge: false });
       });
 
-      Notifications.events().registerNotificationOpened((notification: Notification, completion) => {
+      Notifications.events().registerNotificationOpened((completion) => {
         completion();
       });
 
-      AppState.addEventListener('change', state => {
+      AppState.addEventListener('change', async (state) => {
         if (state === 'active' || state === 'background' || state === "inactive" || "") {
 
           try {
-            const subscriber = firestore()
-              .collection('Pings')
-              .onSnapshot(querySnapshot => {
-                const temp_pings = [];
+            var User_Type = "Default";
+            await firestore().collection("users").doc(auth().currentUser.uid).get().then((Data) => {
+              if (Data.exists) {
+                User_Type = Data.data().type;
+              }
+            });
+            if (User_Type == "User") {
+              const subscriber = firestore()
+                .collection('Pings')
+                .onSnapshot(async (querySnapshot) => {
+                  const temp_pings = [];
 
-                querySnapshot.forEach(documentSnapshot => {
-                  if (documentSnapshot.data()) {
-                    temp_pings.push({
-                      ...documentSnapshot.data(),
-                      key: documentSnapshot.id,
-                    });
-                  }
-
-                });
-                var dateNow = firestore.Timestamp.fromDate(new Date());
-
-                temp_pings.forEach(singleping => {
-                  if (0 < dateNow.seconds - singleping.PingTime.seconds < 3601) {
-
-                    let lat1 = addr[0];
-                    let lon1 = addr[1];
-                    let lat2 = singleping.PingerLocation.latitude;
-                    let lon2 = singleping.PingerLocation.longitude;
-
-                    const R = 6371e3; // metres
-                    const φ1 = lat1 * Math.PI / 180; // φ, λ in radians
-                    const φ2 = lat2 * Math.PI / 180;
-                    const Δφ = (lat2 - lat1) * Math.PI / 180;
-                    const Δλ = (lon2 - lon1) * Math.PI / 180;
-
-                    const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-                      Math.cos(φ1) * Math.cos(φ2) *
-                      Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
-                    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-                    let Distance = parseFloat((R * c) / 1000).toFixed(3); // in km
-
-                    if (Distance < 10) {
-
-                      Notifications.postLocalNotification({
-                        body: t('PingNotificationBody'),
-                        title: t('PingNotificationTitle'),
-                        sound: 'chime.aiff',
-                        category: 'SOME_CATEGORY',
-                        link: 'localNotificationLink',
+                  querySnapshot.forEach(documentSnapshot => {
+                    if (documentSnapshot.data()) {
+                      temp_pings.push({
+                        ...documentSnapshot.data(),
+                        key: documentSnapshot.id,
                       });
-                      setPings(temp_pings);
-                      if (loading)
-                        setloading(false);
                     }
+
+                  });
+
+                  let temp_pings_seen = [];
+                  var location = await requestLocation();
+                  if (location != null) {
+                    temp_pings.forEach(singleping => {
+                      if (Check_Date(singleping.PingTime) && !(singleping.Pinger == auth().currentUser.uid)) {
+                        let lat1 = location.latitude;
+                        let lon1 = location.longitude;
+                        let lat2 = singleping.PingerLocation.latitude;
+                        let lon2 = singleping.PingerLocation.longitude;
+
+                        const R = 6371e3; // metres
+                        const φ1 = lat1 * Math.PI / 180; // φ, λ in radians
+                        const φ2 = lat2 * Math.PI / 180;
+                        const Δφ = (lat2 - lat1) * Math.PI / 180;
+                        const Δλ = (lon2 - lon1) * Math.PI / 180;
+
+                        const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+                          Math.cos(φ1) * Math.cos(φ2) *
+                          Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+                        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+                        let Distance = parseFloat((R * c) / 1000).toFixed(3); // in km
+
+                        if (Distance < 10) {
+                          temp_pings_seen.push(singleping.key);
+                          Notifications.postLocalNotification({
+                            body: t('PingNotificationBody'),
+                            title: t('PingNotificationTitle'),
+                            sound: 'chime.aiff',
+                            category: 'SOME_CATEGORY',
+                            link: 'localNotificationLink',
+                          });
+                        }
+                      }
+                      else {
+                        firestore().collection('Pings').doc(singleping.key).delete();
+                      }
+                    });
+                    setPings(temp_pings_seen);
                   }
-
                 });
-              });
 
-            // Unsubscribe from events when no longer in use
-            return () => subscriber();
-
-
+              // Unsubscribe from events when no longer in use
+              return () => subscriber();
+            }
           } catch (error) {
             alert(error);
           }
@@ -176,7 +212,6 @@ export const AuthProvider = ({ children }) => {
       });
 
     }
-
   }
 
   useEffect(() => {
@@ -223,6 +258,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [typeUsed, setType] = useState("Default");
   const [from_SignUp, setFrom_SignUp] = useState(false);
+
   return (
     <AuthContext.Provider
       value={{
@@ -234,7 +270,7 @@ export const AuthProvider = ({ children }) => {
         setFrom_SignUp,
         login: async (email, password) => {
           try {
-            setType("Waiting");
+            await setType("Waiting");
             await auth().signInWithEmailAndPassword(email, password).then(async () => {
               const TypeReturned = await firestore().collection('users').doc(auth().currentUser.uid).get();
               setType(TypeReturned.data().type);

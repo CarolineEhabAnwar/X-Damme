@@ -6,11 +6,13 @@ import { Container, FooterTab, Footer, Badge, InputGroup, Input, Header, Content
 import { DrawerActions } from 'react-navigation-drawer';
 import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 import Modal from 'react-native-modal';
+import { useTranslation } from 'react-i18next';
 
 
 const CartViewItemScreen = ({ navigation, route }) => {
 
     const { user } = useContext(AuthContext);
+    const { t, i18n } = useTranslation();
 
     const [shop_Owner_Name, setShop_Owner_name] = useState("");
 
@@ -49,7 +51,7 @@ const CartViewItemScreen = ({ navigation, route }) => {
                         style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
                     />
                 </Button>
-                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '24%', paddingTop: 12, fontWeight: 'bold' }}>View Item</Text>
+                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '24%', paddingTop: 12, fontWeight: 'bold' }}>{t('UserCartViewScreenTitle')}</Text>
 
             </View>
             {/* End Text with drawer */}
@@ -58,38 +60,38 @@ const CartViewItemScreen = ({ navigation, route }) => {
                     <Image source={{ uri: route.params.ItemIMG }} style={{ marginBottom: 20, height: 200, width: null }} />
                     <CardItem style={{ marginHorizontal: 1, borderWidth: 3, borderColor: 'darkred' }}>
                         <Body>
-                            <Text style={styles.textStyles}>Name: </Text>
+                            <Text style={styles.textStyles}>{t('UserCartViewScreenName')}</Text>
                             <Text style={styles.itemsTextStyle}>{route.params.ItemName}</Text>
 
                             {route.params.InOffer == "true" ?
                                 <View>
-                                    <Text style={styles.textStyles}>Price: </Text>
+                                    <Text style={styles.textStyles}>{t('UserCartViewScreenPrice')}</Text>
                                     <Text style={{fontSize: 19,marginBottom: 10,fontWeight: 'bold',textDecorationLine:'line-through'}}>{route.params.Price}</Text>
                                     <Text style={styles.itemsTextStyle}>{route.params.After_Price}</Text>
                                 </View>
                                 :
                                 <View>
-                                    <Text style={styles.textStyles}>Price: </Text>
+                                    <Text style={styles.textStyles}>{t('UserCartViewScreenPrice')}</Text>
                                     <Text style={styles.itemsTextStyle}>{route.params.Price}</Text>
                                 </View>
                             }
 
-                            <Text style={styles.textStyles}>Car Brand: </Text>
+                            <Text style={styles.textStyles}>{t('UserCartViewScreenCarBrand')}</Text>
                             <Text style={styles.itemsTextStyle}>{route.params.CarBrand}</Text>
 
-                            <Text style={styles.textStyles}>Car Model:</Text>
+                            <Text style={styles.textStyles}>{t('UserCartViewScreenCarModel')}</Text>
                             <Text style={styles.itemsTextStyle}>{route.params.CarModel}</Text>
 
-                            <Text style={styles.textStyles}>Quality:</Text>
+                            <Text style={styles.textStyles}>{t('UserCartViewScreenQuality')}</Text>
                             <Text style={styles.itemsTextStyle}>{route.params.Quality}</Text>
 
-                            <Text style={styles.textStyles}>Made In:</Text>
+                            <Text style={styles.textStyles}>{t('UserCartViewScreenMadeIn')}</Text>
                             <Text style={styles.itemsTextStyle}>{route.params.MadeIn}</Text>
 
-                            <Text style={styles.textStyles}>Manufacture Date:</Text>
+                            <Text style={styles.textStyles}>{t('UserCartViewScreenManufactureDate')}</Text>
                             <Text style={styles.itemsTextStyle}>{route.params.Manufacture_Date}</Text>
 
-                            <Text style={styles.textStyles}>Shop Owner:</Text>
+                            <Text style={styles.textStyles}>{t('UserCartViewScreenShopOwner')}</Text>
                             <Text style={styles.itemsTextStyle}>{shop_Owner_Name}</Text>
 
                             <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
@@ -103,17 +105,17 @@ const CartViewItemScreen = ({ navigation, route }) => {
                 <FooterTab transparent style={{ backgroundColor: "darkred" }}>
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Home')}>
                         <Icon style={{ color: 'white' }} name="home" />
-                        <Text style={{ color: 'white' }}> Home</Text>
+                        <Text style={{ color: 'white' }}> {t('UserHomeScreenHome')}</Text>
                     </Button>
 
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Profile')}>
                         <Icon name="person" style={{ color: 'white' }} />
-                        <Text style={{ color: 'white' }}>Profile</Text>
+                        <Text style={{ color: 'white' }}>{t('UserHomeScreenProfile')}</Text>
                     </Button>
 
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('ContactUs')}>
                         <Icon style={{ color: 'white' }} name="call" />
-                        <Text style={{ color: 'white' }} >Contact Us</Text>
+                        <Text style={{ color: 'white' }} >{t('UserHomeScreenCOntactUs')}</Text>
                     </Button>
                 </FooterTab>
             </View>

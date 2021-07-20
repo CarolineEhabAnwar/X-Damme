@@ -8,6 +8,7 @@ import ImagePicker from "react-native-image-crop-picker";
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 import { Ionicons, Feather } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 
 
 const ChangeProfilePhotoScreen = ({ navigation, route }) => {
@@ -19,6 +20,7 @@ const ChangeProfilePhotoScreen = ({ navigation, route }) => {
     const [uploading, setUploading] = useState(false);
     const [is_image_uploaded, setis_image_uploaded] = useState(false);
     const [uploadedOnce, setuploadedOnce] = useState(false);
+    const { t, i18n } = useTranslation();
 
     async function Save() {
         await firestore().collection("users").doc(user.uid).update({
@@ -87,7 +89,7 @@ const ChangeProfilePhotoScreen = ({ navigation, route }) => {
                         style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
                     />
                 </Button>
-                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '20%', paddingTop: 12, fontWeight: 'bold' }}>Change Photo</Text>
+                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '20%', paddingTop: 12, fontWeight: 'bold' }}>{t('UserChangeProfilePhotoScreenTitle')}</Text>
             </View>
             {/* End Search bar with drawer */}
 
@@ -107,7 +109,7 @@ const ChangeProfilePhotoScreen = ({ navigation, route }) => {
                             onPress={async () => {
                                 choosePhotoFromLibrary();
                             }}>
-                            <Text> Choose Photo</Text>
+                            <Text>{t('UserChangeProfilePhotoScreenButton1')}</Text>
                         </Button>
                         {is_image_choosen ? <Ionicons name="checkmark-outline" size={24} color="black" /> : null}
                         {uploading ? <Feather name="loader" size={24} color="black" /> : null}
@@ -122,10 +124,10 @@ const ChangeProfilePhotoScreen = ({ navigation, route }) => {
                                     setis_image_uploaded(true);
                                 } catch (error) {
                                     console.log(error)
-                                    alert("There has been some error in uploading the image");
+                                    alert(t('UserChangeProfilePhotoScreenAlert1'));
                                 }
                             }}>
-                            <Text> Upload Photo</Text>
+                            <Text>{t('UserChangeProfilePhotoScreenButton2')}</Text>
                         </Button>
                     </Item>
                     <View style={{ paddingHorizontal: 50, flexDirection: 'row', justifyContent: "center" }}>
@@ -133,16 +135,16 @@ const ChangeProfilePhotoScreen = ({ navigation, route }) => {
                             style={{ height: 45, position: 'relative', backgroundColor: route.params.Color, margin: 2 }}
                             onPress={async () => {
                                 if (uploading) {
-                                    alert("Please wait untill uploading is finished.")
+                                    alert(t('UserChangeProfilePhotoScreenAlert2'))
                                 }
                                 else if (uploadedOnce) {
                                     Save();
                                 }
                                 else {
-                                    alert("Please Select and Upload a photo first.")
+                                    alert(t('UserChangeProfilePhotoScreenAlert3'))
                                 }
                             }}>
-                            <Text>Save</Text>
+                            <Text>{t('UserChangeProfilePhotoScreenButton3')}</Text>
                         </Button>
                     </View>
                 </Form>

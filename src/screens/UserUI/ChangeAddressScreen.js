@@ -8,6 +8,7 @@ import firebase from "@react-native-firebase/app";
 import firestore from '@react-native-firebase/firestore';
 import GetLocation from 'react-native-get-location';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { useTranslation } from 'react-i18next';
 
 
 
@@ -15,6 +16,7 @@ const ChangeAddressScreen = ({ navigation, route }) => {
 
     const { user } = useContext(AuthContext);
     const [location, setCurrentLocation] = useState(null);
+    const { t, i18n } = useTranslation();
 
     const requestLocation = () => {
         setCurrentLocation(null);
@@ -85,7 +87,7 @@ const ChangeAddressScreen = ({ navigation, route }) => {
                         style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
                     />
                 </Button>
-                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '19%', paddingTop: 12, fontWeight: 'bold' }}>Change Address</Text>
+                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '19%', paddingTop: 12, fontWeight: 'bold' }}>{t('UserChangeAddressScreenTitle')}</Text>
             </View>
             {/* End Search bar with drawer */}
 
@@ -109,7 +111,7 @@ const ChangeAddressScreen = ({ navigation, route }) => {
                         </Text>)
                         :
                         <Text style={{ padding: 10, fontSize: 16, fontFamily: 'Lato-Regular', color: '#333', flex: 3 }}>
-                            No Location
+                            {t('UserChangeAddressScreenNoLocation')}
                         </Text>
                     }
                     <Button style={{
@@ -117,13 +119,13 @@ const ChangeAddressScreen = ({ navigation, route }) => {
                         alignItems: 'center', justifyContent: 'center', borderRadius: 3, flex: 2
                     }}
                         onPress={requestLocation} >
-                        <Text style={styles.buttonText}>Get Location</Text>
+                        <Text style={styles.buttonText}>{t('UserChangeAddressScreenGetLocation')}</Text>
                     </Button>
                 </View>
                 <View style={{ flexDirection: "row", justifyContent: 'center' }}>
                     <Button style={{ height: 43, backgroundColor: route.params.Color, padding: 10, borderRadius: 3 }}
                         onPress={Save} >
-                        <Text style={styles.buttonText}>Save</Text>
+                        <Text style={styles.buttonText}>{t('UserChangeAddressScreenSave')}</Text>
                     </Button>
                 </View>
 

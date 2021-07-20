@@ -4,11 +4,13 @@ import { Container, FooterTab, Badge, InputGroup, Input, Header, Content, Card, 
 import { DrawerActions } from 'react-navigation-drawer';
 import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 import FooterComponent from '../components/FooterComponent';
+import { useTranslation } from 'react-i18next';
 
 const MechanicDetailsScreen = ({ route, navigation }) => {
 
   const mechID = route.params.mech.key
   const [locationURL, setlocationURL] = useState("");
+  const { t, i18n } = useTranslation();
 
   const Get_Location = () => {
     const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
@@ -43,7 +45,7 @@ const MechanicDetailsScreen = ({ route, navigation }) => {
             style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
           />
         </Button>
-        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '16%', paddingTop: 12, fontWeight: 'bold' }}>Mechanic Details</Text>
+        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '16%', paddingTop: 12, fontWeight: 'bold' }}>{t('UserMechaniicDetailsScreenText1')}</Text>
       </View>
       {/* End Text with navback */}
       <Content>
@@ -55,23 +57,23 @@ const MechanicDetailsScreen = ({ route, navigation }) => {
           }
           <CardItem style={{ marginHorizontal: 1, borderWidth: 3, borderColor: 'darkred' }}>
             <Body>
-              <Text style={styles.textStyles}>Name: </Text>
+              <Text style={styles.textStyles}>{t('UserMechaniicDetailsScreenText2')}</Text>
               <Text style={styles.mechanicsTextStyle}>{route.params.mech.fname} {route.params.mech.lname}</Text>
 
-              <Text style={styles.textStyles}>Phone Number:</Text>
+              <Text style={styles.textStyles}>{t('UserMechaniicDetailsScreenText3')}</Text>
               <Text style={styles.mechanicsTextStyle}>{route.params.mech.phoneNumber}</Text>
 
               <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
                 <Button style={styles.buttonStyle} onPress={() => Check_Location()}>
                   <Icon style={{ marginRight: -6 }} name="location-outline"></Icon>
-                  <Text style={styles.buttonTextStyle}>Check Location</Text>
+                  <Text style={styles.buttonTextStyle}>{t('UserMechaniicDetailsScreenText4')}</Text>
                 </Button>
 
                 <Button style={styles.buttonStyle} onPress={() => navigation.navigate('ServiceDetails', {
                   mechID: mechID
                 })}>
                   <Icon style={{ marginRight: -6 }} name="build-outline"></Icon>
-                  <Text style={styles.buttonTextStyle}>Services</Text>
+                  <Text style={styles.buttonTextStyle}>{t('UserMechaniicDetailsScreenText5')}</Text>
                 </Button>
               </View>
             </Body>

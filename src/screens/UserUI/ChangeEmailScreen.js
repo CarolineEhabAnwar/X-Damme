@@ -6,6 +6,7 @@ import { Fontisto, Ionicons } from '@expo/vector-icons';
 import FooterComponent from '../components/FooterComponent'
 import firebase from "@react-native-firebase/app";
 import firestore from '@react-native-firebase/firestore';
+import { useTranslation } from 'react-i18next';
 
 
 
@@ -14,6 +15,7 @@ const ChangeEmailScreen = ({ navigation,route }) => {
     const [pass, set_pass] = useState('')
     const [email, set_email] = useState('')
     const [conf_email, set_conf_email] = useState('')
+    const { t, i18n } = useTranslation();
 
     const reauthenticate = (currentPassword) => {
         var user = firebase.auth().currentUser;
@@ -48,39 +50,39 @@ const ChangeEmailScreen = ({ navigation,route }) => {
                         style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
                     />
                 </Button>
-                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '13%', paddingTop: 12, fontWeight: 'bold' }}>Change Email Address</Text>
+                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '13%', paddingTop: 12, fontWeight: 'bold' }}>{t('UserChangeEmailAddressScreenTitle')}</Text>
             </View>
             {/* End Search bar with drawer */}
 
             <Content style={{ marginHorizontal: 15, paddingVertical: 10 }}>
                 <Form>
                     <Item regular style={styles.InputStyle}>
-                        <Input placeholder="Please enter your password" secureTextEntry={true} onChangeText={ password => set_pass(password)} />
+                        <Input placeholder={t('UserChangeEmailAddressScreenButton1')} secureTextEntry={true} onChangeText={ password => set_pass(password)} />
                     </Item>
 
                     <Item regular style={styles.InputStyle}>
-                        <Input placeholder="Enter your new email" onChangeText={email => set_email(email)} />
+                        <Input placeholder={t('UserChangeEmailAddressScreenButton2')} onChangeText={email => set_email(email)} />
                     </Item>
 
                     <Item regular style={styles.InputStyle}>
-                        <Input placeholder="Confirm new email" onChangeText={conf_email => set_conf_email(conf_email)} />
+                        <Input placeholder={t('UserChangeEmailAddressScreenButton3')} onChangeText={conf_email => set_conf_email(conf_email)} />
                     </Item>
 
                     <Button style={{ backgroundColor: route.params.Color, marginVertical: 20, alignSelf: 'center' }} onPress={() => {
                         if (email != conf_email) {
-                            alert('Email Address mismatch!')
+                            alert(t('UserChangeEmailAddressScreenAlert1'))
                         }
                         else {
                             Alert.alert(
-                                "Warning",
-                                "Are you sure you want to change your email address?",
+                                t('UserChangeEmailAddressScreenAlert2'),
+                                t('UserChangeEmailAddressScreenAlert3'),
                                 [
                                     {
-                                        text: "No",
+                                        text: t('UserChangeEmailAddressScreenAlert4'),
                                         style: "cancel"
                                     },
                                     {
-                                        text: "Yes", onPress: () => {
+                                        text: t('UserChangeEmailAddressScreenAlert5'), onPress: () => {
                                             try {
                                                 changeEmail(pass, email)
                                             } catch (error) {
@@ -93,7 +95,7 @@ const ChangeEmailScreen = ({ navigation,route }) => {
 
                         }
                     }}>
-                        <Text>Change Email Address</Text>
+                        <Text>{t('UserChangeEmailAddressScreenButton4')}</Text>
                     </Button>
                 </Form>
 

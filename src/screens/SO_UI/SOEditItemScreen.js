@@ -14,16 +14,6 @@ import storage from '@react-native-firebase/storage';
 import { roundToNearestPixel } from 'react-native/Libraries/Utilities/PixelRatio';
 import warnOnce from 'react-native/Libraries/Utilities/warnOnce';
 
-//npm install react-native-image-crop-picker
-//npm outdated
-//npm install @react-native-firebase/analytics@"^11.2.0"
-//npm update @react-native-firebase/analytics
-//npm update @react-native-firebase/app@"11.4.1"
-//npm install npm install react-native-firebase/storage
-//npm install --legacy-peer-deps --save  @react-native-firebase/analytics@11.4.1 @react-native-firebase/app@11.4.1
-//npm update react-native-datepicker
-//npm install @react-native-community/datetimepicker
-
 async function UpdateItem(x_name, x_price, x_made_in, x_manufacture_date, x_car_model,
   x_car_brand, x_item_quality, x_image_path, x_type, user, item_id) {
   try {
@@ -51,35 +41,25 @@ async function UpdateItem(x_name, x_price, x_made_in, x_manufacture_date, x_car_
 
 };
 
-
-
-
 const SOEditItemScreen = ({ navigation, route }) => {
 
   LogBox.ignoreLogs(['Warning: componentWillReceiveProps has been renamed']);
-
-
   const { user } = useContext(AuthContext);
-
   const [name, setName] = useState(route.params.name);
   const [price, setPrice] = useState(route.params.price);
   const [made_in, setMade_in] = useState(route.params.made_in);
   const [manufacture_date, setManufacture_date] = useState(route.params.manf_date);
   const [image_path, setImage_path] = useState(route.params.imagePath);
   const [image, setImage] = useState(null);
-
   const [is_image_choosen, setis_image_choosen] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [is_image_uploaded, setis_image_uploaded] = useState(false);
   const [loadingScreen, setloadingScreen] = useState(true);
   const [finsihedLoadingScreen, setFinishedLoadingScreen] = useState(false);
-
-
   const [Type, setSelectedType] = useState(0);
   const [Brand, setSelectedBrand] = useState(0);
   const [Model, setSelectedModel] = useState(0);
   const [Quality, setSelectedQuality] = useState(0);
-
   //Lists for Pickers
   const [types, setTypes] = useState([]);
   const [brands, setBrands] = useState([]);
@@ -514,24 +494,12 @@ const SOEditItemScreen = ({ navigation, route }) => {
         </Content>
       }
       {/* Footer */}
-      <View style={{ flexDirection: 'row', alignContent: "center", backgroundColor: "darkblue" }}>
-        <FooterTab transparent style={{ backgroundColor: "darkblue" }}>
-          <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('SOHome')}>
-            <Icon style={{ color: 'white' }} name="home" />
-            <Text style={{ color: 'white' }}> Home</Text>
-          </Button>
-
-          <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('SOProfile')}>
-            <Icon name="person" style={{ color: 'white' }} />
-            <Text style={{ color: 'white' }}>Profile</Text>
-          </Button>
-
-          <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('SOContactUs')}>
-            <Icon style={{ color: 'white' }} name="call" />
-            <Text style={{ color: 'white' }} >Contact Us</Text>
-          </Button>
-        </FooterTab>
-      </View>
+      <FooterComponent
+        home="SOHome"
+        profile="SOProfile"
+        contactus="SOContactUs"
+        bkcolor="darkblue"
+      />
       {/* End Footer */}
     </Container>
   );

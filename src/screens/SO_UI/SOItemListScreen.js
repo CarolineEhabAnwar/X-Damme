@@ -5,27 +5,26 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../../navigation/AuthProvider';
 import firestore from '@react-native-firebase/firestore';
-import FooterComponent from '../components/FooterComponent'
+import FooterComponent from '../components/FooterComponent';
 
 
 const SOItemListScreen = () => {
-  LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
   const navigation = useNavigation();
   const { user } = useContext(AuthContext);
   const [SOItems, setSOItems] = useState([]);
-  const [ShowItems,SetShowItems] = useState([]);
+  const [ShowItems, SetShowItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [search,setSearch] = useState('');
+  const [search, setSearch] = useState('');
 
-  
-  const Search = () =>{
-    if(search==""){
+
+  const Search = () => {
+    if (search == "") {
       SetShowItems(SOItems);
     }
-    else{
+    else {
       let temp = [];
-      for(let i = 0;i<SOItems.length;i++){
-        if(SOItems[i].Name.toUpperCase().includes(search.toUpperCase())){
+      for (let i = 0; i < SOItems.length; i++) {
+        if (SOItems[i].Name.toUpperCase().includes(search.toUpperCase())) {
           temp.push(SOItems[i]);
         }
       }
@@ -69,7 +68,7 @@ const SOItemListScreen = () => {
         </Button>
         <InputGroup rounded style={{ flex: 1, backgroundColor: 'white', height: 35, marginTop: 7, paddingLeft: 10, paddingRight: 10 }}>
           <Icon name="ios-search" style={{ color: "darkblue" }} />
-          <Input style={{ height: 40, marginTop: 5, color: "darkblue" }} placeholder="Search" onChangeText={(SearchText)=>{setSearch(SearchText)}}/>
+          <Input style={{ height: 40, marginTop: 5, color: "darkblue" }} placeholder="Search" onChangeText={(SearchText) => { setSearch(SearchText) }} />
         </InputGroup>
         <Button transparent style={{ height: 50 }} onPress={() => Search()}>
           <Text style={{ color: "white", fontWeight: 'bold' }}>Search</Text>
@@ -80,79 +79,79 @@ const SOItemListScreen = () => {
       <Content>
 
         {loading ? <Text style={styles.loadingStyle}> Loading Items... </Text> :
-          <FlatList
-            data={ShowItems}
-            renderItem={({ item }) => {
-              return (
-                <ListItem>
-                  <Body>
-                    <View style={{ flexDirection: 'row' }}>
-                      <Text style={{ fontWeight: '500', marginLeft: 2, marginRight: 50 }}>{item.Name}</Text>
-                    </View>
-                  </Body>
-                  <Right>
-                    <View style={{ flexDirection: 'row', justifyContent: "flex-start" }}>
+          <View>
+            {ShowItems.map((item, index) => {
+                return (
+                  <ListItem key={index}>
+                    <Body>
+                      <View style={{ flexDirection: 'row' }}>
+                        <Text style={{ fontWeight: '500', marginLeft: 2, marginRight: 50 }}>{item.Name}</Text>
+                      </View>
+                    </Body>
+                    <Right>
+                      <View style={{ flexDirection: 'row', justifyContent: "flex-start" }}>
 
-                      {/* View Item Button */}
-                      <Button transparent onPress={() => navigation.navigate('SOViewItem',
-                        {
-                          Item: item
-                        }
-                      )}>
-                        <Text style={{ color: 'green' }}>View</Text>
-                      </Button>
-                      {/* End View Item Button */}
+                        {/* View Item Button */}
+                        <Button transparent onPress={() => navigation.navigate('SOViewItem',
+                          {
+                            Item: item
+                          }
+                        )}>
+                          <Text style={{ color: 'green' }}>View</Text>
+                        </Button>
+                        {/* End View Item Button */}
 
-                      <Button transparent onPress={() => navigation.navigate('SOEditItem', {
-                        imagePath: item.Image_Path,
-                        name: item.Name,
-                        price: item.Price,
-                        quality: item.Quality,
-                        manf_date: item.Manufacture_Date,
-                        made_in: item.Made_In,
-                        car_model: item.Car_Model,
-                        car_brand: item.Car_Brand,
-                        type: item.Type,
-                        itemID: item.key
-                      })}>
-                        <Text style={{ color: 'blue' }}>Edit</Text>
-                      </Button>
+                        <Button transparent onPress={() => navigation.navigate('SOEditItem', {
+                          imagePath: item.Image_Path,
+                          name: item.Name,
+                          price: item.Price,
+                          quality: item.Quality,
+                          manf_date: item.Manufacture_Date,
+                          made_in: item.Made_In,
+                          car_model: item.Car_Model,
+                          car_brand: item.Car_Brand,
+                          type: item.Type,
+                          itemID: item.key
+                        })}>
+                          <Text style={{ color: 'blue' }}>Edit</Text>
+                        </Button>
 
-                      <Button transparent onPress={() =>
-                        Alert.alert(
-                          "Warning",
-                          "Are you sure you want to delete this item?",
-                          [
-                            {
-                              text: "No"
-                            },
-                            {
-                              text: "Yes", onPress: () => {
-                                firestore()
-                                  .collection('CarStuff')
-                                  .doc(item.key)
-                                  .delete()
-                                  .then(() => {
-                                    alert("Item deleted");
-                                  });
+                        <Button transparent onPress={() =>
+                          Alert.alert(
+                            "Warning",
+                            "Are you sure you want to delete this item?",
+                            [
+                              {
+                                text: "No"
+                              },
+                              {
+                                text: "Yes", onPress: () => {
+                                  firestore()
+                                    .collection('CarStuff')
+                                    .doc(item.key)
+                                    .delete()
+                                    .then(() => {
+                                      alert("Item deleted");
+                                    });
+                                }
                               }
-                            }
-                          ]
-                        )
-                      }>
-                        <Text style={{ color: 'red', width: 85 }}>Delete</Text>
-                      </Button>
-                    </View>
-                  </Right>
-                </ListItem>
-              );
-            }}
-          />
+                            ]
+                          )
+                        }>
+                          <Text style={{ color: 'red', width: 85 }}>Delete</Text>
+                        </Button>
+                      </View>
+                    </Right>
+                  </ListItem>
+                );
+              })
+            }
+          </View>
         }
 
       </Content>
 
-      <FooterComponent home="SOHome" profile="SOProfile" contactus="SOContactUs" bkcolor="darkblue"/>
+      <FooterComponent home="SOHome" profile="SOProfile" contactus="SOContactUs" bkcolor="darkblue" />
 
     </Container>
   );

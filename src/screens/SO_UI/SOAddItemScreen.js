@@ -12,18 +12,8 @@ import { AuthContext } from '../../navigation/AuthProvider';
 import storage from '@react-native-firebase/storage';
 import FooterComponent from '../components/FooterComponent';
 
-//npm install react-native-image-crop-picker
-//npm outdated
-//npm install @react-native-firebase/analytics@"^11.2.0"
-//npm update @react-native-firebase/analytics
-//npm update @react-native-firebase/app@"11.4.1"
-//npm install npm install react-native-firebase/storage
-//npm install --legacy-peer-deps --save  @react-native-firebase/analytics@11.4.1 @react-native-firebase/app@11.4.1
-//npm update react-native-datepicker
-//npm install @react-native-community/datetimepicker
-
 async function addItems(x_name, x_price, x_made_in, x_manufacture_date, x_car_model,
-  x_car_brand, x_item_quality, x_image_path, x_type, user,MyName) {
+  x_car_brand, x_item_quality, x_image_path, x_type, user, MyName) {
   try {
     const Added_Item = await firestore().collection("CarStuff").add({
       Name: x_name,
@@ -54,35 +44,25 @@ async function addItems(x_name, x_price, x_made_in, x_manufacture_date, x_car_mo
 
 };
 
-
-
-
 const SOAddItemScreen = ({ navigation }) => {
 
   LogBox.ignoreLogs(['Warning: componentWillReceiveProps has been renamed']);
-
-
   const { user } = useContext(AuthContext);
-
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [made_in, setMade_in] = useState('');
   const [manufacture_date, setManufacture_date] = useState("2016-05-15");
   const [image_path, setImage_path] = useState('');
   const [image, setImage] = useState(null);
-
   const [is_image_choosen, setis_image_choosen] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [is_image_uploaded, setis_image_uploaded] = useState(false);
   const [loadingScreen, setloadingScreen] = useState(true);
-
-
   const [uploadedOnce, setuploadedOnce] = useState(false);
   const [Type, setSelectedType] = useState(0);
   const [Brand, setSelectedBrand] = useState(0);
   const [Model, setSelectedModel] = useState(0);
   const [Quality, setSelectedQuality] = useState(0);
-
   //Lists for Pickers
   const [types, setTypes] = useState([]);
   const [brands, setBrands] = useState([]);
@@ -90,7 +70,6 @@ const SOAddItemScreen = ({ navigation }) => {
   const [models, setModel] = useState([]);
   const [qualities, setQualities] = useState([]);
   const [MyName, setMyName] = useState("");
-
 
   async function Set_Pickers_Data() {
 
@@ -147,7 +126,7 @@ const SOAddItemScreen = ({ navigation }) => {
     setloadingScreen(false);
   }
 
-  async function Get_My_Name(){
+  async function Get_My_Name() {
     await firestore().collection("users").doc(user.uid).get().then((MyInfo) => {
       setMyName(MyInfo.data().fname + " " + MyInfo.data().lname);
     })
@@ -458,7 +437,7 @@ const SOAddItemScreen = ({ navigation }) => {
                   alert("Please select a quality.")
                 }
                 else {
-                  addItems(name, price, made_in, manufacture_date, models[Model], brands[Brand], qualities[Quality], image_path, types[Type], user,MyName);
+                  addItems(name, price, made_in, manufacture_date, models[Model], brands[Brand], qualities[Quality], image_path, types[Type], user, MyName);
                   removeAll();
                 }
               }}  // Please handle all of the errors.
@@ -472,7 +451,12 @@ const SOAddItemScreen = ({ navigation }) => {
         </Content>
       }
 
-      <FooterComponent home="SOHome" profile="SOProfile" contactus="SOContactUs" bkcolor="darkblue" />
+      <FooterComponent
+        home="SOHome"
+        profile="SOProfile"
+        contactus="SOContactUs"
+        bkcolor="darkblue"
+      />
 
     </Container>
   );

@@ -5,10 +5,11 @@ import { Card, CardItem, Text, Button, Icon, Left, Body, Right } from 'native-ba
 import { FontAwesome5 } from '@expo/vector-icons';
 import { AuthContext } from '../../navigation/AuthProvider';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 const ItemComponent = (props) => {
   const navigation = useNavigation();
-
+  const { t, i18n } = useTranslation();
   const { user } = useContext(AuthContext);
 
   return (
@@ -60,7 +61,7 @@ const ItemComponent = (props) => {
                 firestore().collection('users').doc(user.uid).update({
                   cart: temp_cart
                 }).then(() => {
-                  alert("Added To Cart.");
+                  alert(t('ItemComponentText2'));
                 });
               });
             }
@@ -80,7 +81,7 @@ const ItemComponent = (props) => {
           <Button style={styles.cartItemStyle} transparent onPress={() => navigation.navigate('ItemDetails', {
             Item: props.Item
           })}>
-            <Text style={{ fontSize: 16, fontWeight: 'bold', marginRight: -15, color: 'darkred' }}> See Item Details </Text>
+            <Text style={{ fontSize: 16, fontWeight: 'bold', marginRight: -15, color: 'darkred' }}>{t('ItemComponentText3')}</Text>
             <Icon active style={{ fontSize: 25, color: 'darkred' }} name="arrow-forward" />
           </Button>
         </Right>

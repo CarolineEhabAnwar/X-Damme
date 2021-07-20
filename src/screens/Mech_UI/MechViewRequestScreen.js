@@ -55,13 +55,18 @@ const MechViewRequestScreen = ({ navigation, route }) => {
               <Text style={styles.textStyles}>Duration: </Text>
               <Text style={styles.itemsTextStyle}>{route.params.duration} Hours</Text>
 
-        
+
             </Body>
           </CardItem>
         </Card>
       </Content>
 
-      <FooterComponent home="MechHome" profile="MechProfile" contactus="MechContactUs" bkcolor="darkgreen" />
+      <FooterComponent
+        home="MechHome"
+        profile="MechProfile"
+        contactus="MechContactUs"
+        bkcolor="darkgreen"
+      />
 
     </Container>
   );
@@ -90,7 +95,7 @@ const styles = StyleSheet.create({
 
   daysTextStyle: {
     fontSize: 19,
-    marginBottom:5,
+    marginBottom: 5,
     fontWeight: 'bold',
   },
 

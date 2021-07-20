@@ -7,12 +7,15 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { AuthContext } from '../../navigation/AuthProvider';
 import firestore from "@react-native-firebase/firestore";
 import GetProfileIMGComponent from "../components/GetProfileIMGComponent";
-//import GetLocation from 'react-native-get-location'
+import { useTranslation } from 'react-i18next';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const HomeScreen = ({ navigation }) => {
 
+  const { t, i18n } = useTranslation();
   const [ads, setAds] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const Check_Date = (Date_To_Check, Duration) => {
     let Duration_In_Millisecond = Duration * 86400000;
@@ -26,6 +29,19 @@ const HomeScreen = ({ navigation }) => {
       return false;
     }
 
+  }
+
+  async function Get_Lang() {
+    setLoading(true);
+    await AsyncStorage.getItem('Language').then((value) => {
+      if (value == null) {
+        AsyncStorage.setItem('Language', "en");
+        i18n.changeLanguage("en");
+      }
+      else {
+        i18n.changeLanguage(value);
+      }
+    });
   }
 
   async function Get_Ads() {
@@ -52,12 +68,14 @@ const HomeScreen = ({ navigation }) => {
         }
       }
       setAds(temp);
+      setLoading(false);
     });
   }
 
-  useEffect(() => {
+  useEffect(async () => {
     try {
-      Get_Ads();
+      await Get_Lang();
+      await Get_Ads();
     } catch (error) {
       console.log(error)
     }
@@ -65,103 +83,113 @@ const HomeScreen = ({ navigation }) => {
   return (
     <Container>
       {/* Header */}
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 26, marginBottom: 12, paddingBottom: 6, backgroundColor: "darkred" }}>
-        <Button transparent onPress={() => navigation.navigate("test")} >
-          <Icon ios='ios-menu' android="md-menu" style={{ fontSize: 28, color: 'white' }} />
-        </Button>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 5, marginBottom: 12, paddingBottom: 6, backgroundColor: "darkred" }}>
+        <View style={{ width: 150, justifyContent: "center", flexDirection: "row" }}>
+          <Image
+            source={require('../../../assets/X-Damme_white.png')}
+            style={styles.logo}
+          />
+        </View>
 
-        <Button transparent style={{ height: 50 }} onPress={() => navigation.navigate('Cart')}>
+        <Button transparent style={{ height: 50, marginTop: 15 }} onPress={() => navigation.navigate('Cart')}>
           <Icon name='cart' style={{ fontSize: 24, marginRight: -6, color: 'white' }}></Icon>
-          <Text style={{ color: "white", fontSize: 16, fontWeight: 'bold' }}>My Cart</Text>
+          <Text style={{ color: "white", fontSize: 16, fontWeight: 'bold' }}>{t('UserHomeScreenTitle')}</Text>
         </Button>
       </View>
       {/* End Header */}
 
+      {loading ? <Content><Text style={styles.loadingStyle}>{t('UserAddCarScreenTitleLoading')}</Text></Content>
+        :
+        <Content scrollEnabled>
+          <GetProfileIMGComponent Color={"darkred"} />
+          <Text style={styles.title}>{t('UserHomeScreenWelcome')}</Text>
+          <View style={{ marginTop: 40, marginBottom: 50, flexDirection: "row", justifyContent: 'space-evenly' }}>
 
-      <Content scrollEnabled>
-        <GetProfileIMGComponent Color={"darkred"} />
-        <Text style={styles.title}>Welcome</Text>
-        <View style={{ marginTop: 40, marginBottom: 50, flexDirection: "row", justifyContent: 'space-evenly' }}>
+            {/* Car Items Bubble */}
+            <View style={{ height: 100, width: 100 }}>
+              <Button transparent onPress={() => navigation.navigate('Items')} style={{ height: 100, width: 100 }}>
+                <Image source={require("../../../assets/parts.png")} style={styles.profileImg} />
+              </Button>
+              <Text style={styles.textStyle}>{t('UserHomeScreenCarParts')}</Text>
+            </View>
 
-          {/* Car Items Bubble */}
-          <View style={{ height: 100, width: 100 }}>
-            <Button transparent onPress={() => navigation.navigate('Items')} style={{ height: 100, width: 100 }}>
-              <Image source={require("../../../assets/parts.png")} style={styles.profileImg} />
-            </Button>
-            <Text style={styles.textStyle}>Car Parts</Text>
+            {/* Mechanics Bubble */}
+            <View style={{ height: 100, width: 100 }}>
+              <Button transparent onPress={() => navigation.navigate('Mechanics')} style={{ height: 100, width: 100 }}>
+                <Image source={require("../../../assets/mechanic.png")} style={styles.profileImg} />
+              </Button>
+              <Text style={styles.textStyle}>{t('UserHomeScreenMechanics')}</Text>
+            </View>
+
+            {/* Emergency Bubble */}
+            <View style={{ flexDirection: 'column' }}>
+              <Button transparent onPress={() => navigation.navigate('Emergency')} style={{ height: 100, width: 100 }}>
+                <Image source={require("../../../assets/emergency.jpg")} style={styles.profileImg} />
+              </Button>
+              <Text style={styles.textStyle}>{t('UserHomeScreenEmergency')}</Text>
+            </View>
           </View>
 
-          {/* Mechanics Bubble */}
-          <View style={{ height: 100, width: 100 }}>
-            <Button transparent onPress={() => navigation.navigate('Mechanics')} style={{ height: 100, width: 100 }}>
-              <Image source={require("../../../assets/mechanic.png")} style={styles.profileImg} />
-            </Button>
-            <Text style={styles.textStyle}>Mechanics</Text>
+          <View style={{ flexDirection: "row", marginLeft: 15, justifyContent: "space-around" }}>
+
+            {/* Tutorials Bubble */}
+            <View>
+              <Button transparent onPress={() => navigation.navigate('Tutorials')} style={{ alignSelf: 'center', height: 100, width: 100 }}>
+                <Image source={require("../../../assets/tutorials.jpg")} style={styles.profileImg} />
+              </Button>
+              <Text style={styles.textStyle}>{t('UserHomeScreenTutorials')}</Text>
+            </View>
+
+            {/* Recommendations Bubble */}
+            <View >
+              <Button transparent style={{ alignSelf: 'center', height: 100, width: 100 }}
+                onPress={() => navigation.navigate('Recommendation')}>
+                <Image source={require("../../../assets/recommendation.png")} style={styles.profileImg} />
+              </Button>
+              <Text style={styles.textStyle}>{t('UserHomeScreenRecommendations')}</Text>
+            </View>
           </View>
 
-          {/* Emergency Bubble */}
-          <View style={{ flexDirection: 'column' }}>
-            <Button transparent onPress={() => navigation.navigate('Emergency')} style={{ height: 100, width: 100 }}>
-              <Image source={require("../../../assets/emergency.jpg")} style={styles.profileImg} />
-            </Button>
-            <Text style={styles.textStyle}>Emergency</Text>
+
+          {/* ads*/}
+          {!ads.length == 0 ?
+            <View >
+              <Text style={{ fontSize: 32, color: 'darkred', fontWeight: 'bold', marginLeft: 5, marginTop: 30 }}>{t('UserHomeScreenAdvertisements')}</Text>
+            </View>
+            :
+            null
+          }
+          <View scrollEnabled style={{ textcolor: 'darkred', flexDirection: "row" }}>
+            <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
+              {ads.map((item, index) => {
+                return (
+                  <AdvComponent
+                    AD={item}
+                    key={index}
+                  />
+                )
+              })}
+            </ScrollView>
           </View>
-        </View>
+        </Content>
+      }
 
-        <View style={{ flexDirection: "row", marginLeft: 15, justifyContent: "space-around" }}>
-
-          {/* Tutorials Bubble */}
-          <View>
-            <Button transparent onPress={() => navigation.navigate('Tutorials')} style={{ alignSelf: 'center', height: 100, width: 100 }}>
-              <Image source={require("../../../assets/tutorials.jpg")} style={styles.profileImg} />
-            </Button>
-            <Text style={styles.textStyle}>Tutorials</Text>
-          </View>
-
-          {/* Recommendations Bubble */}
-          <View >
-            <Button transparent style={{ alignSelf: 'center', height: 100, width: 100 }}
-              onPress={() => navigation.navigate('Recommendation')}>
-              <Image source={require("../../../assets/recommendation.png")} style={styles.profileImg} />
-            </Button>
-            <Text style={styles.textStyle}>Recommendations</Text>
-          </View>
-        </View>
-
-
-        {/* ads*/}
-        <View >
-          <Text style={{ fontSize: 32, color: 'darkred', fontWeight: 'bold', marginLeft: 5, marginTop: 30 }}>Advertisements</Text>
-        </View>
-        <View scrollEnabled style={{ textcolor: 'darkred', flexDirection: "row" }}>
-          <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
-            {ads.map((item, index) => {
-              return (
-                <AdvComponent
-                  AD={item}
-                  key={index}
-                />
-              )
-            })}
-          </ScrollView>
-        </View>
-      </Content>
       {/* Footer */}
       <View style={{ flexDirection: 'row', alignContent: "center", backgroundColor: "darkred" }}>
         <FooterTab transparent style={{ backgroundColor: "darkred" }}>
           <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Home')}>
             <Icon style={{ color: 'white' }} name="home" />
-            <Text style={{ color: 'white' }}> Home</Text>
+            <Text style={{ color: 'white' }}>{t('UserHomeScreenHome')}</Text>
           </Button>
 
           <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Profile')}>
             <Icon name="person" style={{ color: 'white' }} />
-            <Text style={{ color: 'white' }}>Profile</Text>
+            <Text style={{ color: 'white' }}>{t('UserHomeScreenProfile')}</Text>
           </Button>
 
           <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('ContactUs')}>
             <Icon style={{ color: 'white' }} name="call" />
-            <Text style={{ color: 'white' }} >Contact Us</Text>
+            <Text style={{ color: 'white' }} >{t('UserHomeScreenContactUs')}</Text>
           </Button>
         </FooterTab>
       </View>
@@ -207,6 +235,20 @@ const styles = StyleSheet.create({
       width: 2,
       height: 2
     }
+  },
+  logo: {
+    height: 50,
+    width: 230,
+    marginTop: 20,
+    marginLeft: 40
+  },
+  loadingStyle: {
+    color: 'darkred',
+    alignSelf: 'center',
+    fontSize: 22,
+    textAlignVertical: 'center',
+    fontWeight: 'bold',
+    marginTop: 180
   }
 });
 

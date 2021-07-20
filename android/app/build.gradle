@@ -196,8 +196,6 @@ android {
 
 dependencies {
 
-
-
     implementation fileTree(dir: "libs", include: ["*.jar"])
 	implementation platform('com.google.firebase:firebase-bom:26.8.0')
     implementation project(':react-native-notifications')
@@ -209,6 +207,7 @@ dependencies {
     implementation "com.android.support:multidex:1.0.3"
 	implementation "com.google.firebase:firebase-analytics"
 	implementation project(path: ":@react-native-firebase_app")
+    implementation 'com.android.tools:annotations:30.1.0-alpha03'
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'
     }

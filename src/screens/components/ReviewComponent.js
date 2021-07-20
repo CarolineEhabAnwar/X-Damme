@@ -7,12 +7,15 @@ import { AuthContext } from '../../navigation/AuthProvider';
 import { useNavigation } from '@react-navigation/native';
 import { Rating } from 'react-native-ratings';
 import Moment from 'moment';
+import { useTranslation } from 'react-i18next';
 
 
 
 const ReviewComponent = (props) => {
 
     const navigation = useNavigation();
+
+    const { t, i18n } = useTranslation();
 
     const [Reviewer_Name, setReviewer_name] = useState("");
 
@@ -47,25 +50,25 @@ const ReviewComponent = (props) => {
 
     return (
         <View style={{ borderColor: "darkred", borderWidth: 2, marginVertical: 5 }}>
-            <Text style={styles.title}>Review By:  <Text style={styles.writing}> {Reviewer_Name} </Text></Text>
+            <Text style={styles.title}>{t('ReviewComponentText1')}  <Text style={styles.writing}> {Reviewer_Name} </Text></Text>
 
-            <Text style={styles.title}>Reviewed On:  <Text style={styles.writing}> {date.toDateString()} </Text></Text>
+            <Text style={styles.title}>{t('ReviewComponentText2')}  <Text style={styles.writing}> {date.toDateString()} </Text></Text>
 
-            <Text style={styles.title}>Item/Service Rating: </Text>
+            <Text style={styles.title}>{t('ReviewComponentText3')} </Text>
             <Rating
                 showRating fractions={1}
                 startingValue={props.itemrating}
                 style={{ paddingVertical: 10 }}
             />
 
-            <Text style={styles.title}>Shop Owner/Mechanic Rating: </Text>
+            <Text style={styles.title}>{t('ReviewComponentText4')} </Text>
             <Rating
                 showRating fractions={1}
                 startingValue={props.shoprating}
                 style={{ paddingVertical: 10 }}
             />
 
-            <Text style={styles.title}>Review: </Text>
+            <Text style={styles.title}>{t('ReviewComponentText5')} </Text>
             <Text
                 multiline
                 textAlignVertical={'top'}

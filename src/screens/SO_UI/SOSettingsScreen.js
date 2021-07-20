@@ -3,6 +3,7 @@ import { Image, StyleSheet, View } from 'react-native';
 import { Container, FooterTab, Content, Icon, Text, Button, List, ListItem } from 'native-base';
 import { DrawerActions } from 'react-navigation-drawer';
 import { FontAwesome5, Ionicons, Foundation, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
+import FooterComponent from '../components/FooterComponent';
 
 const SOSettingsScreen = ({ navigation }) => {
 
@@ -106,31 +107,32 @@ const SOSettingsScreen = ({ navigation }) => {
             </Button>
           </ListItem>
 
+          <ListItem>
+            <Button transparent onPress={() => {
+              navigation.navigate('GoPremium', {
+                Color: color,
+                Home: home,
+                Profile: profile,
+                ContactUs: contactus
+              })
+            }}>
+              <MaterialCommunityIcons name="crown-outline" style={{ marginRight: -5 }} size={26} color={color} />
+              <Text style={{ color: color, fontSize: 18, fontWeight: '500' }}>Go Premium</Text>
+            </Button>
+          </ListItem>
+
         </List>
       </Content>
       {/* Footer */}
-      <View style={{ flexDirection: 'row', alignContent: "center", backgroundColor: "darkblue" }}>
-        <FooterTab transparent style={{ backgroundColor: "darkblue" }}>
-          <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('SOHome')}>
-            <Icon style={{ color: 'white' }} name="home" />
-            <Text style={{ color: 'white' }}> Home</Text>
-          </Button>
-
-          <Button style={{ marginTop: 5 }} onPress={() => navigation.push('SOProfile')}>
-            <Icon name="person" style={{ color: 'white' }} />
-            <Text style={{ color: 'white' }}>Profile</Text>
-          </Button>
-
-          <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('SOContactUs')}>
-            <Icon style={{ color: 'white' }} name="call" />
-            <Text style={{ color: 'white' }} >Contact Us</Text>
-          </Button>
-        </FooterTab>
-      </View>
+      <FooterComponent
+        home="SOHome"
+        profile="SOProfile"
+        contactus="SOContactUs"
+        bkcolor="darkblue"
+      />
       {/* End Footer */}
     </Container>
   );
-
 }
 
 export default SOSettingsScreen

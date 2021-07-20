@@ -8,6 +8,7 @@ import ServiceComponent from '../components/ServiceComponent'
 import FooterComponent from "../components/FooterComponent";
 import { set } from "react-native-reanimated";
 import CheckBox from '@react-native-community/checkbox';
+import { useTranslation } from 'react-i18next';
 
 const ServiceDetailsScreen = ({ route, navigation }) => {
   LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
@@ -19,7 +20,7 @@ const ServiceDetailsScreen = ({ route, navigation }) => {
   const [loading, setloading] = useState(true)
   const [search, setSearch] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
-
+  const { t, i18n } = useTranslation();
   const [MondaySelected, setMondaySelected] = useState(false);
   const [TuesdaySelected, setTuesdaySelected] = useState(false);
   const [WednesdaySelected, setWednesdaySelected] = useState(false);
@@ -146,11 +147,11 @@ const ServiceDetailsScreen = ({ route, navigation }) => {
           <View style={styles.modalView}>
 
             {/* Service type */}
-            <Text style={styles.modalText}>Filter Services</Text>
+            <Text style={styles.modalText}>{t('UserServiceDeatilsScreenText1')}</Text>
 
             <Form>
               <View style={styles.serviceTypeStyle}>
-                <Text style={styles.textStyle2}>Service Type:</Text>
+                <Text style={styles.textStyle2}>{t('UserServiceDeatilsScreenText2')}</Text>
                 <Picker
                   selectedValue={type_f}
                   onValueChange={(itemValue, itemIndex) =>
@@ -163,15 +164,15 @@ const ServiceDetailsScreen = ({ route, navigation }) => {
               </View>
 
               {/* Price Range */}
-              <Text style={styles.textStyle2}>Price Range:</Text>
+              <Text style={styles.textStyle2}>{t('UserServiceDeatilsScreenText3')}</Text>
 
 
               <Item regular style={styles.InputStyle}>
-                <Input value={price_min == 0 ? null : price_min} keyboardType="numeric" placeholder='From' onChangeText={price_min => set_price_min(price_min)} />
+                <Input value={price_min == 0 ? null : price_min} keyboardType="numeric" placeholder={t('UserServiceDeatilsScreenText16')} onChangeText={price_min => set_price_min(price_min)} />
               </Item>
 
               <Item regular style={styles.InputStyle}>
-                <Input value={price_max == 0 ? null : price_max} keyboardType="numeric" placeholder='To' onChangeText={price_max => set_price_max(price_max)} />
+                <Input value={price_max == 0 ? null : price_max} keyboardType="numeric" placeholder={t('UserServiceDeatilsScreenText17')} onChangeText={price_max => set_price_max(price_max)} />
               </Item>
 
               {/* Days CheckBox */}
@@ -183,7 +184,7 @@ const ServiceDetailsScreen = ({ route, navigation }) => {
                     onValueChange={setMondaySelected}
                     style={styles.checkbox}
                   />
-                  <Text style={styles.label}>Monday</Text>
+                  <Text style={styles.label}>{t('UserServiceDeatilsScreenText4')}</Text>
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
@@ -192,7 +193,7 @@ const ServiceDetailsScreen = ({ route, navigation }) => {
                     onValueChange={setTuesdaySelected}
                     style={styles.checkbox}
                   />
-                  <Text style={styles.label}>Tuesday</Text>
+                  <Text style={styles.label}>{t('UserServiceDeatilsScreenText5')}</Text>
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
@@ -201,7 +202,7 @@ const ServiceDetailsScreen = ({ route, navigation }) => {
                     onValueChange={setWednesdaySelected}
                     style={styles.checkbox}
                   />
-                  <Text style={styles.label}>Wednesday</Text>
+                  <Text style={styles.label}>{t('UserServiceDeatilsScreenText6')}</Text>
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
@@ -210,7 +211,7 @@ const ServiceDetailsScreen = ({ route, navigation }) => {
                     onValueChange={setThursdaySelected}
                     style={styles.checkbox}
                   />
-                  <Text style={styles.label}>Thursday</Text>
+                  <Text style={styles.label}>{t('UserServiceDeatilsScreenText7')}</Text>
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
@@ -219,7 +220,7 @@ const ServiceDetailsScreen = ({ route, navigation }) => {
                     onValueChange={setFridaySelected}
                     style={styles.checkbox}
                   />
-                  <Text style={styles.label}>Friday</Text>
+                  <Text style={styles.label}>{t('UserServiceDeatilsScreenText8')}</Text>
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
@@ -228,7 +229,7 @@ const ServiceDetailsScreen = ({ route, navigation }) => {
                     onValueChange={setSaturdaySelected}
                     style={styles.checkbox}
                   />
-                  <Text style={styles.label}>Saturday</Text>
+                  <Text style={styles.label}>{t('UserServiceDeatilsScreenText9')}</Text>
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
@@ -237,7 +238,7 @@ const ServiceDetailsScreen = ({ route, navigation }) => {
                     onValueChange={setSundaySelected}
                     style={styles.checkbox}
                   />
-                  <Text style={styles.label}>Sunday</Text>
+                  <Text style={styles.label}>{t('UserServiceDeatilsScreenText10')}</Text>
                 </View>
 
               </View>
@@ -260,7 +261,7 @@ const ServiceDetailsScreen = ({ route, navigation }) => {
                     setSundaySelected(false)
                   }}
                 >
-                  <Text style={styles.textStyle}>Remove Filter</Text>
+                  <Text style={styles.textStyle}>{t('UserServiceDeatilsScreenText11')}</Text>
                 </Button >
 
                 <Button
@@ -271,7 +272,7 @@ const ServiceDetailsScreen = ({ route, navigation }) => {
                   }
                   }
                 >
-                  <Text style={styles.textStyle}>OK</Text>
+                  <Text style={styles.textStyle}>{t('UserServiceDeatilsScreenText12')}</Text>
                 </Button>
 
               </View>
@@ -293,10 +294,10 @@ const ServiceDetailsScreen = ({ route, navigation }) => {
         </Button>
         <InputGroup rounded style={{ flex: 1, backgroundColor: '#fff', height: 35, marginTop: 7, paddingLeft: 10, paddingRight: 10 }}>
           <Icon name="ios-search" style={{ color: "darkred" }} />
-          <Input style={{ height: 40, marginTop: 5, color: "darkred" }} placeholder="Search Service" onChangeText={(searchTxt) => setSearch(searchTxt)} />
+          <Input style={{ height: 40, marginTop: 5, color: "darkred" }} placeholder={t('UserServiceDeatilsScreenText13')} onChangeText={(searchTxt) => setSearch(searchTxt)} />
         </InputGroup>
         <Button transparent style={{ height: 50 }} onPress={() => searchServices()}>
-          <Text style={{ color: "white", fontWeight: 'bold' }}>Search</Text>
+          <Text style={{ color: "white", fontWeight: 'bold' }}>{t('UserServiceDeatilsScreenText13')}</Text>
         </Button>
       </View>
       {/* End Search bar with nav back */}
@@ -304,10 +305,10 @@ const ServiceDetailsScreen = ({ route, navigation }) => {
       {/* Filter Button */}
       <Button rounded style={{ marginLeft: 5, marginBottom: 5, backgroundColor: 'darkred' }} onPress={() => setModalVisible(true)}>
         <Icon name='filter' />
-        <Text style={{ marginLeft: -27 }}> Filter </Text>
+        <Text style={{ marginLeft: -27 }}>{t('UserServiceDeatilsScreenText14')}</Text>
       </Button>
       <Container>
-        {loading ? <Text style={styles.loadingStyle}> Loading Services... </Text> :
+        {loading ? <Text style={styles.loadingStyle}>{t('UserServiceDeatilsScreenText15')}</Text> :
           <FlatList
             data={show_services}
             renderItem={({ item }) => {

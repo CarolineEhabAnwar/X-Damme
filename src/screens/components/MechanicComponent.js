@@ -5,11 +5,12 @@ import { Content, Card, CardItem, Text, Button, Icon, Left, Body, Right } from '
 import { FontAwesome5 } from '@expo/vector-icons';
 import { AuthContext } from '../../navigation/AuthProvider';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 const MechanicComponent = (props) => {
 
     const navigation = useNavigation();
-
+    const { t, i18n } = useTranslation();
     const { user } = useContext(AuthContext);
     const [loading, setloading] = useState(true);
     const [FinalShopRating, setFinalShopRating] = useState(0);
@@ -73,9 +74,17 @@ const MechanicComponent = (props) => {
                         <Left>
                             <Body style={{ marginBottom: 8 }}>
                                 <Text style={{ fontWeight: 'bold', fontSize: 18.5 }}>{props.fname} {props.lname}</Text>
-                                <Text note>Rate: {FinalShopRating}</Text>
+                                <Text note>{t('MechanicComponentText1')} {FinalShopRating}</Text>
                             </Body>
                         </Left>
+                        {props.mech.Distance == null ? null :
+                            <Right>
+                                <Body style={{ marginBottom: 8 }}>
+                                    <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{t('MechanicComponentText2')}</Text>
+                                    <Text style={{ fontSize: 18, color: "gray" }} note>{Math.round(props.mech.Distance * 1000 / 10) / 100} Km</Text>
+                                </Body>
+                            </Right>
+                        }
                     </CardItem>
                     <CardItem cardBody>
                         {props.mech.profileIMG == null || props.mech.profileIMG == "" ?
@@ -94,7 +103,7 @@ const MechanicComponent = (props) => {
                                 mech: props.mech
 
                             })}>
-                                <Text style={{ fontSize: 15, marginRight: -15, color: 'darkred', fontWeight: 'bold' }} > See Mechanic Details </Text>
+                                <Text style={{ fontSize: 15, marginRight: -15, color: 'darkred', fontWeight: 'bold' }} >{t('MechanicComponentText3')} </Text>
                                 <Icon active style={{ fontSize: 25, color: 'darkred' }} name="arrow-forward" />
                             </Button>
                         </Right>

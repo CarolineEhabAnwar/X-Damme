@@ -9,13 +9,14 @@ import { Rating } from 'react-native-ratings';
 import Moment from 'moment';
 import { useReducer } from 'react';
 import * as firebase from "firebase";
+import { useTranslation } from 'react-i18next';
 
 
 
 const PingRequestComponent = (props) => {
 
     const navigation = useNavigation();
-
+    const { t, i18n } = useTranslation();
     const [Pinger_Name, setPinger_name] = useState("");
     const [My_Name, setMy_name] = useState("");
     const [locationURL, setlocationURL] = useState("");
@@ -120,11 +121,11 @@ const PingRequestComponent = (props) => {
     return (
         <Content>
             <View style={{ borderColor: "darkred", borderWidth: 2, marginVertical: 5 }}>
-                <Text style={styles.title}>Pinger:  </Text>
+                <Text style={styles.title}>{t('PingRequestComponentText1')}  </Text>
                 <Text style={styles.writing}> {Pinger_Name} </Text>
-                <Text style={styles.title}>Pinger Distance From You:  </Text>
-                <Text style={styles.writing}> {distance} Kilometers </Text>
-                <Text style={styles.title}>Ping Time: </Text>
+                <Text style={styles.title}>{t('PingRequestComponentText2')}  </Text>
+                <Text style={styles.writing}> {distance} KM </Text>
+                <Text style={styles.title}>{t('PingRequestComponentText3')} </Text>
                 <Text style={styles.writing}> {props.pingTime} </Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignSelf: 'center', marginVertical: 10 }}>
                     <Button style={styles.buttonStyle}
@@ -146,7 +147,7 @@ const PingRequestComponent = (props) => {
                             });
                             Linking.openURL(locationURL);
                         }}>
-                        <Text style={styles.buttonTextStyle}>Accept</Text>
+                        <Text style={styles.buttonTextStyle}>{t('PingRequestComponentText4')}</Text>
                     </Button>
                 </View>
             </View>

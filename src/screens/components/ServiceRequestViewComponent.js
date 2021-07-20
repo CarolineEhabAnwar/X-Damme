@@ -55,13 +55,6 @@ const ServiceRequestViewComponent = (props) => {
 
                 </Body>
             </CardItem>
-            {/* <Right> */}
-            {/* onPress={() => navigation.navigate('MechViewRequest')} */}
-            {/* <Button transparent>
-                    <Text style={{ fontSize: 16, fontWeight: 'bold', marginRight: -15, color: 'darkgreen' }}> See Service Details </Text>
-                    <Icon active style={{ fontSize: 25, color: 'darkgreen' }} name="arrow-forward" />
-                </Button>
-            </Right> */}
         </Card>
     );
 }

@@ -6,9 +6,11 @@ import { FontAwesome5, Ionicons, Foundation, MaterialCommunityIcons, Entypo, Sim
 import { AuthContext } from '../../navigation/AuthProvider';
 import firestore from "@react-native-firebase/firestore";
 import PieChartComponent from '../components/PieChartComponent';
+import { useTranslation } from 'react-i18next';
 
 const BestCarsScreen = ({ navigation }) => {
 
+    const { t, i18n } = useTranslation();
     const { user } = useContext(AuthContext);
     const [loading, setLoading] = useState(true);
     const [Brands, setBrands] = useState([]);
@@ -106,13 +108,13 @@ const BestCarsScreen = ({ navigation }) => {
                         style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
                     />
                 </Button>
-                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '22%', paddingTop: 12, fontWeight: 'bold' }}>Best Cars</Text>
+                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '22%', paddingTop: 12, fontWeight: 'bold' }}>{t('UserBestCarsScreenTitle')}</Text>
             </View>
             {/* End Text with drawer */}
 
             {loading ?
                 <Content>
-                    <Text style={styles.loadingStyle}> Loading Best Cars </Text>
+                    <Text style={styles.loadingStyle}>{t('UserBestCarsScreenLoading')}</Text>
                 </Content>
                 :
                 <Content>
@@ -134,17 +136,17 @@ const BestCarsScreen = ({ navigation }) => {
                 <FooterTab transparent style={{ backgroundColor: "darkred" }}>
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Home')}>
                         <Icon style={{ color: 'white' }} name="home" />
-                        <Text style={{ color: 'white' }}> Home</Text>
+                        <Text style={{ color: 'white' }}> {t('UserHomeScreenHome')}</Text>
                     </Button>
 
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Profile')}>
                         <Icon name="person" style={{ color: 'white' }} />
-                        <Text style={{ color: 'white' }}>Profile</Text>
+                        <Text style={{ color: 'white' }}>{t('UserHomeScreenHome')}</Text>
                     </Button>
 
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('ContactUs')}>
                         <Icon style={{ color: 'white' }} name="call" />
-                        <Text style={{ color: 'white' }} >Contact Us</Text>
+                        <Text style={{ color: 'white' }} >{t('UserHomeScreenHome')}</Text>
                     </Button>
                 </FooterTab>
             </View>

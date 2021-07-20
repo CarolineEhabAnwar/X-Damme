@@ -3,10 +3,12 @@ import { StyleSheet, View, FlatList, Modal, LogBox } from 'react-native';
 import { Container, Picker, Form, Item, InputGroup, FooterTab, Input, Content, Text, Button, Icon } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import firestore from "@react-native-firebase/firestore";
-import ItemComponent from '../components/ItemComponent'
+import ItemComponent from '../components/ItemComponent';
+import { useTranslation } from 'react-i18next';
 
 const AdvViewScreen = ({ navigation, route }) => {
 
+    const { t, i18n } = useTranslation();
     //Setting the Model Visible
     const [modalVisible, setModalVisible] = useState(false);
 
@@ -227,7 +229,7 @@ const AdvViewScreen = ({ navigation, route }) => {
                     <View style={styles.modalView}>
 
                         {/* Car Model */}
-                        <Text style={styles.modalText}>Filter Items</Text>
+                        <Text style={styles.modalText}>{t('UserAdvViewScreenFilterItems')}</Text>
 
                         <Form>
                             {/* Item Type Picker */}
@@ -320,7 +322,7 @@ const AdvViewScreen = ({ navigation, route }) => {
                             </Item>
 
                             {/* Price Range */}
-                            <Text style={styles.textStyle2}>Price Range:</Text>
+                            <Text style={styles.textStyle2}>{t('UserAdvViewScreenPriceRange')}</Text>
 
 
                             <Item regular style={styles.InputStyle}>
@@ -331,7 +333,7 @@ const AdvViewScreen = ({ navigation, route }) => {
                                 <Input value={price_max == 1000000000 ? null : price_max} keyboardType="numeric" placeholder='To' onChangeText={price_max => set_price_max(price_max)} />
                             </Item>
 
-                            <View style={{ flexDirection: 'row' }}>
+                            <View style={{ flexDirection: 'row' , justifyContent:"space-between"}}>
                                 <Button
                                     style={[styles.button, styles.buttonClose]}
                                     onPress={() => {
@@ -343,7 +345,7 @@ const AdvViewScreen = ({ navigation, route }) => {
                                         set_price_min(0);
                                     }}
                                 >
-                                    <Text style={styles.textStyle}>Remove Filter</Text>
+                                    <Text style={styles.textStyle}>{t('UserAdvViewScreenRemoveFilter')}</Text>
                                 </Button >
 
 
@@ -351,11 +353,11 @@ const AdvViewScreen = ({ navigation, route }) => {
                                     style={[styles.button, styles.buttonClose]}
                                     onPress={() => {
                                         if (price_min > price_max)
-                                            return alert("Please make sure the Min Price is less than the Max Price.");
+                                            return alert(t('UserAdvViewScreenAlert1'));
                                         Filter();
                                     }}
                                 >
-                                    <Text style={styles.textStyle}>OK</Text>
+                                    <Text style={styles.textStyle}>{t('UserAdvViewScreenOK')}</Text>
                                 </Button>
                             </View>
                         </Form>
@@ -375,7 +377,7 @@ const AdvViewScreen = ({ navigation, route }) => {
                 </Button>
                 <InputGroup rounded style={{ flex: 1, backgroundColor: '#fff', height: 35, marginTop: 7, paddingLeft: 10, paddingRight: 10 }}>
                     <Icon name="ios-search" style={{ color: "darkred" }} />
-                    <Input style={{ height: 40, marginTop: 5, color: "darkred" }} placeholder="Search" onChangeText={search_item => set_search_item(search_item)} />
+                    <Input style={{ height: 40, marginTop: 5, color: "darkred" }} placeholder={t('UserAdvViewScreenSearch')} onChangeText={search_item => set_search_item(search_item)} />
                 </InputGroup>
                 <Button transparent style={{ height: 50 }}
                     onPress={() => {
@@ -392,7 +394,7 @@ const AdvViewScreen = ({ navigation, route }) => {
                         setShow_Items(items_to_show);
                     }}
                 >
-                    <Text style={{ color: "white", fontWeight: 'bold' }}>Search</Text>
+                    <Text style={{ color: "white", fontWeight: 'bold' }}>{t('UserAdvViewScreenSearch')}</Text>
                 </Button>
             </View>
             {/* End Search bar with nav back */}
@@ -401,22 +403,23 @@ const AdvViewScreen = ({ navigation, route }) => {
                 {/* Filter Button */}
                 <Button rounded style={{ marginLeft: 5, marginBottom: 5, backgroundColor: 'darkred' }} onPress={() => setModalVisible(true)}>
                     <Icon name='filter' />
-                    <Text style={{ marginLeft: -27 }}> Filter </Text>
+                    <Text style={{ marginLeft: -27 }}>{t('UserAdvViewScreenFilter')}</Text>
                 </Button>
                 {/* End filter button */}
 
 
 
-                {loading ? <Text style={styles.loadingStyle}> Loading Items... </Text> :
-                    <FlatList
-                        data={show_Items}
-                        renderItem={({ item }) => {
+                {loading ? <Text style={styles.loadingStyle}>{t('UserAdvViewScreenLoadingItems')}</Text> :
+                    <View>
+                        {show_Items.map((item, index) => {
                             return (
                                 <ItemComponent
+                                    key={index}
                                     Item={item}
                                 />);
-                        }}
-                    />
+                        })
+                        }
+                    </View>
                 }
 
             </Content>
@@ -425,17 +428,17 @@ const AdvViewScreen = ({ navigation, route }) => {
                 <FooterTab transparent style={{ backgroundColor: "darkred" }}>
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Home')}>
                         <Icon style={{ color: 'white' }} name="home" />
-                        <Text style={{ color: 'white' }}> Home</Text>
+                        <Text style={{ color: 'white' }}>{t('UserHomeScreenHome')}</Text>
                     </Button>
 
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Profile')}>
                         <Icon name="person" style={{ color: 'white' }} />
-                        <Text style={{ color: 'white' }}>Profile</Text>
+                        <Text style={{ color: 'white' }}>{t('UserHomeScreenProfile')}</Text>
                     </Button>
 
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('ContactUs')}>
                         <Icon style={{ color: 'white' }} name="call" />
-                        <Text style={{ color: 'white' }} >Contact Us</Text>
+                        <Text style={{ color: 'white' }} >{t('UserHomeScreenCOntactUs')}</Text>
                     </Button>
                 </FooterTab>
             </View>

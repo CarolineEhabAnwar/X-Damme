@@ -6,6 +6,7 @@ import { SafeAreaView, TextInput, Image, StyleSheet, View, TouchableOpacity, Ani
 import { Container, FooterTab, Footer, Badge, InputGroup, Input, Header, Content, Card, Icon, CardItem, Thumbnail, Text, Button, Left, Body, Right } from 'native-base';
 import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
+import { useTranslation } from 'react-i18next';
 
 
 const ServiceReviewScreen = ({ navigation, route }) => {
@@ -16,6 +17,7 @@ const ServiceReviewScreen = ({ navigation, route }) => {
     const [shoprating, setShopRating] = React.useState("");
     const [approved, setApproval] = React.useState(true);
     const [reviewID, setReviewID] = React.useState("");
+    const { t, i18n } = useTranslation();
 
     async function Get_User_Review() {
 
@@ -54,20 +56,20 @@ const ServiceReviewScreen = ({ navigation, route }) => {
                         style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
                     />
                 </Button>
-                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '21%', paddingTop: 12, fontWeight: 'bold' }}>Review Screen</Text>
+                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '21%', paddingTop: 12, fontWeight: 'bold' }}>{t('UserServiceReviewScreenText1')}</Text>
             </View>
             {/* End Text with drawer */}
             <Content>
                 <View>
-                    <Text style={styles.title}>Kindly Leave a Review</Text>
-                    <Text style={styles.title}>What is your Rating on the Service?</Text>
+                    <Text style={styles.title}>{t('UserServiceReviewScreenText2')}</Text>
+                    <Text style={styles.title}>{t('UserServiceReviewScreenText3')}</Text>
                     <Rating
                         showRating fractions={1}
                         startingValue={itemrating}
                         onFinishRating={setItemRating}
                         style={{ paddingVertical: 10 }}
                     />
-                    <Text style={styles.title}>What is your Rating on the Mechanic?</Text>
+                    <Text style={styles.title}>{t('UserServiceReviewScreenText4')}</Text>
                     <Rating
                         showRating fractions={1}
                         startingValue={shoprating}
@@ -78,7 +80,7 @@ const ServiceReviewScreen = ({ navigation, route }) => {
                         style={{ height: 180, marginHorizontal: 15, marginVertical: 10, borderColor: "darkred", borderWidth: 1, fontSize: 16 }}
                         onChangeText={setReview}
                         value={review}
-                        placeholder="Write your review ..."
+                        placeholder={t('UserServiceReviewScreenText5')}
                         textAlignVertical={'top'}
                         multiline
                         numberOfLines={5}
@@ -100,7 +102,7 @@ const ServiceReviewScreen = ({ navigation, route }) => {
                                             ReviewDate: firestore.Timestamp.fromDate(new Date()),
                                         })
 
-                                        alert("Review has been saved successfully.");
+                                        alert(t('UserServiceReviewScreenText6'));
                                     }
 
                                     else {
@@ -109,7 +111,7 @@ const ServiceReviewScreen = ({ navigation, route }) => {
                                             ShopStarRating: shoprating,
                                             Review: review,
                                         })
-                                        alert("Review has been edited successfully.");
+                                        alert(t('UserServiceReviewScreenText7'));
 
                                     }
 
@@ -119,10 +121,10 @@ const ServiceReviewScreen = ({ navigation, route }) => {
                                     alert(error);
                                 }
                             }}>
-                        <Text style={styles.buttonTextStyle}>Save</Text>
+                        <Text style={styles.buttonTextStyle}>{t('UserServiceReviewScreenText8')}</Text>
                     </Button>
                     <Button style={styles.buttonStyle} onPress={() => navigation.navigate("ServiceDetails")}>
-                        <Text style={styles.buttonTextStyle}>Cancel</Text>
+                        <Text style={styles.buttonTextStyle}>{t('UserServiceReviewScreenText9')}</Text>
                     </Button>
                 </View>
             </Content>
@@ -131,17 +133,17 @@ const ServiceReviewScreen = ({ navigation, route }) => {
                 <FooterTab transparent style={{ backgroundColor: "darkred" }}>
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Home')}>
                         <Icon style={{ color: 'white' }} name="home" />
-                        <Text style={{ color: 'white' }}> Home</Text>
+                        <Text style={{ color: 'white' }}>{t('UserHomeScreenHome')}</Text>
                     </Button>
 
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Profile')}>
                         <Icon name="person" style={{ color: 'white' }} />
-                        <Text style={{ color: 'white' }}>Profile</Text>
+                        <Text style={{ color: 'white' }}>{t('UserHomeScreenProfile')}</Text>
                     </Button>
 
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('ContactUs')}>
                         <Icon style={{ color: 'white' }} name="call" />
-                        <Text style={{ color: 'white' }} >Contact Us</Text>
+                        <Text style={{ color: 'white' }} >{t('UserHomeScreenContactUs')}</Text>
                     </Button>
                 </FooterTab>
             </View>

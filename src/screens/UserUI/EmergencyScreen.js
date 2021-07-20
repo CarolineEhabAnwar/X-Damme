@@ -4,9 +4,12 @@ import { Container, Badge, FooterTab, Header, Button, Text, Icon, InputGroup, In
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { Entypo, FontAwesome, MaterialIcons, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Fontisto, Ionicons } from '@expo/vector-icons';
-import FooterComponent from "../components/FooterComponent"
+import FooterComponent from "../components/FooterComponent";
+import { useTranslation } from 'react-i18next';
 
 const EmergencyScreen = ({ navigation }) => {
+
+  const { t, i18n } = useTranslation();
 
   return (
     <Container>
@@ -18,20 +21,20 @@ const EmergencyScreen = ({ navigation }) => {
             style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
           />
         </Button>
-        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '22%', paddingTop: 12, fontWeight: 'bold' }}>Emergency</Text>
+        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '22%', paddingTop: 12, fontWeight: 'bold' }}>{t('UserEmergencyScreenTitle')}</Text>
       </View>
       {/* End Text with navback */}
       <Grid>
         <Col style={{ backgroundColor: '#c99c1e' }}>
           <Button full transparent style={styles.buttonStyle} onPress={() => navigation.navigate('PingMap')}>
             <Entypo style={styles.iconStyle} name="location-pin" />
-            <Text style={styles.textStyle}>Ping Nearest Users</Text>
+            <Text style={styles.textStyle}>{t('UserEmergencyScreenButton1')}</Text>
           </Button>
         </Col>
         <Col style={{ backgroundColor: '#1b2696' }}>
           <Button full transparent style={styles.buttonStyle} onPress={() => navigation.navigate('EmergencyContacts')} >
             <MaterialIcons name="quick-contacts-dialer" style={styles.iconStyle} />
-            <Text style={styles.textStyle}>Emergency Contacts </Text>
+            <Text style={styles.textStyle}>{t('UserEmergencyScreenButton2')}</Text>
           </Button>
         </Col>
       </Grid>
@@ -39,16 +42,15 @@ const EmergencyScreen = ({ navigation }) => {
         <Col style={{ backgroundColor: '#d91118' }}>
           <Button full transparent style={styles.buttonStyle} onPress={() => {
             navigation.navigate("NearbyHospitals")
-            console.log("Hospitals")
           }}>
             <FontAwesome5 style={styles.iconStyle} name="hospital" />
-            <Text style={styles.textStyle}>Nearby Hospitals</Text>
+            <Text style={styles.textStyle}>{t('UserEmergencyScreenButton3')}</Text>
           </Button>
         </Col>
         <Col style={{ backgroundColor: '#80207e' }}>
           <Button full transparent style={styles.buttonStyle} onPress={() => navigation.navigate('WinchNumbers')}>
             <MaterialCommunityIcons name="tow-truck" style={styles.iconStyle} />
-            <Text style={styles.textStyle}>Winch Numbers</Text>
+            <Text style={styles.textStyle}>{t('UserEmergencyScreenButton4')}</Text>
           </Button>
         </Col>
       </Grid>

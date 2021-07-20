@@ -5,11 +5,13 @@ import { Card, CardItem, Text, Button, Icon, Left, Body, Right } from 'native-ba
 import { FontAwesome5 } from '@expo/vector-icons';
 import { AuthContext } from '../../navigation/AuthProvider';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 const HospitalComponent = (props) => {
 
     const { user } = useContext(AuthContext);
     const [locationURL, setlocationURL] = useState("");
+    const { t, i18n } = useTranslation();
 
     const Get_Location = () => {
         const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
@@ -45,7 +47,7 @@ const HospitalComponent = (props) => {
                 </Left>
                 <Right>
                     <Body style={{ marginBottom: 8 }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 18 }}>Distance:</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{t('HospitalComponentText1')}</Text>
                         <Text style={{ fontSize: 18, color: "gray" }} note>{Math.round(props.Hospital.distance/10)/100} Km</Text>
                     </Body>
                 </Right>
@@ -60,14 +62,14 @@ const HospitalComponent = (props) => {
             <CardItem>
                 <View style={{ width: "94%", flexDirection: "row", justifyContent: "space-between" }}>
                     <View>
-                        <Text style={{ fontWeight: 'bold', fontSize: 18 }}>Branch: </Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{t('HospitalComponentText2')} </Text>
                         <Text style={{ fontSize: 18, color: "gray" }}>{props.Hospital.Branch}</Text>
                     </View>
                     <Button style={styles.buttonStyle} onPress={() => Check_Location()}>
-                        <Text style={styles.buttonTextStyle}>Check Location</Text>
+                        <Text style={styles.buttonTextStyle}>{t('HospitalComponentText3')}</Text>
                     </Button>
                     <Button style={styles.buttonStyle} onPress={() => Linking.openURL(`tel:${props.Hospital.Phone_Number}`)}>
-                        <Text style={styles.buttonTextStyle}>Call</Text>
+                        <Text style={styles.buttonTextStyle}>{t('HospitalComponentText4')}</Text>
                     </Button>
                 </View>
             </CardItem>

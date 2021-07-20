@@ -4,6 +4,7 @@ import { Container, FooterTab, Badge, InputGroup, Header, Content, List, Item, I
 import { Entypo, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { DrawerActions } from 'react-navigation-drawer';
 import firestore from "@react-native-firebase/firestore";
+import FooterComponent from '../components/FooterComponent';
 import qs from 'qs';
 
 const SOContactUsScreen = ({ navigation }) => {
@@ -51,7 +52,7 @@ const SOContactUsScreen = ({ navigation }) => {
       console.log(error);
     }
   }, []);
-  
+
   return (
     <Container >
       {/* Text with navback */}
@@ -67,70 +68,53 @@ const SOContactUsScreen = ({ navigation }) => {
       {/* End Text with navback */}
       <Content>
         {/* Contact 1  */}
-        <List style={{ marginTop: 0 }}>
-          <FlatList
-            data={Contacts}
-            keyExtractor={(item) => item.split("/")[2]}
-            renderItem={({ item }) => {
-              return (
-                <ListItem>
-                  <Body>
-                    <View style={{ flexDirection: 'row' }}>
-                      <Text style={{ fontWeight: '500', marginLeft: 2, marginRight: 50 }}>{item.split("/")[0]}</Text>
-                    </View>
-                  </Body>
-                  <Right>
-                    <View style={{ flexDirection: 'row', justifyContent: "flex-start" }}>
-                      <Button style={{ flexDirection: 'row', marginRight: 8, height: 30, backgroundColor: 'blue' }}
-                        onPress={() => {
-                          sendEmail(
-                            item.split("/")[1],
-                            'Report about X-Damme',
-                            '',
-                            { cc: '' }
-                          ).then(() => {
-                            console.log('Your message was successfully sent!');
-                          });
-                        }}
-                      >
-                        <MaterialIcons name="email" size={20} style={{ marginLeft: 10, marginRight: -10 }} color="white" />
-                        <Text style={{ color: 'white', fontWeight: 'bold' }}>Email</Text>
-                      </Button>
-                      <Button style={{ flexDirection: 'row', height: 30, backgroundColor: 'darkblue' }}
-                        onPress={() => {
-                          Linking.openURL(`tel:${item.split("/")[2]}`)
-                        }}
-                      >
-                        <MaterialIcons name="call" size={20} style={{ marginLeft: 10, marginRight: -10 }} color="white" />
-                        <Text style={{ color: 'white', fontWeight: 'bold' }}>Call</Text>
-                      </Button>
-                    </View>
-                  </Right>
-                </ListItem>
-              );
-            }}
-          />
-        </List>
+        {Contacts.map((item, index) => {
+          return (
+            <ListItem key={index}>
+              <Body>
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={{ fontWeight: '500', marginLeft: 2, marginRight: 50 }}>{item.split("/")[0]}</Text>
+                </View>
+              </Body>
+              <Right>
+                <View style={{ flexDirection: 'row', justifyContent: "flex-start" }}>
+                  <Button style={{ flexDirection: 'row', marginRight: 8, height: 30, backgroundColor: 'blue' }}
+                    onPress={() => {
+                      sendEmail(
+                        item.split("/")[1],
+                        'Report about X-Damme',
+                        '',
+                        { cc: '' }
+                      ).then(() => {
+                        console.log('Your message was successfully sent!');
+                      });
+                    }}
+                  >
+                    <MaterialIcons name="email" size={20} style={{ marginLeft: 10, marginRight: -10 }} color="white" />
+                    <Text style={{ color: 'white', fontWeight: 'bold' }}>Email</Text>
+                  </Button>
+                  <Button style={{ flexDirection: 'row', height: 30, backgroundColor: 'darkblue' }}
+                    onPress={() => {
+                      Linking.openURL(`tel:${item.split("/")[2]}`)
+                    }}
+                  >
+                    <MaterialIcons name="call" size={20} style={{ marginLeft: 10, marginRight: -10 }} color="white" />
+                    <Text style={{ color: 'white', fontWeight: 'bold' }}>Call</Text>
+                  </Button>
+                </View>
+              </Right>
+            </ListItem>
+          );
+        })
+        }
       </Content>
       {/* Footer */}
-      <View style={{ flexDirection: 'row', alignContent: "center", backgroundColor: "darkblue" }}>
-        <FooterTab transparent style={{ backgroundColor: "darkblue" }}>
-          <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('SOHome')}>
-            <Icon style={{ color: 'white' }} name="home" />
-            <Text style={{ color: 'white' }}> Home</Text>
-          </Button>
-
-          <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('SOProfile')}>
-            <Icon name="person" style={{ color: 'white' }} />
-            <Text style={{ color: 'white' }}>Profile</Text>
-          </Button>
-
-          <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('SOContactUs')}>
-            <Icon style={{ color: 'white' }} name="call" />
-            <Text style={{ color: 'white' }} >Contact Us</Text>
-          </Button>
-        </FooterTab>
-      </View>
+      <FooterComponent
+        home="SOHome"
+        profile="SOProfile"
+        contactus="SOContactUs"
+        bkcolor="darkblue"
+      />
       {/* End Footer */}
     </Container>
   );

@@ -72,7 +72,7 @@ const MechProfileScreen = ({ navigation }) => {
     } catch (error) {
       alert(error);
     }
-  },[]);
+  }, []);
 
   return (
 
@@ -133,13 +133,24 @@ const MechProfileScreen = ({ navigation }) => {
           </View>
         </Content>
       }
+      <View style={{ flexDirection: 'row', alignContent: "center", backgroundColor: "darkbgreen" }}>
+        <FooterTab transparent style={{ backgroundColor: "darkbgreen" }}>
+          <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('MechHome')}>
+            <Icon style={{ color: 'white' }} name="home" />
+            <Text style={{ color: 'white' }}> Home</Text>
+          </Button>
 
-      <FooterComponent
-        home="MechHome"
-        profile="MechProfile"
-        contactus="MechContactUs"
-        bkcolor="darkgreen"
-      />
+          <Button style={{ marginTop: 5 }}>
+            <Icon name="person" style={{ color: 'white' }} />
+            <Text style={{ color: 'white' }}>Profile</Text>
+          </Button>
+
+          <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('MechContactUs')}>
+            <Icon style={{ color: 'white' }} name="call" />
+            <Text style={{ color: 'white' }} >Contact Us</Text>
+          </Button>
+        </FooterTab>
+      </View>
     </Container>
   );
 }

@@ -18,8 +18,8 @@ const CarCheckUpScreen = ({ navigation }) => {
         setPlaying((prev) => !prev);
     }
 
-    useEffect(() => {
-        const subscriber = firestore()
+    async function Load_Up() {
+        await firestore()
             .collection('Car Check Up')
             .onSnapshot(querySnapshot => {
                 const temp_tutorials = [];
@@ -29,14 +29,18 @@ const CarCheckUpScreen = ({ navigation }) => {
                         key: documentSnapshot.id
                     });
                 });
-
-                setTutorials(temp_tutorials);
+                setTutorials(temp_tutorials)
                 setloading(false);
             });
-        return () => subscriber();
-    }, []);
+    }
 
-    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+    useEffect(async () => {
+        try {
+            await Load_Up();
+        } catch (error) {
+            alert("Something went wrong please try again later.")
+        }
+    }, []);
 
 
     return (
@@ -56,17 +60,17 @@ const CarCheckUpScreen = ({ navigation }) => {
 
             <Content>
                 {loading ? <Text style={styles.loadingStyle}> Loading Tutorials... </Text> :
-                    <FlatList
-                        data={tutorials}
-                        renderItem={({ item }) => {
+                    <View>
+                        {tutorials.map((item, index) => {
                             return (
                                 <YoutubePlayer
+                                    key={index}
                                     height={260}
                                     play={playing}
                                     videoId={item.Tutorial_ID}
                                 />);
-                        }}
-                    />
+                        })}
+                    </View>
                 }
             </Content>
 

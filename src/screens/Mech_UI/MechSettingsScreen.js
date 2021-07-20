@@ -107,6 +107,20 @@ const MechSettingsScreen = ({ navigation }) => {
             </Button>
           </ListItem>
 
+          <ListItem>
+            <Button transparent onPress={() => {
+              navigation.navigate('GoPremium', {
+                Color: color,
+                Home: home,
+                Profile: profile,
+                ContactUs: contactus
+              })
+            }}>
+              <MaterialCommunityIcons name="crown-outline" style={{ marginRight: -5 }} size={26} color={color} />
+              <Text style={{ color: color, fontSize: 18, fontWeight: '500' }}>Go Premium</Text>
+            </Button>
+          </ListItem>
+
         </List>
       </Content>
 

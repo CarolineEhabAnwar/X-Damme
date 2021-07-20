@@ -1,14 +1,15 @@
-import React, {useContext, useState, useEffect} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+import React, { useContext, useState, useEffect } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
-import {AuthContext} from './AuthProvider';
-import AsyncStorage from '@react-native-community/async-storage';
+import { AuthContext } from './AuthProvider';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LogBox } from "react-native"
 
 import AuthStack from './AuthStack';
 import AppStack from './AppStack';
 
 const Routes = () => {
-  const {user, setUser, typeUsed, setType, from_SignUp} = useContext(AuthContext);
+  const { user, setUser, typeUsed, setType, from_SignUp } = useContext(AuthContext);
   const [initializing, setInitializing] = useState(true);
   let finished_loading = false;
 
@@ -24,26 +25,25 @@ const Routes = () => {
 
   if (initializing) return null;
 
-  if(user){
-    if(typeUsed != "Default")
-    {
+  if (user) {
+    if (typeUsed != "Default") {
       return (
         <NavigationContainer>
           {AppStack(typeUsed)}
         </NavigationContainer>
-      ); 
+      );
     }
-    else{
+    else {
       AsyncStorage.getItem('TypeUsed').then((value) => {
-        if(value != null && value != "Default"){
-          setType(value);          
+        if (value != null && value != "Default") {
+          setType(value);
           return (
             <NavigationContainer>
               {AppStack(value)}
             </NavigationContainer>
           );
         }
-        })
+      })
     }
     return (
       <NavigationContainer>
@@ -51,13 +51,13 @@ const Routes = () => {
       </NavigationContainer>
     ); //waiting for everything to load
   }
-  else{
+  else {
     return (
       <NavigationContainer>
-        <AuthStack/>
+        <AuthStack />
       </NavigationContainer>
-  ); 
-  } 
+    );
+  }
 };
 
 export default Routes;

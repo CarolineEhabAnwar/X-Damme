@@ -5,38 +5,38 @@ import { Card, CardItem, Text, Button, Icon, Left, Body, Right } from 'native-ba
 import { FontAwesome5 } from '@expo/vector-icons';
 import { AuthContext } from '../../navigation/AuthProvider';
 import Moment from 'moment';
+import { useTranslation } from 'react-i18next';
 
 const RequestCardComponent = (props) => {
-    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
-    LogBox.ignoreLogs(['VirtualizedList: missing keys for items']);
 
-    let Date_Of_Request = new Date((props.Data.Request_Made_In_Date.nanoseconds/1000)+(props.Data.Request_Made_In_Date.seconds*1000));
-    let S_Date_Of_Request = Date_Of_Request.getDate() + "/" + (Date_Of_Request.getMonth() +1) + "/" +Date_Of_Request.getFullYear();
+    const { t, i18n } = useTranslation();
+    let Date_Of_Request = new Date((props.Data.Request_Made_In_Date.nanoseconds / 1000) + (props.Data.Request_Made_In_Date.seconds * 1000));
+    let S_Date_Of_Request = Date_Of_Request.getDate() + "/" + (Date_Of_Request.getMonth() + 1) + "/" + Date_Of_Request.getFullYear();
 
-    let Date_Of_Due = new Date((props.Data.Request_Expected_Due_Date.nanoseconds/1000)+(props.Data.Request_Expected_Due_Date.seconds*1000));
-    let S_Date_Of_Due = Date_Of_Due.getDate() + "/" + (Date_Of_Due.getMonth() +1) + "/" +Date_Of_Due.getFullYear();
+    let Date_Of_Due = new Date((props.Data.Request_Expected_Due_Date.nanoseconds / 1000) + (props.Data.Request_Expected_Due_Date.seconds * 1000));
+    let S_Date_Of_Due = Date_Of_Due.getDate() + "/" + (Date_Of_Due.getMonth() + 1) + "/" + Date_Of_Due.getFullYear();
 
     return (
-        <View style={{ borderColor: "darkred", borderWidth: 2, marginVertical: 5 ,marginHorizontal:5}}>
-            <Text style={styles.title}> Shop Owner:  <Text style={styles.writing}> {props.Data.Shop_Owner_Name} </Text></Text>
-            
-            <Text style={styles.title}> Items:  </Text>
-            <FlatList
-                data={props.Data.Items_And_Quantites}
-                renderItem={({ item }) => {
+        <View style={{ borderColor: "darkred", borderWidth: 2, marginVertical: 5, marginHorizontal: 5 }}>
+            <Text style={styles.title}> {t('RequestCardComponentText1')}  <Text style={styles.writing}> {props.Data.Shop_Owner_Name} </Text></Text>
+
+            <Text style={styles.title}> {t('RequestCardComponentText2')}  </Text>
+            <View>
+                {props.Data.Items_And_Quantites.map((item, index) => {
                     return (
-                        <Text style={styles.writing}> Name: {item.split("/")[0]} ,Quantity: {item.split("/")[1]} ,Price: {item.split("/")[2]} </Text>
+                        <Text key={index} style={styles.writing}> {t('RequestCardComponentText3')} {item.split("/")[0]} {t('RequestCardComponentText4')} {item.split("/")[1]} {t('RequestCardComponentText5')} {item.split("/")[2]} </Text>
                     )
-                }}
-            />
-            <Text style={styles.title}> Total Price: <Text style={styles.writing}> {props.Data.Total_Price} L.E </Text></Text>
-            
-            <Text style={styles.title}> Status: <Text style={styles.writing}> {props.Data.Status} </Text></Text>
-            
-            <Text style={styles.title}> Order Date: <Text style={styles.writing}> {S_Date_Of_Request} </Text></Text>
-            
-            <Text style={styles.title}> Due Date: <Text style={styles.writing}> {S_Date_Of_Due} </Text></Text>
-            
+                })
+                }
+            </View>
+            <Text style={styles.title}> {t('RequestCardComponentText6')} <Text style={styles.writing}> {props.Data.Total_Price} {t('RequestCardComponentText7')} </Text></Text>
+
+            <Text style={styles.title}> {t('RequestCardComponentText8')} <Text style={styles.writing}> {props.Data.Status} </Text></Text>
+
+            <Text style={styles.title}> {t('RequestCardComponentText9')} <Text style={styles.writing}> {S_Date_Of_Request} </Text></Text>
+
+            <Text style={styles.title}> {t('RequestCardComponentText10')}<Text style={styles.writing}> {S_Date_Of_Due} </Text></Text>
+
         </View>
     );
 }
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
         textAlign: "left",
         fontWeight: 'bold',
         marginLeft: 10,
-        marginBottom:10
+        marginBottom: 10
     },
     totalWrap: {
         marginTop: 2,

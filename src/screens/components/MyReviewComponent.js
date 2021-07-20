@@ -7,12 +7,13 @@ import { AuthContext } from '../../navigation/AuthProvider';
 import { useNavigation } from '@react-navigation/native';
 import { Rating } from 'react-native-ratings';
 import Moment from 'moment';
+import { useTranslation } from 'react-i18next';
 
 
 
 const MyReviewComponent = (props) => {
     const navigation = useNavigation();
-
+    const { t, i18n } = useTranslation();
     const [loading, setLoading] = useState(true);
     const [Shop_Owner_Name, setShopOwner_name] = useState("");
     const [items, setItems] = useState([]);
@@ -24,7 +25,6 @@ const MyReviewComponent = (props) => {
             .doc(props.item).get().then((Data) => {
                 if (Data.exists) {
                     setItems(Data.data());
-                    console.log(Data.data())
                 }
             })
         setLoading(false);
@@ -68,7 +68,7 @@ const MyReviewComponent = (props) => {
                 null
                 :
                 <View>
-                    <Text style={styles.title}>Item Name:  </Text>
+                    <Text style={styles.title}>{t('MyReviewComponentText1')}  </Text>
 
                     <TouchableOpacity onPress={() => navigation.navigate('ItemDetails', {
                         ItemName: items.Name,
@@ -85,16 +85,16 @@ const MyReviewComponent = (props) => {
                     })}>
                         <Text style={styles.howWeCalculate}>{items.Name}</Text>
                     </TouchableOpacity>
-                    <Text style={styles.title}>Reviewed On: <Text style={styles.writing}>{Moment(props.dateofreview).format('d MMM yyyy')} </Text></Text>
+                    <Text style={styles.title}>{t('MyReviewComponentText2')} <Text style={styles.writing}>{Moment(props.dateofreview).format('d MMM yyyy')} </Text></Text>
 
-                    <Text style={styles.title}>Item Rating: </Text>
+                    <Text style={styles.title}>{t('MyReviewComponentText3')} </Text>
                     <Rating
                         showRating fractions={1}
                         startingValue={props.itemrating}
                         readonly
                         style={{ paddingVertical: 10 }}
                     />
-                    <Text style={styles.title}>Review: </Text>
+                    <Text style={styles.title}>{t('MyReviewComponentText4')} </Text>
 
                     <Text
                         style={styles.writing}
@@ -103,10 +103,10 @@ const MyReviewComponent = (props) => {
                     >
                         {props.writtenreview}
                     </Text>
-                    <Text style={styles.title}>Shop Owner Name: <Text style={styles.writing}>{Shop_Owner_Name} </Text></Text>
+                    <Text style={styles.title}>{t('MyReviewComponentText5')} <Text style={styles.writing}>{Shop_Owner_Name} </Text></Text>
 
 
-                    <Text style={styles.title}>Shop Owner Rating: </Text>
+                    <Text style={styles.title}>{t('MyReviewComponentText6')} </Text>
                     <Rating
                         showRating fractions={1}
                         startingValue={props.shoprating}
@@ -121,7 +121,7 @@ const MyReviewComponent = (props) => {
 
                             })
                             }>
-                            <Text style={styles.buttonTextStyle}>Edit</Text>
+                            <Text style={styles.buttonTextStyle}>{t('MyReviewComponentText7')}</Text>
                         </Button>
                         <Button style={styles.buttonStyle} onPress={() => {
                             firestore()
@@ -129,10 +129,10 @@ const MyReviewComponent = (props) => {
                                 .doc(props.reviewID)
                                 .delete()
                                 .then(() => {
-                                    alert('Review Deleted Successfully !');
+                                    alert(t('MyReviewComponentText9'));
                                 });
                         }}>
-                            <Text style={styles.buttonTextStyle}>Delete</Text>
+                            <Text style={styles.buttonTextStyle}>{t('MyReviewComponentText8')}</Text>
                         </Button>
                     </View>
                 </View>

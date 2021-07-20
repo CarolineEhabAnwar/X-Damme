@@ -13,10 +13,13 @@ import {
     ContributionGraph,
     StackedBarChart
 } from "react-native-chart-kit";
+import { useTranslation } from 'react-i18next';
 
 const PieChartComponent = (props) => {
 
     let data = [];
+
+    const { t, i18n } = useTranslation();
 
     const Generate_Random_Color = () => {
         let Color = "rgb(" + (Math.floor(Math.random() * 255)) + "," + (Math.floor(Math.random() * 255)) + "," + (Math.floor(Math.random() * 255)) + ")"
@@ -47,10 +50,10 @@ const PieChartComponent = (props) => {
         let names = temp.name
         for (let i = 1; i < data.length; i++) {
             if (data[i].items >= temp.items) {
-                names+=" and "+data[i].name
+                names+=t('PieChartComponentText1')+data[i].name
             }
         }
-        let string_to_return = "The "+ names + " has the higthest market share of "+ temp.items +" out of "+ counter ;
+        let string_to_return = t('PieChartComponentText2')+ names + t('PieChartComponentText3')+ temp.items +t('PieChartComponentText4')+ counter ;
 
         return string_to_return;
     }

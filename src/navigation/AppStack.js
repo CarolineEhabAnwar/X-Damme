@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
+import { View, TouchableOpacity, Text , LogBox } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //Importing Waiting Screen
 import WaitingScreen from '../screens/WaitingScreen'
@@ -82,6 +82,7 @@ import MechViewRequestScreen from "../screens/Mech_UI/MechViewRequestScreen"
 import MechViewServiceScreen from "../screens/Mech_UI/MechViewServiceScreen"
 import MechRequestsHistoryScreen from "../screens/Mech_UI/MechRequestsHistoryScreen"
 
+
 //Importing Shop Owner Screens
 import SOAddItemScreen from "../screens/SO_UI/SOAddItemScreen"
 import SOAddOfferScreen from "../screens/SO_UI/SOAddOfferScreen"
@@ -94,6 +95,7 @@ import SORequestsScreen from "../screens/SO_UI/SORequestsScreen"
 import SOViewRequestScreen from "../screens/SO_UI/SOViewRequestScreen"
 import SOSettingsScreen from "../screens/SO_UI/SOSettingsScreen"
 import SOViewItemScreen from "../screens/SO_UI/SOViewItemScreen"
+import GoPremiumScreen from "../screens/SO_UI/GoPremiumScreen"
 
 
 const Stack = createStackNavigator();
@@ -463,6 +465,11 @@ const MechanicStack = ({ navigation }) => (
       component={ChangePhoneNumberScreen}
       options={{ header: () => null }}
     />
+    <Stack.Screen
+      name="GoPremium"
+      component={GoPremiumScreen}
+      options={{ header: () => null }}
+    />
   </Stack.Navigator>
 );
 
@@ -554,6 +561,11 @@ const ShopOwnerStack = ({ navigation }) => (
     <Stack.Screen
       name="ChangePhoneNumber"
       component={ChangePhoneNumberScreen}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name="GoPremium"
+      component={GoPremiumScreen}
       options={{ header: () => null }}
     />
   </Stack.Navigator>

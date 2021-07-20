@@ -3,12 +3,14 @@ import { StyleSheet, View, FlatList, Modal, LogBox } from 'react-native';
 import { Container, Picker, Form, Item, InputGroup, FooterTab, Input, Content, Text, Button, Icon } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import firestore from "@react-native-firebase/firestore";
-import ItemComponent from '../components/ItemComponent'
+import ItemComponent from '../components/ItemComponent';
+import { useTranslation } from 'react-i18next';
 
 const ItemsScreen = ({ navigation }) => {
 
   //Setting the Model Visible
   const [modalVisible, setModalVisible] = useState(false);
+  const { t, i18n } = useTranslation();
 
   //Search bar Value
   const [search_item, set_search_item] = useState('');
@@ -25,6 +27,13 @@ const ItemsScreen = ({ navigation }) => {
   const [all_models, set_all_models] = useState([]);
   const [models, setModel] = useState([]);
   const [qualities, setQualities] = useState([]);
+
+  //Price Range Values for filtering
+  const [price_min, set_price_min] = useState(0);
+  const [price_max, set_price_max] = useState(1000000000);
+  const [items, setItems] = useState([]); // Initial empty array of Items
+  const [show_Items, setShow_Items] = useState([]);
+  const [loading, setloading] = useState(true);
 
   async function Set_Pickers_Data() {
 
@@ -86,16 +95,6 @@ const ItemsScreen = ({ navigation }) => {
       setModel(all_models[filterBrand]);
     }
   }, [filterBrand]);
-
-
-  //Price Range Values for filtering
-  const [price_min, set_price_min] = useState(0);
-  const [price_max, set_price_max] = useState(1000000000);
-
-  LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
-  const [items, setItems] = useState([]); // Initial empty array of Items
-  const [show_Items, setShow_Items] = useState([]);
-  const [loading, setloading] = useState(true);
 
   function Filter() {
     setModalVisible(!modalVisible);
@@ -184,28 +183,30 @@ const ItemsScreen = ({ navigation }) => {
     setShow_Items(temp_filter_prices);
   }
 
+  async function Get_Items() {
+    const subscriber = await firestore()
+      .collection('CarStuff')
+      .onSnapshot(querySnapshot => {
+        const temp_items = [];
 
-
-  useEffect(() => {
-    try {
-      Set_Pickers_Data();
-      const subscriber = firestore()
-        .collection('CarStuff')
-        .onSnapshot(querySnapshot => {
-          const temp_items = [];
-
-          querySnapshot.forEach(documentSnapshot => {
-            temp_items.push({
-              ...documentSnapshot.data(),
-              key: documentSnapshot.id,
-            });
+        querySnapshot.forEach(documentSnapshot => {
+          temp_items.push({
+            ...documentSnapshot.data(),
+            key: documentSnapshot.id,
           });
-          setItems(temp_items);
-          setShow_Items(temp_items);
-          if (loading)
-            setloading(false);
         });
-      return () => subscriber();
+        setItems(temp_items);
+        setShow_Items(temp_items);
+        if (loading)
+          setloading(false);
+      });
+    return () => subscriber();
+  }
+
+  useEffect(async () => {
+    try {
+      await Set_Pickers_Data();
+      await Get_Items();
     } catch (error) {
       alert(error);
     }
@@ -228,7 +229,7 @@ const ItemsScreen = ({ navigation }) => {
           <View style={styles.modalView}>
 
             {/* Car Model */}
-            <Text style={styles.modalText}>Filter Items</Text>
+            <Text style={styles.modalText}>{t('UserItemsScreenText1')}</Text>
 
             <Form>
               {/* Item Type Picker */}
@@ -321,7 +322,7 @@ const ItemsScreen = ({ navigation }) => {
               </Item>
 
               {/* Price Range */}
-              <Text style={styles.textStyle2}>Price Range:</Text>
+              <Text style={styles.textStyle2}>{t('UserItemsScreenText2')}</Text>
 
 
               <Item regular style={styles.InputStyle}>
@@ -344,7 +345,7 @@ const ItemsScreen = ({ navigation }) => {
                     set_price_min(0);
                   }}
                 >
-                  <Text style={styles.textStyle}>Remove Filter</Text>
+                  <Text style={styles.textStyle}>{t('UserItemsScreenText3')}</Text>
                 </Button >
 
 
@@ -356,7 +357,7 @@ const ItemsScreen = ({ navigation }) => {
                     Filter();
                   }}
                 >
-                  <Text style={styles.textStyle}>OK</Text>
+                  <Text style={styles.textStyle}>{t('UserItemsScreenText4')}</Text>
                 </Button>
               </View>
             </Form>
@@ -376,7 +377,7 @@ const ItemsScreen = ({ navigation }) => {
         </Button>
         <InputGroup rounded style={{ flex: 1, backgroundColor: '#fff', height: 35, marginTop: 7, paddingLeft: 10, paddingRight: 10 }}>
           <Icon name="ios-search" style={{ color: "darkred" }} />
-          <Input style={{ height: 40, marginTop: 5, color: "darkred" }} placeholder="Search" onChangeText={search_item => set_search_item(search_item)} />
+          <Input style={{ height: 40, marginTop: 5, color: "darkred" }} placeholder={t('UserItemsScreenText5')} onChangeText={search_item => set_search_item(search_item)} />
         </InputGroup>
         <Button transparent style={{ height: 50 }}
           onPress={() => {
@@ -393,7 +394,7 @@ const ItemsScreen = ({ navigation }) => {
             setShow_Items(items_to_show);
           }}
         >
-          <Text style={{ color: "white", fontWeight: 'bold' }}>Search</Text>
+          <Text style={{ color: "white", fontWeight: 'bold' }}>{t('UserItemsScreenText5')}</Text>
         </Button>
       </View>
       {/* End Search bar with nav back */}
@@ -402,22 +403,23 @@ const ItemsScreen = ({ navigation }) => {
         {/* Filter Button */}
         <Button rounded style={{ marginLeft: 5, marginBottom: 5, backgroundColor: 'darkred' }} onPress={() => setModalVisible(true)}>
           <Icon name='filter' />
-          <Text style={{ marginLeft: -27 }}> Filter </Text>
+          <Text style={{ marginLeft: -27 }}>{t('UserItemsScreenText6')}</Text>
         </Button>
         {/* End filter button */}
 
 
 
-        {loading ? <Text style={styles.loadingStyle}> Loading Items... </Text> :
-          <FlatList
-            data={show_Items}
-            renderItem={({ item }) => {
+        {loading ? <Text style={styles.loadingStyle}>{t('UserItemsScreenText7')}</Text> :
+          <View>
+            {show_Items.map((item, index) => {
               return (
                 <ItemComponent
+                  key={index}
                   Item={item}
                 />);
-            }}
-          />
+            })
+            }
+          </View>
         }
 
       </Content>
@@ -426,17 +428,17 @@ const ItemsScreen = ({ navigation }) => {
         <FooterTab transparent style={{ backgroundColor: "darkred" }}>
           <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Home')}>
             <Icon style={{ color: 'white' }} name="home" />
-            <Text style={{ color: 'white' }}> Home</Text>
+            <Text style={{ color: 'white' }}>{t('UserHomeScreenHome')}</Text>
           </Button>
 
           <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Profile')}>
             <Icon name="person" style={{ color: 'white' }} />
-            <Text style={{ color: 'white' }}>Profile</Text>
+            <Text style={{ color: 'white' }}>{t('UserHomeScreenProfile')}</Text>
           </Button>
 
           <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('ContactUs')}>
             <Icon style={{ color: 'white' }} name="call" />
-            <Text style={{ color: 'white' }} >Contact Us</Text>
+            <Text style={{ color: 'white' }} >{t('UserHomeScreenContactUs')}</Text>
           </Button>
         </FooterTab>
       </View>

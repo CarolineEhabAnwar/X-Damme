@@ -6,10 +6,12 @@ import firestore from "@react-native-firebase/firestore";
 import HospitalComponent from '../components/HospitalComponent';
 import { AuthContext } from '../../navigation/AuthProvider';
 import GetLocation from 'react-native-get-location';
+import { useTranslation } from 'react-i18next';
 
 const NearbyHospitalsScreen = ({ navigation }) => {
 
     //Setting the Model Visible
+    const { t, i18n } = useTranslation();
     const { user } = useContext(AuthContext);
     const [loading, setloading] = useState(true);
     const [AllHospitalsList, setAllHospitalsList] = useState([]);
@@ -70,8 +72,6 @@ const NearbyHospitalsScreen = ({ navigation }) => {
         setCurrentLocation(null);
         setloading(true);
 
-        //console.log(GetLocation.getCurrentPosition())
-
         await GetLocation.getCurrentPosition({
             enableHighAccuracy: true,
             timeout: 150000,
@@ -80,7 +80,6 @@ const NearbyHospitalsScreen = ({ navigation }) => {
             Calulate_Distance_For_Each(AllHospitalsList, Process_Location(location))
         }).catch(ex => {
             const { code, message } = ex;
-            console.warn(code, message);
             if (code === 'CANCELLED') {
                 alert('Location cancelled by user or by another request');
             }
@@ -122,7 +121,7 @@ const NearbyHospitalsScreen = ({ navigation }) => {
         try {
             LoadUP()
         } catch (error) {
-            console.log(error);
+            alert(error);
         }
     }, []);
 
@@ -136,7 +135,7 @@ const NearbyHospitalsScreen = ({ navigation }) => {
                         style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
                     />
                 </Button>
-                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '20%', paddingTop: 12, fontWeight: 'bold' }}>Nearby Hospitals</Text>
+                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '20%', paddingTop: 12, fontWeight: 'bold' }}>{t('UserNearHospitalsScreenText1')}</Text>
             </View>
             {/* End Text with navback */}
 
@@ -148,7 +147,7 @@ const NearbyHospitalsScreen = ({ navigation }) => {
                         Calulate_Distance_For_Each(AllHospitalsList, Address);
                     }}>
                         <Icon name='filter' />
-                        <Text style={{ marginLeft: -27 }}> For Address </Text>
+                        <Text style={{ marginLeft: -27 }}>{t('UserNearHospitalsScreenText2')}</Text>
                     </Button>
                     {/* End filter button */}
                     {/* Filter Button */}
@@ -157,7 +156,7 @@ const NearbyHospitalsScreen = ({ navigation }) => {
                         requestLocation();
                     }}>
                         <Icon name='filter' />
-                        <Text style={{ marginLeft: -27 }}> For Current Location </Text>
+                        <Text style={{ marginLeft: -27 }}>{t('UserNearHospitalsScreenText3')}</Text>
                     </Button>
                     {/* End filter button */}
                 </View>
@@ -165,11 +164,11 @@ const NearbyHospitalsScreen = ({ navigation }) => {
 
 
                 {loading ?
-                    <Text style={styles.loadingStyle}> Loading Hospitals Details... </Text>
+                    <Text style={styles.loadingStyle}>{t('UserNearHospitalsScreenText4')}</Text>
                     :
                     <View>
                         {NearbyHospitalsList.length == 0 ?
-                            <Text style={styles.loadingStyle}> Sorry No Nearby Hospitals... </Text>
+                            <Text style={styles.loadingStyle}>{t('UserNearHospitalsScreenText5')}</Text>
                             :
                             <View style={{ marginLeft: 8 }}>
                                 {NearbyHospitalsList.map((item) => {
@@ -188,17 +187,17 @@ const NearbyHospitalsScreen = ({ navigation }) => {
                 <FooterTab transparent style={{ backgroundColor: "darkred" }}>
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Home')}>
                         <Icon style={{ color: 'white' }} name="home" />
-                        <Text style={{ color: 'white' }}> Home</Text>
+                        <Text style={{ color: 'white' }}>{t('UserHomeScreenHome')}</Text>
                     </Button>
 
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Profile')}>
                         <Icon name="person" style={{ color: 'white' }} />
-                        <Text style={{ color: 'white' }}>Profile</Text>
+                        <Text style={{ color: 'white' }}>{t('UserHomeScreenProfile')}</Text>
                     </Button>
 
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('ContactUs')}>
                         <Icon style={{ color: 'white' }} name="call" />
-                        <Text style={{ color: 'white' }} >Contact Us</Text>
+                        <Text style={{ color: 'white' }} >{t('UserHomeScreenContactUs')}</Text>
                     </Button>
                 </FooterTab>
             </View>

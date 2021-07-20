@@ -5,13 +5,14 @@ import { Ionicons } from '@expo/vector-icons';
 import firestore from "@react-native-firebase/firestore";
 import PingRequestComponent from '../components/PingRequestComponent'
 import { AuthContext } from '../../navigation/AuthProvider';
+import { useTranslation } from 'react-i18next';
 
 
 const PingRequestsScreen = ({ navigation, route }) => {
 
     const [pings, setPings] = useState([]); // Initial empty array of Reviews
     const [loading, setloading] = useState(true);
-
+    const { t, i18n } = useTranslation();
     const { user } = useContext(AuthContext);
 
     useEffect(() => {
@@ -56,15 +57,15 @@ const PingRequestsScreen = ({ navigation, route }) => {
                 </Button>
                 <InputGroup rounded style={{ flex: 1, backgroundColor: '#fff', height: 35, marginTop: 7, paddingLeft: 10, paddingRight: 10 }}>
                     <Icon name="ios-search" style={{ color: "darkred" }} />
-                    <Input style={{ height: 40, marginTop: 5, color: "darkred" }} placeholder="Search" />
+                    <Input style={{ height: 40, marginTop: 5, color: "darkred" }} placeholder={t('UserPingRequestsScreenText1')} />
                 </InputGroup>
                 <Button transparent style={{ height: 50 }} onPress={() => null}>
-                    <Text style={{ color: "white", fontWeight: 'bold' }}>Search</Text>
+                    <Text style={{ color: "white", fontWeight: 'bold' }}>{t('UserPingRequestsScreenText1')}</Text>
                 </Button>
             </View>
             {/* End Search bar with nav back */}
             <Container>
-                {loading ? <Text style={styles.loadingStyle}> Loading Ping Requests... </Text> :
+                {loading ? <Text style={styles.loadingStyle}>{t('UserPingRequestsScreenText2')}</Text> :
                     <FlatList
                         data={pings}
                         renderItem={({ item }) => {
@@ -87,17 +88,17 @@ const PingRequestsScreen = ({ navigation, route }) => {
                 <FooterTab transparent style={{ backgroundColor: "darkred" }}>
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Home')}>
                         <Icon style={{ color: 'white' }} name="home" />
-                        <Text style={{ color: 'white' }}> Home</Text>
+                        <Text style={{ color: 'white' }}>{t('UserHomeScreenHome')}</Text>
                     </Button>
 
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Profile')}>
                         <Icon name="person" style={{ color: 'white' }} />
-                        <Text style={{ color: 'white' }}>Profile</Text>
+                        <Text style={{ color: 'white' }}>{t('UserHomeScreenProfile')}</Text>
                     </Button>
 
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('ContactUs')}>
                         <Icon style={{ color: 'white' }} name="call" />
-                        <Text style={{ color: 'white' }} >Contact Us</Text>
+                        <Text style={{ color: 'white' }} >{t('UserHomeScreenContactUs')}</Text>
                     </Button>
                 </FooterTab>
             </View>

@@ -32,14 +32,8 @@ const MechHomeScreen = ({ navigation }) => {
     return (
         <Container>
             {/* Search bar with drawer */}
-            <View searchBar style={{ flexDirection: 'row', paddingTop: 26, marginBottom: 12, paddingBottom: 6, alignContent: "center", backgroundColor: "darkgreen", top: 0 }}>
-                <Button transparent onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())} >
-                    <Icon
-                        name='home'
-                        ios='ios-menu' android="md-menu" style={{ fontSize: 28, color: 'white' }}
-                    />
-                </Button>
-                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '27%', paddingTop: 12, fontWeight: 'bold' }}> Home</Text>
+            <View searchBar style={{ flexDirection: 'row', paddingTop: 26, marginBottom: 12, paddingBottom: 6,justifyContent:"center", alignContent: "center", backgroundColor: "darkgreen", top: 0 }}>
+                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingTop: 12, fontWeight: 'bold' }}> Home</Text>
             </View>
             {/* End Search bar with drawer */}
             <Content>

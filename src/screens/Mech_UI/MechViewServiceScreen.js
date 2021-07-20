@@ -111,7 +111,12 @@ const MechViewServiceScreen = ({ navigation, route }) => {
         </Card>
       </Content>
 
-      <FooterComponent home="MechHome" profile="MechProfile" contactus="MechContactUs" backgroundColor="darkgreen" />
+      <FooterComponent
+        home="MechHome"
+        profile="MechProfile"
+        contactus="MechContactUs"
+        backgroundColor="darkgreen"
+      />
 
     </Container>
   );

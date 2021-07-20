@@ -8,12 +8,14 @@ import { RadioButton } from 'react-native-paper';
 import { AuthContext } from '../../navigation/AuthProvider';
 import { useNavigation } from '@react-navigation/native';
 import { Rating } from 'react-native-ratings';
+import { useTranslation } from 'react-i18next';
 
 
 
 
 const ServiceComponent = (props) => {
 
+    const { t, i18n } = useTranslation();
 
     const PercentageBar = ({ starText, percentage }) => {
 

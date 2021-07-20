@@ -3,7 +3,8 @@ import { StyleSheet, View, FlatList, LogBox } from 'react-native';
 import { Container, InputGroup, FooterTab, Input, Content, Text, Button, Icon } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import firestore from "@react-native-firebase/firestore";
-import ReviewComponent from '../components/ReviewComponent'
+import ReviewComponent from '../components/ReviewComponent';
+import { useTranslation } from 'react-i18next';
 
 const CustomersReviewsScreen = ({ navigation, route }) => {
 
@@ -12,6 +13,7 @@ const CustomersReviewsScreen = ({ navigation, route }) => {
 
     const [reviews, setReviews] = useState([]); // Initial empty array of Reviews
     const [loading, setloading] = useState(true);
+    const { t, i18n } = useTranslation();
 
     async function Get_Reviews() {
         try {
@@ -59,16 +61,16 @@ const CustomersReviewsScreen = ({ navigation, route }) => {
                 </Button>
                 <InputGroup rounded style={{ flex: 1, backgroundColor: '#fff', height: 35, marginTop: 7, paddingLeft: 10, paddingRight: 10 }}>
                     <Icon name="ios-search" style={{ color: "darkred" }} />
-                    <Input style={{ height: 40, marginTop: 5, color: "darkred" }} placeholder="Search" />
+                    <Input style={{ height: 40, marginTop: 5, color: "darkred" }} placeholder={t('UserCustomersReviewScreenSearch')} />
                 </InputGroup>
                 <Button transparent style={{ height: 50 }} onPress={() => null}>
-                    <Text style={{ color: "white", fontWeight: 'bold' }}>Search</Text>
+                    <Text style={{ color: "white", fontWeight: 'bold' }}>{t('UserCustomersReviewScreenSearch')}</Text>
                 </Button>
             </View>
             {/* End Search bar with nav back */}
             <Container>
 
-                {loading ? <Text style={styles.loadingStyle}> Loading Reviews... </Text> :
+                {loading ? <Text style={styles.loadingStyle}>{t('UserCustomersReviewScreenLoading')} </Text> :
                     <FlatList
                         data={reviews}
                         renderItem={({ item }) => {
@@ -90,17 +92,17 @@ const CustomersReviewsScreen = ({ navigation, route }) => {
                 <FooterTab transparent style={{ backgroundColor: "darkred" }}>
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Home')}>
                         <Icon style={{ color: 'white' }} name="home" />
-                        <Text style={{ color: 'white' }}> Home</Text>
+                        <Text style={{ color: 'white' }}> {t('UserHomeScreenHome')}</Text>
                     </Button>
 
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Profile')}>
                         <Icon name="person" style={{ color: 'white' }} />
-                        <Text style={{ color: 'white' }}>Profile</Text>
+                        <Text style={{ color: 'white' }}>{t('UserHomeScreenProfile')}</Text>
                     </Button>
 
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('ContactUs')}>
                         <Icon style={{ color: 'white' }} name="call" />
-                        <Text style={{ color: 'white' }} >Contact Us</Text>
+                        <Text style={{ color: 'white' }} >{t('UserHomeScreenContactUs')}</Text>
                     </Button>
                 </FooterTab>
             </View>

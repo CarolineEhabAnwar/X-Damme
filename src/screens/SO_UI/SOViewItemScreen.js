@@ -6,7 +6,7 @@ import FooterComponent from '../components/FooterComponent'
 
 
 const SOViewItemScreen = ({ navigation, route }) => {
-  
+
   return (
     <Container>
       {/* Search bar with drawer */}
@@ -33,7 +33,7 @@ const SOViewItemScreen = ({ navigation, route }) => {
               {route.params.Item.InOffer == "true" ?
                 <View>
                   <Text style={styles.textStyles}>Price: </Text>
-                  <Text style={{fontSize: 19,marginBottom: 10,fontWeight: 'bold',textDecorationLine: 'line-through'}}>{route.params.Item.Price}</Text>
+                  <Text style={{ fontSize: 19, marginBottom: 10, fontWeight: 'bold', textDecorationLine: 'line-through' }}>{route.params.Item.Price}</Text>
                   <Text style={styles.itemsTextStyle}>{route.params.Item.After_Price}</Text>
                 </View>
                 :

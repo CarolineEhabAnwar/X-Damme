@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -12,22 +12,42 @@ import FormInput from '../screens/components/FormInput';
 import FormButton from '../screens/components/FormButton';
 import SocialButton from '../screens/components/SocialButton';
 import { AuthContext } from '../navigation/AuthProvider';
-import * as RNLocalize from "react-native-localize";
 import { useTranslation } from 'react-i18next';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
 const LoginScreen = ({ navigation }) => {
 
   const { t, i18n } = useTranslation();
-
-
-  i18n.language = RNLocalize.getLocales()[0].languageCode;
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const { login, googleLogin, fbLogin, forget } = useContext(AuthContext);
+
+  async function Get_Lang() {
+    setLoading(true);
+    await AsyncStorage.getItem('Language').then((value) => {
+      if (value == null) {
+        AsyncStorage.setItem('Language', "en");
+        i18n.changeLanguage("en");
+        setLoading(false);
+      }
+      else {
+        i18n.changeLanguage(value);
+        setLoading(false);
+      }
+    });
+  }
+
+  useEffect(async () => {
+    try {
+      await Get_Lang();
+    } catch (error) {
+
+    }
+  }, []);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -103,7 +123,10 @@ const LoginScreen = ({ navigation }) => {
       <View style={{ flexDirection: "row" }}>
         <TouchableOpacity
           style={styles.language}
-          onPress={() => i18n.changeLanguage('en')}>
+          onPress={() => {
+            i18n.changeLanguage('en');
+            AsyncStorage.setItem('Language', "en");
+          }}>
           <Text style={styles.langText}>
             English
           </Text>
@@ -111,7 +134,10 @@ const LoginScreen = ({ navigation }) => {
         <Text style={styles.language}> | </Text>
         <TouchableOpacity
           style={styles.langauge}
-          onPress={() => i18n.changeLanguage('ar')}>
+          onPress={() => {
+            i18n.changeLanguage('ar');
+            AsyncStorage.setItem('Language', "ar");
+          }}>
           <Text style={styles.langText}>
             العربية
           </Text>

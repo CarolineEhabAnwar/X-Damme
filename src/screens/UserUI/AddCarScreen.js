@@ -6,6 +6,7 @@ import { Fontisto, Ionicons } from '@expo/vector-icons';
 import ImagePicker from "react-native-image-picker"
 import firestore from "@react-native-firebase/firestore";
 import { AuthContext } from '../../navigation/AuthProvider';
+import { useTranslation } from 'react-i18next';
 
 const AddCarScreen = ({ navigation }) => {
 
@@ -19,6 +20,7 @@ const AddCarScreen = ({ navigation }) => {
   const [models, setModel] = useState([]);
 
   const [loadingScreen, setloadingScreen] = useState(true);
+  const { t, i18n } = useTranslation();
 
   async function Add_Car() {
     await firestore().collection("User's Cars").add({
@@ -84,7 +86,7 @@ const AddCarScreen = ({ navigation }) => {
             style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
           />
         </Button>
-        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '22%', paddingTop: 12, fontWeight: 'bold' }}> Add Car</Text>
+        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '22%', paddingTop: 12, fontWeight: 'bold' }}>{t('UserAddCarScreenTitle')}</Text>
       </View>
       {/* End Search bar with drawer */}
 
@@ -92,7 +94,7 @@ const AddCarScreen = ({ navigation }) => {
 
         {loadingScreen ?
           <Form>
-            <Text style={styles.loadingStyle}> Loading... </Text>
+            <Text style={styles.loadingStyle}>{t('UserAddCarScreenTitleLoading')}</Text>
           </Form>
           :
           <Form>
@@ -152,7 +154,7 @@ const AddCarScreen = ({ navigation }) => {
                 }
               }}
             >
-              <Text>Add Car</Text>
+              <Text>{t('UserAddCarScreenTitle')}</Text>
             </Button>
 
           </Form>
@@ -164,17 +166,17 @@ const AddCarScreen = ({ navigation }) => {
         <FooterTab transparent style={{ backgroundColor: "darkred" }}>
           <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Home')}>
             <Icon style={{ color: 'white' }} name="home" />
-            <Text style={{ color: 'white' }}> Home</Text>
+            <Text style={{ color: 'white' }}>{t('UserHomeScreenHome')}</Text>
           </Button>
 
           <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Profile')}>
             <Icon name="person" style={{ color: 'white' }} />
-            <Text style={{ color: 'white' }}>Profile</Text>
+            <Text style={{ color: 'white' }}>{t('UserHomeScreenProfile')}</Text>
           </Button>
 
           <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('ContactUs')}>
             <Icon style={{ color: 'white' }} name="call" />
-            <Text style={{ color: 'white' }} >Contact Us</Text>
+            <Text style={{ color: 'white' }} >{t('UserHomeScreenContactUs')}</Text>
           </Button>
         </FooterTab>
       </View>

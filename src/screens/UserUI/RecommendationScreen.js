@@ -4,8 +4,11 @@ import { Container, FooterTab, Content, Icon, Text, Button, List, ListItem, Card
 import { DrawerActions } from 'react-navigation-drawer';
 import { FontAwesome5, Ionicons, Foundation, MaterialCommunityIcons, Entypo, SimpleLineIcons, AntDesign } from '@expo/vector-icons';
 import Modal from 'react-native-modal';
+import { useTranslation } from 'react-i18next';
 
 const RecommendationScreen = ({ navigation }) => {
+
+    const { t, i18n } = useTranslation();
 
     return (
         <Container>
@@ -18,7 +21,7 @@ const RecommendationScreen = ({ navigation }) => {
                         style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
                     />
                 </Button>
-                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '22%', paddingTop: 12, fontWeight: 'bold' }}>Recommendation</Text>
+                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '22%', paddingTop: 12, fontWeight: 'bold' }}>{t('UserRecommendationScreenText1')}</Text>
             </View>
             {/* End Text with drawer */}
             <Content>
@@ -27,7 +30,7 @@ const RecommendationScreen = ({ navigation }) => {
                         onPress={() => navigation.push("HotOffers")}
                     >
                         <SimpleLineIcons style={{ marginLeft: 30, flex: 3, fontSize: 100 }} name='fire' />
-                        <Text style={{ flex: 8, fontWeight: 'bold', fontSize: 40 }}>Hot Offers</Text>
+                        <Text style={{ flex: 8, fontWeight: 'bold', fontSize: 40 }}>{t('UserRecommendationScreenText2')}</Text>
                     </Button>
                 </View>
                 <View style={styles.container}>
@@ -35,7 +38,7 @@ const RecommendationScreen = ({ navigation }) => {
                         onPress={() => navigation.push("Reminder")}
                     >
                         <AntDesign style={{ marginLeft: 30, flex: 3, fontSize: 100 }} name='calendar' />
-                        <Text style={{ flex: 8, fontWeight: 'bold', fontSize: 40 }}>Reminder</Text>
+                        <Text style={{ flex: 8, fontWeight: 'bold', fontSize: 40 }}>{t('UserRecommendationScreenText3')}</Text>
                     </Button>
                 </View>
                 <View style={styles.container}>
@@ -43,7 +46,7 @@ const RecommendationScreen = ({ navigation }) => {
                         onPress={() => navigation.push("BestCars")}
                     >
                         <AntDesign style={{ marginLeft: 30, flex: 3, fontSize: 90 }} name='car' />
-                        <Text style={{ flex: 8, fontWeight: 'bold', fontSize: 40 }}>Best Cars</Text>
+                        <Text style={{ flex: 8, fontWeight: 'bold', fontSize: 40 }}>{t('UserRecommendationScreenText4')}</Text>
                     </Button>
                 </View>
             </Content>
@@ -52,17 +55,17 @@ const RecommendationScreen = ({ navigation }) => {
                 <FooterTab transparent style={{ backgroundColor: "darkred" }}>
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Home')}>
                         <Icon style={{ color: 'white' }} name="home" />
-                        <Text style={{ color: 'white' }}> Home</Text>
+                        <Text style={{ color: 'white' }}>{t('UserHomeScreenHome')}</Text>
                     </Button>
 
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Profile')}>
                         <Icon name="person" style={{ color: 'white' }} />
-                        <Text style={{ color: 'white' }}>Profile</Text>
+                        <Text style={{ color: 'white' }}>{t('UserHomeScreenProfile')}</Text>
                     </Button>
 
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('ContactUs')}>
                         <Icon style={{ color: 'white' }} name="call" />
-                        <Text style={{ color: 'white' }} >Contact Us</Text>
+                        <Text style={{ color: 'white' }} >{t('UserHomeScreenContactUs')}</Text>
                     </Button>
                 </FooterTab>
             </View>

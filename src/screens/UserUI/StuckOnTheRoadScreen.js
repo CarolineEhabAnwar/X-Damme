@@ -6,20 +6,22 @@ import FooterComponent from '../components/FooterComponent'
 import YoutubePlayer from 'react-native-youtube-iframe';
 import { ScrollView } from 'react-native-gesture-handler';
 import firestore from "@react-native-firebase/firestore";
+import { useTranslation } from 'react-i18next';
 
 
 const StuckOnTheRoadScreen = ({ navigation }) => {
     
     const [playing, setPlaying] = useState(false);
     const [tutorials, setTutorials] = useState([])
-    const [loading, setloading] = useState(false)
+    const [loading, setloading] = useState(false);
+    const { t, i18n } = useTranslation();
 
     const togglePlaying = () => {
         setPlaying((prev) => !prev);
     }
 
-    useEffect(() => {
-        const subscriber = firestore()
+    async function Load_Up() {
+        await firestore()
             .collection('Stuck On The Road')
             .onSnapshot(querySnapshot => {
                 const temp_tutorials = [];
@@ -29,15 +31,18 @@ const StuckOnTheRoadScreen = ({ navigation }) => {
                         key: documentSnapshot.id
                     });
                 });
-
                 setTutorials(temp_tutorials)
                 setloading(false);
             });
-        return () => subscriber();
+    }
+
+    useEffect(async () => {
+        try {
+            await Load_Up();
+        } catch (error) {
+            alert("Something went wrong please try again later.")
+        }
     }, []);
-
-    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
-
 
     return (
         <Container>
@@ -49,24 +54,24 @@ const StuckOnTheRoadScreen = ({ navigation }) => {
                         style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
                     />
                 </Button>
-                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '17%', paddingTop: 12, fontWeight: 'bold' }}>Stuck On The Road</Text>
+                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '17%', paddingTop: 12, fontWeight: 'bold' }}>{t('UserStuckOnTheRoadScreenText1')}</Text>
             </View>
             {/* End Text with navback */}
 
 
             <Content>
-                {loading ? <Text style={styles.loadingStyle}> Loading Tutorials... </Text> :
-                    <FlatList
-                        data={tutorials}
-                        renderItem={({ item }) => {
+                {loading ? <Text style={styles.loadingStyle}>{t('UserStuckOnTheRoadScreenText2')}</Text> :
+                    <View>
+                        {tutorials.map((item, index) => {
                             return (
                                 <YoutubePlayer
+                                    key={index}
                                     height={260}
                                     play={playing}
                                     videoId={item.Tutorial_ID}
                                 />);
-                        }}
-                    />
+                        })}
+                    </View>
                 }
             </Content>
 

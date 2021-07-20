@@ -6,10 +6,13 @@ import { Container, FooterTab, Footer, Badge, InputGroup, Input, Header, Content
 import { DrawerActions } from 'react-navigation-drawer';
 import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
+import { useTranslation } from 'react-i18next';
 
 
 
 const ItemDetailsScreen = ({ navigation, route }) => {
+
+  const { t, i18n } = useTranslation();
 
   const PercentageBar = ({ starText, percentage }) => {
 
@@ -176,52 +179,52 @@ const ItemDetailsScreen = ({ navigation, route }) => {
             style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
           />
         </Button>
-        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '21%', paddingTop: 12, fontWeight: 'bold' }}>Item Details</Text>
+        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '21%', paddingTop: 12, fontWeight: 'bold' }}>{t('UserItemDetailsScreenTitle')}</Text>
       </View>
       {/* End Text with drawer */}
       <Content>
-        {loading ? <Text style={styles.loadingStyle}> Loading Item Details... </Text> :
+        {loading ? <Text style={styles.loadingStyle}>{t('UserItemDetailsScreenLoading')}</Text> :
           <Card style={{ marginTop: 0, flex: 0 }}>
             <Image source={{ uri: route.params.Item.Image_Path }} style={{ marginBottom: 20, height: 200, width: null }} />
             <CardItem style={{ marginHorizontal: 1, borderWidth: 3, borderColor: 'darkred' }}>
               <Body>
-                <Text style={styles.textStyles}>Name: </Text>
+                <Text style={styles.textStyles}>{t('UserItemDetailsScreenText1')}</Text>
                 <Text style={styles.itemsTextStyle}>{route.params.Item.Name}</Text>
 
                 {route.params.Item.InOffer == "true" ?
                   <View>
-                    <Text style={styles.textStyles}>Price: </Text>
+                    <Text style={styles.textStyles}>{t('UserItemDetailsScreenText2')}</Text>
                     <Text style={{ fontSize: 19, marginBottom: 10, fontWeight: 'bold', textDecorationLine: 'line-through' }}>{route.params.Item.Price}</Text>
                     <Text style={styles.itemsTextStyle}>{route.params.Item.After_Price}</Text>
                   </View>
                   :
                   <View>
-                    <Text style={styles.textStyles}>Price: </Text>
+                    <Text style={styles.textStyles}>{t('UserItemDetailsScreenText2')}</Text>
                     <Text style={styles.itemsTextStyle}>{route.params.Item.Price}</Text>
                   </View>
                 }
 
-                <Text style={styles.textStyles}>Car Brand: </Text>
+                <Text style={styles.textStyles}>{t('UserItemDetailsScreenText3')} </Text>
                 <Text style={styles.itemsTextStyle}>{route.params.Item.Car_Brand}</Text>
 
-                <Text style={styles.textStyles}>Car Model:</Text>
+                <Text style={styles.textStyles}>{t('UserItemDetailsScreenText4')}</Text>
                 <Text style={styles.itemsTextStyle}>{route.params.Item.Car_Model}</Text>
 
-                <Text style={styles.textStyles}>Quality:</Text>
+                <Text style={styles.textStyles}>{t('UserItemDetailsScreenText5')}</Text>
                 <Text style={styles.itemsTextStyle}>{route.params.Item.Quality}</Text>
 
-                <Text style={styles.textStyles}>Made In:</Text>
+                <Text style={styles.textStyles}>{t('UserItemDetailsScreenText6')}</Text>
                 <Text style={styles.itemsTextStyle}>{route.params.Item.Made_In}</Text>
 
-                <Text style={styles.textStyles}>Manufacture Date:</Text>
+                <Text style={styles.textStyles}>{t('UserItemDetailsScreenText7')}</Text>
                 <Text style={styles.itemsTextStyle}>{route.params.Item.Manufacture_Date}</Text>
 
-                <Text style={styles.textStyles}>Shop Owner:</Text>
+                <Text style={styles.textStyles}>{t('UserItemDetailsScreenText8')}</Text>
                 <Text style={styles.itemsTextStyle}>{route.params.Item.Shop_Owner_Name}</Text>
 
-                <Text style={styles.textStyles}>Rating:</Text>
+                <Text style={styles.textStyles}>{t('UserItemDetailsScreenText9')}</Text>
                 <View style={styles.reviewContainer}>
-                  <Text style={{ color: "darkred", fontWeight: 'bold', left: 70 }}>Item Rating</Text>
+                  <Text style={{ color: "darkred", fontWeight: 'bold', left: 70 }}>{t('UserItemDetailsScreenText10')}</Text>
                   <View style={styles.totalWrap}>
                     <View
                       style={{
@@ -236,7 +239,7 @@ const ItemDetailsScreen = ({ navigation, route }) => {
                       />
                     </View>
                   </View>
-                  <Text style={styles.amountText}>{TotalItemReviewsCount} customer ratings</Text>
+                  <Text style={styles.amountText}>{TotalItemReviewsCount}{t('UserItemDetailsScreenText11')}</Text>
 
                   <View style={{ marginTop: 15, left: 13 }}>
                     <View style={styles.spacer}>
@@ -263,9 +266,9 @@ const ItemDetailsScreen = ({ navigation, route }) => {
                       itemID: route.params.Item.key
                     })
                   }}>
-                    <Text style={styles.howWeCalculate}>See Customer Reviews</Text>
+                    <Text style={styles.howWeCalculate}>{t('UserItemDetailsScreenText12')}</Text>
                   </TouchableOpacity>
-                  <Text style={{ color: "darkred", fontWeight: 'bold', left: 50 }}>Shop Owner Rating</Text>
+                  <Text style={{ color: "darkred", fontWeight: 'bold', left: 50 }}>{t('UserItemDetailsScreenText13')}</Text>
                   <View style={styles.totalWrap}>
                     <View
                       style={{
@@ -280,7 +283,7 @@ const ItemDetailsScreen = ({ navigation, route }) => {
                       />
                     </View>
                   </View>
-                  <Text style={styles.amountText}>{TotalShopReviewsCount} customer ratings</Text>
+                  <Text style={styles.amountText}>{TotalShopReviewsCount}{t('UserItemDetailsScreenText14')} </Text>
 
                 </View>
 
@@ -293,7 +296,7 @@ const ItemDetailsScreen = ({ navigation, route }) => {
                     })
                   }}>
                     <Icon style={{ marginRight: -6 }} name="pencil-outline"></Icon>
-                    <Text style={styles.buttonTextStyle}>Review</Text>
+                    <Text style={styles.buttonTextStyle}>{t('UserItemDetailsScreenText15')}</Text>
                   </Button>
                   <Button style={styles.buttonStyle} onPress={async () => {
                     try {
@@ -313,7 +316,7 @@ const ItemDetailsScreen = ({ navigation, route }) => {
                     }
                   }}>
                     <Icon style={{ marginRight: -6 }} name="cart"></Icon>
-                    <Text style={styles.buttonTextStyle}>Add to Cart</Text>
+                    <Text style={styles.buttonTextStyle}>{t('UserItemDetailsScreenText16')}</Text>
                   </Button>
                 </View>
               </Body>
@@ -326,17 +329,17 @@ const ItemDetailsScreen = ({ navigation, route }) => {
         <FooterTab transparent style={{ backgroundColor: "darkred" }}>
           <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Home')}>
             <Icon style={{ color: 'white' }} name="home" />
-            <Text style={{ color: 'white' }}> Home</Text>
+            <Text style={{ color: 'white' }}>{t('UserHomeScreenHome')}</Text>
           </Button>
 
           <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Profile')}>
             <Icon name="person" style={{ color: 'white' }} />
-            <Text style={{ color: 'white' }}>Profile</Text>
+            <Text style={{ color: 'white' }}>{t('UserHomeScreenProfile')}</Text>
           </Button>
 
           <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('ContactUs')}>
             <Icon style={{ color: 'white' }} name="call" />
-            <Text style={{ color: 'white' }} >Contact Us</Text>
+            <Text style={{ color: 'white' }} >{t('UserHomeScreenContactUs')}</Text>
           </Button>
         </FooterTab>
       </View>

@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from 'react';
-import { Image, StyleSheet, Linking, FlatList , LogBox} from 'react-native';
+import { Image, StyleSheet, Linking, FlatList, LogBox } from 'react-native';
 import { Container, FooterTab, Badge, InputGroup, Header, Content, List, Item, Input, ListItem, Thumbnail, Text, Left, Body, Right, Button, Icon, View } from 'native-base';
 import { Entypo, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { DrawerActions } from 'react-navigation-drawer';
@@ -68,53 +68,48 @@ const ContactUsScreen = ({ navigation }) => {
       {/* End Text with navback */}
       <Content>
         {/* Contact 1  */}
-        <List style={{ marginTop: 0 }}>
-          <FlatList
-            data={Contacts}
-            keyExtractor={(item)=>item.split("/")[2]}
-            renderItem={({ item }) => {
-              return (
-                <ListItem>
-                  <Body>
-                    <View style={{ flexDirection: 'row' }}>
-                      <Text style={{ fontWeight: '500', marginLeft: 2, marginRight: 50 }}>{item.split("/")[0]}</Text>
-                    </View>
-                  </Body>
-                  <Right>
-                    <View style={{ flexDirection: 'row', justifyContent: "flex-start" }}>
-                      <Button style={{ flexDirection: 'row', marginRight: 8, height: 30, backgroundColor: 'blue' }}
-                        onPress={() => {
-                          sendEmail(
-                            item.split("/")[1],
-                            'Report about X-Damme',
-                            '',
-                            { cc: '' }
-                          ).then(() => {
-                            console.log('Your message was successfully sent!');
-                          });
-                        }}
-                      >
-                        <MaterialIcons name="email" size={20} style={{ marginLeft: 10, marginRight: -10 }} color="white" />
-                        <Text style={{ color: 'white', fontWeight: 'bold' }}>Email</Text>
-                      </Button>
-                      <Button style={{ flexDirection: 'row', height: 30, backgroundColor: 'darkgreen' }}
-                        onPress={() => {
-                          Linking.openURL(`tel:${item.split("/")[2]}`)
-                        }}
-                      >
-                        <MaterialIcons name="call" size={20} style={{ marginLeft: 10, marginRight: -10 }} color="white" />
-                        <Text style={{ color: 'white', fontWeight: 'bold' }}>Call</Text>
-                      </Button>
-                    </View>
-                  </Right>
-                </ListItem>
-              );
-            }}
-          />
-        </List>
+        {Contacts.map((item, index) => {
+          return (
+            <ListItem key={index}>
+              <Body>
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={{ fontWeight: '500', marginLeft: 2, marginRight: 50 }}>{item.split("/")[0]}</Text>
+                </View>
+              </Body>
+              <Right>
+                <View style={{ flexDirection: 'row', justifyContent: "flex-start" }}>
+                  <Button style={{ flexDirection: 'row', marginRight: 8, height: 30, backgroundColor: 'blue' }}
+                    onPress={() => {
+                      sendEmail(
+                        item.split("/")[1],
+                        'Report about X-Damme',
+                        '',
+                        { cc: '' }
+                      ).then(() => {
+                        console.log('Your message was successfully sent!');
+                      });
+                    }}
+                  >
+                    <MaterialIcons name="email" size={20} style={{ marginLeft: 10, marginRight: -10 }} color="white" />
+                    <Text style={{ color: 'white', fontWeight: 'bold' }}>Email</Text>
+                  </Button>
+                  <Button style={{ flexDirection: 'row', height: 30, backgroundColor: 'darkgreen' }}
+                    onPress={() => {
+                      Linking.openURL(`tel:${item.split("/")[2]}`)
+                    }}
+                  >
+                    <MaterialIcons name="call" size={20} style={{ marginLeft: 10, marginRight: -10 }} color="white" />
+                    <Text style={{ color: 'white', fontWeight: 'bold' }}>Call</Text>
+                  </Button>
+                </View>
+              </Right>
+            </ListItem>
+          );
+        })
+        }
       </Content>
 
-      <FooterComponent 
+      <FooterComponent
         home="MechHome"
         profile="MechProfile"
         contactus="MechContactUs"

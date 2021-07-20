@@ -5,24 +5,26 @@ import FooterComponent from '../components/FooterComponent'
 import { Ionicons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
 import firestore from "@react-native-firebase/firestore";
-import MechanicComponent from '../components/MechanicComponent'
+import MechanicComponent from '../components/MechanicComponent';
+import GetLocation from 'react-native-get-location';
+import { useTranslation } from 'react-i18next';
 
 
 const MechanicScreen = ({ navigation }) => {
-  LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+
+  let returned_IDs = [];
+  const { t, i18n } = useTranslation();
+  const [services_arr, set_services_arr] = useState([])
+  const [filtered_mechanics, set_filtered_mechanics] = useState([])
   const [mechanics, setMechanics] = useState([])
-  let [services_arr, set_services_arr] = useState([])
-  let [filtered_mechanics, set_filtered_mechanics] = useState([])
-  let returned_IDs = []
   const [show_mechanics, set_show_mechanics] = useState([])
   const [loading, setloading] = useState(true)
   const [search, setSearch] = useState('');
   const [selected_service, set_selected_service] = useState('')
   const [modalVisible, setModalVisible] = useState(false);
   const [Service_Types, setService_Types] = useState([]);
-
-
-
+  const [location, setCurrentLocation] = useState(null);
+  const [Near_Me_Pressed, setNear_Me_Pressed] = useState(false);
 
   useEffect(() => {
     const subscriber = firestore()
@@ -68,8 +70,6 @@ const MechanicScreen = ({ navigation }) => {
       return !pos || item != ary[pos - 1];
     });
   }
-
-
   // ---------------------- Search -------------------//
 
   const searchMechanics = () => {
@@ -118,10 +118,116 @@ const MechanicScreen = ({ navigation }) => {
   useEffect(() => {
     try {
       Get_Service_Types();
+      requestLocation();
     } catch (error) {
       alert(error);
     }
   }, []);
+
+  const requestLocation = () => {
+    setCurrentLocation(null);
+
+    GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 150000,
+    }).then(location => {
+      setCurrentLocation(location);
+    }).catch(ex => {
+      const { code, message } = ex;
+      console.warn(code, message);
+      if (code === 'CANCELLED') {
+        alert('Location cancelled by user or by another request');
+      }
+      if (code === 'UNAVAILABLE') {
+        alert('Location service is disabled or unavailable');
+      }
+      if (code === 'TIMEOUT') {
+        alert('Location request timed out');
+      }
+      if (code === 'UNAUTHORIZED') {
+        alert('Authorization denied');
+      }
+      setCurrentLocation(null);
+    });
+  }
+
+  const Process_Location = (location) => {
+    let temp = [];
+    temp.push("accuracy:" + location.accuracy);
+    temp.push("altitude:" + location.altitude);
+    temp.push("bearing:" + location.bearing);
+    temp.push("latitude:" + location.latitude);
+    temp.push("longitude:" + location.longitude);
+    temp.push("provider:" + location.provider);
+    temp.push("speed:" + location.speed);
+    temp.push("time:" + location.time);
+    return temp;
+  }
+
+  const Calulate_Distance_For_Each = (Mechanic_Lat, Mechanic_Lon) => {
+    let lat1 = location.latitude;
+    let lon1 = location.longitude;
+    let lat2 = Mechanic_Lat;
+    let lon2 = Mechanic_Lon;
+    const R = 6371e3; // metres
+    const φ1 = lat1 * Math.PI / 180; // φ, λ in radians
+    const φ2 = lat2 * Math.PI / 180;
+    const Δφ = (lat2 - lat1) * Math.PI / 180;
+    const Δλ = (lon2 - lon1) * Math.PI / 180;
+
+    const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+      Math.cos(φ1) * Math.cos(φ2) *
+      Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    return (R * c) / 1000 // in KM
+  }
+
+  const Sort_Array = (Arr) => {
+    let temp = Arr;
+    var len = temp.length;
+    for (var i = len - 1; i >= 0; i--) {
+      for (var j = 1; j <= i; j++) {
+        if (temp[j - 1].Distance > temp[j].Distance) {
+          var temp1 = temp[j - 1];
+          temp[j - 1] = temp[j];
+          temp[j] = temp1;
+        }
+      }
+    }
+    return temp;
+  }
+
+  function Find_Near_Me() {
+    let Filtered_List_temp = [];
+
+    mechanics.forEach((element) => {
+      let temp_Distance = null;
+      let Mech_Lat = null;
+      let Mech_Lon = null;
+
+      for (let i = 0; i < element.address.length; i++) {
+        if (element.address[i].split(':')[0] == "latitude")
+          Mech_Lat = element.address[i].split(':')[1]
+        else if (element.address[i].split(':')[0] == "longitude")
+          Mech_Lon = element.address[i].split(':')[1]
+      }
+
+      if (Mech_Lat != null && Mech_Lon != null) {
+        temp_Distance = Calulate_Distance_For_Each(Mech_Lat, Mech_Lon);
+        if (temp_Distance < 10) {
+          Filtered_List_temp.push({
+            ...element,
+            Distance: temp_Distance
+          });
+        }
+      }
+    });
+
+    Filtered_List_temp = Sort_Array(Filtered_List_temp);
+
+    set_show_mechanics(Filtered_List_temp);
+  }
 
   return (
     <Container>
@@ -192,10 +298,10 @@ const MechanicScreen = ({ navigation }) => {
         </Button>
         <InputGroup rounded style={{ flex: 1, backgroundColor: '#fff', height: 35, marginTop: 7, paddingLeft: 10, paddingRight: 10 }}>
           <Icon name="ios-search" style={{ color: "darkred" }} />
-          <Input style={{ height: 45, color: "darkred" }} placeholder="Search Mechanic" onChangeText={(searchTxt) => { setSearch(searchTxt) }} />
+          <Input style={{ height: 45, color: "darkred" }} placeholder={t('UserHomeScreenText1')} onChangeText={(searchTxt) => { setSearch(searchTxt) }} />
         </InputGroup>
         <Button transparent style={{ height: 50 }} onPress={() => searchMechanics()}>
-          <Text style={{ color: "white", fontWeight: 'bold' }}>Search</Text>
+          <Text style={{ color: "white", fontWeight: 'bold' }}>{t('UserHomeScreenText1')}</Text>
         </Button>
       </View>
       {/* End Search bar with nav back */}
@@ -203,13 +309,29 @@ const MechanicScreen = ({ navigation }) => {
 
       <Container>
 
-        <Button rounded style={{ marginLeft: 5, marginBottom: 5, backgroundColor: 'darkred' }} onPress={() => setModalVisible(true)}>
-          <Icon name='filter' />
-          <Text style={{ marginLeft: -27 }}> Filter </Text>
-        </Button>
-
+        <View style={{ flexDirection: "row", justifyContent: "space-between", marginHorizontal: 10 }}>
+          <Button rounded style={{ marginLeft: 5, marginBottom: 5, backgroundColor: 'darkred' }} onPress={() => setModalVisible(true)}>
+            <Icon name='filter' />
+            <Text style={{ marginLeft: -27 }}>{t('UserHomeScreenText2')}  </Text>
+          </Button>
+          <Button rounded style={{ marginLeft: 5, marginBottom: 5, backgroundColor: 'darkred' }} onPress={() => {
+            setloading(true);
+            if (!Near_Me_Pressed) {
+              setNear_Me_Pressed(true);
+              Find_Near_Me();
+            }
+            else {
+              setNear_Me_Pressed(false);
+              set_show_mechanics(mechanics);
+            }
+            setloading(false);
+          }}>
+            <Icon name='filter' />
+            <Text style={{ marginLeft: -27 }}>{t('UserHomeScreenText3')}  </Text>
+          </Button>
+        </View>
         {/* Item Card */}
-        {loading ? <Text style={styles.loadingStyle}> Loading Mechanics... </Text> :
+        {loading ? <Text style={styles.loadingStyle}>{t('UserHomeScreenText4')}  </Text> :
           <FlatList
             data={show_mechanics}
             renderItem={({ item }) => {

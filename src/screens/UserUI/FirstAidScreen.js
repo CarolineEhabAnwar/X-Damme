@@ -6,20 +6,23 @@ import FooterComponent from '../components/FooterComponent'
 import YoutubePlayer from 'react-native-youtube-iframe';
 import { ScrollView } from 'react-native-gesture-handler';
 import firestore from "@react-native-firebase/firestore";
+import { useTranslation } from 'react-i18next';
 
 
 const FirstAidScreen = ({ navigation }) => {
     
     const [playing, setPlaying] = useState(false);
     const [tutorials, setTutorials] = useState([])
-    const [loading, setloading] = useState(false)
+    const [loading, setloading] = useState(false);
+    const { t, i18n } = useTranslation();
+    
 
     const togglePlaying = () => {
         setPlaying((prev) => !prev);
     }
 
-    useEffect(() => {
-        const subscriber = firestore()
+    async function Load_Up() {
+        await firestore()
             .collection('First Aid')
             .onSnapshot(querySnapshot => {
                 const temp_tutorials = [];
@@ -29,14 +32,18 @@ const FirstAidScreen = ({ navigation }) => {
                         key: documentSnapshot.id
                     });
                 });
-
                 setTutorials(temp_tutorials)
                 setloading(false);
             });
-        return () => subscriber();
-    }, []);
+    }
 
-    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+    useEffect(async () => {
+        try {
+            await Load_Up();
+        } catch (error) {
+            alert(t('UserFirstAidScreenAlert1'))
+        }
+    }, []);
 
 
     return (
@@ -49,24 +56,24 @@ const FirstAidScreen = ({ navigation }) => {
                         style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
                     />
                 </Button>
-                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '25%', paddingTop: 12, fontWeight: 'bold' }}>First Aid</Text>
+                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '25%', paddingTop: 12, fontWeight: 'bold' }}>{t('UserFirstAidScreenTitle')}</Text>
             </View>
             {/* End Text with navback */}
 
 
             <Content>
-                {loading ? <Text style={styles.loadingStyle}> Loading Tutorials... </Text> :
-                    <FlatList
-                        data={tutorials}
-                        renderItem={({ item }) => {
+                {loading ? <Text style={styles.loadingStyle}>{t('UserFirstAidScreenLoading')}</Text> :
+                    <View>
+                        {tutorials.map((item, index) => {
                             return (
                                 <YoutubePlayer
+                                    key={index}
                                     height={260}
                                     play={playing}
                                     videoId={item.Tutorial_ID}
                                 />);
-                        }}
-                    />
+                        })}
+                    </View>
                 }
             </Content>
 

@@ -6,9 +6,11 @@ import { FontAwesome5, Ionicons, Foundation, MaterialCommunityIcons, Entypo } fr
 import Modal from 'react-native-modal';
 import firestore, { firebase } from "@react-native-firebase/firestore";
 import { AuthContext } from '../../navigation/AuthProvider';
+import { useTranslation } from 'react-i18next';
 
 const MyCarsScreen = ({ navigation }) => {
 
+  const { t, i18n } = useTranslation();
   const { user } = useContext(AuthContext);
   const [loadingScreen, setloadingScreen] = useState(true);
   const [MyCars, setMyCars] = useState([]);
@@ -54,7 +56,7 @@ const MyCarsScreen = ({ navigation }) => {
             style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
           />
         </Button>
-        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '25%', paddingTop: 12, fontWeight: 'bold' }}>My Cars</Text>
+        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '25%', paddingTop: 12, fontWeight: 'bold' }}>{t('UserMyCarsScreenText1')}</Text>
         <Button style={{ marginLeft: 'auto', alignSelf: 'center' }} transparent onPress={() => navigation.push('AddCar')}>
           <Ionicons name='add' size={30} color='white' style={{ paddingRight: 10 }} />
         </Button>
@@ -62,12 +64,12 @@ const MyCarsScreen = ({ navigation }) => {
       {/* End Text with drawer */}
       <Content>
         {loadingScreen ?
-          <Text style={styles.loadingStyle}> Loading... </Text>
+          <Text style={styles.loadingStyle}>{t('UserMyCarsScreenText2')}</Text>
           :
           <List>
             {MyCars.length == 0 ?
               <View>
-                <Text style={styles.loadingStyle}> Please add your cars.</Text>
+                <Text style={styles.loadingStyle}>{t('UserMyCarsScreenText3')}</Text>
               </View>
               : null}
             {MyCars.map((item) => {
@@ -98,17 +100,17 @@ const MyCarsScreen = ({ navigation }) => {
         <FooterTab transparent style={{ backgroundColor: "darkred" }}>
           <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Home')}>
             <Icon style={{ color: 'white' }} name="home" />
-            <Text style={{ color: 'white' }}> Home</Text>
+            <Text style={{ color: 'white' }}>{t('UserHomeScreenHome')}</Text>
           </Button>
 
           <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Profile')}>
             <Icon name="person" style={{ color: 'white' }} />
-            <Text style={{ color: 'white' }}>Profile</Text>
+            <Text style={{ color: 'white' }}>{t('UserHomeScreenProfile')}</Text>
           </Button>
 
           <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('ContactUs')}>
             <Icon style={{ color: 'white' }} name="call" />
-            <Text style={{ color: 'white' }} >Contact Us</Text>
+            <Text style={{ color: 'white' }} >{t('UserHomeScreenContactUs')}</Text>
           </Button>
         </FooterTab>
       </View>

@@ -5,13 +5,12 @@ import { Ionicons } from '@expo/vector-icons';
 import firestore from "@react-native-firebase/firestore";
 import MyReviewComponent from '../components/MyReviewComponent'
 import { AuthContext } from '../../navigation/AuthProvider';
+import { useTranslation } from 'react-i18next';
 
 
 const MyReviewsScreen = ({ navigation, route }) => {
-
-    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
     LogBox.ignoreLogs(['Animated: `useNativeDriver` was not specified.']);
-
+    const { t, i18n } = useTranslation();
     const [reviews, setReviews] = useState([]); // Initial empty array of Reviews
     const [loading, setloading] = useState(true);
 
@@ -45,30 +44,29 @@ const MyReviewsScreen = ({ navigation, route }) => {
         }
 
     }, []);
-    // console.log(items[0].fname)
 
     return (
         <Container>
             {/* Item Card */}
             {/* Text with drawer */}
             <View searchBar style={{ flexDirection: 'row', paddingTop: 25, marginBottom: 0, paddingBottom: 6, alignContent: "center", backgroundColor: "darkred", top: 0 }}>
-                <Button transparent onPress={() => navigation.navigate('Home')} >
+                <Button transparent onPress={() => navigation.goBack()} >
                     <Ionicons
                         name='arrow-back-outline'
                         style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
                     />
                 </Button>
-                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '24%', paddingTop: 12, fontWeight: 'bold' }}>My Reviews</Text>
+                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '24%', paddingTop: 12, fontWeight: 'bold' }}>{t('UserMyReviewsScreenText1')}</Text>
             </View>
             {/* End Text with drawer */}
             <Container>
 
-                {loading ? <Text style={styles.loadingStyle}> Loading Reviews... </Text> :
-                    <FlatList
-                        data={reviews}
-                        renderItem={({ item }) => {
+                {loading ? <Text style={styles.loadingStyle}>{t('UserMyReviewsScreenText1')}</Text> :
+                    <View>
+                        {reviews.map((item, index) => {
                             return (
                                 <MyReviewComponent
+                                    key={index}
                                     item={item.ItemID}
                                     dateofreview={item.ReviewDate}
                                     itemrating={item.ItemStarRating}
@@ -77,8 +75,9 @@ const MyReviewsScreen = ({ navigation, route }) => {
                                     shopowner={item.ShopOwnerID}
                                     reviewID={item.key}
                                 />);
-                        }}
-                    />
+                        })
+                        }
+                    </View>
                 }
 
             </Container>
@@ -87,17 +86,17 @@ const MyReviewsScreen = ({ navigation, route }) => {
                 <FooterTab transparent style={{ backgroundColor: "darkred" }}>
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Home')}>
                         <Icon style={{ color: 'white' }} name="home" />
-                        <Text style={{ color: 'white' }}> Home</Text>
+                        <Text style={{ color: 'white' }}>{t('UserHomeScreenHome')}</Text>
                     </Button>
 
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('Profile')}>
                         <Icon name="person" style={{ color: 'white' }} />
-                        <Text style={{ color: 'white' }}>Profile</Text>
+                        <Text style={{ color: 'white' }}>{t('UserHomeScreenProfile')}</Text>
                     </Button>
 
                     <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('ContactUs')}>
                         <Icon style={{ color: 'white' }} name="call" />
-                        <Text style={{ color: 'white' }} >Contact Us</Text>
+                        <Text style={{ color: 'white' }} >{t('UserHomeScreenContactUs')}</Text>
                     </Button>
                 </FooterTab>
             </View>

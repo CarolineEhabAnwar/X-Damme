@@ -5,10 +5,12 @@ import { Card, CardItem, Text, Button, Icon, Left, Body, Right, CheckBox } from 
 import { FontAwesome5 } from '@expo/vector-icons';
 import { AuthContext } from '../../navigation/AuthProvider';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 const AdvComponent = (props) => {
 
     const navigation = useNavigation();
+    const { t, i18n } = useTranslation();
 
     let ad_Mech = {
         fname: "",
@@ -44,7 +46,7 @@ const AdvComponent = (props) => {
                 <Left>
                     <Body style={{ marginBottom: 8 }}>
                         <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{props.AD.Title}</Text>
-                        <Text style={{ fontWeight: 'bold' }} note> Discount: {props.AD.Percentage}%</Text>
+                        <Text style={{ fontWeight: 'bold' }} note>{t('AdvComponentText1')}  {props.AD.Percentage}%</Text>
                     </Body>
                 </Left>
             </CardItem>
@@ -67,7 +69,7 @@ const AdvComponent = (props) => {
                             })
                         }
                     }}>
-                        <Text style={{ fontSize: 16, fontWeight: 'bold', marginRight: -15, color: 'darkred' }}> See Offer Details </Text>
+                        <Text style={{ fontSize: 16, fontWeight: 'bold', marginRight: -15, color: 'darkred' }}>{t('AdvComponentText2')} </Text>
                         <Icon active style={{ fontSize: 25, color: 'darkred' }} name="arrow-forward" />
                     </Button>
                 </Right>
