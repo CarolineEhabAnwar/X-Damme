@@ -89,7 +89,6 @@ const ItemDetailsScreen = ({ navigation, route }) => {
           querySnapshot.forEach(documentSnapshot => {
             itemvalue += documentSnapshot.data().ItemStarRating;
             switch (Math.round(documentSnapshot.data().ItemStarRating)) {
-
               case 1:
                 temp_Stars[0]++
                 break;

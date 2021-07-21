@@ -25,17 +25,15 @@ const ItemComponent = (props) => {
       <CardItem cardBody>
         <Image source={{ uri: props.Item.Image_Path }} style={{ height: 210, width: null, flex: 1 }} />
       </CardItem>
-      <CardItem>
-        <Left>
-          <Button transparent onPress={() => navigation.navigate('ShopOwnerProfile', {
-            ID: props.Item.Shop_Owner_ID,
-            Name: props.Item.Shop_Owner_Name
-          })}>
-            <Icon active style={{ color: "darkred" }} name="person" />
-            <Text style={{ marginLeft: -7, fontWeight: 'bold', marginTop: 5, color: 'darkred', fontSize: 15 }}>{props.Item.Shop_Owner_Name}</Text>
-          </Button>
-        </Left>
-        <Body>
+      <View style={{ flexDirection: "row" }}>
+        <Button transparent onPress={() => navigation.navigate('ShopOwnerProfile', {
+          ID: props.Item.Shop_Owner_ID,
+          Name: props.Item.Shop_Owner_Name
+        })}>
+          <Icon active style={{ color: "darkred" }} name="person" />
+          <Text style={{ marginLeft: -25, fontWeight: 'bold', color: 'darkred', fontSize: 15 }}>{props.Item.Shop_Owner_Name}</Text>
+        </Button>
+        <View style={{ alignSelf: "flex-start", marginLeft: -17 }}>
           {props.Item.InOffer == "true" ?
             <View style={{ flexDirection: 'row' }}>
               <FontAwesome5 name="coins" size={20} color="black" style={{ marginTop: 14, marginLeft: 17 }} />
@@ -50,42 +48,37 @@ const ItemComponent = (props) => {
               <Text style={styles.textStyle}>{props.Item.Price} EGP</Text>
             </View>
           }
-        </Body>
-        <Right>
-          <Button style={styles.cartItemStyle} large style={{ height: 30, marginRight: 3 }} transparent onPress={async () => {
-            try {
-              await firestore().collection('users').doc(user.uid).get().then((User_Data) => {
-                let temp_cart = [];
-                temp_cart = User_Data.data().cart;
-                temp_cart.push(props.Item.key);
-                firestore().collection('users').doc(user.uid).update({
-                  cart: temp_cart
-                }).then(() => {
-                  alert(t('ItemComponentText2'));
-                });
+        </View>
+        <Button transparent style={{marginLeft:10}} onPress={async () => {
+          try {
+            await firestore().collection('users').doc(user.uid).get().then((User_Data) => {
+              let temp_cart = [];
+              temp_cart = User_Data.data().cart;
+              temp_cart.push(props.Item.key);
+              firestore().collection('users').doc(user.uid).update({
+                cart: temp_cart
+              }).then(() => {
+                alert(t('ItemComponentText2'));
               });
-            }
-            catch (error) {
-              alert(error);
-            }
-          }}>
-            <FontAwesome5 name="shopping-cart" style={{ color: "darkred", marginRight: 3, marginTop: 3 }} size={20} color="black" />
-          </Button>
-        </Right>
-      </CardItem>
+            });
+          }
+          catch (error) {
+            alert(error);
+          }
+        }}>
+          <FontAwesome5 name="shopping-cart" style={{ color: "darkred", marginRight: 3, marginTop: 3 }} size={20} color="black" />
+        </Button>
+      </View>
       <CardItem style={{ marginLeft: 'auto' }}>
-        <Left>
-          <Text style={styles.rateStyle}> {props.Item.rate} </Text>
-        </Left>
-        <Right>
+        <View style={{alignSelf:"flex-end"}}>
           <Button style={styles.cartItemStyle} transparent onPress={() => navigation.navigate('ItemDetails', {
             Item: props.Item,
             key: props.Item.key
           })}>
             <Text style={{ fontSize: 16, fontWeight: 'bold', marginRight: -15, color: 'darkred' }}>{t('ItemComponentText3')}</Text>
-            <Icon active style={{ fontSize: 25, color: 'darkred' }} name="arrow-forward" />
+            <Icon active style={{marginLeft:-1 , fontSize: 25, color: 'darkred' }} name="arrow-forward" />
           </Button>
-        </Right>
+        </View>
       </CardItem>
     </Card>
   );

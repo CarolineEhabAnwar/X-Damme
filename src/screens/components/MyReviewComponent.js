@@ -71,8 +71,8 @@ const MyReviewComponent = (props) => {
                     <Text style={styles.title}>{t('MyReviewComponentText1')}  </Text>
 
                     <TouchableOpacity onPress={() => navigation.navigate('ItemDetails', {
-                        key: props.item,
-                        Item: items
+                        key: props.ItemID,
+                        Item:items
                     })}>
                         <Text style={styles.howWeCalculate}>{items.Name}</Text>
                     </TouchableOpacity>
