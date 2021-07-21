@@ -16,7 +16,6 @@ import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-
 const LoginScreen = ({ navigation }) => {
 
   const { t, i18n } = useTranslation();

@@ -15,7 +15,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
-
 const SignupScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
