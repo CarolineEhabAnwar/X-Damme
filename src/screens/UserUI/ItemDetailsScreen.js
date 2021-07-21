@@ -62,10 +62,8 @@ const ItemDetailsScreen = ({ navigation, route }) => {
   const [loading, setloading] = useState(true);
 
 
-  useEffect(() => {
-
-    Get_Item_Rating();
-
+  useEffect(async () => {
+    await Get_Item_Rating();
   }, []);
 
   async function Get_Item_Rating() {
@@ -83,7 +81,7 @@ const ItemDetailsScreen = ({ navigation, route }) => {
     let temp_Stars_Perc = [0, 0, 0, 0, 0, 0];
 
     try {
-      await firestore().collection('Reviews').where('ItemID', '==', route.params.Item.key)
+      await firestore().collection('Reviews').where('ItemID', '==', route.params.key)
         .get()
         .then(querySnapshot => {
           itemCount = querySnapshot.docs.length;
@@ -263,7 +261,7 @@ const ItemDetailsScreen = ({ navigation, route }) => {
                   </View>
                   <TouchableOpacity onPress={() => {
                     navigation.navigate("CustomersReviews", {
-                      itemID: route.params.Item.key
+                      itemID: route.params.key
                     })
                   }}>
                     <Text style={styles.howWeCalculate}>{t('UserItemDetailsScreenText12')}</Text>
@@ -290,7 +288,7 @@ const ItemDetailsScreen = ({ navigation, route }) => {
                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignSelf: 'center' }}>
                   <Button style={styles.buttonStyle} onPress={() => {
                     navigation.navigate("Review", {
-                      ItemID: route.params.Item.key,
+                      ItemID: route.params.key,
                       shopownerID: route.params.Item.Shop_Owner_ID,
 
                     })
@@ -303,7 +301,7 @@ const ItemDetailsScreen = ({ navigation, route }) => {
                       await firestore().collection('users').doc(user.uid).get().then((User_Data) => {
                         let temp_cart = [];
                         temp_cart = User_Data.data().cart;
-                        temp_cart.push(route.params.Item.key);
+                        temp_cart.push(route.params.key);
                         firestore().collection('users').doc(user.uid).update({
                           cart: temp_cart
                         }).then(() => {

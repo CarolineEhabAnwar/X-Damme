@@ -92,15 +92,17 @@ const MechanicScreen = ({ navigation }) => {
 
   const filterMechanics = (selected_service) => {
 
+    let temp = null;
     if (selected_service != '' && selected_service != "Select Type") {
-      services_arr = services_arr.filter((service) => (service.Type.toString() == selected_service.toString()))
-      services_arr.map((service) => returned_IDs.push(service.Mech_ID))
+      temp = services_arr.filter((service) => (service.Type.toString() == selected_service.toString()))
+      temp.map((service) => returned_IDs.push(service.Mech_ID))
       returned_IDs = remove_duplicates(returned_IDs)
-
-      filtered_mechanics = filtered_mechanics.filter((mechanic) => (returned_IDs.includes(mechanic.key)))
+      //set_filtered_mechanics
+      temp = filtered_mechanics.filter((mechanic) => (returned_IDs.includes(mechanic.key)))
     }
 
-    set_show_mechanics(filtered_mechanics)
+    if (temp != null)
+      set_show_mechanics(temp);
 
   }
 

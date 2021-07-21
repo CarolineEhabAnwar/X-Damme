@@ -79,7 +79,8 @@ const ItemComponent = (props) => {
         </Left>
         <Right>
           <Button style={styles.cartItemStyle} transparent onPress={() => navigation.navigate('ItemDetails', {
-            Item: props.Item
+            Item: props.Item,
+            key: props.Item.key
           })}>
             <Text style={{ fontSize: 16, fontWeight: 'bold', marginRight: -15, color: 'darkred' }}>{t('ItemComponentText3')}</Text>
             <Icon active style={{ fontSize: 25, color: 'darkred' }} name="arrow-forward" />

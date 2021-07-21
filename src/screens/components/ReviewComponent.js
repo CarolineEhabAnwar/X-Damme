@@ -59,6 +59,7 @@ const ReviewComponent = (props) => {
                 showRating fractions={1}
                 startingValue={props.itemrating}
                 style={{ paddingVertical: 10 }}
+                readonly={true}
             />
 
             <Text style={styles.title}>{t('ReviewComponentText4')} </Text>
@@ -66,6 +67,7 @@ const ReviewComponent = (props) => {
                 showRating fractions={1}
                 startingValue={props.shoprating}
                 style={{ paddingVertical: 10 }}
+                readonly={true}
             />
 
             <Text style={styles.title}>{t('ReviewComponentText5')} </Text>
