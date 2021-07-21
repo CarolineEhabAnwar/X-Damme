@@ -9,8 +9,6 @@ import { Rating } from 'react-native-ratings';
 import Moment from 'moment';
 import { useTranslation } from 'react-i18next';
 
-
-
 const MyReviewComponent = (props) => {
     const navigation = useNavigation();
     const { t, i18n } = useTranslation();
@@ -24,7 +22,7 @@ const MyReviewComponent = (props) => {
             .collection('CarStuff')
             .doc(props.item).get().then((Data) => {
                 if (Data.exists) {
-                    setItems(Data.data());
+                    setItems({ ...Data.data(), key: Data.id });
                 }
             })
         setLoading(false);
@@ -53,17 +51,12 @@ const MyReviewComponent = (props) => {
 
     Get_ShopOwner_Name();
 
-
     useEffect(() => {
         Fetch_Data();
     }, []);
 
-
-
-
-
     return (
-        <View style={{ borderColor: "darkred", borderWidth: 2, marginVertical: 5 }}>
+        <View style={{margin:2 , borderColor: "darkred", borderWidth: 2, marginVertical: 5 }}>
             {loading ?
                 null
                 :
@@ -72,7 +65,7 @@ const MyReviewComponent = (props) => {
 
                     <TouchableOpacity onPress={() => navigation.navigate('ItemDetails', {
                         key: props.ItemID,
-                        Item:items
+                        Item: items
                     })}>
                         <Text style={styles.howWeCalculate}>{items.Name}</Text>
                     </TouchableOpacity>

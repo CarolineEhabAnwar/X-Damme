@@ -81,7 +81,7 @@ const ItemDetailsScreen = ({ navigation, route }) => {
     let temp_Stars_Perc = [0, 0, 0, 0, 0, 0];
 
     try {
-      await firestore().collection('Reviews').where('ItemID', '==', route.params.key)
+      await firestore().collection('Reviews').where('ItemID', '==', route.params.Item.key)
         .get()
         .then(querySnapshot => {
           itemCount = querySnapshot.docs.length;
