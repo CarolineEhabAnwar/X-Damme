@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { FlatList, SafeAreaView, View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
+import { FlatList, SafeAreaView, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Button } from 'native-base';
 import FormInput from '../screens/components/FormInput';
 import FormButton from '../screens/components/FormButton';
@@ -7,8 +7,7 @@ import { AuthContext } from '../navigation/AuthProvider';
 import { ScrollView } from 'react-native-gesture-handler';
 import GetLocation from 'react-native-get-location';
 import { windowHeight, windowWidth } from '../utils/Dimentions';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import { Fontisto, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -27,6 +26,7 @@ const SignupScreen = ({ navigation }) => {
   const [cart, setCart] = useState([]);
   const [requests, setRequests] = useState([]);
   const [location, setCurrentLocation] = useState(null);
+  const [IsLocationLoading,setIsLocationLoading] = useState(false);
 
   const { t, i18n } = useTranslation();
 
@@ -69,31 +69,35 @@ const SignupScreen = ({ navigation }) => {
   };
 
   const requestLocation = () => {
-    setCurrentLocation(null);
-
-    GetLocation.getCurrentPosition({
-      enableHighAccuracy: true,
-      timeout: 150000,
-    }).then(location => {
-      setCurrentLocation(location);
-    }).catch(ex => {
-      const { code, message } = ex;
-      console.warn(code, message);
-      if (code === 'CANCELLED') {
-        alert('Location cancelled by user or by another request');
-      }
-      if (code === 'UNAVAILABLE') {
-        alert('Location service is disabled or unavailable');
-      }
-      if (code === 'TIMEOUT') {
-        alert('Location request timed out');
-      }
-      if (code === 'UNAUTHORIZED') {
-        alert('Authorization denied');
-      }
-      setCurrentLocation(null);
-    });
-  }
+    setIsLocationLoading(true);
+    try {
+        GetLocation.getCurrentPosition({
+            enableHighAccuracy: true,
+            timeout: 150000,
+        }).then(location => {
+            setCurrentLocation(location);
+            setIsLocationLoading(false);
+        }).catch(ex => {
+            const { code, message } = ex;
+            console.warn(code, message);
+            if (code === 'CANCELLED') {
+                alert('Location cancelled by user or by another request');
+            }
+            if (code === 'UNAVAILABLE') {
+                alert('Location service is disabled or unavailable');
+            }
+            if (code === 'TIMEOUT') {
+                alert('Location request timed out');
+            }
+            if (code === 'UNAUTHORIZED') {
+                alert('Authorization denied');
+            }
+            setIsLocationLoading(false);
+        });
+    } catch (error) {
+        setIsLocationLoading(false);
+    }
+}
 
   const Process_Location = (location) => {
     let temp = [];
@@ -147,7 +151,7 @@ const SignupScreen = ({ navigation }) => {
             {t('SignUPNoLocationStatment')}
           </Text>
         }
-        <Button style={{
+        <Button disabled={IsLocationLoading} style={{
           width: 250, height: 43, backgroundColor: '#ab0000', padding: 10,
           alignItems: 'center', justifyContent: 'center', borderRadius: 3, flex: 2
         }}

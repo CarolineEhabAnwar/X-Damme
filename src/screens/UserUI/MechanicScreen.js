@@ -25,6 +25,7 @@ const MechanicScreen = ({ navigation }) => {
   const [Service_Types, setService_Types] = useState([]);
   const [location, setCurrentLocation] = useState(null);
   const [Near_Me_Pressed, setNear_Me_Pressed] = useState(false);
+  const [IsLocationLoading,setIsLocationLoading] = useState(false);
 
   useEffect(() => {
     const subscriber = firestore()
@@ -116,7 +117,6 @@ const MechanicScreen = ({ navigation }) => {
     });
   }
 
-
   useEffect(() => {
     try {
       Get_Service_Types();
@@ -127,43 +127,34 @@ const MechanicScreen = ({ navigation }) => {
   }, []);
 
   const requestLocation = () => {
-    setCurrentLocation(null);
-
-    GetLocation.getCurrentPosition({
-      enableHighAccuracy: true,
-      timeout: 150000,
-    }).then(location => {
-      setCurrentLocation(location);
-    }).catch(ex => {
-      const { code, message } = ex;
-      console.warn(code, message);
-      if (code === 'CANCELLED') {
-        alert('Location cancelled by user or by another request');
-      }
-      if (code === 'UNAVAILABLE') {
-        alert('Location service is disabled or unavailable');
-      }
-      if (code === 'TIMEOUT') {
-        alert('Location request timed out');
-      }
-      if (code === 'UNAUTHORIZED') {
-        alert('Authorization denied');
-      }
-      setCurrentLocation(null);
-    });
-  }
-
-  const Process_Location = (location) => {
-    let temp = [];
-    temp.push("accuracy:" + location.accuracy);
-    temp.push("altitude:" + location.altitude);
-    temp.push("bearing:" + location.bearing);
-    temp.push("latitude:" + location.latitude);
-    temp.push("longitude:" + location.longitude);
-    temp.push("provider:" + location.provider);
-    temp.push("speed:" + location.speed);
-    temp.push("time:" + location.time);
-    return temp;
+    setIsLocationLoading(true);
+    try {
+      GetLocation.getCurrentPosition({
+        enableHighAccuracy: true,
+        timeout: 150000,
+      }).then(location => {
+        setCurrentLocation(location);
+        setIsLocationLoading(false);
+      }).catch(ex => {
+        const { code, message } = ex;
+        console.warn(code, message);
+        if (code === 'CANCELLED') {
+          alert('Location cancelled by user or by another request');
+        }
+        if (code === 'UNAVAILABLE') {
+          alert('Location service is disabled or unavailable');
+        }
+        if (code === 'TIMEOUT') {
+          alert('Location request timed out');
+        }
+        if (code === 'UNAUTHORIZED') {
+          alert('Authorization denied');
+        }
+        setIsLocationLoading(false);
+      });
+    } catch (error) {
+      setIsLocationLoading(false);
+    }
   }
 
   const Calulate_Distance_For_Each = (Mechanic_Lat, Mechanic_Lon) => {
@@ -316,7 +307,7 @@ const MechanicScreen = ({ navigation }) => {
             <Icon name='filter' />
             <Text style={{ marginLeft: -27 }}>{t('UserHomeScreenText2')}  </Text>
           </Button>
-          <Button rounded style={{ marginLeft: 5, marginBottom: 5, backgroundColor: 'darkred' }} onPress={() => {
+          <Button disabled={IsLocationLoading} rounded style={{ marginLeft: 5, marginBottom: 5, backgroundColor: 'darkred' }} onPress={() => {
             setloading(true);
             if (!Near_Me_Pressed) {
               setNear_Me_Pressed(true);

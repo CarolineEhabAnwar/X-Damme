@@ -180,6 +180,7 @@ const ItemsScreen = ({ navigation }) => {
       return;
     }
 
+
     setShow_Items(temp_filter_prices);
   }
 
@@ -411,14 +412,19 @@ const ItemsScreen = ({ navigation }) => {
 
         {loading ? <Text style={styles.loadingStyle}>{t('UserItemsScreenText7')}</Text> :
           <View>
+          {show_Items == null || show_Items.length == 0? 
+            <Text style={styles.loadingStyle}>{t('UserItemsScreenText8')}</Text>
+          : 
+          <View>
             {show_Items.map((item, index) => {
               return (
                 <ItemComponent
                   key={index}
                   Item={item}
                 />);
-            })
-            }
+            })}
+          </View>
+          }
           </View>
         }
 

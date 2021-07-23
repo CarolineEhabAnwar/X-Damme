@@ -333,7 +333,7 @@ const AdvViewScreen = ({ navigation, route }) => {
                                 <Input value={price_max == 1000000000 ? null : price_max} keyboardType="numeric" placeholder='To' onChangeText={price_max => set_price_max(price_max)} />
                             </Item>
 
-                            <View style={{ flexDirection: 'row' , justifyContent:"space-between"}}>
+                            <View style={{ flexDirection: 'row', justifyContent: "space-between" }}>
                                 <Button
                                     style={[styles.button, styles.buttonClose]}
                                     onPress={() => {
@@ -411,13 +411,20 @@ const AdvViewScreen = ({ navigation, route }) => {
 
                 {loading ? <Text style={styles.loadingStyle}>{t('UserAdvViewScreenLoadingItems')}</Text> :
                     <View>
-                        {show_Items.map((item, index) => {
-                            return (
-                                <ItemComponent
-                                    key={index}
-                                    Item={item}
-                                />);
-                        })
+                        {show_Items == null || show_Items.length == 0 ?
+                            <Text style={styles.loadingStyle}>{t('UserItemsScreenText8')}</Text>
+                            :
+                            <View>
+                                {
+                                    show_Items.map((item, index) => {
+                                        return (
+                                            <ItemComponent
+                                                key={index}
+                                                Item={item}
+                                            />);
+                                    })
+                                }
+                            </View>
                         }
                     </View>
                 }

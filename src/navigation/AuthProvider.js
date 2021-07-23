@@ -85,7 +85,7 @@ export const AuthProvider = ({ children }) => {
       const { code, message } = ex;
       console.warn(code, message);
       if (code === 'CANCELLED') {
-        alert('Location cancelled by user or by another request');
+        //alert('Location cancelled by user or by another request');
       }
       if (code === 'UNAVAILABLE') {
         alert('Location service is disabled or unavailable');
@@ -205,7 +205,7 @@ export const AuthProvider = ({ children }) => {
               return () => subscriber();
             }
           } catch (error) {
-            alert(error);
+            
           }
 
         }

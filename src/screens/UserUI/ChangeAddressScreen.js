@@ -15,34 +15,39 @@ import { useTranslation } from 'react-i18next';
 const ChangeAddressScreen = ({ navigation, route }) => {
 
     const { user } = useContext(AuthContext);
+    const [IsLocationLoading,setIsLocationLoading] = useState(false);
     const [location, setCurrentLocation] = useState(null);
     const { t, i18n } = useTranslation();
 
     const requestLocation = () => {
-        setCurrentLocation(null);
-
-        GetLocation.getCurrentPosition({
-            enableHighAccuracy: true,
-            timeout: 150000,
-        }).then(location => {
-            setCurrentLocation(location);
-        }).catch(ex => {
-            const { code, message } = ex;
-            console.warn(code, message);
-            if (code === 'CANCELLED') {
-                alert('Location cancelled by user or by another request');
-            }
-            if (code === 'UNAVAILABLE') {
-                alert('Location service is disabled or unavailable');
-            }
-            if (code === 'TIMEOUT') {
-                alert('Location request timed out');
-            }
-            if (code === 'UNAUTHORIZED') {
-                alert('Authorization denied');
-            }
-            setCurrentLocation(null);
-        });
+        setIsLocationLoading(true);
+        try {
+            GetLocation.getCurrentPosition({
+                enableHighAccuracy: true,
+                timeout: 150000,
+            }).then(location => {
+                setCurrentLocation(location);
+                setIsLocationLoading(false);
+            }).catch(ex => {
+                const { code, message } = ex;
+                console.warn(code, message);
+                if (code === 'CANCELLED') {
+                    alert('Location cancelled by user or by another request');
+                }
+                if (code === 'UNAVAILABLE') {
+                    alert('Location service is disabled or unavailable');
+                }
+                if (code === 'TIMEOUT') {
+                    alert('Location request timed out');
+                }
+                if (code === 'UNAUTHORIZED') {
+                    alert('Authorization denied');
+                }
+                setIsLocationLoading(false);
+            });
+        } catch (error) {
+            setIsLocationLoading(false);
+        }
     }
 
     const Process_Location = (location) => {
@@ -114,12 +119,12 @@ const ChangeAddressScreen = ({ navigation, route }) => {
                             {t('UserChangeAddressScreenNoLocation')}
                         </Text>
                     }
-                    <Button style={{
+                    <Button disabled={IsLocationLoading} style={{
                         width: '30%', height: 44, backgroundColor: route.params.Color, padding: 10,
                         alignItems: 'center', justifyContent: 'center', borderRadius: 3, flex: 2
                     }}
                         onPress={requestLocation} >
-                        <Text style={{fontSize:12}}>{t('UserChangeAddressScreenGetLocation')}</Text>
+                        <Text style={{ fontSize: 12 }}>{t('UserChangeAddressScreenGetLocation')}</Text>
                     </Button>
                 </View>
                 <View style={{ flexDirection: "row", justifyContent: 'center' }}>
