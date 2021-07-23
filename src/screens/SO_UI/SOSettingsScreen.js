@@ -1,9 +1,10 @@
 import React, { Component, useState } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
-import { Container, FooterTab, Content, Icon, Text, Button, List, ListItem } from 'native-base';
-import { DrawerActions } from 'react-navigation-drawer';
-import { FontAwesome5, Ionicons, Foundation, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
+import { TouchableOpacity, StyleSheet, View } from 'react-native';
+import { Container, Content, Text, Button, List, ListItem } from 'native-base';
+import { Ionicons, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 import FooterComponent from '../components/FooterComponent';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useTranslation } from 'react-i18next';
 
 const SOSettingsScreen = ({ navigation }) => {
 
@@ -12,6 +13,8 @@ const SOSettingsScreen = ({ navigation }) => {
   const contactus = 'SOContactUs'
   const color = 'darkblue'
 
+  const { t, i18n } = useTranslation();
+  
   return (
     <Container>
 
@@ -121,6 +124,32 @@ const SOSettingsScreen = ({ navigation }) => {
             </Button>
           </ListItem>
 
+          <ListItem style={{ justifyContent: "center" }}>
+            <View style={{ flexDirection: "row", justifyContent: "center" }}>
+              <TouchableOpacity
+                style={styles.language}
+                onPress={() => {
+                  i18n.changeLanguage('en');
+                  AsyncStorage.setItem('Language', "en");
+                }}>
+                <Text style={styles.langText}>
+                  English
+                </Text>
+              </TouchableOpacity>
+              <Text style={styles.language}> | </Text>
+              <TouchableOpacity
+                style={styles.langauge}
+                onPress={() => {
+                  i18n.changeLanguage('ar');
+                  AsyncStorage.setItem('Language', "ar");
+                }}>
+                <Text style={styles.langText}>
+                  العربية
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </ListItem>
+
         </List>
       </Content>
       {/* Footer */}
@@ -161,5 +190,10 @@ const styles = StyleSheet.create({
 
   buttonTextStyle: {
     fontWeight: 'bold'
-  }
+  },
+  langText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'darkblue',
+  },
 })

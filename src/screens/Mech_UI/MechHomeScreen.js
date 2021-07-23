@@ -7,16 +7,32 @@ import firestore from '@react-native-firebase/firestore';
 import FooterComponent from '../components/FooterComponent'
 import { Ionicons, FontAwesome5, FontAwesome } from '@expo/vector-icons';
 import GetProfileIMGComponent from "../components/GetProfileIMGComponent";
+import { useTranslation } from 'react-i18next';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const MechHomeScreen = ({ navigation }) => {
 
     const { user } = useContext(AuthContext);
 
     const [mech_name, set_mech_name] = useState("");
+    const { t, i18n } = useTranslation();
 
-    useEffect(() => {
+    async function Get_Lang() {
+
+        await AsyncStorage.getItem('Language').then((value) => {
+          if (value == null) {
+            AsyncStorage.setItem('Language', "en");
+            i18n.changeLanguage("en");
+          }
+          else {
+            i18n.changeLanguage(value);
+          }
+        });
+      }
+
+    useEffect(async () => {
         try {
-
+            await Get_Lang();
             firestore().collection('users').doc(user.uid).get().then((User_data) => {
                 set_mech_name(User_data.data().fname + " " + User_data.data().lname)
             });
