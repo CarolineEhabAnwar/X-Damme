@@ -149,24 +149,17 @@ const ItemsScreen = ({ navigation }) => {
     }
 
     let temp_filter_prices = [];
-    if (price_max != 1000000000 && price_min != 0) {
+    if (price_max != 1000000000 || price_min != 0) {
       for (let i = 0; i < temp_filter_items_Quality.length; i++) {
-        if (temp_filter_items_Quality[i].Price < price_max && temp_filter_items_Quality[i].Price > price_min) {
-          temp_filter_prices.push(temp_filter_items_Quality[i]);
+        if (temp_filter_items_Quality[i].InOffer == "true") {
+          if (temp_filter_items_Quality[i].After_Price < price_max && temp_filter_items_Quality[i].After_Price > price_min) {
+            temp_filter_prices.push(temp_filter_items_Quality[i]);
+          }
         }
-      }
-    }
-    else if (price_max != 1000000000) {
-      for (let i = 0; i < temp_filter_items_Quality.length; i++) {
-        if (temp_filter_items_Quality[i].Price < price_max) {
-          temp_filter_prices.push(temp_filter_items_Quality[i]);
-        }
-      }
-    }
-    else if (price_min != 0) {
-      for (let i = 0; i < temp_filter_items_Quality.length; i++) {
-        if (temp_filter_items_Quality[i].Price > price_min) {
-          temp_filter_prices.push(temp_filter_items_Quality[i]);
+        else {
+          if (temp_filter_items_Quality[i].Price < price_max && temp_filter_items_Quality[i].Price > price_min) {
+            temp_filter_prices.push(temp_filter_items_Quality[i]);
+          }
         }
       }
     }
@@ -174,6 +167,8 @@ const ItemsScreen = ({ navigation }) => {
       temp_filter_prices = temp_filter_items_Quality;
     }
 
+    set_price_max(1000000000);
+    set_price_min(0);
 
     if (temp_filter_prices == 0) {
       setShow_Items(null);
@@ -327,16 +322,20 @@ const ItemsScreen = ({ navigation }) => {
 
 
               <Item regular style={styles.InputStyle}>
-                <Input value={price_min == 0 ? null : price_min} keyboardType="numeric" placeholder='From' onChangeText={price_min => set_price_min(price_min)} />
+                <Input value={price_min == 0 ? null : price_min} keyboardType="numeric" placeholder='From' onChangeText={price_min => {
+                  set_price_min(parseInt(price_min))
+                }} />
               </Item>
 
               <Item regular style={styles.InputStyle}>
-                <Input value={price_max == 1000000000 ? null : price_max} keyboardType="numeric" placeholder='To' onChangeText={price_max => set_price_max(price_max)} />
+                <Input value={price_max == 1000000000 ? null : price_max} keyboardType="numeric" placeholder='To' onChangeText={price_max => {
+                  set_price_max(parseInt(price_max));
+                }} />
               </Item>
 
-              <View style={{ flexDirection: 'row', justifyContent:'center',marginTop:5,marginBottom:-10 }}>
+              <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 5, marginBottom: -10 }}>
                 <Button
-                  style={[styles.button, styles.buttonClose, {marginRight:8}]}
+                  style={[styles.button, styles.buttonClose, { marginRight: 8 }]}
                   onPress={() => {
                     setFilterType(0);
                     setFilterBrand(0);
@@ -353,8 +352,9 @@ const ItemsScreen = ({ navigation }) => {
                 <Button
                   style={[styles.button, styles.buttonClose]}
                   onPress={() => {
-                    if (price_min > price_max)
+                    if (price_min > price_max) {
                       return alert("Please make sure the Min Price is less than the Max Price.");
+                    }
                     Filter();
                   }}
                 >
@@ -412,19 +412,19 @@ const ItemsScreen = ({ navigation }) => {
 
         {loading ? <Text style={styles.loadingStyle}>{t('UserItemsScreenText7')}</Text> :
           <View>
-          {show_Items == null || show_Items.length == 0? 
-            <Text style={styles.loadingStyle}>{t('UserItemsScreenText8')}</Text>
-          : 
-          <View>
-            {show_Items.map((item, index) => {
-              return (
-                <ItemComponent
-                  key={index}
-                  Item={item}
-                />);
-            })}
-          </View>
-          }
+            {show_Items == null || show_Items.length == 0 ?
+              <Text style={styles.loadingStyle}>{t('UserItemsScreenText8')}</Text>
+              :
+              <View>
+                {show_Items.map((item, index) => {
+                  return (
+                    <ItemComponent
+                      key={index}
+                      Item={item}
+                    />);
+                })}
+              </View>
+            }
           </View>
         }
 
