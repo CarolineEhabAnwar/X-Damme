@@ -11,6 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../../navigation/AuthProvider';
 import storage from '@react-native-firebase/storage';
 import FooterComponent from '../components/FooterComponent';
+import { useTranslation } from 'react-i18next';
 
 async function addItems(x_name, x_price, x_made_in, x_manufacture_date, x_car_model,
   x_car_brand, x_item_quality, x_image_path, x_type, user, MyName) {
@@ -47,6 +48,7 @@ async function addItems(x_name, x_price, x_made_in, x_manufacture_date, x_car_mo
 const SOAddItemScreen = ({ navigation }) => {
 
   LogBox.ignoreLogs(['Warning: componentWillReceiveProps has been renamed']);
+  const { t, i18n } = useTranslation();
   const { user } = useContext(AuthContext);
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
@@ -193,7 +195,7 @@ const SOAddItemScreen = ({ navigation }) => {
 
       const url = await storageRef.getDownloadURL();
       ToastAndroid.show(
-        'Uploaded Successfully.',
+        t('SOAddItemScreenText9'),
         ToastAndroid.SHORT
       );
       setUploading(false);
@@ -235,24 +237,24 @@ const SOAddItemScreen = ({ navigation }) => {
             style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
           />
         </Button>
-        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '22%', paddingTop: 12, fontWeight: 'bold' }}> Add Item</Text>
+        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '22%', paddingTop: 12, fontWeight: 'bold' }}>{t('SOAddItemScreenText1')}</Text>
       </View>
       {/* End Search bar with drawer */}
 
-      {loadingScreen ? <Content><Text style={styles.loadingStyle}> Loading... </Text></Content> :
+      {loadingScreen ? <Content><Text style={styles.loadingStyle}>{t('SOAddItemScreenText2')}</Text></Content> :
 
         <Content style={{ marginHorizontal: 15, paddingVertical: 10 }}>
 
           <Form>
             <Item regular style={styles.InputStyle}>
-              <Input value={name} placeholder='Item Name' onChangeText={name => setName(name)} />
+              <Input value={name} placeholder={t('SOAddItemScreenText3')} onChangeText={name => setName(name)} />
             </Item>
 
             <Item regular style={styles.InputStyle}>
-              <Input value={price} keyboardType="numeric" placeholder='Item Price' onChangeText={price => setPrice(price)} />
+              <Input value={price} keyboardType="numeric" placeholder={t('SOAddItemScreenText4')} onChangeText={price => setPrice(price)} />
             </Item>
             <Item regular style={styles.InputStyle}>
-              <Input value={made_in} placeholder='Made In' onChangeText={made_in => setMade_in(made_in)} />
+              <Input value={made_in} placeholder={t('SOAddItemScreenText5')} onChangeText={made_in => setMade_in(made_in)} />
             </Item>
 
             <Item regular style={{
@@ -281,7 +283,7 @@ const SOAddItemScreen = ({ navigation }) => {
                 onPress={async () => {
                   choosePhotoFromLibrary();
                 }}>
-                <Text> Choose Photo</Text>
+                <Text>{t('SOAddItemScreenText6')}</Text>
               </Button>
               {is_image_choosen ? <Ionicons name="checkmark-outline" size={24} color="black" /> : null}
               {uploading ? <Feather name="loader" size={24} color="black" /> : null}
@@ -295,10 +297,10 @@ const SOAddItemScreen = ({ navigation }) => {
                     setis_image_choosen(false);
                     setis_image_uploaded(true);
                   } catch (error) {
-                    alert("There has been some error in uploading the image");
+                    alert(t('SOAddItemScreenText7'));
                   }
                 }}>
-                <Text> Upload Photo</Text>
+                <Text>{t('SOAddItemScreenText8')}</Text>
               </Button>
 
             </Item>
@@ -357,7 +359,7 @@ const SOAddItemScreen = ({ navigation }) => {
               height: 50
             }}>
               <Text style={{ marginLeft: 10, marginRight: 5, color: 'darkblue' }}>
-                Manufacture Date:
+              {t('SOAddItemScreenText10')}
               </Text>
               <DatePicker
                 style={{ width: 200 }}
@@ -367,8 +369,8 @@ const SOAddItemScreen = ({ navigation }) => {
                 format="YYYY-MM-DD"
                 minDate="1990-01-01"
                 maxDate="2025-01-01"
-                confirmBtnText="Confirm"
-                cancelBtnText="Cancel"
+                confirmBtnText={t('SOAddItemScreenText11')}
+                cancelBtnText={t('SOAddItemScreenText12')}
                 customStyles={{
                   dateIcon: {
                     position: 'absolute',
@@ -410,31 +412,31 @@ const SOAddItemScreen = ({ navigation }) => {
             <Button
               onPress={async () => {
                 if (uploading) {
-                  alert("Please Wait untill the uploads finshs.");
+                  alert(t('SOAddItemScreenText13'));
                 }
                 else if (name == '') {
-                  alert("Please insert Item Name.");
+                  alert(t('SOAddItemScreenText14'));
                 }
                 else if (price == '') {
-                  alert("Please insert Price.");
+                  alert(t('SOAddItemScreenText15'));
                 }
                 else if (made_in == '') {
-                  alert("Please insert Manufacture Country.");
+                  alert(t('SOAddItemScreenText16'));
                 }
                 else if (types[Type] == 'Select Type') {
-                  alert("Please select a type.")
+                  alert(t('SOAddItemScreenText17'))
                 }
                 else if (!uploadedOnce) {
-                  alert("Please choose and upload an Image.");
+                  alert(t('SOAddItemScreenText18'));
                 }
                 else if (brands[Brand] == 'Select Brand') {
-                  alert("Please select a brand.")
+                  alert(t('SOAddItemScreenText19'))
                 }
                 else if (models[Model] == 'Select Model') {
-                  alert("Please select a model.")
+                  alert(t('SOAddItemScreenText20'))
                 }
                 else if (qualities[Quality] == 'Select Quality') {
-                  alert("Please select a quality.")
+                  alert(t('SOAddItemScreenText21'))
                 }
                 else {
                   addItems(name, price, made_in, manufacture_date, models[Model], brands[Brand], qualities[Quality], image_path, types[Type], user, MyName);
@@ -443,7 +445,7 @@ const SOAddItemScreen = ({ navigation }) => {
               }}  // Please handle all of the errors.
 
               style={{ backgroundColor: 'darkblue', marginVertical: 20, alignSelf: 'center' }}>
-              <Text>Add Item</Text>
+              <Text>{t('SOAddItemScreenText22')}</Text>
             </Button>
 
           </Form>

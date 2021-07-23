@@ -27,7 +27,7 @@ const MechHomeScreen = ({ navigation }) => {
           else {
             i18n.changeLanguage(value);
           }
-        });
+        },[]);
       }
 
     useEffect(async () => {

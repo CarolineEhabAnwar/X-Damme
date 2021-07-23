@@ -39,7 +39,7 @@ const SOHomeScreen = ({ navigation }) => {
         } catch (error) {
             alert(error);
         }
-    });
+    },[]);
 
 
     let name = shop_Owner_Name;

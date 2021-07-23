@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import FooterComponent from '../components/FooterComponent'
 import firestore from '@react-native-firebase/firestore';
 import { AuthContext } from '../../navigation/AuthProvider';
+import { useTranslation } from 'react-i18next';
 
 
 const GoPremiumScreen = ({ navigation, route }) => {
@@ -13,6 +14,7 @@ const GoPremiumScreen = ({ navigation, route }) => {
     const [Status, setStatus] = useState(null);
     const [RemainingDuration, setRemainingDuration] = useState(null);
     const [loading, setLoading] = useState(true);
+    const { t, i18n } = useTranslation();
 
     async function Subscribe(Duration, Text) {
         try {
@@ -42,19 +44,19 @@ const GoPremiumScreen = ({ navigation, route }) => {
                     PremiumDur: Duration,
                 })
                 LoadUp();
-                alert("Subscribed Succesfully for " + Duration + " " + Text);
+                alert(t('GoPremiumText1') + Duration + " " + Text);
             }
             else if (state == "Already Subscribed") {
                 Alert.alert(
-                    "You are already Subscribed.",
-                    "If you want to add another duration press update.",
+                    t('GoPremiumText2'),
+                    t('GoPremiumText3'),
                     [
                         {
-                            text: "Cancel",
+                            text: t('GoPremiumText4'),
                             style: "cancel"
                         },
                         {
-                            text: "Update", onPress: async () => {
+                            text: t('GoPremiumText11'), onPress: async () => {
                                 await firestore().collection("users").doc(user.uid).update({
                                     PremiumDur: (Duration + Already_Subscribed_Duration),
                                 })
@@ -63,7 +65,7 @@ const GoPremiumScreen = ({ navigation, route }) => {
                                 var Year = new Date().getFullYear(Already_Subscribed_Start_Date.toMillis());
                                 var Full_Date = Day + "/" + Month + "/" + Year;
                                 LoadUp();
-                                alert("Subscription updated to be " + (Duration + Already_Subscribed_Duration) + " " + Text + " Started at " + Full_Date);
+                                alert(t('GoPremiumText5') + (Duration + Already_Subscribed_Duration) + " " + Text + t('GoPremiumText6') + Full_Date);
                             }
                         }
                     ]
@@ -79,28 +81,28 @@ const GoPremiumScreen = ({ navigation, route }) => {
     async function Unsubscribe() {
         try {
             Alert.alert(
-                "You are sure you want to Unsubscribe ?",
+                t('GoPremiumText7'),
                 "",
                 [
                     {
-                        text: "No",
+                        text: t('GoPremiumText8'),
                         style: "cancel"
                     },
                     {
-                        text: "Yes", onPress: async () => {
+                        text: t('GoPremiumText10'), onPress: async () => {
                             await firestore().collection("users").doc(user.uid).update({
                                 IsPremium: false,
                                 PremiumStartDate: null,
                                 PremiumDur: 0,
                             });
                             LoadUp();
-                            alert("Unsubscribed Succesfully...")
+                            alert(t('GoPremiumText9'))
                         }
                     }
                 ]
             );
         } catch (error) {
-            alert("Something gone wrong please try again later.")
+            alert(t('GoPremiumText12'))
         }
 
     }
@@ -130,7 +132,7 @@ const GoPremiumScreen = ({ navigation, route }) => {
         try {
             LoadUp();
         } catch (error) {
-            alert("Something gone wrong please try again later.")
+            alert(t('GoPremiumText12'))
         }
     }, []);
 
@@ -144,7 +146,7 @@ const GoPremiumScreen = ({ navigation, route }) => {
                         style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
                     />
                 </Button>
-                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '23%', paddingTop: 12, fontWeight: 'bold' }}>Go Premium</Text>
+                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '23%', paddingTop: 12, fontWeight: 'bold' }}>{t('GoPremiumText13')}</Text>
             </View>
             {/* End Search bar with drawer */}
 
@@ -153,44 +155,44 @@ const GoPremiumScreen = ({ navigation, route }) => {
                 {!loading ?
                     <Form>
                         <View style={{ borderBottomWidth: 1, borderColor: route.params.Color, width: "auto" }}>
-                            <Text style={{ fontSize: 25, marginBottom: 10 }}>Status: <Text style={{ color: route.params.Color, fontSize: 20 }}>{Status}</Text></Text>
+                            <Text style={{ fontSize: 25, marginBottom: 10 }}>{t('GoPremiumText14')}<Text style={{ color: route.params.Color, fontSize: 20 }}>{Status}</Text></Text>
                             {Status == "Subscribed" ?
-                                <Text style={{ fontSize: 25, marginBottom: 10 }}>Remaning <Text style={{ color: route.params.Color, fontSize: 20 }}>{RemainingDuration}</Text></Text>
+                                <Text style={{ fontSize: 25, marginBottom: 10 }}>{t('GoPremiumText15')}<Text style={{ color: route.params.Color, fontSize: 20 }}>{RemainingDuration}</Text></Text>
                                 :
                                 null}
                         </View>
 
                         <View style={{ width: "70%", marginTop: 10, flexDirection: "row", justifyContent: "space-between", marginBottom: 20 }}>
-                            <Text style={{ flex: 1, fontSize: 30, color: route.params.Color }}>Price</Text>
-                            <Text style={{ flex: 0.9, fontSize: 30, color: route.params.Color }}>Duration</Text>
+                            <Text style={{ flex: 1, fontSize: 30, color: route.params.Color }}>{t('GoPremiumText16')}</Text>
+                            <Text style={{ flex: 0.9, fontSize: 30, color: route.params.Color }}>{t('GoPremiumText17')}</Text>
                         </View>
 
                         <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 10 }}>
                             <Text style={{ flex: 1, fontSize: 25, alignSelf: "center", color: route.params.Color }}>29.99 EGP</Text>
-                            <Text style={{ flex: 0.8, fontSize: 25, alignSelf: "center", color: route.params.Color }}>1 Month</Text>
-                            <Button style={{ borderRadius: 20, backgroundColor: route.params.Color }} onPress={() => { Subscribe(1, "Month") }}><Text>Subscribe</Text></Button>
+                            <Text style={{ flex: 0.8, fontSize: 25, alignSelf: "center", color: route.params.Color }}>1 {t('GoPremiumText18')}</Text>
+                            <Button style={{ borderRadius: 20, backgroundColor: route.params.Color }} onPress={() => { Subscribe(1, "Month") }}><Text>{t('GoPremiumText19')}</Text></Button>
                         </View>
 
                         <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 10 }}>
                             <Text style={{ flex: 1, fontSize: 25, alignSelf: "center", color: route.params.Color }}>79.99 EGP</Text>
-                            <Text style={{ flex: 0.8, fontSize: 25, alignSelf: "center", color: route.params.Color }}>3 Month</Text>
-                            <Button style={{ borderRadius: 20, backgroundColor: route.params.Color }} onPress={() => { Subscribe(3, "Month") }}><Text>Subscribe</Text></Button>
+                            <Text style={{ flex: 0.8, fontSize: 25, alignSelf: "center", color: route.params.Color }}>3 {t('GoPremiumText18')}</Text>
+                            <Button style={{ borderRadius: 20, backgroundColor: route.params.Color }} onPress={() => { Subscribe(3, "Month") }}><Text>{t('GoPremiumText19')}</Text></Button>
                         </View>
 
                         <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 10 }}>
                             <Text style={{ flex: 1, fontSize: 25, alignSelf: "center", color: route.params.Color }}>149.99 EGP</Text>
-                            <Text style={{ flex: 0.8, fontSize: 25, alignSelf: "center", color: route.params.Color }}>6 Month</Text>
-                            <Button style={{ borderRadius: 20, backgroundColor: route.params.Color }} onPress={() => { Subscribe(6, "Month") }}><Text>Subscribe</Text></Button>
+                            <Text style={{ flex: 0.8, fontSize: 25, alignSelf: "center", color: route.params.Color }}>6 {t('GoPremiumText18')}</Text>
+                            <Button style={{ borderRadius: 20, backgroundColor: route.params.Color }} onPress={() => { Subscribe(6, "Month") }}><Text>{t('GoPremiumText19')}</Text></Button>
                         </View>
 
                         <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 10 }}>
                             <Text style={{ flex: 1, fontSize: 25, alignSelf: "center", color: route.params.Color }}>289.99 EGP</Text>
-                            <Text style={{ flex: 0.8, fontSize: 25, alignSelf: "center", color: route.params.Color }}>1 Year</Text>
-                            <Button style={{ borderRadius: 20, backgroundColor: route.params.Color }} onPress={() => { Subscribe(12, "Month") }}><Text>Subscribe</Text></Button>
+                            <Text style={{ flex: 0.8, fontSize: 25, alignSelf: "center", color: route.params.Color }}>12 {t('GoPremiumText18')}</Text>
+                            <Button style={{ borderRadius: 20, backgroundColor: route.params.Color }} onPress={() => { Subscribe(12, "Month") }}><Text>{t('GoPremiumText19')}</Text></Button>
                         </View>
 
                         {Status == "Subscribed" ?
-                            <Button style={{ borderRadius: 20, backgroundColor: route.params.Color, alignSelf: "center", marginTop: 40 }} onPress={() => { Unsubscribe() }}><Text>Unsubscribe</Text></Button>
+                            <Button style={{ borderRadius: 20, backgroundColor: route.params.Color, alignSelf: "center", marginTop: 40 }} onPress={() => { Unsubscribe() }}><Text>{t('GoPremiumText20')}</Text></Button>
                             :
                             null
                         }
@@ -205,7 +207,7 @@ const GoPremiumScreen = ({ navigation, route }) => {
                         fontWeight: 'bold',
                         marginTop: 180
                     }}>
-                        Loading... </Text>
+                        {t('GoPremiumText21')}</Text>
                 }
 
             </Content>
