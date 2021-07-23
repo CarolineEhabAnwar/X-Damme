@@ -236,7 +236,7 @@ const ItemDetailsScreen = ({ navigation, route }) => {
                       />
                     </View>
                   </View>
-                  <Text style={styles.amountText}>{TotalItemReviewsCount}{t('UserItemDetailsScreenText11')}</Text>
+                  <Text style={styles.amountText}>{TotalItemReviewsCount} {t('UserItemDetailsScreenText11')}</Text>
 
                   <View style={{ marginTop: 15, left: 13 }}>
                     <View style={styles.spacer}>
@@ -280,11 +280,11 @@ const ItemDetailsScreen = ({ navigation, route }) => {
                       />
                     </View>
                   </View>
-                  <Text style={styles.amountText}>{TotalShopReviewsCount}{t('UserItemDetailsScreenText14')} </Text>
+                  <Text style={styles.amountText}>{TotalShopReviewsCount} {t('UserItemDetailsScreenText14')} </Text>
 
                 </View>
 
-                <View style={{ flexDirection: 'row', justifyContent: 'center', alignSelf: 'center' }}>
+                <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
                   <Button style={styles.buttonStyle} onPress={() => {
                     navigation.navigate("Review", {
                       ItemID: route.params.key,
@@ -381,17 +381,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   reviewContainer: {
-    backgroundColor: "#FFFFFF",
+    alignContent:'center',
+    justifyContent:'center',
     borderRadius: 10,
     paddingHorizontal: 50,
     left: 20,
     paddingVertical: 0,
-    minWidth: "80%",
+    minWidth: "20%",
     shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 1.0,
     shadowRadius: 2,
     shadowColor: "rgba(193, 211, 251, 0.5)",
-    elevation: 5,
+    elevation: 0,
   },
   title: {
     fontWeight: "bold",

@@ -127,7 +127,7 @@ const CartScreen = ({ navigation, route }) => {
         }
     }
 
-    async function Remove(Data) {//Eba2a bos hena basa kda
+    async function Remove(Data) {
         try {
             setLoading(true);
             await firestore().collection('users').doc(user.uid).get().then((User_Data) => {

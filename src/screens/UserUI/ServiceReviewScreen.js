@@ -56,7 +56,7 @@ const ServiceReviewScreen = ({ navigation, route }) => {
                         style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
                     />
                 </Button>
-                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '21%', paddingTop: 12, fontWeight: 'bold' }}>{t('UserServiceReviewScreenText1')}</Text>
+                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '28%', paddingTop: 12, fontWeight: 'bold' }}>{t('UserServiceReviewScreenText1')}</Text>
             </View>
             {/* End Text with drawer */}
             <Content>

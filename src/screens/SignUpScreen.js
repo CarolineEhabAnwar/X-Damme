@@ -316,7 +316,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 15,
     width: '100%',
-    height: windowHeight / 15,
+    height: windowHeight / 17,
     borderColor: '#ccc',
     borderRadius: 3,
     borderWidth: 1,

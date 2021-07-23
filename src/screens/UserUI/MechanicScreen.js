@@ -328,7 +328,7 @@ const MechanicScreen = ({ navigation }) => {
             }
             setloading(false);
           }}>
-            <Icon name='filter' />
+            <Icon name='location-outline' />
             <Text style={{ marginLeft: -27 }}>{t('UserHomeScreenText3')}  </Text>
           </Button>
         </View>

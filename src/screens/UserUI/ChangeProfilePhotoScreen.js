@@ -115,7 +115,7 @@ const ChangeProfilePhotoScreen = ({ navigation, route }) => {
                         {uploading ? <Feather name="loader" size={24} color="black" /> : null}
                         {is_image_uploaded ? <Ionicons name="checkmark-done-outline" size={24} color="black" /> : null}
                         <Button
-                            style={{ height: 45, position: 'relative', backgroundColor: route.params.Color, margin: 2 }}
+                            style={{ height: 45, backgroundColor: route.params.Color, margin: 2 }}
                             onPress={async () => {
                                 try {
                                     const imageUrl = await Upload_The_Image();

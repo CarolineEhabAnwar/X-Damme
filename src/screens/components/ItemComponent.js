@@ -26,7 +26,7 @@ const ItemComponent = (props) => {
         <Image source={{ uri: props.Item.Image_Path }} style={{ height: 210, width: null, flex: 1 }} />
       </CardItem>
       <View style={{ flexDirection: "row" }}>
-        <Button transparent onPress={() => navigation.navigate('ShopOwnerProfile', {
+        <Button transparent style={{marginRight:15}} onPress={() => navigation.navigate('ShopOwnerProfile', {
           ID: props.Item.Shop_Owner_ID,
           Name: props.Item.Shop_Owner_Name
         })}>
@@ -37,15 +37,17 @@ const ItemComponent = (props) => {
           {props.Item.InOffer == "true" ?
             <View style={{ flexDirection: 'row' }}>
               <FontAwesome5 name="coins" size={20} color="black" style={{ marginTop: 14, marginLeft: 17 }} />
-              <Text style={{
-                marginTop: 16, fontSize: 15, marginLeft: 8, fontWeight: 'bold', color: 'black', textDecorationLine: 'line-through'
-              }}>{props.Item.Price} EGP</Text>
-              <Text style={styles.textStyle}>{props.Item.After_Price} EGP</Text>
+              <View style={{flexDirection:'column'}}>
+                <Text style={{
+                  marginTop: 16, fontSize: 15, marginLeft: 8, fontWeight: 'bold', color: 'black', textDecorationLine: 'line-through',marginBottom:-18,marginRight:30
+                }}>{props.Item.Price} EGP</Text>
+                <Text style={{marginTop: 16,fontSize: 15,marginLeft: 8,fontWeight: 'bold',color: 'black',marginBottom:10}}>{props.Item.After_Price} EGP</Text>
+              </View>
             </View>
             :
             <View style={{ flexDirection: 'row' }}>
               <FontAwesome5 name="coins" size={20} color="black" style={{ marginTop: 14, marginLeft: 17 }} />
-              <Text style={styles.textStyle}>{props.Item.Price} EGP</Text>
+              <Text style={[styles.textStyle,{marginRight:30}]}>{props.Item.Price} EGP</Text>
             </View>
           }
         </View>

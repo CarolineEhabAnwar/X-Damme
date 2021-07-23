@@ -333,9 +333,9 @@ const ItemsScreen = ({ navigation }) => {
                 <Input value={price_max == 1000000000 ? null : price_max} keyboardType="numeric" placeholder='To' onChangeText={price_max => set_price_max(price_max)} />
               </Item>
 
-              <View style={{ flexDirection: 'row' }}>
+              <View style={{ flexDirection: 'row', justifyContent:'center',marginTop:5,marginBottom:-10 }}>
                 <Button
-                  style={[styles.button, styles.buttonClose]}
+                  style={[styles.button, styles.buttonClose, {marginRight:8}]}
                   onPress={() => {
                     setFilterType(0);
                     setFilterBrand(0);

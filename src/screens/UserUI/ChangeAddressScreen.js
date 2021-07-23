@@ -115,11 +115,11 @@ const ChangeAddressScreen = ({ navigation, route }) => {
                         </Text>
                     }
                     <Button style={{
-                        width: '45%', height: 43, backgroundColor: route.params.Color, padding: 10,
+                        width: '30%', height: 44, backgroundColor: route.params.Color, padding: 10,
                         alignItems: 'center', justifyContent: 'center', borderRadius: 3, flex: 2
                     }}
                         onPress={requestLocation} >
-                        <Text style={styles.buttonText}>{t('UserChangeAddressScreenGetLocation')}</Text>
+                        <Text style={{fontSize:12}}>{t('UserChangeAddressScreenGetLocation')}</Text>
                     </Button>
                 </View>
                 <View style={{ flexDirection: "row", justifyContent: 'center' }}>

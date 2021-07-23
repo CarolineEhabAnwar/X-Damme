@@ -26,7 +26,7 @@ const RecommendationScreen = ({ navigation }) => {
             {/* End Text with drawer */}
             <Content>
                 <View style={styles.container}>
-                    <Button style={{ height: 150, width: 400, backgroundColor: 'red' }}
+                    <Button style={{ height: 150,  backgroundColor: 'red' }}
                         onPress={() => navigation.push("HotOffers")}
                     >
                         <SimpleLineIcons style={{ marginLeft: 30, flex: 3, fontSize: 100 }} name='fire' />
@@ -34,7 +34,7 @@ const RecommendationScreen = ({ navigation }) => {
                     </Button>
                 </View>
                 <View style={styles.container}>
-                    <Button style={{ height: 150, width: 400, backgroundColor: "#00FF00" }}
+                    <Button style={{ height: 150,  backgroundColor: "#00FF00" }}
                         onPress={() => navigation.push("Reminder")}
                     >
                         <AntDesign style={{ marginLeft: 30, flex: 3, fontSize: 100 }} name='calendar' />
@@ -42,7 +42,7 @@ const RecommendationScreen = ({ navigation }) => {
                     </Button>
                 </View>
                 <View style={styles.container}>
-                    <Button style={{ height: 150, width: 400, backgroundColor: 'blue' }}
+                    <Button style={{ height: 150,  backgroundColor: 'blue' }}
                         onPress={() => navigation.push("BestCars")}
                     >
                         <AntDesign style={{ marginLeft: 30, flex: 3, fontSize: 90 }} name='car' />
@@ -104,10 +104,9 @@ const styles = StyleSheet.create({
     },
     container: {
         marginTop: 10,
+        margin:2,
         borderColor: "darkred",
         borderWidth: 3,
-        maxWidth: 500,
-        marginLeft: "auto",
-        marginRight: "auto"
+        maxWidth: 500
     }
 })
