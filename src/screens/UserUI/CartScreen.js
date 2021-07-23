@@ -266,53 +266,53 @@ const CartScreen = ({ navigation, route }) => {
             </View>
             {/* End Text with drawer */}
 
-            <View style={{height:40 , borderColor: "darkred", borderBottomWidth: 1, marginBottom: 2, flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Text style={{ marginTop: 10, flex:1, fontWeight: "bold", fontSize: 20 }}>{t('UserCartScreenText4')}</Text>
-                <Text style={{ marginTop: 10, flex:1.4, fontWeight: "bold", fontSize: 20 }}>{t('UserCartScreenText5')}</Text>
-            </View>
+
 
             {loading ? <Content><Text style={styles.loadingStyle}>{t('UserCartScreenText6')}</Text></Content> :
                 <Content>
                     {items.map((item, index) => {
                         return (
-                            <View style={{ marginHorizontal: 10, flexDirection: "row", alignContent: "center" }} key={index}>
-                                <Text style={{alignSelf:"center" , fontSize: 20, fontWeight: "bold" }}>({item[0]}) </Text>
-                                <Text style={{alignSelf:"center" , fontSize: 20, fontWeight: '500', marginLeft: 2, marginRight: 50 }}>{item[1][1].Name}</Text>
+                            <View style={{ borderColor: "darkred", borderWidth: 2, marginVertical: 5, marginHorizontal: 5 }} key={index}>
+                            
+                                <Text style={{alignSelf:"center" , fontSize: 20 }}><Text style={{fontSize:20,fontWeight:'bold'}}>Name:</Text> {item[1][1].Name}</Text>
 
                                 {item[1][1].InOffer == "true" ?
-                                    <Text style={{alignSelf:"center" , fontSize: 20, fontWeight: '400' }}>{parseFloat(item[1][1].After_Price)}{t('UserCartScreenText7')}</Text>
+                                    <Text style={{alignSelf:"center" , fontSize: 20, fontWeight: '400' }}><Text style={{fontSize:20,fontWeight:'bold'}}>Price:</Text> {parseFloat(item[1][1].After_Price)} {t('UserCartScreenText7')}</Text>
                                     :
-                                    <Text style={{alignSelf:"center" , fontSize: 20, fontWeight: '400' }}>{parseFloat(item[1][1].Price)}{t('UserCartScreenText7')}</Text>
+                                    <Text style={{alignSelf:"center" , fontSize: 20, fontWeight: '400' }}><Text style={{fontSize:20,fontWeight:'bold'}}>Price:</Text> {parseFloat(item[1][1].Price)} {t('UserCartScreenText7')}</Text>
                                 }
+                                <Text style={{alignSelf:"center" , fontSize: 20}}> <Text style={{fontSize:20,fontWeight:'bold'}}>Quantity:</Text> {item[0]} </Text>
 
-                                <Button transparent onPress={() => navigation.navigate('CartViewItem', {
-                                    ItemName: item[1][1].Name,
-                                    CarBrand: item[1][1].Car_Brand,
-                                    CarModel: item[1][1].Car_Model,
-                                    Price: item[1][1].Price,
-                                    After_Price: item[1][1].After_Price,
-                                    MadeIn: item[1][1].Made_In,
-                                    Manufacture_Date: item[1][1].Manufacture_Date,
-                                    Quality: item[1][1].Quality,
-                                    Shop_Owner_ID: item[1][1].Shop_Owner_ID,
-                                    ItemIMG: item[1][1].Image_Path,
-                                    Item_ID: item[1][0],
-                                    InOffer: item[1][1].InOffer
-                                })}>
-                                    <Text style={{ color: 'blue', fontWeight: 'bold' }}>View</Text>
-                                </Button>
-                                <Button transparent onPress={() => Remove(item[0])}
-                                >
-                                    <Text style={{ color: 'darkred', fontWeight: 'bold', width: 90 }}>Remove</Text>
-                                </Button>
-                            </View>
+                                <View style={{flexDirection:'row',justifyContent:'center'}}>
+                                    <Button transparent onPress={() => navigation.navigate('CartViewItem', {
+                                        ItemName: item[1][1].Name,
+                                        CarBrand: item[1][1].Car_Brand,
+                                        CarModel: item[1][1].Car_Model,
+                                        Price: item[1][1].Price,
+                                        After_Price: item[1][1].After_Price,
+                                        MadeIn: item[1][1].Made_In,
+                                        Manufacture_Date: item[1][1].Manufacture_Date,
+                                        Quality: item[1][1].Quality,
+                                        Shop_Owner_ID: item[1][1].Shop_Owner_ID,
+                                        ItemIMG: item[1][1].Image_Path,
+                                        Item_ID: item[1][0],
+                                        InOffer: item[1][1].InOffer
+                                    })}>
+                                        <Text style={{ color: 'blue', fontWeight: 'bold' }}>View</Text>
+                                    </Button>
+                                    <Button transparent onPress={() => Remove(item[1][0])}
+                                    >
+                                        <Text style={{ color: 'darkred', fontWeight: 'bold', width: 90 }}>Remove</Text>
+                                    </Button>
+                                </View>
+                            </View> 
                         );
                     })
                     }
                     {items.length == 0 ? <Content>
                         <Text style={styles.loadingStyle}>{t('UserCartScreenText8')}</Text>
                     </Content> :
-                        <Text style={{alignSelf:"flex-start" , fontWeight: 'bold', fontSize:20, marginLeft: 100, marginTop: 20, marginBottom: 10 }}>{t('UserCartScreenText9')} {totalPrice}{t('UserCartScreenText7')}</Text>}
+                        <Text style={{alignSelf:"flex-start" , fontWeight: 'bold', fontSize:20, marginLeft: 100, marginTop: 20, marginBottom: 10 }}>{t('UserCartScreenText9')} <Text style={{fontSize:20,fontWeight:'normal'}}>{totalPrice} {t('UserCartScreenText7')}</Text></Text>}
                 </Content>}
 
             {/* Footer */}
