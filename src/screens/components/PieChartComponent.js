@@ -17,6 +17,11 @@ import { useTranslation } from 'react-i18next';
 
 const PieChartComponent = (props) => {
 
+    const [Show, setShow] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [Caption, setCaption] = useState("");
+    const [Show_data,setData] = useState([]);
+
     let data = [];
 
     const { t, i18n } = useTranslation();
@@ -27,8 +32,9 @@ const PieChartComponent = (props) => {
     }
 
     const Add_Items = () => {
+        let temp = []
         for (let i = 0; i < props.Items.length; i++) {
-            data.push({
+            temp.push({
                 name: props.Items[i].Name,
                 items: props.Items[i].Number,
                 color: Generate_Random_Color(),
@@ -36,6 +42,8 @@ const PieChartComponent = (props) => {
                 legendFontSize: 15
             })
         }
+        setData(temp);
+        data = temp;
     }
 
     const Get_Caption = () => {
@@ -47,52 +55,83 @@ const PieChartComponent = (props) => {
             }
             counter += data[i].items;
         }
-        let names = temp.name
-        for (let i = 1; i < data.length; i++) {
+        if (counter > 0) {
+            setShow(true);
+        }
+        let names = [];
+        names.push(temp.name);
+        for (let i = 0; i < data.length; i++) {
             if (data[i].items >= temp.items) {
-                names+=t('PieChartComponentText1')+data[i].name
+                if (data[i].name !== temp.name) {
+                    names.push(data[i].name)
+                }
             }
         }
-        let string_to_return = t('PieChartComponentText2')+ names + t('PieChartComponentText3')+ temp.items +t('PieChartComponentText4')+ counter ;
-
-        return string_to_return;
+        let written_names = "";
+        written_names += names[0];
+        for (let i = 1; i < names.length; i++) {
+            if (i == (names.length - 1))
+                written_names += t('PieChartComponentText1') + names[i];
+            else
+                written_names += ", " + names[i];
+        }
+        let string_to_return = t('PieChartComponentText2') + written_names + t('PieChartComponentText3') + temp.items + t('PieChartComponentText4') + counter;
+        setCaption(string_to_return);
     }
 
-    Add_Items();
+    useState(async () => {
+        setLoading(true);
+        await Add_Items();
+        await Get_Caption();
+        setLoading(false);
+    }, []);
+
+
 
     return (
-        <View style={{ borderWidth: 2, borderColor: "darkred", margin: 2, width: "auto", height: "auto" }}>
-            <View style={{ borderBottomWidth: 2, borderColor: "gray" }}>
-                <PieChart
-                    data={data}
-                    width={400}
-                    height={220}
-                    chartConfig={{
-                        backgroundColor: "#e26a00",
-                        backgroundGradientFrom: "#fb8c00",
-                        backgroundGradientTo: "#ffa726",
-                        decimalPlaces: 2, // optional, defaults to 2dp
-                        color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                        labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                        style: {
-                            borderRadius: 16
-                        },
-                        propsForDots: {
-                            r: "6",
-                            strokeWidth: "2",
-                            stroke: "#ffa726"
-                        }
-                    }}
-                    accessor={"items"}
-                    backgroundColor={"transparent"}
-                    paddingLeft={"0"}
-                    center={[0, 0]}
-                    absolute
-                />
-            </View>
-            <Text style={{marginHorizontal: 4,fontSize:20,fontWeight: "bold"}}>{Get_Caption()}</Text>
+        <View>
+            {loading ?
+                null
+                :
+                <View>
+                    {Show ?
+                        <View style={{ borderWidth: 2, borderColor: "darkred", margin: 2, width: "auto", height: "auto" }}>
+                            <View style={{ borderBottomWidth: 2, borderColor: "gray" }}>
+                                <PieChart
+                                    data={Show_data}
+                                    width={400}
+                                    height={220}
+                                    chartConfig={{
+                                        backgroundColor: "#e26a00",
+                                        backgroundGradientFrom: "#fb8c00",
+                                        backgroundGradientTo: "#ffa726",
+                                        decimalPlaces: 2, // optional, defaults to 2dp
+                                        color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                                        labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                                        style: {
+                                            borderRadius: 16
+                                        },
+                                        propsForDots: {
+                                            r: "6",
+                                            strokeWidth: "2",
+                                            stroke: "#ffa726"
+                                        }
+                                    }}
+                                    accessor={"items"}
+                                    backgroundColor={"transparent"}
+                                    paddingLeft={"0"}
+                                    center={[0, 0]}
+                                    absolute
+                                />
+                            </View>
+                            <Text style={{ marginHorizontal: 4, fontSize: 20, fontWeight: "bold" }}>{Caption}</Text>
+                        </View>
+                        :
+                        null
+                    }
+                </View>
+            }
         </View>
-
     );
 }
 

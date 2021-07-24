@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, View, FlatList, SafeAreaView, LogBox } from 'react-native';
+import { StyleSheet, View, ScrollView, SafeAreaView, LogBox } from 'react-native';
 import { Container, InputGroup, FooterTab, Input, Content, Text, Button, Icon } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import firestore from "@react-native-firebase/firestore";
@@ -62,7 +62,7 @@ const MyReviewsScreen = ({ navigation, route }) => {
             <Container>
 
                 {loading ? <Text style={styles.loadingStyle}>{t('UserMyReviewsScreenText1')}</Text> :
-                    <View>
+                    <ScrollView >
                         {reviews.map((item, index) => {
                             return (
                                 <MyReviewComponent
@@ -77,7 +77,7 @@ const MyReviewsScreen = ({ navigation, route }) => {
                                 />);
                         })
                         }
-                    </View>
+                    </ScrollView>
                 }
 
             </Container>
