@@ -3,9 +3,12 @@ import { Image, StyleSheet, Alert } from 'react-native';
 import { Entypo, Ionicons } from '@expo/vector-icons';
 import { Container, FooterTab, Content, Card, CardItem, Text, Button, Icon, Body, View } from 'native-base';
 import FooterComponent from '../components/FooterComponent'
-
+import { useTranslation } from 'react-i18next';
+import firestore from "@react-native-firebase/firestore";
 
 const SOViewItemScreen = ({ navigation, route }) => {
+
+  const { t, i18n } = useTranslation();
 
   return (
     <Container>
@@ -17,7 +20,7 @@ const SOViewItemScreen = ({ navigation, route }) => {
             style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
           />
         </Button>
-        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '20%', paddingTop: 12, fontWeight: 'bold' }}> Item Details</Text>
+        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '20%', paddingTop: 12, fontWeight: 'bold' }}>{t('SOViewItemText11')}</Text>
       </View>
       {/* End Search bar with drawer */}
 
@@ -27,38 +30,38 @@ const SOViewItemScreen = ({ navigation, route }) => {
           <CardItem style={{ marginHorizontal: 1, borderWidth: 3, borderColor: 'darkblue' }}>
             <Body>
 
-              <Text style={styles.textStyles}>Name: </Text>
+              <Text style={styles.textStyles}>{t('SOEditItemScreenText4')}</Text>
               <Text style={styles.itemsTextStyle}>{route.params.Item.Name}</Text>
 
               {route.params.Item.InOffer == "true" ?
                 <View>
-                  <Text style={styles.textStyles}>Price: </Text>
+                  <Text style={styles.textStyles}>{t('SOEditItemScreenText5')}</Text>
                   <Text style={{ fontSize: 19, marginBottom: 10, fontWeight: 'bold', textDecorationLine: 'line-through' }}>{route.params.Item.Price}</Text>
                   <Text style={styles.itemsTextStyle}>{route.params.Item.After_Price}</Text>
                 </View>
                 :
                 <View>
-                  <Text style={styles.textStyles}>Price: </Text>
+                  <Text style={styles.textStyles}>{t('SOEditItemScreenText5')}</Text>
                   <Text style={styles.itemsTextStyle}>{route.params.Item.Price}</Text>
                 </View>
               }
 
-              <Text style={styles.textStyles}>Quality: </Text>
+              <Text style={styles.textStyles}>{t('SOViewItemText1')}</Text>
               <Text style={styles.itemsTextStyle}>{route.params.Item.Quality}</Text>
 
-              <Text style={styles.textStyles}>Manufacture Date: </Text>
+              <Text style={styles.textStyles}>{t('SOEditItemScreenText10')}</Text>
               <Text style={styles.itemsTextStyle}>{route.params.Item.Manufacture_Date}</Text>
 
-              <Text style={styles.textStyles}>Made In: </Text>
+              <Text style={styles.textStyles}>{t('SOEditItemScreenText6')}</Text>
               <Text style={styles.itemsTextStyle}>{route.params.Item.Made_In}</Text>
 
-              <Text style={styles.textStyles}>Car Brand: </Text>
+              <Text style={styles.textStyles}>{t('SOViewItemText2')}</Text>
               <Text style={styles.itemsTextStyle}>{route.params.Item.Car_Brand}</Text>
 
-              <Text style={styles.textStyles}>Car Model: </Text>
+              <Text style={styles.textStyles}>{t('SOViewItemText3')}</Text>
               <Text style={styles.itemsTextStyle}>{route.params.Item.Car_Model}</Text>
 
-              <Text style={styles.textStyles}>Item ID: </Text>
+              <Text style={styles.textStyles}>{t('SOViewItemText4')}</Text>
               <Text style={styles.itemsTextStyle}>{route.params.Item.key}</Text>
 
               <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 17, alignSelf: 'center' }}>
@@ -76,34 +79,36 @@ const SOViewItemScreen = ({ navigation, route }) => {
                     type: route.params.Item.Type,
                     itemID: route.params.Item.key
                   })}>
-                  <Text style={styles.buttonTextStyle}>Edit</Text>
+                  <Text style={styles.buttonTextStyle}>{t('SOEditItemScreenText22')}</Text>
                 </Button>
 
                 {/* Delete */}
                 <Button transparent style={{ marginLeft: 30, backgroundColor: '#eb1c1c' }} onPress={() =>
                   Alert.alert(
-                    "Warning",
-                    "Are you sure you want to delete this item?",
+                    t('SOViewItemText5'),
+                    t('SOViewItemText6'),
                     [
                       {
-                        text: "No"
+                        text: t('SOViewItemText7')
                       },
                       {
-                        text: "Yes", onPress: () => {
+                        text: t('SOViewItemText8'), onPress: () => {
                           firestore()
                             .collection('CarStuff')
-                            .doc(item.key)
+                            .doc(route.params.Item.key)
                             .delete()
                             .then(() => {
-                              alert("Item deleted");
+                              alert(t('SOViewItemText9'));
                             });
+                            navigation.navigate('SOItemList')
                         }
                       }
                     ]
                   )
                 }>
-                  <Text style={{ fontWeight: 'bold', color: 'white' }}>Delete</Text>
+                  <Text style={{ fontWeight: 'bold', color: 'white' }}>{t('SOViewItemText10')}</Text>
                 </Button>
+              
               </View>
             </Body>
           </CardItem>

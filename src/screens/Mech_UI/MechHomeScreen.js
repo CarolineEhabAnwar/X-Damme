@@ -18,7 +18,6 @@ const MechHomeScreen = ({ navigation }) => {
     const { t, i18n } = useTranslation();
 
     async function Get_Lang() {
-
         await AsyncStorage.getItem('Language').then((value) => {
           if (value == null) {
             AsyncStorage.setItem('Language', "en");
@@ -27,7 +26,7 @@ const MechHomeScreen = ({ navigation }) => {
           else {
             i18n.changeLanguage(value);
           }
-        },[]);
+        });
       }
 
     useEffect(async () => {
@@ -40,7 +39,7 @@ const MechHomeScreen = ({ navigation }) => {
         } catch (error) {
             alert(error);
         }
-    });
+    },[]);
 
 
     let name = mech_name;

@@ -5,7 +5,7 @@ import { FontAwesome5, Ionicons, AntDesign, MaterialIcons, Feather, Foundation, 
 import { AuthContext } from '../../navigation/AuthProvider';
 import firestore from '@react-native-firebase/firestore';
 import FooterComponent from '../components/FooterComponent'
-
+import { useTranslation } from 'react-i18next';
 
 
 const SOProfileScreen = ({ navigation }) => {
@@ -14,6 +14,7 @@ const SOProfileScreen = ({ navigation }) => {
   const [FinalShopRating, setFinalShopRating] = useState(0);
   const [loading, setloading] = useState(true);
   const { user } = useContext(AuthContext);
+  const { t, i18n } = useTranslation();
 
   const [shop_Owner_Name, setShop_Owner_name] = useState("");
   const [Image_Path, setImage_Path] = useState("");
@@ -91,11 +92,11 @@ const SOProfileScreen = ({ navigation }) => {
             style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
           />
         </Button>
-        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '27%', paddingTop: 12, fontWeight: 'bold' }}>Profile</Text>
+        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '27%', paddingTop: 12, fontWeight: 'bold' }}>{t("UserProfileScreenText1")} </Text>
       </View>
       {/* End Text with drawer */}
 
-      {loading ? <Content><Text style={styles.loadingStyle}> Loading Profile... </Text></Content> :
+      {loading ? <Content><Text style={styles.loadingStyle}> {t('SOProfileScreenText1')} </Text></Content> :
 
         <Content>
           <View style={styles.container}>
@@ -110,7 +111,7 @@ const SOProfileScreen = ({ navigation }) => {
                   {shop_Owner_Name}
                 </Text>
                 <Text style={styles.name}>
-                  Average Rating: {Math.round(FinalShopRating * 10) / 10}
+                {t('SOProfileScreenText2')} {Math.round(FinalShopRating * 10) / 10}
                 </Text>
               </View>
             </View>
@@ -120,41 +121,24 @@ const SOProfileScreen = ({ navigation }) => {
 
                 <Button style={styles.menuBox} onPress={() => navigation.navigate('SORequests', { Editing: false })}>
                   <MaterialIcons name="history" size={40} color="white" />
-                  <Text style={styles.info}>Requests</Text>
+                  <Text style={styles.info}>{t("SOProfileScreenText9")}</Text>
                 </Button>
 
                 <Button style={styles.menuBox} onPress={() => navigation.navigate('SOSettings')}>
                   <MaterialIcons name="settings" size={40} color="white" />
-                  <Text style={styles.info}>Settings</Text>
+                  <Text style={styles.info}>{t("UserProfileScreenText7")}</Text>
                 </Button>
 
                 <Button style={styles.menuBox} onPress={() => logout()}>
                   <MaterialIcons name="logout" size={40} color="white" />
-                  <Text style={styles.info}>Logout</Text>
+                  <Text style={styles.info}>{t("UserProfileScreenText8")}</Text>
                 </Button>
               </View>
             </View>
           </View>
         </Content>
       }
-      <View style={{ flexDirection: 'row', alignContent: "center", backgroundColor: "darkblue" }}>
-        <FooterTab transparent style={{ backgroundColor: "darkblue" }}>
-          <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('SOHome')}>
-            <Icon style={{ color: 'white' }} name="home" />
-            <Text style={{ color: 'white' }}> Home</Text>
-          </Button>
-
-          <Button style={{ marginTop: 5 }}>
-            <Icon name="person" style={{ color: 'white' }} />
-            <Text style={{ color: 'white' }}>Profile</Text>
-          </Button>
-
-          <Button style={{ marginTop: 5 }} onPress={() => navigation.navigate('SOContactUs')}>
-            <Icon style={{ color: 'white' }} name="call" />
-            <Text style={{ color: 'white' }} >Contact Us</Text>
-          </Button>
-        </FooterTab>
-      </View>
+      <FooterComponent home="SOHome" profile="SOProfile" contactus="SOContactUs" bkcolor="darkblue" />
     </Container>
   );
 }

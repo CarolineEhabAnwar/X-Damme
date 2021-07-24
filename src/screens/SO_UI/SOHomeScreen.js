@@ -48,7 +48,7 @@ const SOHomeScreen = ({ navigation }) => {
         <Container style={{}}>
             {/* Search bar with drawer */}
             <View style={{ flexDirection: 'row', paddingTop: 26,justifyContent: "center", backgroundColor: "darkblue", top: 0 }}>
-                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingTop: 12, fontWeight: 'bold' }}> Home</Text>
+                <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingTop: 12, fontWeight: 'bold' }}> {t('SOHomeScreenText2')}</Text>
             </View>
             {/* End Search bar with drawer */}
             <Content>
@@ -56,19 +56,19 @@ const SOHomeScreen = ({ navigation }) => {
                 <View style={{ flexDirection: "column", justifyContent: "space-evenly" }}>
                     <View style={{ flexDirection: "column", alignItems: "center", justifyContent: "space-around" }}>
                         <Image source={require("../../../assets/logo.png")} style={styles.logoStyle} />
-                        <Text style={styles.title}>Welcome</Text>
+                        <Text style={styles.title}>{t('SOHomeScreenText1')}</Text>
                         <Text style={styles.title}>{name}</Text>
                         <View style={{ flexDirection: "row", justifyContent: "space-around", marginTop: 20 }}>
                             <Button rounded info style={{ backgroundColor: 'darkblue', width: 150, justifyContent: "center", top: 40, marginHorizontal: 10 }}
                                 onPress={() => navigation.navigate('SOAddItem')}
                             >
                                 <Ionicons name="add-circle-outline" style={styles.IconsStyle} size={25} color="white" />
-                                <Text style={{ fontWeight: 'bold' }}> Add Item </Text>
+                                <Text style={{ fontWeight: 'bold' }}> {t('SOHomeScreenText3')} </Text>
                             </Button>
                             <Button rounded style={{ backgroundColor: 'darkblue', width: 150, justifyContent: "center", top: 40, marginHorizontal: 10 }}
                                 onPress={() => navigation.navigate('SOItemList')}>
                                 <FontAwesome5 name="list-alt" size={21} style={styles.IconsStyle} color="white" />
-                                <Text style={{ fontWeight: 'bold' }}> Items List </Text>
+                                <Text style={{ fontWeight: 'bold' }}>  {t('SOHomeScreenText4')} </Text>
                             </Button>
                         </View>
                         <View style={{ flexDirection: "row", justifyContent: "space-around", marginBottom: 50, marginTop: 30 }}>
@@ -77,13 +77,13 @@ const SOHomeScreen = ({ navigation }) => {
                                     Editing: true
                                 })}>
                                 <FontAwesome5 name="buffer" size={24} style={styles.IconsStyle} color="white" />
-                                <Text style={{ fontWeight: 'bold' }}> Requests </Text>
+                                <Text style={{ fontWeight: 'bold' }}>  {t('SOHomeScreenText5')} </Text>
                             </Button>
                             <Button rounded info style={{ backgroundColor: 'darkblue', width: 150, justifyContent: "center", top: 40, marginHorizontal: 10 }}
                                 onPress={() => navigation.navigate('SOAddOffer')}
                             >
                                 <FontAwesome name="percent" size={22} style={styles.IconsStyle} color="white" />
-                                <Text style={{ fontWeight: 'bold' }}> Add offer </Text>
+                                <Text style={{ fontWeight: 'bold' }}>  {t('SOHomeScreenText6')} </Text>
                             </Button>
                         </View>
                     </View>
