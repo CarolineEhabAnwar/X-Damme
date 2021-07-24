@@ -74,6 +74,9 @@ const SOItemListScreen = () => {
         <Button transparent style={{ height: 50 }} onPress={() => Search()}>
           <Text style={{ color: "white", fontWeight: 'bold' }}>{t('SOItemListScreenText1')}</Text>
         </Button>
+        <Button style={{ marginLeft: 'auto', alignSelf: 'center' }} transparent onPress={() => navigation.push('SOAddItem')}>
+          <Ionicons name='add' size={30} color='white' style={{ paddingRight: 10 }} />
+        </Button>
       </View>
       {/* End Search bar with drawer */}
 

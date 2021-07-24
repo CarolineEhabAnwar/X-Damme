@@ -66,7 +66,7 @@ const MechServiceListScreen = () => {
         <Button transparent onPress={() => navigation.goBack()} >
           <Ionicons
             name='arrow-back-outline'
-            style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
+            style={{ fontSize: 30, marginTop: 4, marginRight: 5, marginLeft: 12, color: 'white' }}
           />
         </Button>
         <InputGroup rounded style={{ flex: 1, backgroundColor: 'white', height: 35, marginTop: 7, paddingLeft: 10, paddingRight: 10 }}>
@@ -75,6 +75,9 @@ const MechServiceListScreen = () => {
         </InputGroup>
         <Button transparent style={{ height: 50 }} onPress={() => Search()}>
           <Text style={{ color: "white", fontWeight: 'bold' }}>{t('SOItemListScreenText1')}</Text>
+        </Button>
+        <Button style={{ marginLeft: 'auto', alignSelf: 'center' }} transparent onPress={() => navigation.push('MechAddService')}>
+          <Ionicons name='add' size={30} color='white' style={{ paddingRight: 10 }} />
         </Button>
       </View>
       {/* End Search bar with drawer */}
