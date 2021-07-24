@@ -1,5 +1,6 @@
 import React, { Component, useContext, useState, useEffect } from 'react';
-import { StyleSheet, View, CheckBox, TextInput, Alert } from 'react-native';
+import { StyleSheet, View, TextInput, Alert } from 'react-native';
+import CheckBox from "@react-native-community/checkbox";
 import { Container, FooterTab, Badge, Header, Content, Item, Input, Text, Radio, Form, Button } from 'native-base';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import firestore from "@react-native-firebase/firestore";
@@ -7,12 +8,12 @@ import FooterComponent from "../components/FooterComponent"
 import DatePicker from 'react-native-date-picker'
 import { Picker } from '@react-native-picker/picker';
 import { AuthContext } from '../../navigation/AuthProvider';
-
-
+import { useTranslation } from 'react-i18next';
 
 const MechEditServiceScreen = ({ navigation, route }) => {
 
   const { user } = useContext(AuthContext);
+  const { t, i18n } = useTranslation();
   const [Service_Types, setService_Types] = useState([])
   const [MondaySelected, setMondaySelected] = useState(false);
   const [TuesdaySelected, setTuesdaySelected] = useState(false);
@@ -45,14 +46,14 @@ const MechEditServiceScreen = ({ navigation, route }) => {
     try {
 
       Alert.alert(
-        "Warning",
-        "Are you sure you want to edit this item?",
+        t('UserChangeEmailAddressScreenAlert2'),
+        t('MechEditServiceScreen1'),
         [
           {
-            text: "No"
+            text: t('UserChangeEmailAddressScreenAlert4')
           },
           {
-            text: "Yes", onPress: async () => {
+            text: t('UserChangeEmailAddressScreenAlert5'), onPress: async () => {
               const Edited_Service = await firestore().collection("Services").doc(serviceID).update({
                 Type: service_type,
                 Price: price,
@@ -62,7 +63,7 @@ const MechEditServiceScreen = ({ navigation, route }) => {
                 Duration: duration,
                 Mech_ID: mechID
               });
-              alert('Service has been edited successfully!')
+              alert(t('MechEditServiceScreen2'))
               navigation.goBack()
             }
           }
@@ -104,7 +105,7 @@ const MechEditServiceScreen = ({ navigation, route }) => {
             style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
           />
         </Button>
-        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '22%', paddingTop: 12, fontWeight: 'bold' }}> Edit Service</Text>
+        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '23%', paddingTop: 12, fontWeight: 'bold' }}>{t('MechEditServiceScreen4')}</Text>
       </View>
       {/* End Search bar with drawer */}
 
@@ -112,12 +113,12 @@ const MechEditServiceScreen = ({ navigation, route }) => {
 
         <View style={{ flexDirection: 'row' }}>
           <AntDesign name="edit" style={{ marginRight: 10, marginTop: 6 }} size={21} color="darkgreen" />
-          <Text style={styles.headerStyle}>Please enter service's new details</Text>
+          <Text style={styles.headerStyle}>{t('MechEditServiceScreen3')}</Text>
         </View>
 
         <Form>
           <View style={styles.serviceTypeStyle}>
-            <Text style={styles.textStyle}>Service Type:</Text>
+            <Text style={styles.textStyle}>{t("MechAddServiceScreenText1")}</Text>
             <Picker
               selectedValue={selectedService}
               onValueChange={(itemValue, itemIndex) =>
@@ -135,10 +136,10 @@ const MechEditServiceScreen = ({ navigation, route }) => {
               value={price}
               onChangeText={(price) => setPrice(price)}
             />
-            <Text style={{ marginRight: 15, color: 'darkgreen' }}>EGP</Text>
+            <Text style={{ marginRight: 15, color: 'darkgreen' }}>{t("SORequestCardComponentText10")}</Text>
           </Item>
 
-          <Text style={styles.textStyle}>Service Avaiability</Text>
+          <Text style={styles.textStyle}>{t('MechAddServiceScreenText3')}</Text>
 
           <Item regular style={styles.InputStyle}>
             <View style={styles.container}>
@@ -150,7 +151,7 @@ const MechEditServiceScreen = ({ navigation, route }) => {
                     onValueChange={setMondaySelected}
                     style={styles.checkbox}
                   />
-                  <Text style={styles.label}>Monday</Text>
+                  <Text style={styles.label}>{t("MechAddServiceScreenTextMon")}</Text>
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
@@ -159,7 +160,7 @@ const MechEditServiceScreen = ({ navigation, route }) => {
                     onValueChange={setTuesdaySelected}
                     style={styles.checkbox}
                   />
-                  <Text style={styles.label}>Tuesday</Text>
+                  <Text style={styles.label}>{t("MechAddServiceScreenTextTue")}</Text>
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
@@ -168,7 +169,7 @@ const MechEditServiceScreen = ({ navigation, route }) => {
                     onValueChange={setWednesdaySelected}
                     style={styles.checkbox}
                   />
-                  <Text style={styles.label}>Wednesday</Text>
+                  <Text style={styles.label}>{t("MechAddServiceScreenTextWed")}</Text>
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
@@ -177,7 +178,7 @@ const MechEditServiceScreen = ({ navigation, route }) => {
                     onValueChange={setThursdaySelected}
                     style={styles.checkbox}
                   />
-                  <Text style={styles.label}>Thursday</Text>
+                  <Text style={styles.label}>{t("MechAddServiceScreenTextThu")}</Text>
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
@@ -186,7 +187,7 @@ const MechEditServiceScreen = ({ navigation, route }) => {
                     onValueChange={setFridaySelected}
                     style={styles.checkbox}
                   />
-                  <Text style={styles.label}>Friday</Text>
+                  <Text style={styles.label}>{t("MechAddServiceScreenTextFri")}</Text>
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
@@ -195,7 +196,7 @@ const MechEditServiceScreen = ({ navigation, route }) => {
                     onValueChange={setSaturdaySelected}
                     style={styles.checkbox}
                   />
-                  <Text style={styles.label}>Saturday</Text>
+                  <Text style={styles.label}>{t("MechAddServiceScreenTextSat")}</Text>
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
@@ -204,7 +205,7 @@ const MechEditServiceScreen = ({ navigation, route }) => {
                     onValueChange={setSundaySelected}
                     style={styles.checkbox}
                   />
-                  <Text style={styles.label}>Sunday</Text>
+                  <Text style={styles.label}>{t("MechAddServiceScreenTextSun")}</Text>
                 </View>
 
               </View>
@@ -212,7 +213,7 @@ const MechEditServiceScreen = ({ navigation, route }) => {
           </Item>
 
           <Item style={styles.InputStyle}>
-            <Text style={styles.textStyle}>From: </Text>
+            <Text style={styles.textStyle}>{t("MechAddServiceScreenText4")} </Text>
             <DatePicker
               date={startTime}
               mode="time"
@@ -222,7 +223,7 @@ const MechEditServiceScreen = ({ navigation, route }) => {
           </Item>
 
           <Item style={styles.InputStyle}>
-            <Text style={styles.textStyle}>To: </Text>
+            <Text style={styles.textStyle}>{t("MechAddServiceScreenText5")} </Text>
             <DatePicker
               date={endTime}
               mode="time"
@@ -237,7 +238,7 @@ const MechEditServiceScreen = ({ navigation, route }) => {
               value={duration}
               onChangeText={(duration) => setDuration(duration)}
             />
-            <Text style={{ marginRight: 15, color: 'darkgreen' }}>Hours</Text>
+            <Text style={{ marginRight: 15, color: 'darkgreen' }}>{t('MechAddServiceScreenText7')}</Text>
           </Item>
 
           <View style={{flexDirection:'row',alignSelf:'center',marginTop:20,marginBottom:40}}>
@@ -247,26 +248,26 @@ const MechEditServiceScreen = ({ navigation, route }) => {
               getEndTime = endTime.toString().substring(15, 21)
 
               if (selectedService == "Select Type") {
-                alert('Please Enter a Service Type.')
+                alert(t('MechAddServiceScreenText8'))
               }
               else if (price == '') {
-                alert('Please enter service price')
+                alert(t('MechAddServiceScreenText9'))
               }
               else if (duration == 0) {
-                alert('Please enter suitable service duration')
+                alert(t('MechAddServiceScreenText10'))
               }
               else if (selectedDays.length == 0) {
-                alert('Please select service availability days')
+                alert(t('MechAddServiceScreenText11'))
               }
               else if (getStartTime == getEndTime) {
-                alert('Service start and end time are the same!')
+                alert(t('MechAddServiceScreenText12'))
               }
               else {
                 editService(selectedService, price, selectedDays, getStartTime, getEndTime, duration,user.uid, route.params.serviceID)
               }
             }}>
 
-              <Text>Confirm</Text>
+              <Text>{t("SOAddItemScreenText11")}</Text>
             </Button>
 
             <Button
@@ -275,7 +276,7 @@ const MechEditServiceScreen = ({ navigation, route }) => {
               }}
 
               style={{ backgroundColor: 'white', borderWidth: 1,borderColor:'darkgreen', marginLeft:30, color: 'white' }}>
-              <Text style={{ color: 'darkgreen' }}>Cancel</Text>
+              <Text style={{ color: 'darkgreen' }}>{t("SOAddItemScreenText12")}</Text>
             </Button>
           </View>
         </Form>

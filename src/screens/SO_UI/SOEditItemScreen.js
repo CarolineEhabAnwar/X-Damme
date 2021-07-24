@@ -29,10 +29,7 @@ async function UpdateItem(x_name, x_price, x_made_in, x_manufacture_date, x_car_
       Image_Path: x_image_path,
       Shop_Owner_ID: user.uid
     });
-    ToastAndroid.show(
-      t('SOEditItemScreenText1'),
-      ToastAndroid.SHORT
-    );
+    alert('Item has been edited')
 
   }
   catch (error) {

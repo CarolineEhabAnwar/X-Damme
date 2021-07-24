@@ -30,7 +30,7 @@ const AddCarScreen = ({ navigation }) => {
       Questions: []
     })
     ToastAndroid.show(
-      'Item has been added Succenfully.',
+      t("caradded"),
       ToastAndroid.SHORT
     );
     navigation.push('MyCars')

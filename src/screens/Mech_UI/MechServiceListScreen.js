@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../../navigation/AuthProvider';
 import firestore from '@react-native-firebase/firestore';
 import FooterComponent from '../components/FooterComponent'
+import { useTranslation } from 'react-i18next';
 
 
 const MechServiceListScreen = () => {
@@ -16,6 +17,7 @@ const MechServiceListScreen = () => {
   const [ShowServices, SetShowServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const { t, i18n } = useTranslation();
 
 
   const Search = () => {
@@ -69,21 +71,21 @@ const MechServiceListScreen = () => {
         </Button>
         <InputGroup rounded style={{ flex: 1, backgroundColor: 'white', height: 35, marginTop: 7, paddingLeft: 10, paddingRight: 10 }}>
           <Icon name="ios-search" style={{ color: "darkgreen" }} />
-          <Input style={{ height: 40, marginTop: 5, color: "darkgreen" }} placeholder="Search" onChangeText={(SearchText) => { setSearch(SearchText) }} />
+          <Input style={{ height: 40, marginTop: 5, color: "darkgreen" }} placeholder={t('SOItemListScreenText1')} onChangeText={(SearchText) => { setSearch(SearchText) }} />
         </InputGroup>
         <Button transparent style={{ height: 50 }} onPress={() => Search()}>
-          <Text style={{ color: "white", fontWeight: 'bold' }}>Search</Text>
+          <Text style={{ color: "white", fontWeight: 'bold' }}>{t('SOItemListScreenText1')}</Text>
         </Button>
       </View>
       {/* End Search bar with drawer */}
 
       <Content>
 
-        {loading ? <Text style={styles.loadingStyle}> Loading Services... </Text> :
+        {loading ? <Text style={styles.loadingStyle}> {t('Loading Services')} </Text> :
           <View>
             {ShowServices.map((item, index) => {
               return (
-                <ListItem>
+                <ListItem key={index}>
                   <Body>
                     <View style={{ flexDirection: 'row' }}>
                       <Text style={{ fontWeight: '500', marginLeft: 2, marginRight: 50 }}>{item.Type}</Text>
@@ -98,7 +100,7 @@ const MechServiceListScreen = () => {
                           item: item
                         }
                       )}>
-                        <Text style={{ color: 'green' }}>View</Text>
+                        <Text style={{ color: 'green' }}>{t('SOItemListScreenText3')}</Text>
                       </Button>
                       {/* End View Item Button */}
 
@@ -111,32 +113,32 @@ const MechServiceListScreen = () => {
                         duration: item.Duration,
                         serviceID: item.key
                       })}>
-                        <Text style={{ color: 'blue' }}>Edit</Text>
+                        <Text style={{ color: 'blue' }}>{t('SOItemListScreenText4')}</Text>
                       </Button>
 
                       <Button transparent onPress={() =>
                         Alert.alert(
-                          "Warning",
-                          "Are you sure you want to delete this service?",
+                          t('UserChangeEmailAddressScreenAlert2'),
+                          t('MechServiceListScreenText1'),
                           [
                             {
-                              text: "No"
+                              text: t('UserChangeNameScreenAlert4')
                             },
                             {
-                              text: "Yes", onPress: () => {
+                              text: t('UserChangeNameScreenAlert5'), onPress: () => {
                                 firestore()
                                   .collection('Services')
                                   .doc(item.key)
                                   .delete()
                                   .then(() => {
-                                    alert("Service has been deleted");
+                                    alert(t('MechServiceListScreenText2'));
                                   });
                               }
                             }
                           ]
                         )
                       }>
-                        <Text style={{ color: 'red', width: 85 }}>Delete</Text>
+                        <Text style={{ color: 'red', width: 85 }}>{t('SOItemListScreenText5')}</Text>
                       </Button>
                     </View>
                   </Right>

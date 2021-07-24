@@ -6,6 +6,7 @@ import { DrawerActions } from 'react-navigation-drawer';
 import firestore from "@react-native-firebase/firestore";
 import qs from 'qs';
 import FooterComponent from '../components/FooterComponent';
+import { useTranslation } from 'react-i18next';
 
 const ContactUsScreen = ({ navigation }) => {
 
@@ -13,6 +14,7 @@ const ContactUsScreen = ({ navigation }) => {
 
 
   const [Contacts, setContacts] = useState([]);
+  const { t, i18n } = useTranslation();
 
   async function Get_Contacts() {
     await firestore().collection("App Details").doc("WzEI7B9mqYAzVclOOkFX").get().then((file) => {
@@ -63,7 +65,7 @@ const ContactUsScreen = ({ navigation }) => {
             style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
           />
         </Button>
-        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '20%', paddingTop: 12, fontWeight: 'bold' }}>Contact Us</Text>
+        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '20%', paddingTop: 12, fontWeight: 'bold' }}>{t('UserContactUsScreenTitle')}</Text>
       </View>
       {/* End Text with navback */}
       <Content>
@@ -91,7 +93,7 @@ const ContactUsScreen = ({ navigation }) => {
                     }}
                   >
                     <MaterialIcons name="email" size={20} style={{ marginLeft: 10, marginRight: -10 }} color="white" />
-                    <Text style={{ color: 'white', fontWeight: 'bold' }}>Email</Text>
+                    <Text style={{ color: 'white', fontWeight: 'bold' }}>{t('UserContactUsScreenButton1')}</Text>
                   </Button>
                   <Button style={{ flexDirection: 'row', height: 30, backgroundColor: 'darkgreen' }}
                     onPress={() => {
@@ -99,7 +101,7 @@ const ContactUsScreen = ({ navigation }) => {
                     }}
                   >
                     <MaterialIcons name="call" size={20} style={{ marginLeft: 10, marginRight: -10 }} color="white" />
-                    <Text style={{ color: 'white', fontWeight: 'bold' }}>Call</Text>
+                    <Text style={{ color: 'white', fontWeight: 'bold' }}>{t('UserContactUsScreenButton2')}</Text>
                   </Button>
                 </View>
               </Right>

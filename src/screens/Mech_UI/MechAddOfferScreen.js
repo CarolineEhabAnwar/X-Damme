@@ -10,11 +10,14 @@ import storage from '@react-native-firebase/storage';
 import firestore from "@react-native-firebase/firestore";
 import { AuthContext } from '../../navigation/AuthProvider';
 import MechItemOfferComponent from '../components/MechItemOfferComponent';
+import { useTranslation } from 'react-i18next';
 
 const MechAddOfferScreen = ({ navigation }) => {
 
   LogBox.ignoreLogs(['Slider has been extracted from react-native core and will be removed in a future release']);
+  LogBox.ignoreLogs(['Slider has been extracted from react-native core and will be removed in a future release']);
   const { user } = useContext(AuthContext);
+  const { t, i18n } = useTranslation();
   const [IsPremium, setIsPremium] = useState(false);
   const [SliderValue, SetSliderValue] = useState(1);
   const [Offer_Title, SetOffer_Title] = useState("");
@@ -206,11 +209,11 @@ const MechAddOfferScreen = ({ navigation }) => {
             <View>
               <View style={{ flexDirection: 'row' }}>
                 <AntDesign name="edit" style={{ marginRight: 10, marginTop: 1.5 }} size={22} color="darkgreen" />
-                <Text style={styles.textStyle}>Please enter offer details</Text>
+                <Text style={styles.textStyle}>{t('SOAddOfferScreenText5')}</Text>
               </View>
               <Form>
                 <Item regular style={styles.InputStyle}>
-                  <Input placeholder='Offer Title' value={Offer_Title} onChangeText={SetOffer_Title} />
+                  <Input placeholder={t('SOAddOfferScreenText17')} value={Offer_Title} onChangeText={SetOffer_Title} />
                 </Item>
 
                 <Item regular style={{ marginBottom: 10, borderColor: 'darkgreen', borderRadius: 6, justifyContent: 'space-evenly' }}>
@@ -243,7 +246,7 @@ const MechAddOfferScreen = ({ navigation }) => {
                     onPress={async () => {
                       choosePhotoFromLibrary();
                     }}>
-                    <Text> Choose Photo</Text>
+                    <Text>{t('SOAddOfferScreenText6')}</Text>
                   </Button>
                   {is_image_choosen ? <Ionicons name="checkmark-outline" size={24} color="black" /> : null}
                   {uploading ? <Feather name="loader" size={24} color="black" /> : null}
@@ -257,10 +260,10 @@ const MechAddOfferScreen = ({ navigation }) => {
                         setis_image_choosen(false);
                         setis_image_uploaded(true);
                       } catch (error) {
-                        alert("There has been some error in uploading the image");
+                        alert(t('SOAddOfferScreenText7'));
                       }
                     }}>
-                    <Text> Upload Photo</Text>
+                    <Text> {t('SOAddOfferScreenText8')} </Text>
                   </Button>
 
                 </Item>
@@ -268,49 +271,49 @@ const MechAddOfferScreen = ({ navigation }) => {
                 <Item regular style={styles.PriceStyle}>
                   <Input
                     keyboardType="numeric"
-                    placeholder='Offer Duration'
+                    placeholder={t('SOAddOfferScreenText18')} 
                     onChangeText={(duration) => setDuration(duration)}
                   />
-                  <Text style={{ marginRight: 15, color: 'darkgreen' }}>Days</Text>
+                  <Text style={{ marginRight: 15, color: 'darkgreen' }}>{t('SOAddOfferScreenText19')}</Text>
                 </Item>
 
                 <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                   <Button style={{ backgroundColor: 'darkgreen', marginVertical: 20, marginRight: 40, alignSelf: 'center' }}
                     onPress={() => {
                       if (uploading) {
-                        alert("Please Wait untill the uploads finshs.");
+                        alert(t('SOAddOfferScreenText9'));
                       }
                       else if (Offer_Title == '') {
-                        alert("Please insert Offer Title.");
+                        alert(t('SOAddOfferScreenText10'));
                       }
                       else if (ChoosenItems.length == 0) {
-                        alert("Please choose the items to be in the offer.");
+                        alert(t('SOAddOfferScreenText11'));
                       }
                       else if (!uploadedOnce) {
-                        alert("Please choose and upload an Image.");
+                        alert(t('SOAddOfferScreenText12'));
                       }
                       else if (Duration == null) {
-                        alert("Please insert the offer duration.");
+                        alert(t('SOAddOfferScreenText13'));;
                       }
                       else {
                         Upload_Offer();
                       }
                     }}
                   >
-                    <Text>Confirm</Text>
+                    <Text>{t('SOAddOfferScreenText14')}</Text>
                   </Button>
 
                   <Button bordered style={{ borderColor: 'darkgreen', marginVertical: 20, alignSelf: 'center' }}
                     onPress={() => navigation.navigate('MechHome')}
                   >
-                    <Text style={{ color: 'darkgreen' }}>Cancel</Text>
+                    <Text style={{ color: 'darkgreen' }}>{t('SOAddOfferScreenText15')}</Text>
                   </Button>
                 </View>
               </Form>
             </View>
             :
             <Text style={{ color: "darkgreen", alignSelf: 'center', fontSize: 22, textAlignVertical: 'center', fontWeight: 'bold', marginTop: 180 }}>
-              You need to be Subscribed to add Offers.
+              {t('SOAddOfferScreenText16')}
             </Text>
           }
         </Content>

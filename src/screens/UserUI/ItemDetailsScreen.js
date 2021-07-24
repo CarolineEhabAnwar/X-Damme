@@ -304,7 +304,7 @@ const ItemDetailsScreen = ({ navigation, route }) => {
                         firestore().collection('users').doc(user.uid).update({
                           cart: temp_cart
                         }).then(() => {
-                          alert("Added To Cart.");
+                          alert(t("ItemComponentText2"));
                         });
                       });
                     }

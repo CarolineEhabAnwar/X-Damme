@@ -203,14 +203,14 @@ const ServiceComponent = (props) => {
     const add_service_request = () => {
         try {
             Alert.alert(
-                "Warning",
-                "Are you sure you want to reserve this service?",
+                t("SOViewItemText5"),
+                t("serviceReqWarning"),
                 [
                     {
-                        text: "No"
+                        text: t("SOViewItemText7")
                     },
                     {
-                        text: "Yes", onPress: async () => {
+                        text: t("SOViewItemText8"), onPress: async () => {
                             await firestore().collection("Service Requests").add({
                                 Service_Type: props.type,
                                 Reserved_Day: checked,
@@ -221,7 +221,7 @@ const ServiceComponent = (props) => {
                                 Mech_Name: mech_name,
                                 Status: "Pending"
                             });
-                            alert('Request has been sent successfully!')
+                            alert(t('serviceReqWarning2'))
                             set_reserve_ModalVisible(false)
                         }
                     }
@@ -251,7 +251,7 @@ const ServiceComponent = (props) => {
                 >
                     <View style={styles.centeredView}>
                         <View style={styles.modalView}>
-                            <Text style={styles.modalText}>Please select suitable date</Text>
+                            <Text style={styles.modalText}>{t("selectDate")}</Text>
 
                             <Item>
                                 <FlatList
@@ -266,7 +266,7 @@ const ServiceComponent = (props) => {
                                                             status={checked === 'Monday' ? 'checked' : 'unchecked'}
                                                             onPress={() => setChecked('Monday')}
                                                         />
-                                                        <Text style={styles.label}>Monday</Text>
+                                                        <Text style={styles.label}>{t('MechAddServiceScreenTextMon')}</Text>
                                                     </View>
                                                 );
                                             case 'Tuesday':
@@ -277,7 +277,7 @@ const ServiceComponent = (props) => {
                                                             status={checked === 'Tuesday' ? 'checked' : 'unchecked'}
                                                             onPress={() => setChecked('Tuesday')}
                                                         />
-                                                        <Text style={styles.label}>Tuesday</Text>
+                                                        <Text style={styles.label}>{t('MechAddServiceScreenTextTue')}</Text>
                                                     </View>
                                                 );
                                             case 'Wednesday':
@@ -288,7 +288,7 @@ const ServiceComponent = (props) => {
                                                             status={checked === 'Wednesday' ? 'checked' : 'unchecked'}
                                                             onPress={() => setChecked('Wednesday')}
                                                         />
-                                                        <Text style={styles.label}>Wednesday</Text>
+                                                        <Text style={styles.label}>{t('MechAddServiceScreenTextWed')}</Text>
                                                     </View>
                                                 );
 
@@ -300,7 +300,7 @@ const ServiceComponent = (props) => {
                                                             status={checked === 'Thursday' ? 'checked' : 'unchecked'}
                                                             onPress={() => setChecked('Thursday')}
                                                         />
-                                                        <Text style={styles.label}>Thursday</Text>
+                                                        <Text style={styles.label}>{t('MechAddServiceScreenTextThu')}</Text>
                                                     </View>
                                                 );
                                             case 'Friday':
@@ -311,7 +311,7 @@ const ServiceComponent = (props) => {
                                                             status={checked === 'Friday' ? 'checked' : 'unchecked'}
                                                             onPress={() => setChecked('Friday')}
                                                         />
-                                                        <Text style={styles.label}>Friday</Text>
+                                                        <Text style={styles.label}>{t('MechAddServiceScreenTextFri')}</Text>
                                                     </View>
                                                 );
                                             case 'Saturday':
@@ -322,7 +322,7 @@ const ServiceComponent = (props) => {
                                                             status={checked === 'Saturday' ? 'checked' : 'unchecked'}
                                                             onPress={() => setChecked('Saturday')}
                                                         />
-                                                        <Text style={styles.label}>Saturday</Text>
+                                                        <Text style={styles.label}>{t('MechAddServiceScreenTextSat')}</Text>
                                                     </View>
                                                 );
                                             case 'Sunday':
@@ -333,7 +333,7 @@ const ServiceComponent = (props) => {
                                                             status={checked === 'Sunday' ? 'checked' : 'unchecked'}
                                                             onPress={() => setChecked('Sunday')}
                                                         />
-                                                        <Text style={styles.label}>Sunday</Text>
+                                                        <Text style={styles.label}>{t('MechAddServiceScreenTextSun')}</Text>
                                                     </View>
                                                 );
                                         }
@@ -344,7 +344,7 @@ const ServiceComponent = (props) => {
 
 
                             <Item style={styles.InputStyle}>
-                                <Text style={[styles.textStyle, { color: 'darkred', fontWeight: 'bold', fontSize: 15 }]}>At: </Text>
+                                <Text style={[styles.textStyle, { color: 'darkred', fontWeight: 'bold', fontSize: 15 }]}>{t("at")} </Text>
                                 <DatePicker
                                     date={requestedTime}
                                     mode="time"
@@ -369,7 +369,7 @@ const ServiceComponent = (props) => {
                                         end_time_min = parseInt(((props.end_time).toString()).substring(4, 6));
 
                                         if (checked == '') {
-                                            alert('Please select a suitable day')
+                                            alert(t("serviceCompAlert"))
                                         }
 
                                         else if ((startTime_hour > end_time_hour)) {
@@ -383,16 +383,16 @@ const ServiceComponent = (props) => {
                                                 add_service_request()
                                             }
                                             else {
-                                                alert('Please select a time within the provided ones')
+                                                alert(t("serviceCompAlert2"))
                                             }
                                         }
 
                                         else if ((startTime_hour < end_time_hour) && (startTime_hour <= requestedTime_hour) && (requestedTime_hour <= end_time_hour)) {
                                             if ((startTime_hour == requestedTime_hour) && (startTime_min > requestedTime_min)) { //Handling minutes errors
-                                                alert('Please select a time within the provided ones')
+                                                alert(t("serviceCompAlert2"))
                                             }
                                             else if ((end_time_hour == requestedTime_hour) && (end_time_min < requestedTime_min)) {
-                                                alert('Please select a time within the provided ones')
+                                                alert(t("serviceCompAlert2"))
                                             }
                                             else {
                                                 add_service_request();
@@ -400,7 +400,7 @@ const ServiceComponent = (props) => {
                                         }
 
                                         else {
-                                            alert('Please select a time within the provided ones')
+                                            alert(t("serviceCompAlert2"))
                                         }
 
 
@@ -408,7 +408,7 @@ const ServiceComponent = (props) => {
                                     }
                                     }
                                 >
-                                    <Text style={styles.textStyle}>Reserve</Text>
+                                    <Text style={styles.textStyle}>{t("reserve")}</Text>
                                 </Button>
 
                                 <Button
@@ -418,7 +418,7 @@ const ServiceComponent = (props) => {
                                     }
                                     }
                                 >
-                                    <Text style={[styles.textStyle, { color: 'darkred' }]}>Cancel</Text>
+                                    <Text style={[styles.textStyle, { color: 'darkred' }]}>{t("UserReminderScreenText2")}</Text>
                                 </Button>
                             </View>
 
@@ -441,16 +441,16 @@ const ServiceComponent = (props) => {
 
                             {props.InOffer == "true" ?
                                 <View>
-                                    <Text style={styles.textStyles}>Service Price:  </Text>
+                                    <Text style={styles.textStyles}>{t('MechAddServiceScreenText2')}:  </Text>
                                     <Text style={{
                                         marginVertical: 7, fontWeight: 'bold', textDecorationLine: 'line-through'
-                                    }}>{props.price} EGP</Text>
-                                    <Text style={styles.propsStyle}>{props.after_Price} EGP </Text>
+                                    }}>{props.price} {t("UserCartScreenText7")}</Text>
+                                    <Text style={styles.propsStyle}>{props.after_Price} {t("UserCartScreenText7")} </Text>
                                 </View>
                                 :
                                 <View>
-                                    <Text style={styles.textStyles}>Service Price:  </Text>
-                                    <Text style={styles.propsStyle}>{props.price} EGP </Text>
+                                    <Text style={styles.textStyles}>{t('MechAddServiceScreenText2')}:  </Text>
+                                    <Text style={styles.propsStyle}>{props.price} {t("UserCartScreenText7")} </Text>
                                 </View>
                             }
 
@@ -460,7 +460,7 @@ const ServiceComponent = (props) => {
 
                         <View style={{ flexDirection: 'row' }}>
                             <AntDesign name="calendar" style={styles.IconStyles} size={20} color="black" />
-                            <Text style={styles.textStyles}>Service Availability: </Text>
+                            <Text style={styles.textStyles}>{t("MechAddServiceScreenText3")}: </Text>
                         </View>
 
                         <FlatList
@@ -475,34 +475,34 @@ const ServiceComponent = (props) => {
                         {/* From */}
                         <View style={{ flexDirection: 'row' }}>
                             <AntDesign name="clockcircleo" style={styles.IconStyles} size={21} color="black" />
-                            <Text style={styles.textStyles}>From:  </Text>
+                            <Text style={styles.textStyles}>{t("MechAddServiceScreenText4")}:  </Text>
                             <Text style={styles.propsStyle}>{props.start_time}</Text>
                         </View>
 
                         {/* TO */}
                         <View style={{ flexDirection: 'row' }}>
                             <AntDesign name="clockcircleo" style={styles.IconStyles} size={21} color="black" />
-                            <Text style={styles.textStyles}>To:  </Text>
+                            <Text style={styles.textStyles}>{t("MechAddServiceScreenText5")}:  </Text>
                             <Text style={styles.propsStyle}>{props.end_time}</Text>
                         </View>
 
                         {/* Duration */}
                         <View style={{ flexDirection: 'row' }}>
                             <AntDesign name="clockcircleo" style={styles.IconStyles} size={21} color="black" />
-                            <Text style={styles.textStyles}>Service Duration:  </Text>
-                            <Text style={styles.propsStyle}>{props.duration} Hours </Text>
+                            <Text style={styles.textStyles}>{t("MechAddServiceScreenText6")}:  </Text>
+                            <Text style={styles.propsStyle}>{props.duration} {t("MechAddServiceScreenText7")} </Text>
                         </View>
 
                         {/* Rating */}
                         <View style={{ flexDirection: 'row' }}>
                             <AntDesign name="edit" style={styles.IconStyles} size={21} color="black" />
-                            <Text style={styles.textStyles}>Ratings:  </Text>
+                            <Text style={styles.textStyles}>{t("Ratings")}  </Text>
                         </View>
                     </Body>
                 </CardItem>
                 <CardItem style={{ flexDirection: "column", alignItems: "flex-start" }}>
                     <View style={styles.reviewContainer}>
-                        <Text style={{ color: "darkred", fontWeight: 'bold', left: 70 }}>Service Rating</Text>
+                        <Text style={{ color: "darkred", fontWeight: 'bold', left: 70 }}>{t("service_rating")}</Text>
                         <View style={styles.totalWrap}>
                             <View
                                 style={{
@@ -517,7 +517,7 @@ const ServiceComponent = (props) => {
                                 />
                             </View>
                         </View>
-                        <Text style={styles.amountText}>{TotalItemReviewsCount} customer ratings</Text>
+                        <Text style={styles.amountText}>{TotalItemReviewsCount} {t("UserItemDetailsScreenText14")}</Text>
 
                         <View style={{ marginTop: 15, left: 13 }}>
                             <View style={styles.spacer}>
@@ -544,9 +544,9 @@ const ServiceComponent = (props) => {
                                 itemID: props.serviceID
                             })
                         }}>
-                            <Text style={styles.howWeCalculate}>See Customer Reviews</Text>
+                            <Text style={styles.howWeCalculate}>{t("UserItemDetailsScreenText12")}</Text>
                         </TouchableOpacity>
-                        <Text style={{ color: "darkred", fontWeight: 'bold', left: 50 }}>Mechanic Rating</Text>
+                        <Text style={{ color: "darkred", fontWeight: 'bold', left: 50 }}>{t("mech_rating")}</Text>
                         <View style={styles.totalWrap}>
                             <View
                                 style={{
@@ -561,7 +561,7 @@ const ServiceComponent = (props) => {
                                 />
                             </View>
                         </View>
-                        <Text style={styles.amountText}>{TotalShopReviewsCount} customer ratings</Text>
+                        <Text style={styles.amountText}>{TotalShopReviewsCount} {t("UserItemDetailsScreenText11")}</Text>
 
                     </View>
 
@@ -570,7 +570,7 @@ const ServiceComponent = (props) => {
                     <Button style={styles.btnStyle} onPress={() => {
                         set_reserve_ModalVisible(!reserve_modalVisible)
                     }}>
-                        <Text style={styles.buttontextStyles}>Reserve Service</Text>
+                        <Text style={styles.buttontextStyles}>{t("reserve_service")}</Text>
                     </Button>
                     <Button style={styles.btnStyle}
                         onPress={() => {
@@ -581,7 +581,7 @@ const ServiceComponent = (props) => {
                             })
                         }}>
                         <Icon style={{ marginRight: -6 }} name="pencil-outline"></Icon>
-                        <Text style={styles.buttonTextStyle}>Review</Text>
+                        <Text style={styles.buttonTextStyle}>{t("UserItemDetailsScreenText15")}</Text>
                     </Button>
                 </CardItem>
             </Card>
