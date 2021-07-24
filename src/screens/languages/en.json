@@ -516,7 +516,8 @@
         "caradded":"Car has been added successfully",
         "saved_success":"Saved Successfully",
         "item_Added":"Item has been added successfully",
-        "itemEdited":"Item has been edited successfully"
-
+        "itemEdited":"Item has been edited successfully",
+        "MechHomeScreenText1":"Add Item",
+        "MechHomeScreenText2":"Service List"
     }
 }
