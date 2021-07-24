@@ -102,7 +102,7 @@ const CartScreen = ({ navigation, route }) => {
                 await Send_Request(Requests[i]);
             }
             Remove_All();
-            alert("serviceReqWarning2");
+            alert(t("serviceReqWarning2"));
         }
         catch (error) {
             alert(error);

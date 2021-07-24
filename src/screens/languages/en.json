@@ -489,6 +489,8 @@
         "MechAddServiceScreenTextFri":"Friday",
         "MechAddServiceScreenTextSat":"Saturday",
         "MechAddServiceScreenTextSun":"Sunday",
+        "MechHomeScreenText1":"Add Item",
+        "MechHomeScreenText2":"Service List",
         "LoadingServices":"Loading Services..",
         "MechServiceListScreenText1":"Are you sure you want to delete this service?",
         "MechServiceListScreenText2":"Service has been deleted",
@@ -517,7 +519,7 @@
         "saved_success":"Saved Successfully",
         "item_Added":"Item has been added successfully",
         "itemEdited":"Item has been edited successfully",
-        "MechHomeScreenText1":"Add Item",
-        "MechHomeScreenText2":"Service List"
+        "goPrem":"Go Premium"
+
     }
 }

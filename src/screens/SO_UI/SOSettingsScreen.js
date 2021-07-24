@@ -119,7 +119,7 @@ const SOSettingsScreen = ({ navigation }) => {
               })
             }}>
               <MaterialCommunityIcons name="crown-outline" style={{ marginRight: -5 }} size={26} color={color} />
-              <Text style={{ color: color, fontSize: 18, fontWeight: '500' }}>Go Premium</Text>
+              <Text style={{ color: color, fontSize: 18, fontWeight: '500' }}>{t('goPrem')}</Text>
             </Button>
           </ListItem>
 
