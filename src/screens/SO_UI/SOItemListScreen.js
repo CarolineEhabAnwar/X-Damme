@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../../navigation/AuthProvider';
 import firestore from '@react-native-firebase/firestore';
 import FooterComponent from '../components/FooterComponent';
-
+import { useTranslation } from 'react-i18next';
 
 const SOItemListScreen = () => {
   const navigation = useNavigation();
@@ -15,6 +15,7 @@ const SOItemListScreen = () => {
   const [ShowItems, SetShowItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const { t, i18n } = useTranslation();
 
 
   const Search = () => {
@@ -68,17 +69,17 @@ const SOItemListScreen = () => {
         </Button>
         <InputGroup rounded style={{ flex: 1, backgroundColor: 'white', height: 35, marginTop: 7, paddingLeft: 10, paddingRight: 10 }}>
           <Icon name="ios-search" style={{ color: "darkblue" }} />
-          <Input style={{ height: 40, marginTop: 5, color: "darkblue" }} placeholder="Search" onChangeText={(SearchText) => { setSearch(SearchText) }} />
+          <Input style={{ height: 40, marginTop: 5, color: "darkblue" }} placeholder={t("SOEditItemScreenText4")} onChangeText={(SearchText) => { setSearch(SearchText) }} />
         </InputGroup>
         <Button transparent style={{ height: 50 }} onPress={() => Search()}>
-          <Text style={{ color: "white", fontWeight: 'bold' }}>Search</Text>
+          <Text style={{ color: "white", fontWeight: 'bold' }}>{t('SOItemListScreenText1')}</Text>
         </Button>
       </View>
       {/* End Search bar with drawer */}
 
       <Content>
 
-        {loading ? <Text style={styles.loadingStyle}> Loading Items... </Text> :
+        {loading ? <Text style={styles.loadingStyle}> {t('SOItemListScreenText2')} </Text> :
           <View>
             {ShowItems.map((item, index) => {
                 return (
@@ -97,7 +98,7 @@ const SOItemListScreen = () => {
                             Item: item
                           }
                         )}>
-                          <Text style={{ color: 'green' }}>View</Text>
+                          <Text style={{ color: 'green' }}>{t('SOItemListScreenText3')}</Text>
                         </Button>
                         {/* End View Item Button */}
 
@@ -113,33 +114,34 @@ const SOItemListScreen = () => {
                           type: item.Type,
                           itemID: item.key
                         })}>
-                          <Text style={{ color: 'blue' }}>Edit</Text>
+                          <Text style={{ color: 'blue' }}>{t('SOItemListScreenText4')}</Text>
                         </Button>
 
                         <Button transparent onPress={() =>
                           Alert.alert(
-                            "Warning",
-                            "Are you sure you want to delete this item?",
+                            t("SOViewItemText5"),
+                            t("SOViewItemText6"),
                             [
                               {
-                                text: "No"
+                                text: t("SOViewItemText7")
                               },
                               {
-                                text: "Yes", onPress: () => {
+                                text: t("SOViewItemText8"), onPress: () => {
                                   firestore()
                                     .collection('CarStuff')
                                     .doc(item.key)
                                     .delete()
                                     .then(() => {
-                                      alert("Item deleted");
+                                      alert(t("SOViewItemText9"));
                                     });
                                 }
                               }
                             ]
                           )
                         }>
-                          <Text style={{ color: 'red', width: 85 }}>Delete</Text>
+                          <Text style={{ color: 'red', width: 85 }}>{t('SOItemListScreenText5')}</Text>
                         </Button>
+
                       </View>
                     </Right>
                   </ListItem>

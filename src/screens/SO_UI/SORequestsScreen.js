@@ -7,12 +7,12 @@ import firestore from '@react-native-firebase/firestore';
 import FooterComponent from '../components/FooterComponent'
 import { AuthContext } from '../../navigation/AuthProvider';
 import { quality } from 'jimp';
-
+import { useTranslation } from 'react-i18next';
 
 const SORequestsScreen = ({ navigation, route }) => {
 
   LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
-
+  const { t, i18n } = useTranslation();
   const { user } = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
   const [showList, setShowList] = useState([]);
@@ -54,19 +54,19 @@ const SORequestsScreen = ({ navigation, route }) => {
     <Container>
       {/* Search bar with drawer */}
       <View searchBar style={{ flexDirection: 'row', paddingTop: 26, marginBottom: 12, paddingBottom: 6, alignContent: "center", backgroundColor: "darkblue", top: 0 }}>
-        <Button transparent onPress={() => navigation.navigate('SOHome')} >
+        <Button transparent onPress={() => navigation.goBack()} >
           <Ionicons
             name='arrow-back-outline'
             style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
           />
         </Button>
-        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '22%', paddingTop: 12, fontWeight: 'bold' }}> Requests</Text>
+        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '22%', paddingTop: 12, fontWeight: 'bold' }}> {t("SOProfileScreenText9")}</Text>
       </View>
       {/* End Search bar with drawer */}
 
-      {isEmpty ? <Content><Text style={styles.loadingStyle}> No Current Requests... </Text></Content> : null}
+      {isEmpty ? <Content><Text style={styles.loadingStyle}>{t('SORequestsScreenText1')} </Text></Content> : null}
 
-      {loading ? <Content><Text style={styles.loadingStyle}> Loading Requests... </Text></Content> :
+      {loading ? <Content><Text style={styles.loadingStyle}>{t('SORequestsScreenText2')} </Text></Content> :
         <Content>
           <FlatList
             data={showList}

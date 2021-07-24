@@ -7,6 +7,7 @@ import ServiceRequestComponent from '../components/ServiceRequestComponent'
 import { FlatList } from 'react-native-gesture-handler';
 import firestore from '@react-native-firebase/firestore';
 import { AuthContext } from '../../navigation/AuthProvider';
+import { useTranslation } from 'react-i18next';
 
 const MechRequestsScreen = ({navigation}) => {
 
@@ -15,6 +16,7 @@ const MechRequestsScreen = ({navigation}) => {
   const { user } = useContext(AuthContext);
 
   const [requests,setRequests] = useState([])
+  const { t, i18n } = useTranslation();
   const [show_requests,set_show_requests] = useState([])
   const [loading, setLoading] = useState(true);
   const [is_empty, set_is_empty] = useState(false);
@@ -50,14 +52,14 @@ const MechRequestsScreen = ({navigation}) => {
                 style={{ fontSize: 30, marginTop:4,marginRight:12,marginLeft:12 ,color: 'white'}}
               />
             </Button>
-            <Text style={{color: "white",height:50,fontSize:20, textAlign:'center',paddingLeft:'25%',paddingTop:12, fontWeight:'bold'}}> Requests</Text> 
+            <Text style={{color: "white",height:50,fontSize:20, textAlign:'center',paddingLeft:'25%',paddingTop:12, fontWeight:'bold'}}> {t("SOHomeScreenText5")}</Text> 
         </View>
         {/* End Search bar with drawer */}        
 
            
         <Content>
           
-        {loading ? <Text style={styles.loadingStyle}> Loading Requests... </Text> :
+        {loading ? <Text style={styles.loadingStyle}> {t("SORequestsScreenText2")} </Text> :
           <FlatList
             data={requests}
             renderItem={({ item }) => {

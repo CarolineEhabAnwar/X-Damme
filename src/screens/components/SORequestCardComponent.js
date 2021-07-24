@@ -5,10 +5,11 @@ import { Entypo, Ionicons } from '@expo/vector-icons';
 import { DrawerActions } from 'react-navigation-drawer';
 import { useNavigation } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
-
+import { useTranslation } from 'react-i18next';
 
 const SORequestCardComponent = (props) => {
 
+  const { t, i18n } = useTranslation();
   LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
   LogBox.ignoreLogs(['VirtualizedList: missing keys for items']);
 
@@ -27,7 +28,7 @@ const SORequestCardComponent = (props) => {
         Request_Expected_Due_Date: firestore.Timestamp.fromDate(new Date((props.Data.Request_Made_In_Date.nanoseconds / 1000) + (props.Data.Request_Made_In_Date.seconds * 1000) + 604800000)),
       })
       ToastAndroid.show(
-        'Request Accepted',
+        t('SORequestCardComponentText1'),
         ToastAndroid.SHORT
       );
       props.RefreshParent();
@@ -43,7 +44,7 @@ const SORequestCardComponent = (props) => {
         Request_Expected_Due_Date: "Declined",
       })
       ToastAndroid.show(
-        'Request Declined',
+        t('SORequestCardComponentText2'),
         ToastAndroid.SHORT
       );
       props.RefreshParent();
@@ -56,42 +57,42 @@ const SORequestCardComponent = (props) => {
     <Card style={{ flex: 0, borderColor: 'darkblue' }}>
       <CardItem style={{ marginHorizontal: 1 }}>
         <Body>
-          <Text style={styles.title}> Request ID:  </Text>
+          <Text style={styles.title}> {t('SORequestCardComponentText3')}  </Text>
           <Text style={styles.writing}> {props.ID} </Text>
-          <Text style={styles.title}> Items:  </Text>
+          <Text style={styles.title}> {t('SORequestCardComponentText4')}  </Text>
           <FlatList
             data={props.Data.Items_And_Quantites}
             renderItem={({ item }) => {
               return (
-                <Text style={styles.writing}> Name: {item.split("/")[0]} ,Quantity: {item.split("/")[1]} ,Price: {item.split("/")[2]} </Text>
+                <Text style={styles.writing}> {t('SORequestCardComponentText5')}: {item.split("/")[0]} ,{t('SORequestCardComponentText6')}: {item.split("/")[1]} ,{t('SORequestCardComponentText7')}: {item.split("/")[2]} </Text>
               )
             }}
           />
-          <Text style={styles.title}> Requested By: </Text>
+          <Text style={styles.title}> {t('SORequestCardComponentText8')} </Text>
           <Text style={styles.writing}> {props.Data.User_Name}</Text>
-          <Text style={styles.title}> Total Price: </Text>
-          <Text style={styles.writing}> {props.Data.Total_Price} L.E </Text>
-          <Text style={styles.title}> Status: </Text>
+          <Text style={styles.title}> {t('SORequestCardComponentText9')} </Text>
+          <Text style={styles.writing}> {props.Data.Total_Price} {t('SORequestCardComponentText10')} </Text>
+          <Text style={styles.title}> {t('SORequestCardComponentText11')} </Text>
           <Text style={styles.writing}> {props.Data.Status} </Text>
-          <Text style={styles.title}> Order Date: </Text>
+          <Text style={styles.title}> {t('SORequestCardComponentText12')} </Text>
           <Text style={styles.writing}> {S_Date_Of_Request} </Text>
-          <Text style={styles.title}> Due Date: </Text>
+          <Text style={styles.title}> {t('SORequestCardComponentText13')} </Text>
           <Text style={styles.writing}> {S_Date_Of_Due} </Text>
 
           {!props.Editing ? null :
-            <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 17, marginLeft: '15%' }}>
+            <View style={{ flexDirection: 'row',alignSelf:'center', marginTop: 17}}>
               {/* Accept */}
-              <Button style={{ marginLeft: 13, backgroundColor: 'green' }}
+              <Button style={{  backgroundColor: 'green' }}
                 onPress={() => { Accept() }}
               >
-                <Text style={styles.buttonTextStyle}>Accept</Text>
+                <Text style={styles.buttonTextStyle}>{t('SORequestCardComponentText14')}</Text>
               </Button>
 
               {/* Decline */}
               <Button style={{ marginLeft: 30, backgroundColor: '#eb1c1c' }}
                 onPress={() => { Decline() }}
               >
-                <Text style={styles.buttonTextStyle}>Decline</Text>
+                <Text style={styles.buttonTextStyle}>{t('SORequestCardComponentText15')}</Text>
               </Button>
             </View>
           }

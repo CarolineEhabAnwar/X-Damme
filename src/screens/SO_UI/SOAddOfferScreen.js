@@ -10,11 +10,13 @@ import storage from '@react-native-firebase/storage';
 import firestore from "@react-native-firebase/firestore";
 import { AuthContext } from '../../navigation/AuthProvider';
 import SOItemOfferComponent from '../components/SOItemOfferComponent';
+import { useTranslation } from 'react-i18next';
 
 const SOAddOfferScreen = ({ navigation }) => {
 
   LogBox.ignoreLogs(['Slider has been extracted from react-native core and will be removed in a future release']);
   const { user } = useContext(AuthContext);
+  const { t, i18n } = useTranslation();
   const [IsPremium, setIsPremium] = useState(false);
   const [SliderValue, SetSliderValue] = useState(1);
   const [Offer_Title, SetOffer_Title] = useState("");
@@ -64,7 +66,7 @@ const SOAddOfferScreen = ({ navigation }) => {
 
       const url = await storageRef.getDownloadURL();
       ToastAndroid.show(
-        'Uploaded Successfully.',
+        t('SOAddOfferScreenText1'),
         ToastAndroid.SHORT
       );
       setUploading(false);
@@ -131,7 +133,7 @@ const SOAddOfferScreen = ({ navigation }) => {
       });
 
       ToastAndroid.show(
-        'Offer Added Successfully...',
+        t('SOAddOfferScreenText2'),
         ToastAndroid.SHORT
       );
 
@@ -177,7 +179,7 @@ const SOAddOfferScreen = ({ navigation }) => {
       await Check_IsPremium()
       await Get_Items();
     } catch (error) {
-      alert("Something went wrong please try again later.")
+      alert(t('SOAddOfferScreenText3'))
     }
   }, []);
 
@@ -191,13 +193,13 @@ const SOAddOfferScreen = ({ navigation }) => {
             style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
           />
         </Button>
-        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '24%', paddingTop: 12, fontWeight: 'bold' }}> Add Offer</Text>
+        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '24%', paddingTop: 12, fontWeight: 'bold' }}> {t('SOAddOfferScreenText4')}</Text>
       </View>
       {/* End Search bar with drawer */}
       {loading ?
 
         <Content><Text style={{ color: "darkblue", alignSelf: 'center', fontSize: 22, textAlignVertical: 'center', fontWeight: 'bold', marginTop: 180 }}>
-          Loading...
+          {t('SOAddOfferScreenText20')}
         </Text></Content>
         :
 
@@ -206,11 +208,11 @@ const SOAddOfferScreen = ({ navigation }) => {
             <View>
               <View style={{ flexDirection: 'row' }}>
                 <AntDesign name="edit" style={{ marginRight: 10, marginTop: 1.5 }} size={22} color="darkblue" />
-                <Text style={styles.textStyle}>Please enter offer details</Text>
+                <Text style={styles.textStyle}>{t('SOAddOfferScreenText5')}</Text>
               </View>
               <Form>
                 <Item regular style={styles.InputStyle}>
-                  <Input placeholder='Offer Title' value={Offer_Title} onChangeText={SetOffer_Title} />
+                  <Input placeholder={t('SOAddOfferScreenText17')} value={Offer_Title} onChangeText={SetOffer_Title} />
                 </Item>
 
                 <Item regular style={{ marginBottom: 10, borderColor: 'darkblue', borderRadius: 6, justifyContent: 'space-evenly' }}>
@@ -243,7 +245,7 @@ const SOAddOfferScreen = ({ navigation }) => {
                     onPress={async () => {
                       choosePhotoFromLibrary();
                     }}>
-                    <Text> Choose Photo</Text>
+                    <Text>{t('SOAddOfferScreenText6')}</Text>
                   </Button>
                   {is_image_choosen ? <Ionicons name="checkmark-outline" size={24} color="black" /> : null}
                   {uploading ? <Feather name="loader" size={24} color="black" /> : null}
@@ -257,10 +259,10 @@ const SOAddOfferScreen = ({ navigation }) => {
                         setis_image_choosen(false);
                         setis_image_uploaded(true);
                       } catch (error) {
-                        alert("There has been some error in uploading the image");
+                        alert(t('SOAddOfferScreenText7'));
                       }
                     }}>
-                    <Text> Upload Photo</Text>
+                    <Text> {t('SOAddOfferScreenText8')}</Text>
                   </Button>
 
                 </Item>
@@ -268,49 +270,49 @@ const SOAddOfferScreen = ({ navigation }) => {
                 <Item regular style={styles.PriceStyle}>
                   <Input
                     keyboardType="numeric"
-                    placeholder='Offer Duration'
+                    placeholder={t('SOAddOfferScreenText18')} 
                     onChangeText={(duration) => setDuration(duration)}
                   />
-                  <Text style={{ marginRight: 15, color: 'darkblue' }}>Days</Text>
+                  <Text style={{ marginRight: 15, color: 'darkblue' }}>{t('SOAddOfferScreenText19')}</Text>
                 </Item>
 
                 <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                   <Button style={{ backgroundColor: 'darkblue', marginVertical: 20, marginRight: 40, alignSelf: 'center' }}
                     onPress={() => {
                       if (uploading) {
-                        alert("Please Wait untill the uploads finshs.");
+                        alert(t('SOAddOfferScreenText9'));
                       }
                       else if (Offer_Title == '') {
-                        alert("Please insert Offer Title.");
+                        alert(t('SOAddOfferScreenText10'));
                       }
                       else if (ChoosenItems.length == 0) {
-                        alert("Please choose the items to be in the offer.");
+                        alert(t('SOAddOfferScreenText11'));
                       }
                       else if (!uploadedOnce) {
-                        alert("Please choose and upload an Image.");
+                        alert(t('SOAddOfferScreenText12'));
                       }
                       else if (Duration == null) {
-                        alert("Please insert the offer duration.");
+                        alert(t('SOAddOfferScreenText13'));
                       }
                       else {
                         Upload_Offer();
                       }
                     }}
                   >
-                    <Text>Confirm</Text>
+                    <Text>{t('SOAddOfferScreenText14')}</Text>
                   </Button>
 
                   <Button bordered style={{ borderColor: 'darkblue', marginVertical: 20, alignSelf: 'center' }}
                     onPress={() => navigation.navigate('SOHome')}
                   >
-                    <Text style={{ color: 'darkblue' }}>Cancel</Text>
+                    <Text style={{ color: 'darkblue' }}>{t('SOAddOfferScreenText15')}</Text>
                   </Button>
                 </View>
               </Form>
             </View>
             :
             <Text style={{ color: "darkblue", alignSelf: 'center', fontSize: 22, textAlignVertical: 'center', fontWeight: 'bold', marginTop: 180 }}>
-              You need to be Subscribed to add Offers.
+              {t('SOAddOfferScreenText16')}
             </Text>
           }
         </Content>

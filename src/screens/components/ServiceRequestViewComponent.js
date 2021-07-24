@@ -5,12 +5,14 @@ import { MaterialIcons, AntDesign, FontAwesome5,FontAwesome } from '@expo/vector
 import { AuthContext } from '../../navigation/AuthProvider';
 import { useNavigation } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
+import { useTranslation } from 'react-i18next';
 
 const ServiceRequestViewComponent = (props) => {
 
     const navigation = useNavigation();
 
     const { user } = useContext(AuthContext);
+    const { t, i18n } = useTranslation();
 
     return (
         <Card style={{ borderColor: 'darkgreen'}}>
@@ -18,38 +20,38 @@ const ServiceRequestViewComponent = (props) => {
                 <Body>
                     <View style={styles.cardViewStyles}>
                         <MaterialIcons name="miscellaneous-services" size={25} color="darkgreen" style={styles.IconsStyle} />
-                        <Text style={styles.textStyles}>Service Type: </Text>
+                        <Text style={styles.textStyles}>{t("UserServiceDeatilsScreenText2")}: </Text>
                         <Text style={styles.propsStyle}>{props.service_type}</Text>
                     </View>
 
 
                     <View style={styles.cardViewStyles}>
                         <AntDesign name="calendar" size={19} color="darkgreen" style={[styles.IconsStyle,{marginTop:2}]} />
-                        <Text style={styles.textStyles}>Requested Day: </Text>
+                        <Text style={styles.textStyles}>{t("RequestedDay")}: </Text>
                         <Text style={styles.propsStyle}>{props.reserved_day}</Text>
                     </View>
 
                     <View style={styles.cardViewStyles}>
                         <AntDesign name="clockcircleo" size={19} color="darkgreen" style={[styles.IconsStyle,{marginTop:2}]} />
-                        <Text style={styles.textStyles}>Requested Time: </Text>
+                        <Text style={styles.textStyles}>{t("RequestedTime")}: </Text>
                         <Text style={styles.propsStyle}>{props.requested_time}</Text>
                     </View>
 
                     <View style={styles.cardViewStyles}>
                         <AntDesign name="user" size={20} color="darkgreen" style={styles.IconsStyle} />
-                        <Text style={styles.textStyles}>Requested By: </Text>
+                        <Text style={styles.textStyles}>{t("SORequestCardComponentText8")}: </Text>
                         <Text style={styles.propsStyle}>{props.requested_by}</Text>
                     </View>
 
                     <View style={styles.cardViewStyles}>
                         <FontAwesome5 name="user-clock" size={18} color="darkgreen" style={styles.IconsStyle}/>
-                        <Text style={styles.textStyles}>Status: </Text>
+                        <Text style={styles.textStyles}>{t("SORequestCardComponentText11")}: </Text>
                         <Text style={styles.propsStyle}>{props.status}</Text>
                     </View>
 
                     <View style={styles.cardViewStyles}>
                         <FontAwesome name="key" size={18} color="darkgreen" style={styles.IconsStyle}/>
-                        <Text style={styles.textStyles}>Request ID: </Text>
+                        <Text style={styles.textStyles}>{t("SORequestCardComponentText3")}: </Text>
                         <Text style={styles.propsStyle}>{props.requestID}</Text>
                     </View>
 

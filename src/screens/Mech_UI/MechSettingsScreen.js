@@ -26,7 +26,7 @@ const MechSettingsScreen = ({ navigation }) => {
             style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
           />
         </Button>
-        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '27%', paddingTop: 12, fontWeight: 'bold' }}>Settings</Text>
+        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '27%', paddingTop: 12, fontWeight: 'bold' }}>{t("UserSettingsScreenText1")}</Text>
       </View>
       {/* End Text with drawer */}
 
@@ -40,7 +40,7 @@ const MechSettingsScreen = ({ navigation }) => {
               ContactUs: contactus
             })}>
               <Ionicons name="person" style={{ marginRight: -5 }} size={24} color="darkgreen" />
-              <Text style={{ color: 'darkgreen', fontSize: 18, fontWeight: '500' }}>Change Name</Text>
+              <Text style={{ color: 'darkgreen', fontSize: 18, fontWeight: '500' }}>{t("UserSettingsScreenText2")}</Text>
             </Button>
           </ListItem>
 
@@ -53,7 +53,7 @@ const MechSettingsScreen = ({ navigation }) => {
             })}>
 
               <Entypo name="email" style={{ marginRight: -5 }} size={24} color="darkgreen" />
-              <Text style={{ color: 'darkgreen', fontSize: 18, fontWeight: '500' }}>Change Email</Text>
+              <Text style={{ color: 'darkgreen', fontSize: 18, fontWeight: '500' }}>{t("UserSettingsScreenText3")}</Text>
             </Button>
           </ListItem>
 
@@ -65,7 +65,7 @@ const MechSettingsScreen = ({ navigation }) => {
               ContactUs: contactus
             })}>
               <Ionicons name="ios-key" style={{ marginRight: -5 }} size={24} color="darkgreen" />
-              <Text style={{ color: 'darkgreen', fontSize: 18, fontWeight: '500' }}>Change Password</Text>
+              <Text style={{ color: 'darkgreen', fontSize: 18, fontWeight: '500' }}>{t("UserSettingsScreenText4")}</Text>
             </Button>
           </ListItem>
 
@@ -79,7 +79,7 @@ const MechSettingsScreen = ({ navigation }) => {
               })
             }}>
               <Entypo name="phone" style={{ marginRight: -5 }} size={24} color={color} />
-              <Text style={{ color: color, fontSize: 18, fontWeight: '500' }}>Change Phone Number</Text>
+              <Text style={{ color: color, fontSize: 18, fontWeight: '500' }}>{t("UserSettingsScreenText5")}</Text>
             </Button>
           </ListItem>
 
@@ -93,7 +93,7 @@ const MechSettingsScreen = ({ navigation }) => {
               })
             }}>
               <MaterialCommunityIcons name="city" style={{ marginRight: -5 }} size={26} color="darkgreen" />
-              <Text style={{ color: 'darkgreen', fontSize: 18, fontWeight: '500' }}>Change Addresse</Text>
+              <Text style={{ color: 'darkgreen', fontSize: 18, fontWeight: '500' }}>{t("UserSettingsScreenText6")}</Text>
             </Button>
           </ListItem>
 
@@ -107,7 +107,7 @@ const MechSettingsScreen = ({ navigation }) => {
               })
             }}>
               <MaterialCommunityIcons name="image" style={{ marginRight: -5 }} size={26} color={color} />
-              <Text style={{ color: color, fontSize: 18, fontWeight: '500' }}>Change Profile Photo</Text>
+              <Text style={{ color: color, fontSize: 18, fontWeight: '500' }}>{t("UserSettingsScreenText7")}</Text>
             </Button>
           </ListItem>
 

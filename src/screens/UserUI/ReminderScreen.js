@@ -21,7 +21,7 @@ const ReminderScreen = ({ navigation }) => {
 
     async function Save_Questions() {
         if (MyCars.length == 0) {
-            alert("Please add your Car First.")
+            alert(t("UserReminderScreenText6"))
             return;
         }
         for (let i = 0; i < MyCars.length; i++) {
@@ -33,10 +33,7 @@ const ReminderScreen = ({ navigation }) => {
                 Questions: temp
             })
         }
-        ToastAndroid.show(
-            "Saved Succesfully...",
-            ToastAndroid.SHORT
-        );
+        alert(t("saved_success"))
         navigation.navigate('Recommendation')
     }
 
@@ -169,7 +166,7 @@ const ReminderScreen = ({ navigation }) => {
                     if (MyCars.length != 0) {
                         setModalVisible(true);
                     } else {
-                        alert("Please add your car first.");
+                        alert(t("UserReminderScreenText6"));
                     }
                 }}>
                     <Ionicons name='add' size={30} color='white' style={{ paddingRight: 10 }} />

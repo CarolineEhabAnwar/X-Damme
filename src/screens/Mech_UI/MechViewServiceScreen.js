@@ -4,11 +4,14 @@ import { Entypo, Ionicons } from '@expo/vector-icons';
 import { Container, FooterTab, Content, Card, CardItem, Text, Button, Icon, Body, View } from 'native-base';
 import FooterComponent from '../components/FooterComponent'
 import { FlatList } from 'react-native-gesture-handler';
+import { useTranslation } from 'react-i18next';
+import firestore from '@react-native-firebase/firestore';
 
 
 const MechViewServiceScreen = ({ navigation, route }) => {
 
   LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+  const { t, i18n } = useTranslation();
 
   return (
     <Container>
@@ -20,7 +23,7 @@ const MechViewServiceScreen = ({ navigation, route }) => {
             style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
           />
         </Button>
-        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '22%', paddingTop: 12, fontWeight: 'bold' }}> View Service</Text>
+        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '22%', paddingTop: 12, fontWeight: 'bold' }}> {t('MechViewServiceScreenText3')}</Text>
       </View>
       {/* End Search bar with drawer */}
 
@@ -29,23 +32,23 @@ const MechViewServiceScreen = ({ navigation, route }) => {
           <CardItem style={{ marginHorizontal: 1, borderWidth: 3, borderColor: 'darkgreen' }}>
             <Body>
 
-              <Text style={styles.textStyles}>Type: </Text>
+              <Text style={styles.textStyles}>{t('MechAddServiceScreenText1')}</Text>
               <Text style={styles.itemsTextStyle}>{route.params.item.Type}</Text>
 
               {route.params.item.InOffer == "true" ?
                 <View>
-                  <Text style={styles.textStyles}>Price: </Text>
+                  <Text style={styles.textStyles}>{t('MechAddServiceScreenText2')}</Text>
                   <Text style={{ fontSize: 19, marginBottom: 10, fontWeight: 'bold', textDecorationLine: 'line-through' }}>{route.params.item.Price}</Text>
                   <Text style={styles.itemsTextStyle}>{route.params.item.After_Price}</Text>
                 </View>
                 :
                 <View>
-                  <Text style={styles.textStyles}>Price: </Text>
+                  <Text style={styles.textStyles}>{t('MechAddServiceScreenText2')}</Text>
                   <Text style={styles.itemsTextStyle}>{route.params.item.Price}</Text>
                 </View>
               }
 
-              <Text style={styles.textStyles}>Service Availability: </Text>
+              <Text style={styles.textStyles}>{t('MechAddServiceScreenText3')}</Text>
               <FlatList
                 data={route.params.item.Days}
                 renderItem={({ item }) => {
@@ -56,14 +59,14 @@ const MechViewServiceScreen = ({ navigation, route }) => {
                 keyExtractor={(item, index) => index.toString()}
               />
 
-              <Text style={styles.textStyles}>Start Time </Text>
+              <Text style={styles.textStyles}>{t('MechViewServiceScreenText1')}</Text>
               <Text style={styles.itemsTextStyle}>{route.params.item.Start_Time}</Text>
 
-              <Text style={styles.textStyles}>End Time: </Text>
+              <Text style={styles.textStyles}>{t('MechViewServiceScreenText2')}</Text>
               <Text style={styles.itemsTextStyle}>{route.params.item.End_Time}</Text>
 
-              <Text style={styles.textStyles}>Duration: </Text>
-              <Text style={styles.itemsTextStyle}>{route.params.item.Duration} Hours</Text>
+              <Text style={styles.textStyles}>{t('MechAddServiceScreenText6')}</Text>
+              <Text style={styles.itemsTextStyle}>{route.params.item.Duration} {t('MechAddServiceScreenText7')}</Text>
 
               <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 17, alignSelf: 'center' }}>
                 {/* Edit */}
@@ -77,33 +80,34 @@ const MechViewServiceScreen = ({ navigation, route }) => {
                     duration: route.params.item.Duration,
                     serviceID: route.params.item.key
                   })}>
-                  <Text style={styles.buttonTextStyle}>Edit</Text>
+                  <Text style={styles.buttonTextStyle}>{t('SOItemListScreenText4')}</Text>
                 </Button>
 
                 {/* Delete */}
                 <Button transparent style={{ marginLeft: 30, backgroundColor: '#eb1c1c' }} onPress={() =>
                   Alert.alert(
-                    "Warning",
-                    "Are you sure you want to delete this item?",
+                    t('UserChangeEmailAddressScreenAlert2'),
+                    t('MechServiceListScreenText1'),
                     [
                       {
-                        text: "No"
+                        text: t('UserChangeNameScreenAlert4')
                       },
                       {
-                        text: "Yes", onPress: () => {
+                        text: t('UserChangeNameScreenAlert5'), onPress: () => {
                           firestore()
                             .collection('CarStuff')
-                            .doc(item.key)
+                            .doc(route.params.item.key)
                             .delete()
                             .then(() => {
-                              alert("Item deleted");
+                              alert(t('MechServiceListScreenText2'));
+                              navigation.navigate('MechServiceList')
                             });
                         }
                       }
                     ]
                   )
                 }>
-                  <Text style={{ fontWeight: 'bold', color: 'white' }}>Delete</Text>
+                  <Text style={{ fontWeight: 'bold', color: 'white' }}>{t('SOItemListScreenText5')}</Text>
                 </Button>
               </View>
             </Body>

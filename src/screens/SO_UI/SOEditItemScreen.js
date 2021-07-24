@@ -11,8 +11,8 @@ import DatePicker from 'react-native-datepicker';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../../navigation/AuthProvider';
 import storage from '@react-native-firebase/storage';
-import { roundToNearestPixel } from 'react-native/Libraries/Utilities/PixelRatio';
-import warnOnce from 'react-native/Libraries/Utilities/warnOnce';
+import { useTranslation } from 'react-i18next';
+import FooterComponent from "../../screens/components/FooterComponent"
 
 async function UpdateItem(x_name, x_price, x_made_in, x_manufacture_date, x_car_model,
   x_car_brand, x_item_quality, x_image_path, x_type, user, item_id) {
@@ -29,10 +29,7 @@ async function UpdateItem(x_name, x_price, x_made_in, x_manufacture_date, x_car_
       Image_Path: x_image_path,
       Shop_Owner_ID: user.uid
     });
-    ToastAndroid.show(
-      'Item has been edited Successfully.',
-      ToastAndroid.SHORT
-    );
+    alert('Item has been edited')
 
   }
   catch (error) {
@@ -44,6 +41,7 @@ async function UpdateItem(x_name, x_price, x_made_in, x_manufacture_date, x_car_
 const SOEditItemScreen = ({ navigation, route }) => {
 
   LogBox.ignoreLogs(['Warning: componentWillReceiveProps has been renamed']);
+  const { t, i18n } = useTranslation();
   const { user } = useContext(AuthContext);
   const [name, setName] = useState(route.params.name);
   const [price, setPrice] = useState(route.params.price);
@@ -222,7 +220,7 @@ const SOEditItemScreen = ({ navigation, route }) => {
 
       const url = await storageRef.getDownloadURL();
       ToastAndroid.show(
-        'Uploaded Successfully.',
+        t('SOEditItemScreenText2'),
         ToastAndroid.SHORT
       );
       setUploading(false);
@@ -264,24 +262,24 @@ const SOEditItemScreen = ({ navigation, route }) => {
             style={{ fontSize: 30, marginTop: 4, marginRight: 12, marginLeft: 12, color: 'white' }}
           />
         </Button>
-        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '22%', paddingTop: 12, fontWeight: 'bold' }}> Edit Item</Text>
+        <Text style={{ color: "white", height: 50, fontSize: 20, textAlign: 'center', paddingLeft: '22%', paddingTop: 12, fontWeight: 'bold' }}> {t('SOEditItemScreenText22')}</Text>
       </View>
       {/* End Search bar with drawer */}
 
-      {!finsihedLoadingScreen ? <Content><Text style={styles.loadingStyle}> Loading Item Details... </Text></Content> :
+      {!finsihedLoadingScreen ? <Content><Text style={styles.loadingStyle}> {t('SOEditItemScreenText3')}</Text></Content> :
 
         <Content style={{ marginHorizontal: 15, paddingVertical: 10 }}>
 
           <Form>
             <Item regular style={styles.InputStyle}>
-              <Input value={name} placeholder='Item Name' onChangeText={name => setName(name)} />
+              <Input value={name} placeholder={t('SOEditItemScreenText4')} onChangeText={name => setName(name)} />
             </Item>
 
             <Item regular style={styles.InputStyle}>
-              <Input value={price} keyboardType="numeric" placeholder='Item Price' onChangeText={price => setPrice(price)} />
+              <Input value={price} keyboardType="numeric" placeholder={t('SOEditItemScreenText5')} onChangeText={price => setPrice(price)} />
             </Item>
             <Item regular style={styles.InputStyle}>
-              <Input value={made_in} placeholder='Made In' onChangeText={made_in => setMade_in(made_in)} />
+              <Input value={made_in} placeholder={t('SOEditItemScreenText6')} onChangeText={made_in => setMade_in(made_in)} />
             </Item>
 
             <Item regular style={{
@@ -310,7 +308,7 @@ const SOEditItemScreen = ({ navigation, route }) => {
                 onPress={async () => {
                   choosePhotoFromLibrary();
                 }}>
-                <Text> Choose Photo</Text>
+                <Text> {t('SOEditItemScreenText7')}</Text>
               </Button>
               {is_image_choosen ? <Ionicons name="checkmark-outline" size={24} color="black" /> : null}
               {uploading ? <Feather name="loader" size={24} color="black" /> : null}
@@ -324,10 +322,10 @@ const SOEditItemScreen = ({ navigation, route }) => {
                     setis_image_choosen(false);
                     setis_image_uploaded(true);
                   } catch (error) {
-                    alert("There has been some error in uploading the image");
+                    alert(t('SOEditItemScreenText8'));
                   }
                 }}>
-                <Text> Upload Photo</Text>
+                <Text> {t('SOEditItemScreenText9')}</Text>
               </Button>
 
             </Item>
@@ -392,18 +390,18 @@ const SOEditItemScreen = ({ navigation, route }) => {
               height: 50
             }}>
               <Text style={{ marginLeft: 10, marginRight: 5, color: 'darkblue' }}>
-                Manufacture Date:
+                {t('SOEditItemScreenText10')}
               </Text>
               <DatePicker
                 style={{ width: 200 }}
                 date={manufacture_date}
                 mode="date"
-                placeholder="select date"
+                placeholder={t('SOEditItemScreenText21')}
                 format="YYYY-MM-DD"
                 minDate="1990-01-01"
                 maxDate="2025-01-01"
-                confirmBtnText="Confirm"
-                cancelBtnText="Cancel"
+                confirmBtnText={t('SOEditItemScreenText19')}
+                cancelBtnText={t('SOEditItemScreenText20')}
                 customStyles={{
                   dateIcon: {
                     position: 'absolute',
@@ -445,28 +443,28 @@ const SOEditItemScreen = ({ navigation, route }) => {
               <Button
                 onPress={async () => {
                   if (uploading) {
-                    alert("Please Wait untill the uploads finshs.");
+                    alert(t('SOEditItemScreenText11'));
                   }
                   else if (name == '') {
-                    alert("Please insert Item Name.");
+                    alert(t('SOEditItemScreenText12'));
                   }
                   else if (price == '') {
-                    alert("Please insert Price.");
+                    alert(t('SOEditItemScreenText13'));
                   }
                   else if (made_in == '') {
-                    alert("Please insert Manufacture Country.");
+                    alert(t('SOEditItemScreenText14'));
                   }
                   else if (types[Type] == 'Select Type') {
-                    alert("Please select a type.")
+                    alert(t('SOEditItemScreenText15'));
                   }
                   else if (brands[Brand] == 'Select Brand') {
-                    alert("Please select a brand.")
+                    alert(t('SOEditItemScreenText16'));
                   }
                   else if (models[Model] == 'Select Model') {
-                    alert("Please select a model.")
+                    alert(t('SOEditItemScreenText17'));
                   }
                   else if (qualities[Quality] == 'Select Quality') {
-                    alert("Please select a quality.")
+                    alert(t('SOEditItemScreenText18'));
                   }
                   else {
                     UpdateItem(name, price, made_in, manufacture_date, models[Model], brands[Brand], qualities[Quality], image_path, types[Type], user, route.params.itemID);
@@ -475,7 +473,7 @@ const SOEditItemScreen = ({ navigation, route }) => {
                 }}  // Please handle all of the errors.
 
                 style={{ backgroundColor: 'darkblue', marginVertical: 20, alignSelf: 'center',marginRight:40 }}>
-                <Text>Confirm</Text>
+                <Text>{t('SOEditItemScreenText19')}</Text>
               </Button>
 
               <Button
@@ -484,7 +482,7 @@ const SOEditItemScreen = ({ navigation, route }) => {
                 }}
 
                 style={{ backgroundColor: 'white',borderWidth:1, marginVertical: 20,color:'white' }}>
-                <Text style={{color:'darkblue'}}>Cancel</Text>
+                <Text style={{color:'darkblue'}}>{t('SOEditItemScreenText20')}</Text>
               </Button>
             </Item>
             </View>
